@@ -40,6 +40,7 @@ struct UserInfoView: View {
                     hyperlinkText: "Problem Encountered",
                     dialogTitle: "User Info Error",
                     error: self.error!)
+                        .padding(.top)
 
             }
 

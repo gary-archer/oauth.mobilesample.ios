@@ -31,5 +31,6 @@ struct HeaderButtonStyle: ButtonStyle {
             .background(Colors.lightBlue)
             .font(self.disabled ? disabledFont : enabledFont)
             .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+            .cornerRadius(5)
     }
 }

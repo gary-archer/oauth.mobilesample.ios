@@ -45,8 +45,7 @@ OTHER IMPROVEMENTS
    This area needs a rethink
 
 6. UI bugs: Reload shifts existing view right
-   User Info error text is not correctly vertically aligned
-   Make buttons slightly rounded
+   https://github.com/ryangittings/swiftui-bugs
 
 7. Stack traces to improve
    Pass stack traces to uiError from system errors
@@ -111,3 +110,4 @@ DEEP LINK SETUP
 
 8. Doc to link to in write up:
    https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html
+
