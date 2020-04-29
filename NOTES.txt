@@ -1,0 +1,113 @@
+LINKS
+-----
+Follow this guide to set up a folder structure:
+https://code.likeagirl.io/how-to-structure-your-folders-9f9c003e46d
+
+Convert SVG to PDF on https://www.zamzar.com
+
+Carthage instructions:
+https://github.com/Carthage/Carthage#quick-start
+
+Install SwiftLint.pkg as a prerequisite by downloading and running the PKG file
+We execute 'swiftlint' as a Run Script under Build Phases
+
+Enable this on iOS devices and simulators:
+Settings / Passwords and Accounts / Autofill Passwords
+
+1. ForgeRock articles on AppAuth iOS customization:
+   https://developer.forgerock.com/docs/platform/how-tos/enabling-sso-appauth-sdk-ios
+   https://developer.forgerock.com/docs/platform/how-tos
+   https://github.com/ForgeRock/exampleOAuth2Clients/tree/master/iOS-AppAuth/SSO
+
+MAIN FUNCTIONALITY
+------------------
+1. Secure storage of tokens in the key chain
+
+2. Prerequisites - require secured device
+
+OTHER IMPROVEMENTS
+------------------
+1. Am I using coroutines correctly and avoiding calling APIs on UI thread
+   Debug output current thread id
+
+2. Use an array of promises for token renewal
+   Understand locking / concurrency in Swift
+
+3. Okta to get working and use logout strategies
+
+4. Side by side compare with Android sample for variable names etc
+   Improve Android code
+
+5. Leftover data in ViewManager problem
+   Use companies2 URL when logged out
+   User info last error is login_required and new error is api_request_error
+   The api_request_error triggers a login prompt and should not
+   This area needs a rethink
+
+6. UI bugs: Reload shifts existing view right
+   User Info error text is not correctly vertically aligned
+   Make buttons slightly rounded
+
+7. Stack traces to improve
+   Pass stack traces to uiError from system errors
+
+8. Long press to invoke 500 error
+   Will require a boolean field in the published event
+   API client to receive request options
+
+9. Fix warnings in debug window and compare with AppAuth sample:
+   * Attempting to load the view of a view controller while it is deallocating is not allowedand may result in undefined behavior
+   * Failed to write file "default.profraw": Read-only file system
+   * Can't end BackgroundTask: no background task exists with identifier 2 (0x2), or it may have already been ended.
+     Break in UIApplicationEndBackgroundTaskError() to debug.
+
+WEB / DESKTOP SAMPLES
+---------------------
+1. getAccessToken to call refreshAccessToken and not to throw login required itself
+   All samples should do this
+
+2. Above ViewManager problem for Desktop sample (and maybe SPA)
+
+3. Android to implement ErrorHandler.fromMessage
+   AuthenticatorImpl to check for response null and throw an exception if required
+
+4. Side by side compare with mobile samples for variable names etc
+
+INTERSTITIAL PROBLEM DETAILS
+----------------------------
+1. iOS and return after login
+   https://github.com/openid/AppAuth-iOS/issues/356
+   https://github.com/openid/AppAuth-iOS/issues/232
+   Second scene constructor is called when I open a custom scheme URL from a browser
+   For now I've removed interstitial page and Auth Server returns directly to custom scheme URL
+
+DEEP LINK SETUP
+---------------
+1. Online file hosted in S3 and available over this CloudFront URL.
+   Edit metadata of S3 file and set Content-Type=application/json.
+   https://authguidance-examples.com/.well-known/apple-app-site-association
+
+2. Entitlements.plist enables app links
+
+3. Under XCode / Targets / Signing + Capabilities / Associated Domains, set this:
+   applinks:authguidance-examples.com
+
+4. Bundle identifier under Targets / Signing + Capabilities is as follows:
+   com.authguidance.basicmobileapp
+
+5. Verify the applink on this site, using the team id as the Apple App Prefix:
+   https://branch.io/resources/aasa-validator/#resultsbox
+
+6. Test with this command on a simulator:
+   xcrun simctl openurl booted https://authguidance-examples.com#company=2
+
+7. Troubleshoot by uninstalling app from simulator, then running the MacOS Console tool.
+   Filter on app-site and you may see an error like this.
+   In my case this was due to SSL trust problems when running the Charles proxy.
+   
+   Task <8944108C-E3D5-4799-A55B-F3B9AC3F7876>.<1> finished with error [-999] Error Domain=NSURLErrorDomain Code=-999 "cancelled" UserInfo={NSErrorFailingURLStringKey=https://authguidance-examples.com/.well-known/apple-app-site-association, NSErrorFailingURLKey=https://authguidance-examples.com/.well-known/apple-app-site-association, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+       "LocalDataTask <8944108C-E3D5-4799-A55B-F3B9AC3F7876>.<1>"
+   ), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <8944108C-E3D5-4799-A55B-F3B9AC3F7876>.<1>, NSLocalizedDescription=cancelled}
+
+8. Doc to link to in write up:
+   https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html

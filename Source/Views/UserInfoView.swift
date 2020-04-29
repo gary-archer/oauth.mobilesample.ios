@@ -1,0 +1,97 @@
+import SwiftUI
+
+/*
+ * The user info view
+ */
+struct UserInfoView: View {
+
+    // External objects
+    @EnvironmentObject var reloadPublisher: ReloadPublisher
+
+    // Properties
+    private let viewManager: ViewManager?
+    private let apiClient: ApiClient?
+    private let shouldLoadData: Bool
+
+    // This view's state
+    @State private var userInfo: UserInfoClaims?
+    @State private var error: UIError?
+
+    /*
+     * Initialise from input
+     */
+    init (viewManager: ViewManager?, apiClient: ApiClient?, shouldLoadData: Bool) {
+        self.viewManager = viewManager
+        self.apiClient = apiClient
+        self.shouldLoadData = shouldLoadData
+    }
+
+    /*
+     * Render user info details based on state
+     */
+    var body: some View {
+
+        VStack {
+
+            // Render error details if required
+            if self.error != nil && self.error!.errorCode != ErrorCodes.loginRequired {
+
+                ErrorSummaryView(
+                    hyperlinkText: "Problem Encountered",
+                    dialogTitle: "User Info Error",
+                    error: self.error!)
+
+            }
+
+            // Render user info if it exists, and register for the receive data event
+            Text(self.getUserName())
+                .font(.system(size: 14))
+                .onAppear(perform: self.loadData)
+                .onReceive(self.reloadPublisher.objectWillChange, perform: { _ in
+                    self.loadData()
+                })
+        }
+    }
+
+    /*
+     * Call the API to get data
+     */
+    private func loadData() {
+
+        // Check preconditions
+        if self.viewManager == nil || self.apiClient == nil || !self.shouldLoadData {
+            return
+        }
+
+        // Run async operations in a coroutine
+        DispatchQueue.main.startCoroutine {
+
+            do {
+
+                // Make the API call and update UI state
+                self.userInfo = try self.apiClient!.getUserInfo().await()
+                self.viewManager!.onUserInfoLoaded()
+                self.error = nil
+
+            } catch {
+
+                // Report errors
+                let uiError = ErrorHandler().fromException(error: error)
+                self.viewManager!.onUserInfoLoadFailed(error: uiError)
+                self.error = uiError
+            }
+        }
+    }
+
+    /*
+     * Return the user name to display
+     */
+    private func getUserName() -> String {
+
+        if self.userInfo == nil {
+            return ""
+        }
+
+        return "\(self.userInfo!.givenName) \(self.userInfo!.familyName)"
+    }
+}
