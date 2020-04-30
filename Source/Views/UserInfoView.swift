@@ -70,7 +70,9 @@ struct UserInfoView: View {
             do {
 
                 // Make the API call and update UI state
-                self.userInfo = try self.apiClient!.getUserInfo().await()
+                try DispatchQueue.global().await {
+                    self.userInfo = try self.apiClient!.getUserInfo().await()
+                }
                 self.viewManager!.onUserInfoLoaded()
                 self.error = nil
 

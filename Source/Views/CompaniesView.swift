@@ -65,7 +65,7 @@ struct CompaniesView: View {
 
                         HStack {
                             Image(String(item.id))
-                                .padding(.leading, 20)
+                                .padding(.leading)
                                 .frame(width: self.totalWidth / 2, height: 0, alignment: .leading)
 
                             Text(item.name)
@@ -77,7 +77,7 @@ struct CompaniesView: View {
                         HStack {
                             Text("Target USD")
                                 .labelStyle()
-                                .padding(.leading, 20)
+                                .padding(.leading)
                                 .frame(width: self.totalWidth / 2, alignment: .leading)
 
                             Text(self.formatAmount(value: item.targetUsd))
@@ -89,7 +89,7 @@ struct CompaniesView: View {
                         HStack {
                             Text("Investment USD")
                                 .labelStyle()
-                                .padding(.leading, 20)
+                                .padding(.leading)
                                 .frame(width: self.totalWidth / 2, alignment: .leading)
 
                             Text(self.formatAmount(value: item.investmentUsd))
@@ -101,7 +101,7 @@ struct CompaniesView: View {
                         HStack {
                             Text("# Investors")
                                 .labelStyle()
-                                .padding(.leading, 20)
+                                .padding(.leading)
                                 .frame(width: self.totalWidth / 2, alignment: .leading)
 
                             Text(String(item.noInvestors))
@@ -140,10 +140,11 @@ struct CompaniesView: View {
         DispatchQueue.main.startCoroutine {
 
             do {
-
-                // Make the API call and update UI state
+                // Make the API call on a non UI thread
                 self.viewManager.onMainViewLoading()
-                self.companies = try self.apiClient.getCompanies().await()
+                try DispatchQueue.global().await {
+                    self.companies = try self.apiClient.getCompanies().await()
+                }
                 self.viewManager.onMainViewLoaded()
                 self.error = nil
 

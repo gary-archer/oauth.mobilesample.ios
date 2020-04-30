@@ -33,7 +33,6 @@ class ApiClient {
         let promise = CoPromise<UserInfoClaims>()
 
         do {
-
             // Make the API call
             let data = try self.callApi(path: "userclaims/current", method: "GET").await()
 
@@ -61,7 +60,6 @@ class ApiClient {
         let promise = CoPromise<[Company]>()
 
         do {
-
             // Make the API call
             let data = try self.callApi(path: "companies", method: "GET").await()
 

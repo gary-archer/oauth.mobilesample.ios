@@ -14,8 +14,8 @@ class ViewManager {
     private var userInfoLoadError: UIError?
 
     // Callbacks to the AppView
-    var onLoadStateChanged: (Bool) -> Void
-    var onLoginRequired: () -> Void
+    private var onLoadStateChanged: (Bool) -> Void
+    private var onLoginRequired: () -> Void
 
     /*
      * Initialise from input

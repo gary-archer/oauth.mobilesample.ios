@@ -77,7 +77,7 @@ struct TransactionsView: View {
                         HStack {
                             Text("Transaction Id")
                                 .labelStyle()
-                                .padding(.leading, 20)
+                                .padding(.leading)
                                 .frame(width: self.totalWidth / 2, alignment: .leading)
 
                             Text(item.id)
@@ -89,7 +89,7 @@ struct TransactionsView: View {
                         HStack {
                             Text("Investor Id")
                                 .labelStyle()
-                                .padding(.leading, 20)
+                                .padding(.leading)
                                 .frame(width: self.totalWidth / 2, alignment: .leading)
 
                             Text(item.investorId)
@@ -101,7 +101,7 @@ struct TransactionsView: View {
                         HStack {
                             Text("Amount USD")
                                 .labelStyle()
-                                .padding(.leading, 20)
+                                .padding(.leading)
                                 .frame(width: self.totalWidth / 2, alignment: .leading)
 
                             Text(String(item.amountUsd))
@@ -131,7 +131,9 @@ struct TransactionsView: View {
 
                 // Call the API to get transactions and update UI state
                 self.viewManager.onMainViewLoading()
-                self.data = try self.apiClient.getCompanyTransactions(companyId: self.companyId).await()
+                try DispatchQueue.global().await {
+                    self.data = try self.apiClient.getCompanyTransactions(companyId: self.companyId).await()
+                }
                 self.viewManager.onMainViewLoaded()
                 self.error = nil
 

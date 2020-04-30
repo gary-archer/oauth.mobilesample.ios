@@ -8,7 +8,6 @@ import SwiftCoroutine
 /*
  * The class for handling OAuth operations
  */
-// swiftlint: disable type_body_length
 class AuthenticatorImpl: Authenticator {
 
     // Properties
@@ -139,8 +138,10 @@ class AuthenticatorImpl: Authenticator {
                     .await()
 
             // Next swap the authorization code for tokens
-            try self.exchangeAuthorizationCode(authResponse: response)
-                .await()
+            try DispatchQueue.global().await {
+                try self.exchangeAuthorizationCode(authResponse: response)
+                    .await()
+            }
 
             // Indicate success
             self.currentOAuthSession = nil

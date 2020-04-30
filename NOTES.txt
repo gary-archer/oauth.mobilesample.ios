@@ -25,10 +25,12 @@ MAIN FUNCTIONALITY
 
 2. Prerequisites - require secured device
 
+3. Run on iPad
+
 OTHER IMPROVEMENTS
 ------------------
-1. Am I using coroutines correctly and avoiding calling APIs on UI thread
-   Debug output current thread id
+1. UI bugs: Reload shifts existing view right
+   https://github.com/ryangittings/swiftui-bugs
 
 2. Use an array of promises for token renewal
    Understand locking / concurrency in Swift
@@ -44,17 +46,14 @@ OTHER IMPROVEMENTS
    The api_request_error triggers a login prompt and should not
    This area needs a rethink
 
-6. UI bugs: Reload shifts existing view right
-   https://github.com/ryangittings/swiftui-bugs
-
-7. Stack traces to improve
+6. Stack traces to improve
    Pass stack traces to uiError from system errors
 
-8. Long press to invoke 500 error
+7. Long press to invoke 500 error
    Will require a boolean field in the published event
    API client to receive request options
 
-9. Fix warnings in debug window and compare with AppAuth sample:
+8. Fix warnings in debug window and compare with AppAuth sample:
    * Attempting to load the view of a view controller while it is deallocating is not allowedand may result in undefined behavior
    * Failed to write file "default.profraw": Read-only file system
    * Can't end BackgroundTask: no background task exists with identifier 2 (0x2), or it may have already been ended.
