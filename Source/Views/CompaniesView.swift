@@ -65,48 +65,53 @@ struct CompaniesView: View {
 
                         HStack {
                             Image(String(item.id))
-                                .padding(.leading)
-                                .frame(width: self.totalWidth / 2, height: 0, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, height: 0, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                             Text(item.name)
                                 .font(.headline)
                                 .fontWeight(.bold)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
+
                         }.padding()
 
                         HStack {
                             Text("Target USD")
                                 .labelStyle()
-                                .padding(.leading)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                             Text(self.formatAmount(value: item.targetUsd))
                                 .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Investment USD")
                                 .labelStyle()
-                                .padding(.leading)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                             Text(self.formatAmount(value: item.investmentUsd))
                                 .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("# Investors")
                                 .labelStyle()
-                                .padding(.leading)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                             Text(String(item.noInvestors))
                                 .valueStyle()
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                         }.padding()
 

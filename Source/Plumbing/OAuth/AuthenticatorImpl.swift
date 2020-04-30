@@ -14,14 +14,14 @@ class AuthenticatorImpl: Authenticator {
     private let configuration: OAuthConfiguration
     private var currentOAuthSession: OIDExternalUserAgentSession?
     private var tokenData: TokenData?
-    private var refreshing: Bool
+    private let concurrencyHandler: ConcurrentActionHandler
 
     /*
      * Initialise from input
      */
     init (configuration: OAuthConfiguration) {
         self.configuration = configuration
-        self.refreshing = false
+        self.concurrencyHandler = ConcurrentActionHandler()
     }
 
     /*
@@ -69,12 +69,8 @@ class AuthenticatorImpl: Authenticator {
             // Check that refresh is possible
             if self.tokenData != nil && self.tokenData!.refreshToken != nil {
 
-                // Send the refresh token grant message unless it is already in progress
-                if !self.refreshing {
-                    self.refreshing = true
-                    try self.performRefreshTokenGrant().await()
-                    self.refreshing = false
-                }
+                // Execute the refresh token grant message and manage concurrency
+                try self.concurrencyHandler.execute(action: self.performRefreshTokenGrant).await()
             }
 
             if self.tokenData != nil && self.tokenData!.accessToken != nil {
@@ -90,7 +86,6 @@ class AuthenticatorImpl: Authenticator {
         } catch {
 
             // Reset and return errors
-            self.refreshing = false
             promise.fail(error)
         }
 

@@ -34,6 +34,8 @@ struct SessionView: View {
                 Text("API Session Id: \(self.apiClient.sessionId)")
                     .fontWeight(.light)
                     .font(.caption)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding(.trailing)
             }
         }
     }

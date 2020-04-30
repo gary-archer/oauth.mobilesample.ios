@@ -21,7 +21,9 @@ Settings / Passwords and Accounts / Autofill Passwords
 
 MAIN FUNCTIONALITY
 ------------------
-1. Secure storage of tokens in the key chain
+1. Store tokens in the key chain where they are encrypted:
+   https://medium.com/ios-os-x-development/securing-user-data-with-keychain-for-ios-e720e0f9a8e2
+   https://github.com/jrendel/SwiftKeychainWrapper
 
 2. Prerequisites - require secured device
 
@@ -29,31 +31,32 @@ MAIN FUNCTIONALITY
 
 OTHER IMPROVEMENTS
 ------------------
-1. UI bugs: Reload shifts existing view right
-   https://github.com/ryangittings/swiftui-bugs
+0. Launch icon same as Android -> OAuth 2 icon
+   Session view aligned right
+   Run Android on tablet sized simulator and improve display if needed
 
-2. Use an array of promises for token renewal
-   Understand locking / concurrency in Swift
+1. Make token renewal thread safe
+   https://stackoverflow.com/questions/28784507/adding-items-to-swift-array-across-multiple-threads-causing-issues-because-arra
+   
+2. Okta to get working and use logout strategies
 
-3. Okta to get working and use logout strategies
-
-4. Side by side compare with Android sample for variable names etc
+3. Side by side compare with Android sample for variable names etc
    Improve Android code
 
-5. Leftover data in ViewManager problem
+4. Leftover data in ViewManager problem
    Use companies2 URL when logged out
    User info last error is login_required and new error is api_request_error
    The api_request_error triggers a login prompt and should not
    This area needs a rethink
 
-6. Stack traces to improve
+5. Stack traces to improve
    Pass stack traces to uiError from system errors
 
-7. Long press to invoke 500 error
+6. Long press to invoke 500 error
    Will require a boolean field in the published event
    API client to receive request options
 
-8. Fix warnings in debug window and compare with AppAuth sample:
+7. Fix warnings in debug window and compare with AppAuth sample:
    * Attempting to load the view of a view controller while it is deallocating is not allowedand may result in undefined behavior
    * Failed to write file "default.profraw": Read-only file system
    * Can't end BackgroundTask: no background task exists with identifier 2 (0x2), or it may have already been ended.
@@ -61,6 +64,8 @@ OTHER IMPROVEMENTS
 
 WEB / DESKTOP SAMPLES
 ---------------------
+0. Fix security warnings
+
 1. getAccessToken to call refreshAccessToken and not to throw login required itself
    All samples should do this
 
@@ -71,8 +76,8 @@ WEB / DESKTOP SAMPLES
 
 4. Side by side compare with mobile samples for variable names etc
 
-INTERSTITIAL PROBLEM DETAILS
-----------------------------
+INTERSTITIAL PAGE PROBLEM
+-------------------------
 1. iOS and return after login
    https://github.com/openid/AppAuth-iOS/issues/356
    https://github.com/openid/AppAuth-iOS/issues/232

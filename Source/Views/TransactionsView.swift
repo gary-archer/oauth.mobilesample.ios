@@ -77,36 +77,39 @@ struct TransactionsView: View {
                         HStack {
                             Text("Transaction Id")
                                 .labelStyle()
-                                .padding(.leading)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                             Text(item.id)
                                 .valueStyle()
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Investor Id")
                                 .labelStyle()
-                                .padding(.leading)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                             Text(item.investorId)
                                 .valueStyle()
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Amount USD")
                                 .labelStyle()
-                                .padding(.leading)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                             Text(String(item.amountUsd))
                                 .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: self.totalWidth / 2, alignment: .leading)
+                                .frame(width: self.totalWidth / 3, alignment: .leading)
+                                .padding(.leading, self.totalWidth / 12)
 
                         }.padding()
                     }
