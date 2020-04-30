@@ -44,7 +44,7 @@ MAIN FUNCTIONALITY
 OTHER IMPROVEMENTS
 ------------------
 1. Launch icon same as Android -> OAuth 2 icon
-   Run Android on tablet sized simulator and improve display if needed
+   Increase spacing on Android to improve tablet display
 
 2. Make token renewal thread safe
    https://stackoverflow.com/questions/28784507/adding-items-to-swift-array-across-multiple-threads-causing-issues-because-arra
