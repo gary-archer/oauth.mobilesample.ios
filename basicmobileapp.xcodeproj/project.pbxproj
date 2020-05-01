@@ -30,6 +30,8 @@
 		4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E432517244EEB5A00A1582E /* UserInfoView.swift */; };
 		4E43251A244EFCED00A1582E /* CompanyTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E432519244EFCED00A1582E /* CompanyTransactions.swift */; };
 		4E43251C244EFD6500A1582E /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E43251B244EFD6500A1582E /* Transaction.swift */; };
+		4E712AA8245C323500022757 /* SwiftKeychainWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E712AA7245C323500022757 /* SwiftKeychainWrapper.framework */; };
+		4E712AAA245C5D1700022757 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E712AA9245C5D1600022757 /* launch.png */; };
 		4E79B09C241428310054C382 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79B09B241428310054C382 /* UIError.swift */; };
 		4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85F2CB2414039300E0ACA8 /* ApiClient.swift */; };
 		4E87A39E245884FE00E522BF /* apple-app-site-association in Resources */ = {isa = PBXBuildFile; fileRef = 4E87A39C245884FE00E522BF /* apple-app-site-association */; };
@@ -78,7 +80,7 @@
 		4E1888F823DE01CC0014638D /* ErrorSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorSummaryView.swift; sourceTree = "<group>"; };
 		4E1888FA23DE01D80014638D /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentActionHandler.swift; sourceTree = "<group>"; };
-		4E23798C23CE6D910066DE08 /* basicmobileapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = basicmobileapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E23798C23CE6D910066DE08 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E32863524531A8800B44823 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredView.swift; sourceTree = "<group>"; };
 		4E3F8D402455A41300EC7EB0 /* ViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
@@ -87,6 +89,8 @@
 		4E432517244EEB5A00A1582E /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		4E432519244EFCED00A1582E /* CompanyTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyTransactions.swift; sourceTree = "<group>"; };
 		4E43251B244EFD6500A1582E /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		4E712AA7245C323500022757 /* SwiftKeychainWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftKeychainWrapper.framework; path = Carthage/Build/iOS/SwiftKeychainWrapper.framework; sourceTree = SOURCE_ROOT; };
+		4E712AA9245C5D1600022757 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch.png; sourceTree = "<group>"; };
 		4E79B09B241428310054C382 /* UIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIError.swift; sourceTree = "<group>"; };
 		4E85F2CB2414039300E0ACA8 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		4E87A39C245884FE00E522BF /* apple-app-site-association */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "apple-app-site-association"; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E712AA8245C323500022757 /* SwiftKeychainWrapper.framework in Frameworks */,
 				4E05212F24531FE000C84A9F /* AppAuth.framework in Frameworks */,
 				4E126DB9245484C50065863E /* SwiftCoroutine.framework in Frameworks */,
 			);
@@ -135,6 +140,7 @@
 		4E05212D24531F3400C84A9F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E712AA7245C323500022757 /* SwiftKeychainWrapper.framework */,
 				4E126DB8245484C50065863E /* SwiftCoroutine.framework */,
 				4E05212E24531FE000C84A9F /* AppAuth.framework */,
 			);
@@ -212,6 +218,7 @@
 				4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */,
 				4EF4FDF023F9E268008C3022 /* mobile_config.json */,
 				4E1888E523DDFEB20014638D /* LaunchScreen.storyboard */,
+				4E712AA9245C5D1600022757 /* launch.png */,
 				4E1888E223DDFEB20014638D /* Assets.xcassets */,
 				4E23798D23CE6D910066DE08 /* Products */,
 				4E1888E323DDFEB20014638D /* Preview Content */,
@@ -224,7 +231,7 @@
 		4E23798D23CE6D910066DE08 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4E23798C23CE6D910066DE08 /* basicmobileapp.app */,
+				4E23798C23CE6D910066DE08 /* Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -350,7 +357,7 @@
 			);
 			name = basicmobileapp;
 			productName = basicmobileapp;
-			productReference = 4E23798C23CE6D910066DE08 /* basicmobileapp.app */;
+			productReference = 4E23798C23CE6D910066DE08 /* Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -393,6 +400,7 @@
 			files = (
 				4E05212C24531E4F00C84A9F /* .gitignore in Resources */,
 				4E32863624531A8800B44823 /* Cartfile in Resources */,
+				4E712AAA245C5D1700022757 /* launch.png in Resources */,
 				4EF4FDF323F9E269008C3022 /* mobile_config_localapi.json in Resources */,
 				4ECBA14823DE0353006BECB1 /* NOTES.txt in Resources */,
 				4E87A3A12458890300E522BF /* Entitlements.plist in Resources */,
@@ -420,6 +428,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/AppAuth.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftCoroutine.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftKeychainWrapper.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -640,7 +649,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.authguidance.basicmobileapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Demo;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -665,7 +674,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.authguidance.basicmobileapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Demo;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

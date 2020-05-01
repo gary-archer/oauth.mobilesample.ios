@@ -35,7 +35,7 @@ struct TitleView: View {
             Text(self.title)
                 .fontWeight(.bold)
                 .padding(20)
-                .font(.system(size: 18))
+                .font(.system(size: 16))
                 .frame(width: self.totalWidth * 0.55, alignment: .leading)
 
             // Render user info aligned right if the view should load

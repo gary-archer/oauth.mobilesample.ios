@@ -4,6 +4,7 @@
 
 import AppAuth
 import SwiftCoroutine
+import SwiftKeychainWrapper
 
 /*
  * The class for handling OAuth operations
@@ -15,13 +16,23 @@ class AuthenticatorImpl: Authenticator {
     private var currentOAuthSession: OIDExternalUserAgentSession?
     private var tokenData: TokenData?
     private let concurrencyHandler: ConcurrentActionHandler
+    private let storageKey = "com.authguidance.basicmobileapp.tokendata"
 
     /*
      * Initialise from input
      */
     init (configuration: OAuthConfiguration) {
+
         self.configuration = configuration
         self.concurrencyHandler = ConcurrentActionHandler()
+
+        // Try to populate token data from the keychain, so that the user does not need to login
+        let jsonText = KeychainWrapper.standard.string(forKey: self.storageKey)
+        if jsonText != nil {
+            let data = jsonText!.data(using: .utf8)
+            let decoder = JSONDecoder()
+            self.tokenData = try? decoder.decode(TokenData.self, from: data!)
+        }
     }
 
     /*
@@ -160,8 +171,9 @@ class AuthenticatorImpl: Authenticator {
         let promise = CoPromise<Void>()
 
         do {
-            // Clear tokens
+            // Clear tokens from memory and storage
             let idToken = self.tokenData!.idToken!
+            KeychainWrapper.standard.removeObject(forKey: self.storageKey)
             self.tokenData = nil
 
             // Get metadata
@@ -504,8 +516,15 @@ class AuthenticatorImpl: Authenticator {
             }
         }
 
-        // Finally update storage
+        // Update memory storage
         self.tokenData = newTokenData
+
+        // Save tokens to the keychain, where they are encrypted
+        let encoder = JSONEncoder()
+        let jsonText = try? encoder.encode(self.tokenData)
+        if jsonText != nil {
+            KeychainWrapper.standard.set(jsonText!, forKey: self.storageKey)
+        }
     }
 
     /*
