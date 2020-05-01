@@ -32,10 +32,11 @@ struct SessionView: View {
             } else {
 
                 Text("API Session Id: \(self.apiClient.sessionId)")
+                    .foregroundColor(Color.gray)
                     .fontWeight(.light)
-                    .font(.caption)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.trailing)
+                    .font(.system(size: 12))
+                    .frame(maxWidth: UIScreen.main.bounds.size.width, alignment: .trailing)
+                    .padding(.trailing, 25)
             }
         }
     }

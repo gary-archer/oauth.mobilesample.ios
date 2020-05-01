@@ -9,7 +9,6 @@ struct TitleView: View {
     private let viewManager: ViewManager?
     private let apiClient: ApiClient?
     private var loadUserInfo = false
-    private let totalWidth: CGFloat
 
     // This view's state
     @State private var title = "OAuth 2.0 Demo App"
@@ -17,11 +16,10 @@ struct TitleView: View {
     /*
      * Called once 
      */
-    init (viewManager: ViewManager?, apiClient: ApiClient?, loadUserInfo: Bool, totalWidth: CGFloat) {
+    init (viewManager: ViewManager?, apiClient: ApiClient?, loadUserInfo: Bool) {
         self.viewManager = viewManager
         self.apiClient = apiClient
         self.loadUserInfo = loadUserInfo
-        self.totalWidth = totalWidth
     }
 
     /*
@@ -36,7 +34,7 @@ struct TitleView: View {
                 .fontWeight(.bold)
                 .padding(20)
                 .font(.system(size: 16))
-                .frame(width: self.totalWidth * 0.55, alignment: .leading)
+                .frame(width: UIScreen.main.bounds.size.width * 0.55, alignment: .leading)
 
             // Render user info aligned right if the view should load
             if self.loadUserInfo {
@@ -46,7 +44,7 @@ struct TitleView: View {
                     apiClient: self.apiClient,
                     shouldLoadData: self.loadUserInfo)
                     .padding(20)
-                    .frame(width: self.totalWidth  * 0.45, alignment: .trailing)
+                    .frame(width: UIScreen.main.bounds.size.width  * 0.45, alignment: .trailing)
             }
         }
     }

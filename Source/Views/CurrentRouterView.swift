@@ -7,7 +7,6 @@ struct CurrentRouterView: View {
 
     // Properties
     private let viewManager: ViewManager?
-    private let totalWidth: CGFloat
     private let apiClient: ApiClient
 
     // The router
@@ -19,13 +18,11 @@ struct CurrentRouterView: View {
     init (
         viewRouter: ViewRouter,
         viewManager: ViewManager,
-        apiClient: ApiClient,
-        totalWidth: CGFloat) {
+        apiClient: ApiClient) {
 
         self.viewRouter = viewRouter
         self.viewManager = viewManager
         self.apiClient = apiClient
-        self.totalWidth = totalWidth
     }
 
     /*
@@ -41,8 +38,7 @@ struct CurrentRouterView: View {
                 TransactionsView(
                     viewRouter: viewRouter,
                     viewManager: viewManager!,
-                    apiClient: self.apiClient,
-                    totalWidth: self.totalWidth)
+                    apiClient: self.apiClient)
 
             } else if self.viewRouter.currentViewType == LoginRequiredView.Type.self {
 
@@ -55,8 +51,7 @@ struct CurrentRouterView: View {
                 CompaniesView(
                     viewRouter: viewRouter,
                     viewManager: viewManager!,
-                    apiClient: self.apiClient,
-                    totalWidth: self.totalWidth)
+                    apiClient: self.apiClient)
             }
         }
     }

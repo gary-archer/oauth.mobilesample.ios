@@ -6,7 +6,7 @@ import SwiftUI
 struct HeaderButtonStyle: ButtonStyle {
 
     // Properties
-    private let totalWidth: CGFloat
+    private let width: CGFloat
     private var disabled: Bool
     private let enabledFont = Font.system(.caption).weight(.regular)
     private let disabledFont = Font.system(.caption).weight(.thin)
@@ -14,8 +14,8 @@ struct HeaderButtonStyle: ButtonStyle {
     /*
      * Set values from input
      */
-    init (totalWidth: CGFloat, disabled: Bool? = false) {
-        self.totalWidth = totalWidth
+    init (width: CGFloat, disabled: Bool? = false) {
+        self.width = width
         self.disabled = disabled ?? false
     }
 
@@ -26,7 +26,7 @@ struct HeaderButtonStyle: ButtonStyle {
 
         configuration.label
             .disabled(self.disabled)
-            .frame(width: self.totalWidth / 6, height: 60)
+            .frame(width: width, height: 60)
             .foregroundColor(Color.black)
             .background(Colors.lightBlue)
             .font(self.disabled ? disabledFont : enabledFont)

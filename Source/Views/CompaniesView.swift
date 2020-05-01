@@ -13,7 +13,7 @@ struct CompaniesView: View {
     // Properties
     private let viewManager: ViewManager
     private let apiClient: ApiClient
-    private let totalWidth: CGFloat
+    private let screenWidth: CGFloat
 
     // This view's state
     @State private var companies = [Company]()
@@ -22,16 +22,12 @@ struct CompaniesView: View {
     /*
      * Initialise from input
      */
-    init (
-        viewRouter: ViewRouter,
-        viewManager: ViewManager,
-        apiClient: ApiClient,
-        totalWidth: CGFloat) {
+    init (viewRouter: ViewRouter, viewManager: ViewManager, apiClient: ApiClient) {
 
         self.viewRouter = viewRouter
         self.viewManager = viewManager
         self.apiClient = apiClient
-        self.totalWidth = totalWidth
+        self.screenWidth = UIScreen.main.bounds.size.width
     }
 
     /*
@@ -44,7 +40,7 @@ struct CompaniesView: View {
             // Show the header
             Text("Company List")
                 .font(.headline)
-                .frame(width: self.totalWidth)
+                .frame(width: screenWidth)
                 .padding()
                 .background(Colors.lightBlue)
 
@@ -65,53 +61,53 @@ struct CompaniesView: View {
 
                         HStack {
                             Image(String(item.id))
-                                .frame(width: self.totalWidth / 3, height: 0, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, height: 0, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                             Text(item.name)
                                 .font(.headline)
                                 .fontWeight(.bold)
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Target USD")
                                 .labelStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                             Text(self.formatAmount(value: item.targetUsd))
                                 .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Investment USD")
                                 .labelStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                             Text(self.formatAmount(value: item.investmentUsd))
                                 .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("# Investors")
                                 .labelStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                             Text(String(item.noInvestors))
                                 .valueStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                         }.padding()
 

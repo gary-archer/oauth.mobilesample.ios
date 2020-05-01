@@ -13,7 +13,7 @@ struct TransactionsView: View {
     // Properties
     private let viewManager: ViewManager
     private let apiClient: ApiClient
-    private let totalWidth: CGFloat
+    private let screenWidth: CGFloat
     private let companyId: String
 
     // This view's state
@@ -23,17 +23,13 @@ struct TransactionsView: View {
     /*
      * Initialise the view from input
      */
-    init (
-        viewRouter: ViewRouter,
-        viewManager: ViewManager,
-        apiClient: ApiClient,
-        totalWidth: CGFloat) {
+    init (viewRouter: ViewRouter, viewManager: ViewManager, apiClient: ApiClient) {
 
         // Store supplied values
         self.viewRouter = viewRouter
         self.viewManager = viewManager
         self.apiClient = apiClient
-        self.totalWidth = totalWidth
+        self.screenWidth = UIScreen.main.bounds.size.width
 
         // Get the company from the router
         guard let companyId = viewRouter.params[0] as? String else {
@@ -54,7 +50,7 @@ struct TransactionsView: View {
             // Render the heading
             Text("Today's Transactions for Company \(self.companyId)")
                 .font(.headline)
-                .frame(width: self.totalWidth)
+                .frame(width: self.screenWidth)
                 .padding()
                 .background(Colors.lightBlue)
 
@@ -77,39 +73,39 @@ struct TransactionsView: View {
                         HStack {
                             Text("Transaction Id")
                                 .labelStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                             Text(item.id)
                                 .valueStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Investor Id")
                                 .labelStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                             Text(item.investorId)
                                 .valueStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Amount USD")
                                 .labelStyle()
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                             Text(String(item.amountUsd))
                                 .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: self.totalWidth / 3, alignment: .leading)
-                                .padding(.leading, self.totalWidth / 12)
+                                .frame(width: self.screenWidth / 3, alignment: .leading)
+                                .padding(.leading, self.screenWidth / 12)
 
                         }.padding()
                     }

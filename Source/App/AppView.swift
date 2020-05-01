@@ -35,60 +35,55 @@ struct AppView: View {
      */
     var body: some View {
 
-        GeometryReader { geometry in
-            VStack {
+        VStack {
 
-                // Display the title row including user info
-                TitleView(
-                    viewManager: self.model.viewManager,
-                    apiClient: self.model.apiClient,
-                    loadUserInfo: self.model.isInitialised,
-                    totalWidth: geometry.size.width)
+            // Display the title row including user info
+            TitleView(
+                viewManager: self.model.viewManager,
+                apiClient: self.model.apiClient,
+                loadUserInfo: self.model.isInitialised)
 
-                // Next display the header buttons view
-                HeaderButtonsView(
-                    viewRouter: self.viewRouter,
-                    sessionButtonsEnabled: self.sessionButtonsEnabled,
-                    totalWidth: geometry.size.width,
-                    onHome: self.onHome,
-                    onReloadData: self.onReloadData,
-                    onExpireAccessToken: self.expireAccessToken,
-                    onExpireRefreshToken: self.expireRefreshToken,
-                    onLogout: self.onLogout)
+            // Next display the header buttons view
+            HeaderButtonsView(
+                viewRouter: self.viewRouter,
+                sessionButtonsEnabled: self.sessionButtonsEnabled,
+                onHome: self.onHome,
+                onReloadData: self.onReloadData,
+                onExpireAccessToken: self.expireAccessToken,
+                onExpireRefreshToken: self.expireRefreshToken,
+                onLogout: self.onLogout)
+                    .padding(.bottom)
+
+            // Display errors if applicable
+            if self.error != nil {
+                ErrorSummaryView(
+                    hyperlinkText: "Problem Encountered in Application",
+                    dialogTitle: "Application Error",
+                    error: self.error!)
+                        .padding(.bottom)
+            }
+
+            // Render additional details once we've started up successfully
+            if self.model.isInitialised {
+
+                // Render the API session id
+                SessionView(
+                    apiClient: self.model.apiClient!,
+                    isVisible: self.showApiSessionId)
                         .padding(.bottom)
 
-                // Display errors if applicable
-                if self.error != nil {
-                    ErrorSummaryView(
-                        hyperlinkText: "Problem Encountered in Application",
-                        dialogTitle: "Application Error",
-                        error: self.error!)
-                            .padding(.bottom)
-                }
-
-                // Render additional details once we've started up successfully
-                if self.model.isInitialised {
-
-                    // Render the API session id
-                    SessionView(
-                        apiClient: self.model.apiClient!,
-                        isVisible: self.showApiSessionId)
-                            .padding(.bottom)
-
-                    // Render the main view depending on the router location
-                    CurrentRouterView(
-                        viewRouter: self.viewRouter,
-                        viewManager: self.model.viewManager!,
-                        apiClient: self.model.apiClient!,
-                        totalWidth: geometry.size.width)
-                }
-
-                // Fill up the remainder of the view if needed
-                Spacer()
-
+                // Render the main view depending on the router location
+                CurrentRouterView(
+                    viewRouter: self.viewRouter,
+                    viewManager: self.model.viewManager!,
+                    apiClient: self.model.apiClient!)
             }
-            .onAppear(perform: self.initialiseApp)
+
+            // Fill up the remainder of the view if needed
+            Spacer()
+
         }
+        .onAppear(perform: self.initialiseApp)
     }
 
     /*
