@@ -21,12 +21,10 @@ Settings / Passwords and Accounts / Autofill Passwords
 
 OTHER SAMPLES
 -------------
-1. Leftover data in ViewManager problem for iOS
-   Use companies2 URL when logged out
-   User info last error is login_required and new error is api_request_error
-   The api_request_error triggers a login prompt and should not
+1. Clear user info after logout
+   Transactions error and working Companies view does not show enabled buttons
  
-2. Apply to iOS also
+2. Apply ViewManager change to Android
 
 3. Apply to desktop samples also
    getAccessToken to call refreshAccessToken and not to throw login required itself

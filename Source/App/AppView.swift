@@ -114,16 +114,19 @@ struct AppView: View {
      */
     private func onHome() {
 
-        // If there is an error then reinitialise the app to force all fragments to reload
+        // If there is a startup error then reinitialise the app
         if !self.model.isInitialised {
             self.initialiseApp()
         }
 
         if self.model.isInitialised {
 
-            // Try to reload data from the API if there is an error
-            if self.model.viewManager!.hasErrors {
-                self.onReloadData()
+            // Try to reload data from the API if there is a view error
+            if self.model.isInitialised &&
+               self.model.authenticator!.isLoggedIn() &&
+               !self.sessionButtonsEnabled {
+
+                    self.onReloadData()
             }
 
             // Move to the home view

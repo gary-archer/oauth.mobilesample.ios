@@ -2,6 +2,7 @@ import Foundation
 
 /*
  * Global data / view model used by our app that can be mutated
+ * We cannot mutate normal properties within the view itself, which is a struct
  */
 class AppData: ObservableObject {
 

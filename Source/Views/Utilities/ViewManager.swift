@@ -8,7 +8,7 @@ class ViewManager {
     // Properties
     private var viewsToLoad: Int
     private var loadedCount: Int
-    var hasErrors: Bool
+    private var hasErrors: Bool
     private var loginRequired: Bool
 
     // Callbacks to the AppView
@@ -33,7 +33,7 @@ class ViewManager {
     }
 
     /*
-     * Record the number of views to load
+     * Allow the parent to set the number of views to load
      */
     func setViewCount(count: Int) {
         self.viewsToLoad = count
@@ -54,10 +54,12 @@ class ViewManager {
         self.loadedCount +=  1
 
         // Once all views have loaded, inform the parent if all views loaded successfully
-        if self.loadedCount == self.viewsToLoad && !self.hasErrors {
+        if self.loadedCount == self.viewsToLoad {
 
             self.reset()
-            self.onLoadStateChanged(true)
+            if !self.hasErrors {
+                self.onLoadStateChanged(true)
+            }
         }
     }
 
@@ -87,7 +89,8 @@ class ViewManager {
     }
 
     /*
-     * Once loading is complete, ensure that there is no leftover state
+     * Reset to the initial state once loading is complete
+     * Default to loading a single view, unless the parent informs us otherwise
      */
     private func reset() {
         self.viewsToLoad = 1
