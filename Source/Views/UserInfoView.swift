@@ -70,17 +70,19 @@ struct UserInfoView: View {
             do {
 
                 // Make the API call and update UI state
+                self.viewManager!.onViewLoading()
                 try DispatchQueue.global().await {
                     self.userInfo = try self.apiClient!.getUserInfo().await()
                 }
-                self.viewManager!.onUserInfoLoaded()
+
+                self.viewManager!.onViewLoaded()
                 self.error = nil
 
             } catch {
 
                 // Report errors
                 let uiError = ErrorHandler().fromException(error: error)
-                self.viewManager!.onUserInfoLoadFailed(error: uiError)
+                self.viewManager!.onViewLoadFailed(error: uiError)
                 self.error = uiError
             }
         }

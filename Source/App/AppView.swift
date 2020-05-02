@@ -121,8 +121,8 @@ struct AppView: View {
 
         if self.model.isInitialised {
 
-            // If there is a view error, force a reload to correct it
-            if self.model.viewManager!.hasError() {
+            // Try to reload data from the API if there is an error
+            if self.model.viewManager!.hasErrors {
                 self.onReloadData()
             }
 
@@ -136,6 +136,7 @@ struct AppView: View {
      * Handle reload data button clicks by publishing the reload event
      */
     private func onReloadData() {
+        self.model.viewManager!.setViewCount(count: 2)
         self.reloadPublisher.reload()
     }
 

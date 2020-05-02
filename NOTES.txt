@@ -21,20 +21,37 @@ Settings / Passwords and Accounts / Autofill Passwords
 
 OTHER SAMPLES
 -------------
-1. Fix security warnings in github desktop repos
+1. Leftover data in ViewManager problem for iOS
+   Use companies2 URL when logged out
+   User info last error is login_required and new error is api_request_error
+   The api_request_error triggers a login prompt and should not
+ 
+2. Apply to iOS also
 
-2. getAccessToken to call refreshAccessToken and not to throw login required itself
-   All samples should do this
+3. Apply to desktop samples also
+   getAccessToken to call refreshAccessToken and not to throw login required itself
+   Variable name for isInitialised and home view behaviour
 
-3. ViewManager problem for Desktop sample (and maybe SPA)
+4. Apply to SPA also
+   getAccessToken to call refreshAccessToken and not to throw login required itself
+   Variable name for isInitialised and home view behaviour
 
-4. Android to implement ErrorHandler.fromMessage
+5. SPA and refresh tokens
+   Expire refresh token button in SPA
+   Use offline access for Okta
+   Add an spa2020 OAuth native app client in Okta if needed
+   Does it rotate refresh tokens?
+   What if I wait 10 minutes or so?
+
+6. Android consistency
    AuthenticatorImpl to check for response null and throw an exception if required
-
-5. Side by side compare with mobile samples for variable names etc
+   Side by side compare with mobile samples for variable names etc
 
 MAIN FUNCTIONALITY
 ------------------
+0. Orientation changes to force a redraw
+   https://stackoverflow.com/questions/57441654/swiftui-repaint-view-components-on-device-rotation
+
 1. Okta to get working and use logout strategies
 
 2. Prerequisites - require or detect secured device
@@ -42,19 +59,15 @@ MAIN FUNCTIONALITY
 
 MINOR IMPROVEMENTS
 ------------------
+0. Deep link when login needed not working -> always returns to companies view
+
 1. Make token renewal thread safe
    https://stackoverflow.com/questions/28784507/adding-items-to-swift-array-across-multiple-threads-causing-issues-because-arra
  
-2. Leftover data in ViewManager problem
-   Use companies2 URL when logged out
-   User info last error is login_required and new error is api_request_error
-   The api_request_error triggers a login prompt and should not
-   This area needs a rethink
-
-3. Stack traces to improve
+2. Stack traces to improve
    Pass stack traces to uiError from system errors
 
-4. Long press to invoke 500 error
+3. Long press to invoke 500 error
    Will require a boolean field in the published event
    API client to receive request options
 

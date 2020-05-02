@@ -129,11 +129,12 @@ struct TransactionsView: View {
             do {
 
                 // Call the API to get transactions and update UI state
-                self.viewManager.onMainViewLoading()
+                self.viewManager.onViewLoading()
                 try DispatchQueue.global().await {
                     self.data = try self.apiClient.getCompanyTransactions(companyId: self.companyId).await()
                 }
-                self.viewManager.onMainViewLoaded()
+
+                self.viewManager.onViewLoaded()
                 self.error = nil
 
             } catch {
@@ -155,7 +156,7 @@ struct TransactionsView: View {
                 } else {
 
                     // Handle unexpected errors
-                    self.viewManager.onMainViewLoadFailed(error: uiError)
+                    self.viewManager.onViewLoadFailed(error: uiError)
                     self.error = uiError
                 }
             }

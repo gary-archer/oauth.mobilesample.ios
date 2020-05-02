@@ -1,7 +1,7 @@
 import Foundation
 
 /*
- * Global data / view model used by our app
+ * Global data / view model used by our app that can be mutated
  */
 class AppData: ObservableObject {
 
@@ -44,10 +44,11 @@ class AppData: ObservableObject {
             appConfiguration: self.configuration!.app,
             authenticator: self.authenticator!)
 
-        // Create the view manager
+        // Create the view manager and set the initial count to the main view and user info
         self.viewManager = ViewManager(
             onLoadStateChanged: onLoadStateChanged,
             onLoginRequired: onLoginRequired)
+        self.viewManager!.setViewCount(count: 2)
 
         // Indicate successful startup
         self.isInitialised = true

@@ -142,18 +142,19 @@ struct CompaniesView: View {
 
             do {
                 // Make the API call on a non UI thread
-                self.viewManager.onMainViewLoading()
+                self.viewManager.onViewLoading()
                 try DispatchQueue.global().await {
                     self.companies = try self.apiClient.getCompanies().await()
                 }
-                self.viewManager.onMainViewLoaded()
+
+                self.viewManager.onViewLoaded()
                 self.error = nil
 
             } catch {
 
                 // Report errors
                 let uiError = ErrorHandler().fromException(error: error)
-                self.viewManager.onMainViewLoadFailed(error: uiError)
+                self.viewManager.onViewLoadFailed(error: uiError)
                 self.error = uiError
             }
         }
