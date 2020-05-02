@@ -120,18 +120,17 @@ struct AppView: View {
         }
 
         if self.model.isInitialised {
-
-            // Try to reload data from the API if there is a view error
-            if self.model.isInitialised &&
-               self.model.authenticator!.isLoggedIn() &&
-               !self.sessionButtonsEnabled {
-
-                    self.onReloadData()
-            }
-
+            
             // Move to the home view
             self.viewRouter.currentViewType = CompaniesView.Type.self
             self.viewRouter.params = []
+
+            // If there is an error loading data from the API then force a reload
+            if self.model.isInitialised &&
+               self.model.authenticator!.isLoggedIn() &&
+               !self.sessionButtonsEnabled {
+                    self.onReloadData()
+            }
         }
     }
 
