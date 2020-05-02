@@ -16,7 +16,7 @@ struct AppView: View {
     private let mainWindow: UIWindow
     private var viewRouter: ViewRouter
 
-    // This view's state
+    // State flags
     @State private var error: UIError?
     @State private var sessionButtonsEnabled = false
     @State private var showApiSessionId = false
@@ -120,16 +120,14 @@ struct AppView: View {
         }
 
         if self.model.isInitialised {
-            
+
             // Move to the home view
             self.viewRouter.currentViewType = CompaniesView.Type.self
             self.viewRouter.params = []
 
             // If there is an error loading data from the API then force a reload
-            if self.model.isInitialised &&
-               self.model.authenticator!.isLoggedIn() &&
-               !self.sessionButtonsEnabled {
-                    self.onReloadData()
+            if self.model.authenticator!.isLoggedIn() && !self.sessionButtonsEnabled {
+                self.onReloadData()
             }
         }
     }

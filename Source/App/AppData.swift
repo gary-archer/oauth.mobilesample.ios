@@ -6,12 +6,14 @@ import Foundation
  */
 class AppData: ObservableObject {
 
-    // Properties used by the app view and passed to child views
-    @Published var isInitialised = false
+    // Global objects created after construction and used by the main app view
     @Published var configuration: Configuration?
     @Published var apiClient: ApiClient?
     @Published var authenticator: AuthenticatorImpl?
     @Published var viewManager: ViewManager?
+
+    // State flags
+    @Published var isInitialised = false
 
     /*
      * Initialise data after the model has been created

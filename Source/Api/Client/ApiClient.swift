@@ -89,7 +89,7 @@ class ApiClient {
         do {
 
             // Make the API call
-            let data = try self.callApi(path: "compan1ies/\(companyId)/transactions", method: "GET").await()
+            let data = try self.callApi(path: "companies/\(companyId)/transactions", method: "GET").await()
 
             // Deserialize results
             let decoder = JSONDecoder()
