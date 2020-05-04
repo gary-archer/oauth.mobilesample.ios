@@ -36,14 +36,9 @@ class ApiClient {
             // Make the API call
             let data = try self.callApi(path: "userclaims/current", method: "GET").await()
 
-            // Deserialize results
-            let decoder = JSONDecoder()
-            if let userInfo = try? decoder.decode(UserInfoClaims.self, from: data!) {
-                promise.success(userInfo)
-            } else {
-                let error = ErrorHandler().fromMessage(message: "Unable to deserialize user info")
-                promise.fail(error)
-            }
+            // Deserialize and return data
+            let userInfo: UserInfoClaims = try self.deserialize(data: data!).await()
+            promise.success(userInfo)
 
         } catch {
             promise.fail(error)
@@ -62,15 +57,10 @@ class ApiClient {
         do {
             // Make the API call
             let data = try self.callApi(path: "companies", method: "GET").await()
-
-            // Deserialize results
-            let decoder = JSONDecoder()
-            if let companies = try? decoder.decode([Company].self, from: data!) {
-                promise.success(companies)
-            } else {
-                let error = ErrorHandler().fromMessage(message: "Unable to deserialize companies")
-                promise.fail(error)
-            }
+            
+            // Deserialize and return data
+            let companies: [Company] = try self.deserialize(data: data!).await()
+            promise.success(companies)
 
         } catch {
             promise.fail(error)
@@ -91,14 +81,9 @@ class ApiClient {
             // Make the API call
             let data = try self.callApi(path: "companies/\(companyId)/transactions", method: "GET").await()
 
-            // Deserialize results
-            let decoder = JSONDecoder()
-            if let transactions = try? decoder.decode(CompanyTransactions.self, from: data!) {
-                promise.success(transactions)
-            } else {
-                let error = ErrorHandler().fromMessage(message: "Unable to deserialize transactions")
-                promise.fail(error)
-            }
+            // Deserialize and return data
+            let transactions: CompanyTransactions = try self.deserialize(data: data!).await()
+            promise.success(transactions)
 
         } catch {
             promise.fail(error)
@@ -124,8 +109,9 @@ class ApiClient {
         do {
             // Call the API
             let data = try self.callApiWithToken(
-                method: method,
                 requestUrl: requestUrl,
+                method: method,
+                jsonData: nil,
                 accessToken: accessToken)
                     .await()
 
@@ -146,8 +132,9 @@ class ApiClient {
 
                     // Call the API again with the new token
                     let data = try self.callApiWithToken(
-                        method: method,
                         requestUrl: requestUrl,
+                        method: method,
+                        jsonData: nil,
                         accessToken: accessToken)
                             .await()
 
@@ -170,7 +157,11 @@ class ApiClient {
     /*
      * Make an async request for data
      */
-    private func callApiWithToken(method: String, requestUrl: URL, accessToken: String) -> CoFuture<Data?> {
+    private func callApiWithToken(
+        requestUrl: URL,
+        method: String,
+        jsonData: Data?,
+        accessToken: String) -> CoFuture<Data?> {
 
         let promise = CoPromise<Data?>()
 
@@ -181,6 +172,11 @@ class ApiClient {
         // Add the access token to the request and then any custom headers
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         self.addCustomHeaders(request: &request)
+        
+        // Add body data if supplied
+        if jsonData != nil {
+            request.httpBody = jsonData
+        }
 
         // Create a data task
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -230,5 +226,23 @@ class ApiClient {
 
         // A special header can be sent to thr API to cause a simulated exception
         // request.addValue("SampleApi", forHTTPHeaderField: "x-mycompany-test-exception")
+    }
+
+    /*
+     * A utility to deserialize data into an object
+     */
+    private func deserialize<T: Decodable>(data: Data) -> CoFuture<T> {
+
+        let promise = CoPromise<T>()
+
+        let decoder = JSONDecoder()
+        if let userInfo = try? decoder.decode(T.self, from: data) {
+            promise.success(userInfo)
+        } else {
+            let error = ErrorHandler().fromMessage(message: "Unable to deserialize user info")
+            promise.fail(error)
+        }
+
+        return promise
     }
 }

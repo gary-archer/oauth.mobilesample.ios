@@ -96,7 +96,7 @@ class AuthenticatorImpl: Authenticator {
             }
         } catch {
 
-            // Reset and return errors
+            // Rethrow downstream errors
             promise.fail(error)
         }
 
@@ -454,7 +454,10 @@ class AuthenticatorImpl: Authenticator {
                         code: OIDErrorCodeOAuth.invalidGrant.rawValue) {
 
                         // If we get an invalid_grant error it means the refresh token has expired
-                        // In this case return early without updating tokens
+                        // In this case clear tokens and return, which will trigger a login redirect
+                        KeychainWrapper.standard.removeObject(forKey: self.storageKey)
+                        self.tokenData = nil
+
                         promise.success(Void())
                         return
                     }
