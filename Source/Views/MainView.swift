@@ -1,9 +1,9 @@
 import SwiftUI
 
 /*
- * The current view renders based on the router location
+ * The main view occupies the majority of the screen based on the router location
  */
-struct CurrentRouterView: View {
+struct MainView: View {
 
     // Properties
     private let viewManager: ViewManager?

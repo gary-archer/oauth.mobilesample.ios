@@ -9,9 +9,9 @@ struct UserInfoView: View {
     @EnvironmentObject var reloadPublisher: ReloadPublisher
 
     // Properties
-    private let viewManager: ViewManager?
     private let apiClient: ApiClient?
-    private let shouldLoadData: Bool
+    private let viewManager: ViewManager?
+    private let shouldLoad: Bool
 
     // This view's state
     @State private var userInfo: UserInfoClaims?
@@ -20,10 +20,10 @@ struct UserInfoView: View {
     /*
      * Initialise from input
      */
-    init (viewManager: ViewManager?, apiClient: ApiClient?, shouldLoadData: Bool) {
-        self.viewManager = viewManager
+    init (apiClient: ApiClient?, viewManager: ViewManager?, shouldLoad: Bool) {
         self.apiClient = apiClient
-        self.shouldLoadData = shouldLoadData
+        self.viewManager = viewManager
+        self.shouldLoad = shouldLoad
     }
 
     /*
@@ -60,7 +60,7 @@ struct UserInfoView: View {
     private func loadData() {
 
         // Check preconditions
-        if !self.shouldLoadData {
+        if !self.shouldLoad {
             self.viewManager?.onViewLoaded()
             return
         }
@@ -80,7 +80,6 @@ struct UserInfoView: View {
                 }
 
                 self.viewManager!.onViewLoaded()
-                self.error = nil
 
             } catch {
 
@@ -97,7 +96,7 @@ struct UserInfoView: View {
      */
     private func getUserName() -> String {
 
-        if self.userInfo == nil {
+        if !self.shouldLoad || self.userInfo == nil {
             return ""
         }
 

@@ -6,9 +6,9 @@ import SwiftUI
 struct TitleView: View {
 
     // Properties supplied as input
-    private let viewManager: ViewManager?
     private let apiClient: ApiClient?
-    private var loadUserInfo = false
+    private let viewManager: ViewManager?
+    private var shouldLoadUserInfo = false
 
     // This view's state
     @State private var title = "OAuth 2.0 Demo App"
@@ -16,10 +16,10 @@ struct TitleView: View {
     /*
      * Called once 
      */
-    init (viewManager: ViewManager?, apiClient: ApiClient?, loadUserInfo: Bool) {
-        self.viewManager = viewManager
+    init (apiClient: ApiClient?, viewManager: ViewManager?, shouldLoadUserInfo: Bool) {
         self.apiClient = apiClient
-        self.loadUserInfo = loadUserInfo
+        self.viewManager = viewManager
+        self.shouldLoadUserInfo = shouldLoadUserInfo
     }
 
     /*
@@ -36,15 +36,15 @@ struct TitleView: View {
                 .font(.system(size: 16))
                 .frame(width: UIScreen.main.bounds.size.width * 0.55, alignment: .leading)
 
-            // Render user info aligned right if the view should load
-            if self.loadUserInfo {
+            // If we have initialised then also show user info
+            if self.apiClient != nil && self.viewManager != nil {
 
                 UserInfoView(
-                    viewManager: self.viewManager,
-                    apiClient: self.apiClient,
-                    shouldLoadData: self.loadUserInfo)
-                    .padding(20)
-                    .frame(width: UIScreen.main.bounds.size.width  * 0.45, alignment: .trailing)
+                    apiClient: self.apiClient!,
+                    viewManager: self.viewManager!,
+                    shouldLoad: self.shouldLoadUserInfo)
+                        .padding(20)
+                        .frame(width: UIScreen.main.bounds.size.width  * 0.45, alignment: .trailing)
             }
         }
     }

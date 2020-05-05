@@ -4,14 +4,14 @@ import Foundation
  * Global data / view model used by our app that can be mutated
  * We cannot mutate normal properties within the view itself, which is a struct
  */
-class AppData: ObservableObject {
+class AppViewModel: ObservableObject {
 
     // Global objects created after construction and used by the main app view
     @Published var configuration: Configuration?
     @Published var apiClient: ApiClient?
     @Published var authenticator: AuthenticatorImpl?
 
-    // State flags
+    // State flags used by the view
     @Published var isInitialised = false
     @Published var isDataLoaded = false
 

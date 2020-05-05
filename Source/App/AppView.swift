@@ -9,7 +9,7 @@ import SwiftCoroutine
 struct AppView: View {
 
     // External objects
-    @ObservedObject var model: AppData
+    @ObservedObject var model: AppViewModel
     @EnvironmentObject var reloadPublisher: ReloadPublisher
 
     // Properties
@@ -17,8 +17,7 @@ struct AppView: View {
     private let viewManager: ViewManager?
     private var viewRouter: ViewRouter
 
-    // State flags
-    @State private var showApiSessionId = false
+    // State used for rendering within this view
     @State private var error: UIError?
 
     /*
@@ -32,7 +31,7 @@ struct AppView: View {
         self.viewManager = ViewManager()
 
         // Create the model, which manages mutable state
-        self.model = AppData()
+        self.model = AppViewModel()
     }
 
     /*
@@ -44,40 +43,41 @@ struct AppView: View {
 
             // Display the title row including user info
             TitleView(
-                viewManager: self.viewManager,
                 apiClient: self.model.apiClient,
-                loadUserInfo: self.model.isInitialised)
+                viewManager: self.viewManager,
+                shouldLoadUserInfo: !self.isInLoginRequired())
 
             // Next display the header buttons view
             HeaderButtonsView(
                 sessionButtonsEnabled: self.model.isDataLoaded,
                 onHome: self.onHome,
                 onReloadData: self.onReloadData,
-                onExpireAccessToken: self.expireAccessToken,
-                onExpireRefreshToken: self.expireRefreshToken,
+                onExpireAccessToken: self.onExpireAccessToken,
+                onExpireRefreshToken: self.onExpireRefreshToken,
                 onLogout: self.onLogout)
                     .padding(.bottom)
 
             // Display errors if applicable
             if self.error != nil {
+
                 ErrorSummaryView(
-                    hyperlinkText: "Problem Encountered in Application",
+                    hyperlinkText: "Application Problem Encountered",
                     dialogTitle: "Application Error",
                     error: self.error!)
                         .padding(.bottom)
             }
 
-            // Render additional details once we've started up successfully
+            // Render additional details once we've initialised the app
             if self.model.isInitialised {
 
                 // Render the API session id
                 SessionView(
                     apiClient: self.model.apiClient!,
-                    isVisible: self.showApiSessionId)
+                    isVisible: self.model.authenticator!.isLoggedIn())
                         .padding(.bottom)
 
                 // Render the main view depending on the router location
-                CurrentRouterView(
+                MainView(
                     viewRouter: self.viewRouter,
                     viewManager: self.viewManager!,
                     apiClient: self.model.apiClient!)
@@ -96,7 +96,7 @@ struct AppView: View {
     private func initialiseApp() {
 
         do {
-            // Initialise the model, which manages mutable properties
+            // Initialise the model, which manages mutable data
             try self.model.initialise()
 
             // Initialise the view manager
@@ -104,9 +104,6 @@ struct AppView: View {
                 onLoadStateChanged: self.onLoadStateChanged,
                 onLoginRequired: self.onLoginRequired)
             self.viewManager!.setViewCount(count: 2)
-
-            // Show the session id unless we need to log in
-            self.showApiSessionId = self.model.authenticator!.isLoggedIn()
 
         } catch {
 
@@ -175,9 +172,6 @@ struct AppView: View {
                 try self.model.authenticator!.login(viewController: self.mainWindow.rootViewController!)
                     .await()
 
-                // Show the API session id once complete
-                self.showApiSessionId = true
-
                 // Reload data after signing in
                 self.onReloadData()
 
@@ -189,7 +183,6 @@ struct AppView: View {
                     // If the login was cancelled, move to the login required view
                     self.viewRouter.currentViewType = LoginRequiredView.Type.self
                     self.viewRouter.params = []
-                    self.showApiSessionId = false
 
                 } else {
 
@@ -219,7 +212,6 @@ struct AppView: View {
 
                 // Also update UI state
                 self.model.isDataLoaded = false
-                self.showApiSessionId = false
 
             } catch {
 
@@ -230,7 +222,6 @@ struct AppView: View {
                     self.viewRouter.currentViewType = LoginRequiredView.Type.self
                     self.viewRouter.params = []
                     self.model.isDataLoaded = false
-                    self.showApiSessionId = false
 
                 } else {
 
@@ -242,16 +233,23 @@ struct AppView: View {
     }
 
     /*
+     * Return true if our location is the login required view
+     */
+    private func isInLoginRequired() -> Bool {
+        return self.viewRouter.currentViewType == LoginRequiredView.Type.self
+    }
+
+    /*
      * Make the access token act expired
      */
-    private func expireAccessToken() {
+    private func onExpireAccessToken() {
         self.model.authenticator?.expireAccessToken()
     }
 
     /*
      * Make the refresh token act expired
      */
-    private func expireRefreshToken() {
+    private func onExpireRefreshToken() {
         self.model.authenticator?.expireRefreshToken()
     }
 }
