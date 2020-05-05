@@ -1,27 +1,20 @@
 TODO
 ----
-1. Views as for React ---> same inputs
-   Clear user and session info at the right times
-   
-2. Transactions error and working Companies view does not show enabled buttons
-
-3. Orientation changes to force a redraw
+1. Orientation changes to force a redraw
    https://stackoverflow.com/questions/57441654/swiftui-repaint-view-components-on-device-rotation
 
-4. Okta to get working and use logout strategies
+2. Okta to get working and use logout strategies
 
-5. Deep link when login needed not working -> always returns to companies view
+3. Update iPad certs and test both Cognito and Okta
 
-6. Update iPad certs and test both Cognito and Okta
-
-7. Long press to invoke 500 error
+4. Long press to invoke 500 error
    Will require a boolean field in the published event
    API client to receive request options
 
-8. Prerequisites - require or detect secured device
+5. Prerequisites - require or detect secured device
    https://www.raywenderlich.com/236-how-to-secure-ios-user-data-the-keychain-and-biometrics-face-id-or-touch-id
 
-9. Stack traces to improve
+6. Stack traces to improve
    Pass stack traces to uiError from system errors
 
 INTERSTITIAL PAGE PROBLEM
