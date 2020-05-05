@@ -1,73 +1,38 @@
-LINKS
------
-Follow this guide to set up a folder structure:
-https://code.likeagirl.io/how-to-structure-your-folders-9f9c003e46d
+NEXT
+----
+0. Does moving ViewManager to model cause problems?
 
-Convert SVG to PDF on https://www.zamzar.com
+1. Views as for React ---> same inputs
 
-Carthage instructions:
-https://github.com/Carthage/Carthage#quick-start
-
-Install SwiftLint.pkg as a prerequisite by downloading and running the PKG file
-We execute 'swiftlint' as a Run Script under Build Phases
-
-Enable this on iOS devices and simulators:
-Settings / Passwords and Accounts / Autofill Passwords
-
-1. ForgeRock articles on AppAuth iOS customization:
-   https://developer.forgerock.com/docs/platform/how-tos/enabling-sso-appauth-sdk-ios
-   https://developer.forgerock.com/docs/platform/how-tos
-   https://github.com/ForgeRock/exampleOAuth2Clients/tree/master/iOS-AppAuth/SSO
-
-OTHER SAMPLES
--------------
-1. Clear user info after logout
+2. Clear user info after logout
    Transactions error and working Companies view does not show enabled buttons
- 
-2. Apply ViewManager change to Android
 
-3. Apply to desktop samples also
-   getAccessToken to call refreshAccessToken and not to throw login required itself
-   Variable name for isInitialised and home view behaviour
+3. Current problem of Expire Refresh Token + Reload
+   User info never calls ViewManager so buttons remain disabled
+   Test for desktop sample also
+   Fix for SPA / desktop / mobile
 
-4. Apply to SPA also
-   getAccessToken to call refreshAccessToken and not to throw login required itself
-   Variable name for isInitialised and home view behaviour
-
-5. SPA and refresh tokens
-   Expire refresh token button in SPA
-   Use offline access for Okta
-   Add an spa2020 OAuth native app client in Okta if needed
-   Does it rotate refresh tokens?
-   What if I wait 10 minutes or so?
-
-6. Android consistency
-   AuthenticatorImpl to check for response null and throw an exception if required
-   Side by side compare with mobile samples for variable names etc
-
-MAIN FUNCTIONALITY
-------------------
-0. Orientation changes to force a redraw
+4. Orientation changes to force a redraw
    https://stackoverflow.com/questions/57441654/swiftui-repaint-view-components-on-device-rotation
 
-1. Okta to get working and use logout strategies
+5. Okta to get working and use logout strategies
 
-2. Prerequisites - require or detect secured device
+6. Update iPad certs and test both Cognito and Okta
+
+7. Prerequisites - require or detect secured device
    https://www.raywenderlich.com/236-how-to-secure-ios-user-data-the-keychain-and-biometrics-face-id-or-touch-id
 
-MINOR IMPROVEMENTS
-------------------
-0. Deep link when login needed not working -> always returns to companies view
+8. Deep link when login needed not working -> always returns to companies view
 
-1. Make token renewal thread safe
+9. Make token renewal thread safe
    https://stackoverflow.com/questions/28784507/adding-items-to-swift-array-across-multiple-threads-causing-issues-because-arra
  
-2. Stack traces to improve
-   Pass stack traces to uiError from system errors
+10. Stack traces to improve
+    Pass stack traces to uiError from system errors
 
-3. Long press to invoke 500 error
-   Will require a boolean field in the published event
-   API client to receive request options
+11. Long press to invoke 500 error
+    Will require a boolean field in the published event
+    API client to receive request options
 
 INTERSTITIAL PAGE PROBLEM
 -------------------------
@@ -107,3 +72,24 @@ DEEP LINK SETUP
 
 8. Doc to link to in write up:
    https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html
+
+LINKS
+-----
+Follow this guide to set up a folder structure:
+https://code.likeagirl.io/how-to-structure-your-folders-9f9c003e46d
+
+Convert SVG to PDF on https://www.zamzar.com
+
+Carthage instructions:
+https://github.com/Carthage/Carthage#quick-start
+
+Install SwiftLint.pkg as a prerequisite by downloading and running the PKG file
+We execute 'swiftlint' as a Run Script under Build Phases
+
+Enable this on iOS devices and simulators:
+Settings / Passwords and Accounts / Autofill Passwords
+
+1. ForgeRock articles on AppAuth iOS customization:
+   https://developer.forgerock.com/docs/platform/how-tos/enabling-sso-appauth-sdk-ios
+   https://developer.forgerock.com/docs/platform/how-tos
+   https://github.com/ForgeRock/exampleOAuth2Clients/tree/master/iOS-AppAuth/SSO

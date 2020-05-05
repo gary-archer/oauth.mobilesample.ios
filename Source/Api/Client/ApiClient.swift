@@ -57,7 +57,7 @@ class ApiClient {
         do {
             // Make the API call
             let data = try self.callApi(path: "companies", method: "GET").await()
-            
+
             // Deserialize and return data
             let companies: [Company] = try self.deserialize(data: data!).await()
             promise.success(companies)
@@ -172,7 +172,7 @@ class ApiClient {
         // Add the access token to the request and then any custom headers
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         self.addCustomHeaders(request: &request)
-        
+
         // Add body data if supplied
         if jsonData != nil {
             request.httpBody = jsonData

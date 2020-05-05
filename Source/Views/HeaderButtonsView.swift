@@ -5,9 +5,6 @@ import SwiftUI
  */
 struct HeaderButtonsView: View {
 
-    // The router object
-    @ObservedObject var viewRouter: ViewRouter
-
     // Properties
     private var sessionButtonsDisabled: Bool
     private let screenWidth: CGFloat
@@ -23,7 +20,6 @@ struct HeaderButtonsView: View {
      * Set properties from input and note that to store callbacks we need to mark them as @escaping
      */
     init (
-        viewRouter: ViewRouter,
         sessionButtonsEnabled: Bool,
         onHome: @escaping () -> Void,
         onReloadData: @escaping () -> Void,
@@ -31,7 +27,6 @@ struct HeaderButtonsView: View {
         onExpireRefreshToken: @escaping () -> Void,
         onLogout: @escaping () -> Void) {
 
-        self.viewRouter = viewRouter
         self.sessionButtonsDisabled = !sessionButtonsEnabled
         self.screenWidth = UIScreen.main.bounds.size.width
 

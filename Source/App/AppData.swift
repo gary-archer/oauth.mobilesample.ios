@@ -14,13 +14,18 @@ class AppData: ObservableObject {
 
     // State flags
     @Published var isInitialised = false
+    @Published var isDataLoaded = false
 
     /*
-     * Initialise data after the model has been created
+     * Initialise or reinitialise data
      */
     func initialise(
         onLoadStateChanged: @escaping (Bool) -> Void,
         onLoginRequired: @escaping () -> Void) throws {
+
+        // Reset state flags
+        self.isInitialised = false
+        self.isDataLoaded = false
 
         // Load the configuration file
         guard let filePath = Bundle.main.path(forResource: "mobile_config", ofType: "json") else {

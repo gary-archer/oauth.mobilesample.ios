@@ -45,7 +45,6 @@ struct AppView: View {
 
             // Next display the header buttons view
             HeaderButtonsView(
-                viewRouter: self.viewRouter,
                 sessionButtonsEnabled: self.sessionButtonsEnabled,
                 onHome: self.onHome,
                 onReloadData: self.onReloadData,
