@@ -12,20 +12,13 @@ class ViewManager {
     private var loginRequired: Bool
 
     // Callbacks to the AppView
-    private var onLoadStateChanged: (Bool) -> Void
-    private var onLoginRequired: () -> Void
+    private var onLoadStateChanged: ((Bool) -> Void)?
+    private var onLoginRequired: (() -> Void)?
 
     /*
-     * Initialise from input
+     * Default to loading a single view, unless the parent informs us otherwise
      */
-    init (
-        onLoadStateChanged: @escaping (Bool) -> Void,
-        onLoginRequired: @escaping () -> Void) {
-
-        self.onLoadStateChanged = onLoadStateChanged
-        self.onLoginRequired = onLoginRequired
-
-        // Default to loading a single view, unless the parent informs us otherwise
+    init () {
         self.viewsToLoad = 1
         self.loadedCount = 0
         self.hasErrors = false
@@ -33,9 +26,21 @@ class ViewManager {
     }
 
     /*
+     * Work around Swift not allowing us to pass these parameters to the init method
+     */
+    func initialise(
+        onLoadStateChanged: @escaping (Bool) -> Void,
+        onLoginRequired: @escaping () -> Void) {
+
+        self.onLoadStateChanged = onLoadStateChanged
+        self.onLoginRequired = onLoginRequired
+    }
+
+    /*
      * Allow the parent to set the number of views to load
      */
     func setViewCount(count: Int) {
+        self.reset()
         self.viewsToLoad = count
     }
 
@@ -43,7 +48,7 @@ class ViewManager {
      * Handle the view loading event and inform the parent, which can render a loading state
      */
     func onViewLoading() {
-        self.onLoadStateChanged(false)
+        self.onLoadStateChanged!(false)
     }
 
     /*
@@ -56,10 +61,11 @@ class ViewManager {
         // Once all views have loaded, inform the parent if all views loaded successfully
         if self.loadedCount == self.viewsToLoad {
 
-            self.reset()
             if !self.hasErrors {
-                self.onLoadStateChanged(true)
+                self.onLoadStateChanged!(true)
             }
+
+            self.reset()
         }
     }
 
@@ -83,7 +89,7 @@ class ViewManager {
             self.reset()
 
             if triggerLoginOnParent {
-                self.onLoginRequired()
+                self.onLoginRequired!()
             }
         }
     }

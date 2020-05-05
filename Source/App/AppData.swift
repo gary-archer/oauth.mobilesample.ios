@@ -48,7 +48,8 @@ class AppData: ObservableObject {
             authenticator: self.authenticator!)
 
         // Create the view manager and set the initial count to the main view and user info
-        self.viewManager = ViewManager(
+        self.viewManager = ViewManager()
+        self.viewManager!.initialise(
             onLoadStateChanged: onLoadStateChanged,
             onLoginRequired: onLoginRequired)
         self.viewManager!.setViewCount(count: 2)
