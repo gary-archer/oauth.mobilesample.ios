@@ -7,9 +7,6 @@ struct HeaderButtonsView: View {
 
     // Properties
     private var sessionButtonsDisabled: Bool
-    private let screenWidth: CGFloat
-
-    // Callbacks invoked when buttons are clicked
     private let onHome: () -> Void
     private let onReloadData: () -> Void
     private let onExpireAccessToken: () -> Void
@@ -28,8 +25,6 @@ struct HeaderButtonsView: View {
         onLogout: @escaping () -> Void) {
 
         self.sessionButtonsDisabled = !sessionButtonsEnabled
-        self.screenWidth = UIScreen.main.bounds.size.width
-
         self.onHome = onHome
         self.onReloadData = onReloadData
         self.onExpireAccessToken = onExpireAccessToken
@@ -42,12 +37,13 @@ struct HeaderButtonsView: View {
      */
     var body: some View {
 
-        HStack {
+        let deviceWidth = UIScreen.main.bounds.size.width
+        return HStack {
 
             // Inform the parent view when the home button is clicked
             Button(action: self.onHome) {
                Text("Home").multilineTextAlignment(.center)
-            }.buttonStyle(HeaderButtonStyle(width: self.screenWidth / 6))
+            }.buttonStyle(HeaderButtonStyle(width: deviceWidth / 6))
 
             // Inform the parent view when a data reload is requested
             Button(action: self.onReloadData) {
@@ -55,7 +51,7 @@ struct HeaderButtonsView: View {
             }
             .disabled(self.sessionButtonsDisabled)
             .buttonStyle(
-                HeaderButtonStyle(width: self.screenWidth / 6, disabled: self.sessionButtonsDisabled))
+                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
 
             // Initiate a test operation to make the access token act expired
             Button(action: self.onExpireAccessToken) {
@@ -63,7 +59,7 @@ struct HeaderButtonsView: View {
             }
             .disabled(self.sessionButtonsDisabled)
             .buttonStyle(
-                HeaderButtonStyle(width: self.screenWidth / 6, disabled: self.sessionButtonsDisabled))
+                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
 
             // Initiate a test operation to make the refresh token act expired
             Button(action: self.onExpireRefreshToken) {
@@ -71,7 +67,7 @@ struct HeaderButtonsView: View {
             }
             .disabled(self.sessionButtonsDisabled)
             .buttonStyle(
-                HeaderButtonStyle(width: self.screenWidth / 6, disabled: self.sessionButtonsDisabled))
+                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
 
             // Initiate a logout operation
             Button(action: self.onLogout) {
@@ -79,7 +75,7 @@ struct HeaderButtonsView: View {
             }
             .disabled(self.sessionButtonsDisabled)
             .buttonStyle(
-                HeaderButtonStyle(width: self.screenWidth / 6, disabled: self.sessionButtonsDisabled))
+                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
         }
     }
 }

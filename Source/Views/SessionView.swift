@@ -22,7 +22,8 @@ struct SessionView: View {
      */
     var body: some View {
 
-        VStack {
+        let deviceWidth = UIScreen.main.bounds.size.width
+        return VStack {
             if !self.isVisible {
 
                 Text("")
@@ -35,7 +36,7 @@ struct SessionView: View {
                     .foregroundColor(Color.gray)
                     .fontWeight(.light)
                     .font(.system(size: 12))
-                    .frame(maxWidth: UIScreen.main.bounds.size.width, alignment: .trailing)
+                    .frame(maxWidth: deviceWidth, alignment: .trailing)
                     .padding(.trailing, 25)
             }
         }

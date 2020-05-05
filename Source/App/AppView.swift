@@ -40,7 +40,7 @@ struct AppView: View {
      */
     var body: some View {
 
-        VStack {
+        return VStack {
 
             // Display the title row including user info
             TitleView(

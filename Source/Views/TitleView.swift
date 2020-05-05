@@ -27,14 +27,15 @@ struct TitleView: View {
      */
     var body: some View {
 
-        HStack {
+        let deviceWidth = UIScreen.main.bounds.size.width
+        return HStack {
 
             // Show the title aligned left
             Text(self.title)
                 .fontWeight(.bold)
                 .padding(20)
                 .font(.system(size: 16))
-                .frame(width: UIScreen.main.bounds.size.width * 0.55, alignment: .leading)
+                .frame(width: deviceWidth * 0.55, alignment: .leading)
 
             // If we have initialised then also show user info
             if self.apiClient != nil && self.viewManager != nil {
@@ -44,7 +45,7 @@ struct TitleView: View {
                     viewManager: self.viewManager!,
                     shouldLoad: self.shouldLoadUserInfo)
                         .padding(20)
-                        .frame(width: UIScreen.main.bounds.size.width  * 0.45, alignment: .trailing)
+                        .frame(width: deviceWidth  * 0.45, alignment: .trailing)
             }
         }
     }

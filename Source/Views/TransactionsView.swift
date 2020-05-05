@@ -13,7 +13,6 @@ struct TransactionsView: View {
     // Properties
     private let viewManager: ViewManager
     private let apiClient: ApiClient
-    private let screenWidth: CGFloat
     private let companyId: String
 
     // This view's state
@@ -29,7 +28,6 @@ struct TransactionsView: View {
         self.viewRouter = viewRouter
         self.viewManager = viewManager
         self.apiClient = apiClient
-        self.screenWidth = UIScreen.main.bounds.size.width
 
         // Get the company from the router
         guard let companyId = viewRouter.params[0] as? String else {
@@ -45,12 +43,13 @@ struct TransactionsView: View {
      */
     var body: some View {
 
-        VStack {
+        let deviceWidth = UIScreen.main.bounds.size.width
+        return VStack {
 
             // Render the heading
             Text("Today's Transactions for Company \(self.companyId)")
                 .font(.headline)
-                .frame(width: self.screenWidth)
+                .frame(width: deviceWidth)
                 .padding()
                 .background(Colors.lightBlue)
 
@@ -73,39 +72,39 @@ struct TransactionsView: View {
                         HStack {
                             Text("Transaction Id")
                                 .labelStyle()
-                                .frame(width: self.screenWidth / 3, alignment: .leading)
-                                .padding(.leading, self.screenWidth / 12)
+                                .frame(width: deviceWidth / 3, alignment: .leading)
+                                .padding(.leading, deviceWidth / 12)
 
                             Text(item.id)
                                 .valueStyle()
-                                .frame(width: self.screenWidth / 3, alignment: .leading)
-                                .padding(.leading, self.screenWidth / 12)
+                                .frame(width: deviceWidth / 3, alignment: .leading)
+                                .padding(.leading, deviceWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Investor Id")
                                 .labelStyle()
-                                .frame(width: self.screenWidth / 3, alignment: .leading)
-                                .padding(.leading, self.screenWidth / 12)
+                                .frame(width: deviceWidth / 3, alignment: .leading)
+                                .padding(.leading, deviceWidth / 12)
 
                             Text(item.investorId)
                                 .valueStyle()
-                                .frame(width: self.screenWidth / 3, alignment: .leading)
-                                .padding(.leading, self.screenWidth / 12)
+                                .frame(width: deviceWidth / 3, alignment: .leading)
+                                .padding(.leading, deviceWidth / 12)
 
                         }.padding()
 
                         HStack {
                             Text("Amount USD")
                                 .labelStyle()
-                                .frame(width: self.screenWidth / 3, alignment: .leading)
-                                .padding(.leading, self.screenWidth / 12)
+                                .frame(width: deviceWidth / 3, alignment: .leading)
+                                .padding(.leading, deviceWidth / 12)
 
                             Text(String(item.amountUsd))
                                 .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: self.screenWidth / 3, alignment: .leading)
-                                .padding(.leading, self.screenWidth / 12)
+                                .frame(width: deviceWidth / 3, alignment: .leading)
+                                .padding(.leading, deviceWidth / 12)
 
                         }.padding()
                     }
