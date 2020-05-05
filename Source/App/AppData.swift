@@ -10,7 +10,6 @@ class AppData: ObservableObject {
     @Published var configuration: Configuration?
     @Published var apiClient: ApiClient?
     @Published var authenticator: AuthenticatorImpl?
-    @Published var viewManager: ViewManager?
 
     // State flags
     @Published var isInitialised = false
@@ -19,9 +18,7 @@ class AppData: ObservableObject {
     /*
      * Initialise or reinitialise data
      */
-    func initialise(
-        onLoadStateChanged: @escaping (Bool) -> Void,
-        onLoginRequired: @escaping () -> Void) throws {
+    func initialise() throws {
 
         // Reset state flags
         self.isInitialised = false
@@ -51,13 +48,6 @@ class AppData: ObservableObject {
         self.apiClient = try ApiClient(
             appConfiguration: self.configuration!.app,
             authenticator: self.authenticator!)
-
-        // Create the view manager and set the initial count to the main view and user info
-        self.viewManager = ViewManager()
-        self.viewManager!.initialise(
-            onLoadStateChanged: onLoadStateChanged,
-            onLoginRequired: onLoginRequired)
-        self.viewManager!.setViewCount(count: 2)
 
         // Indicate successful startup
         self.isInitialised = true

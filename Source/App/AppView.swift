@@ -14,19 +14,24 @@ struct AppView: View {
 
     // Properties
     private let mainWindow: UIWindow
+    private let viewManager: ViewManager?
     private var viewRouter: ViewRouter
 
     // State flags
-    @State private var error: UIError?
-    @State private var sessionButtonsEnabled = false
     @State private var showApiSessionId = false
+    @State private var error: UIError?
 
     /*
      * Initialise properties that we can set here
      */
     init(window: UIWindow, viewRouter: ViewRouter) {
+
+        // Store window related objects
         self.mainWindow = window
         self.viewRouter = viewRouter
+        self.viewManager = ViewManager()
+
+        // Create the model, which manages mutable state
         self.model = AppData()
     }
 
@@ -39,13 +44,13 @@ struct AppView: View {
 
             // Display the title row including user info
             TitleView(
-                viewManager: self.model.viewManager,
+                viewManager: self.viewManager,
                 apiClient: self.model.apiClient,
                 loadUserInfo: self.model.isInitialised)
 
             // Next display the header buttons view
             HeaderButtonsView(
-                sessionButtonsEnabled: self.sessionButtonsEnabled,
+                sessionButtonsEnabled: self.model.isDataLoaded,
                 onHome: self.onHome,
                 onReloadData: self.onReloadData,
                 onExpireAccessToken: self.expireAccessToken,
@@ -74,7 +79,7 @@ struct AppView: View {
                 // Render the main view depending on the router location
                 CurrentRouterView(
                     viewRouter: self.viewRouter,
-                    viewManager: self.model.viewManager!,
+                    viewManager: self.viewManager!,
                     apiClient: self.model.apiClient!)
             }
 
@@ -92,10 +97,13 @@ struct AppView: View {
 
         do {
             // Initialise the model, which manages mutable properties
-            // Note that Swift does not allow us to change properties in this struct after init is called
-            try self.model.initialise(
+            try self.model.initialise()
+
+            // Initialise the view manager
+            self.viewManager!.initialise(
                 onLoadStateChanged: self.onLoadStateChanged,
                 onLoginRequired: self.onLoginRequired)
+            self.viewManager!.setViewCount(count: 2)
 
             // Show the session id unless we need to log in
             self.showApiSessionId = self.model.authenticator!.isLoggedIn()
@@ -125,7 +133,7 @@ struct AppView: View {
             self.viewRouter.params = []
 
             // If there is an error loading data from the API then force a reload
-            if self.model.authenticator!.isLoggedIn() && !self.sessionButtonsEnabled {
+            if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
                 self.onReloadData()
             }
         }
@@ -135,7 +143,7 @@ struct AppView: View {
      * Handle reload data button clicks by publishing the reload event
      */
     private func onReloadData() {
-        self.model.viewManager!.setViewCount(count: 2)
+        self.viewManager!.setViewCount(count: 2)
         self.reloadPublisher.reload()
     }
 
@@ -143,7 +151,7 @@ struct AppView: View {
      * Update session button state while the main view loads
      */
     private func onLoadStateChanged(loaded: Bool) {
-        self.sessionButtonsEnabled = loaded
+        self.model.isDataLoaded = loaded
     }
 
     /*
@@ -210,7 +218,7 @@ struct AppView: View {
                 self.viewRouter.params = []
 
                 // Also update UI state
-                self.sessionButtonsEnabled = false
+                self.model.isDataLoaded = false
                 self.showApiSessionId = false
 
             } catch {
@@ -221,7 +229,7 @@ struct AppView: View {
                     // Move to login required and update UI state
                     self.viewRouter.currentViewType = LoginRequiredView.Type.self
                     self.viewRouter.params = []
-                    self.sessionButtonsEnabled = false
+                    self.model.isDataLoaded = false
                     self.showApiSessionId = false
 
                 } else {

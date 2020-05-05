@@ -60,7 +60,8 @@ struct UserInfoView: View {
     private func loadData() {
 
         // Check preconditions
-        if self.viewManager == nil || self.apiClient == nil || !self.shouldLoadData {
+        if !self.shouldLoadData {
+            self.viewManager?.onViewLoaded()
             return
         }
 
@@ -69,8 +70,11 @@ struct UserInfoView: View {
 
             do {
 
-                // Make the API call and update UI state
+                // Reset state
                 self.viewManager!.onViewLoading()
+                self.error = nil
+
+                // Make the API call on a background thread
                 try DispatchQueue.global().await {
                     self.userInfo = try self.apiClient!.getUserInfo().await()
                 }

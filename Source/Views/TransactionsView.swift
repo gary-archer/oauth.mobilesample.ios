@@ -128,38 +128,56 @@ struct TransactionsView: View {
 
             do {
 
-                // Call the API to get transactions and update UI state
+                // Reset state
                 self.viewManager.onViewLoading()
+                self.error = nil
+
+                // Make the API call on a background thread
                 try DispatchQueue.global().await {
                     self.data = try self.apiClient.getCompanyTransactions(companyId: self.companyId).await()
                 }
 
                 self.viewManager.onViewLoaded()
-                self.error = nil
 
             } catch {
 
-                // Report errors and handle expected errors by error code
+                // Handle the error
                 let uiError = ErrorHandler().fromException(error: error)
-                if uiError.statusCode == 404 && uiError.errorCode == ErrorCodes.companyNotFound {
+                let isExpected = self.handleApiError(error: uiError)
+                if isExpected {
 
-                    // A deep link could provide an id such as 3, which is unauthorized
-                    self.viewRouter.currentViewType = CompaniesView.Type.self
-                    self.viewRouter.params = []
-
-                } else if uiError.statusCode == 400 && uiError.errorCode == ErrorCodes.invalidCompanyId {
-
-                    // A deep link could provide an invalid id value such as 'abc'
+                    // For 'expected' errors, return to the home view
+                    self.viewManager.onViewLoaded()
                     self.viewRouter.currentViewType = CompaniesView.Type.self
                     self.viewRouter.params = []
 
                 } else {
 
-                    // Handle unexpected errors
                     self.viewManager.onViewLoadFailed(error: uiError)
                     self.error = uiError
                 }
             }
         }
+    }
+
+    /*
+     * Handle 'business errors' received from the API
+     */
+    private func handleApiError(error: UIError) -> Bool {
+
+        var isExpected = false
+
+        if error.statusCode == 404 && error.errorCode == ErrorCodes.companyNotFound {
+
+            // A deep link could provide an id such as 3, which is unauthorized
+            isExpected = true
+
+        } else if error.statusCode == 400 && error.errorCode == ErrorCodes.invalidCompanyId {
+
+            // A deep link could provide an invalid id value such as 'abc'
+            isExpected = true
+        }
+
+        return isExpected
     }
 }

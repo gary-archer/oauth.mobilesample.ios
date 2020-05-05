@@ -1,38 +1,28 @@
-NEXT
+TODO
 ----
-0. Does moving ViewManager to model cause problems?
-
 1. Views as for React ---> same inputs
+   Clear user and session info at the right times
+   
+2. Transactions error and working Companies view does not show enabled buttons
 
-2. Clear user info after logout
-   Transactions error and working Companies view does not show enabled buttons
-
-3. Current problem of Expire Refresh Token + Reload
-   User info never calls ViewManager so buttons remain disabled
-   Test for desktop sample also
-   Fix for SPA / desktop / mobile
-
-4. Orientation changes to force a redraw
+3. Orientation changes to force a redraw
    https://stackoverflow.com/questions/57441654/swiftui-repaint-view-components-on-device-rotation
 
-5. Okta to get working and use logout strategies
+4. Okta to get working and use logout strategies
+
+5. Deep link when login needed not working -> always returns to companies view
 
 6. Update iPad certs and test both Cognito and Okta
 
-7. Prerequisites - require or detect secured device
+7. Long press to invoke 500 error
+   Will require a boolean field in the published event
+   API client to receive request options
+
+8. Prerequisites - require or detect secured device
    https://www.raywenderlich.com/236-how-to-secure-ios-user-data-the-keychain-and-biometrics-face-id-or-touch-id
 
-8. Deep link when login needed not working -> always returns to companies view
-
-9. Make token renewal thread safe
-   https://stackoverflow.com/questions/28784507/adding-items-to-swift-array-across-multiple-threads-causing-issues-because-arra
- 
-10. Stack traces to improve
-    Pass stack traces to uiError from system errors
-
-11. Long press to invoke 500 error
-    Will require a boolean field in the published event
-    API client to receive request options
+9. Stack traces to improve
+   Pass stack traces to uiError from system errors
 
 INTERSTITIAL PAGE PROBLEM
 -------------------------

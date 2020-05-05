@@ -141,14 +141,16 @@ struct CompaniesView: View {
         DispatchQueue.main.startCoroutine {
 
             do {
-                // Make the API call on a non UI thread
+                // Reset state
                 self.viewManager.onViewLoading()
+                self.error = nil
+
+                // Make the API call on a background thread
                 try DispatchQueue.global().await {
                     self.companies = try self.apiClient.getCompanies().await()
                 }
 
                 self.viewManager.onViewLoaded()
-                self.error = nil
 
             } catch {
 

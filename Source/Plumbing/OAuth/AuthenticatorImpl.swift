@@ -418,7 +418,7 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
-     * Do the work of the refresh token grant
+     * A synchronised method to do the work of the refresh token grant
      */
     private func performRefreshTokenGrant() -> CoFuture<Void> {
 
@@ -457,7 +457,6 @@ class AuthenticatorImpl: Authenticator {
                         // In this case clear tokens and return, which will trigger a login redirect
                         KeychainWrapper.standard.removeObject(forKey: self.storageKey)
                         self.tokenData = nil
-
                         promise.success(Void())
                         return
                     }
