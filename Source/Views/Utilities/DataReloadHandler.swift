@@ -7,7 +7,7 @@ import Combine
  */
 final class DataReloadHandler: ObservableObject {
 
-    let objectWillChange = PassthroughSubject<(), Never>()
+    // let objectWillChange = PassthroughSubject<(), Never>()
 
     /*
      * Publish the reload event, which views can subscribe to via their onReceive handler

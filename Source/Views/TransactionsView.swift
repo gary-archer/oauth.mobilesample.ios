@@ -7,6 +7,7 @@ import SwiftCoroutine
 struct TransactionsView: View {
 
     // External objects
+    @EnvironmentObject var orientationHandler: OrientationHandler
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
     @ObservedObject var viewRouter: ViewRouter
 

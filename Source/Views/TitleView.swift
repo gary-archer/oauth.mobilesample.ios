@@ -5,6 +5,9 @@ import SwiftUI
  */
 struct TitleView: View {
 
+    // External objects
+    @EnvironmentObject var orientationHandler: OrientationHandler
+
     // Properties supplied as input
     private let apiClient: ApiClient?
     private let viewManager: ViewManager?

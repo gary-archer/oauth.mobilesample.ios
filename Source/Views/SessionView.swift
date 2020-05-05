@@ -5,6 +5,9 @@ import SwiftUI
 */
 struct SessionView: View {
 
+    // External objects
+    @EnvironmentObject var orientationHandler: OrientationHandler
+
     // Properties
     private let apiClient: ApiClient
     private let isVisible: Bool

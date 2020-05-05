@@ -8,6 +8,7 @@ struct CompaniesView: View {
 
     // External objects
     @ObservedObject var viewRouter: ViewRouter
+    @EnvironmentObject var orientationHandler: OrientationHandler
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
     // Properties
