@@ -243,13 +243,13 @@ struct AppView: View {
      * Make the access token act expired
      */
     private func onExpireAccessToken() {
-        self.model.authenticator?.expireAccessToken()
+        self.model.authenticator!.expireAccessToken()
     }
 
     /*
      * Make the refresh token act expired
      */
     private func onExpireRefreshToken() {
-        self.model.authenticator?.expireRefreshToken()
+        self.model.authenticator!.expireRefreshToken()
     }
 }
