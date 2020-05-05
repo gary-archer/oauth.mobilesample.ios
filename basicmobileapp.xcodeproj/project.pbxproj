@@ -23,6 +23,7 @@
 		4E1888FB23DE01D80014638D /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1888FA23DE01D80014638D /* SessionView.swift */; };
 		4E1D614B245B346900F41850 /* ConcurrentActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */; };
 		4E29A1A52461CB2C00095F11 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E29A1A42461CB2C00095F11 /* Counter.swift */; };
+		4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E29A1A62461DBE100095F11 /* OrientationHandler.swift */; };
 		4E32863624531A8800B44823 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 4E32863524531A8800B44823 /* Cartfile */; };
 		4E3F8D3F24559F9B00EC7EB0 /* LoginRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */; };
 		4E3F8D412455A41300EC7EB0 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D402455A41300EC7EB0 /* ViewManager.swift */; };
@@ -46,7 +47,7 @@
 		4EB6DAB023F970F20007A311 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAAF23F970F20007A311 /* Company.swift */; };
 		4ECBA14823DE0353006BECB1 /* NOTES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4ECBA14723DE0352006BECB1 /* NOTES.txt */; };
 		4ECD97622452E01D00D7E271 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97612452E01D00D7E271 /* AppView.swift */; };
-		4ECD97642452E57800D7E271 /* ReloadPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* ReloadPublisher.swift */; };
+		4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* DataReloadHandler.swift */; };
 		4ECD97662452F25E00D7E271 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97652452F25E00D7E271 /* MainView.swift */; };
 		4EE4CAB8245336430033B3C5 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4EE4CAB7245336430033B3C5 /* .swiftlint.yml */; };
 		4EE4CABE245364910033B3C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABC245364910033B3C5 /* AppDelegate.swift */; };
@@ -83,6 +84,7 @@
 		4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentActionHandler.swift; sourceTree = "<group>"; };
 		4E23798C23CE6D910066DE08 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E29A1A42461CB2C00095F11 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		4E29A1A62461DBE100095F11 /* OrientationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrientationHandler.swift; sourceTree = "<group>"; };
 		4E32863524531A8800B44823 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredView.swift; sourceTree = "<group>"; };
 		4E3F8D402455A41300EC7EB0 /* ViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
@@ -107,7 +109,7 @@
 		4EB6DAAF23F970F20007A311 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		4ECBA14723DE0352006BECB1 /* NOTES.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES.txt; sourceTree = "<group>"; };
 		4ECD97612452E01D00D7E271 /* AppView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		4ECD97632452E57800D7E271 /* ReloadPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadPublisher.swift; sourceTree = "<group>"; };
+		4ECD97632452E57800D7E271 /* DataReloadHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReloadHandler.swift; sourceTree = "<group>"; };
 		4ECD97652452F25E00D7E271 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4EE4CAB7245336430033B3C5 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		4EE4CABC245364910033B3C5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -332,8 +334,9 @@
 			isa = PBXGroup;
 			children = (
 				4EFEFC302451EE4F0057C78D /* Colors.swift */,
+				4ECD97632452E57800D7E271 /* DataReloadHandler.swift */,
 				4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */,
-				4ECD97632452E57800D7E271 /* ReloadPublisher.swift */,
+				4E29A1A62461DBE100095F11 /* OrientationHandler.swift */,
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				4E3F8D402455A41300EC7EB0 /* ViewManager.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
@@ -488,7 +491,7 @@
 				4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */,
 				4E432516244EEAEE00A1582E /* UserInfoClaims.swift in Sources */,
 				4E1888F723DE01130014638D /* HeaderButtonsView.swift in Sources */,
-				4ECD97642452E57800D7E271 /* ReloadPublisher.swift in Sources */,
+				4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */,
 				4EFEFC352451EE4F0057C78D /* ViewRouter.swift in Sources */,
 				4E1888F523DDFFDC0014638D /* TitleView.swift in Sources */,
 				4E1D614B245B346900F41850 /* ConcurrentActionHandler.swift in Sources */,
@@ -500,6 +503,7 @@
 				4EFEFC332451EE4F0057C78D /* HeaderButtonStyle.swift in Sources */,
 				4E126DBB2454854D0065863E /* AuthenticatorImpl.swift in Sources */,
 				4EFEFC322451EE4F0057C78D /* TextStyles.swift in Sources */,
+				4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */,
 				4E43251C244EFD6500A1582E /* Transaction.swift in Sources */,
 				4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */,
 				4E3F8D432455E9C400EC7EB0 /* AppViewModel.swift in Sources */,

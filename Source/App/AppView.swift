@@ -10,7 +10,8 @@ struct AppView: View {
 
     // External objects
     @ObservedObject var model: AppViewModel
-    @EnvironmentObject var reloadPublisher: ReloadPublisher
+    @EnvironmentObject var orientationHandler: OrientationHandler
+    @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
     // Properties
     private let mainWindow: UIWindow
@@ -45,7 +46,7 @@ struct AppView: View {
             TitleView(
                 apiClient: self.model.apiClient,
                 viewManager: self.viewManager,
-                shouldLoadUserInfo: !self.isInLoginRequired())
+                shouldLoadUserInfo: self.model.isInitialised && !self.isInLoginRequired())
 
             // Next display the header buttons view
             HeaderButtonsView(
@@ -141,7 +142,7 @@ struct AppView: View {
      */
     private func onReloadData() {
         self.viewManager!.setViewCount(count: 2)
-        self.reloadPublisher.reload()
+        self.dataReloadHandler.sendReloadEvent()
     }
 
     /*

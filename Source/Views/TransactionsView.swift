@@ -7,7 +7,7 @@ import SwiftCoroutine
 struct TransactionsView: View {
 
     // External objects
-    @EnvironmentObject var reloadPublisher: ReloadPublisher
+    @EnvironmentObject var dataReloadHandler: DataReloadHandler
     @ObservedObject var viewRouter: ViewRouter
 
     // Properties
@@ -113,7 +113,7 @@ struct TransactionsView: View {
             }
 
         }.onAppear(perform: self.loadData)
-         .onReceive(self.reloadPublisher.objectWillChange, perform: { _ in
+         .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
              self.loadData()
          })
     }

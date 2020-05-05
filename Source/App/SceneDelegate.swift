@@ -9,10 +9,13 @@ import SwiftUI
  */
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    // Properties
+    // Built in properties
     var window: UIWindow?
+
+    // Custom properties for this app
     private var viewRouter = ViewRouter()
-    private var reloadPublisher = ReloadPublisher()
+    private var orientationHandler = OrientationHandler()
+    private var reloadPublisher = DataReloadHandler()
 
     /*
      * Use this method to optionally configure and attach the UIWindow to the provided UIWindowScene
@@ -31,13 +34,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Create the main window
             let window = UIWindow(windowScene: windowScene)
 
-            // Create the main view and supply references
+            // Create the main view and supply environment objects
             let appView = AppView(window: window, viewRouter: self.viewRouter)
+                .environmentObject(self.orientationHandler)
+                .environmentObject(self.reloadPublisher)
 
-            // Create the root controller and give it our app view
-            // Also supply the environment object used for reloading views
-            window.rootViewController = UIHostingController(
-                rootView: appView.environmentObject(self.reloadPublisher))
+            // Set the root view controller
+            window.rootViewController = UIHostingController(rootView: appView)
 
             // Present the window
             self.window = window
@@ -49,6 +52,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 self.viewRouter.handleDeepLink(url: startupDeepLinkActivity!.webpageURL!)
             }
         }
+    }
+
+    /*
+     * Handle repainting views when there is a change in device orientation
+     */
+    func windowScene(
+        _ windowScene: UIWindowScene,
+        didUpdate previousCoordinateSpace: UICoordinateSpace,
+        interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation,
+        traitCollection previousTraitCollection: UITraitCollection) {
+
+        self.orientationHandler.sendViewUpdateEvent()
     }
 
     /*

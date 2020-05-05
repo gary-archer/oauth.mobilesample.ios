@@ -6,7 +6,7 @@ import SwiftUI
 struct UserInfoView: View {
 
     // External objects
-    @EnvironmentObject var reloadPublisher: ReloadPublisher
+    @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
     // Properties
     private let apiClient: ApiClient?
@@ -48,7 +48,7 @@ struct UserInfoView: View {
             Text(self.getUserName())
                 .font(.system(size: 14))
                 .onAppear(perform: self.loadData)
-                .onReceive(self.reloadPublisher.objectWillChange, perform: { _ in
+                .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
                     self.loadData()
                 })
         }

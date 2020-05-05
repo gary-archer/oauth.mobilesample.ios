@@ -4,6 +4,7 @@ TODO
    https://stackoverflow.com/questions/57441654/swiftui-repaint-view-components-on-device-rotation
 
 2. Okta to get working and use logout strategies
+   Logout errors to ignore as for SPA and desktop samples
 
 3. Update iPad certs and test both Cognito and Okta
 

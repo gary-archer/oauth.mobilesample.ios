@@ -8,7 +8,7 @@ struct CompaniesView: View {
 
     // External objects
     @ObservedObject var viewRouter: ViewRouter
-    @EnvironmentObject var reloadPublisher: ReloadPublisher
+    @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
     // Properties
     private let viewManager: ViewManager
@@ -119,7 +119,7 @@ struct CompaniesView: View {
             }
 
         }.onAppear(perform: self.loadData)
-         .onReceive(self.reloadPublisher.objectWillChange, perform: { _ in
+         .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
              self.loadData()
          })
     }
