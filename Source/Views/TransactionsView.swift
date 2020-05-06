@@ -112,31 +112,43 @@ struct TransactionsView: View {
                 }
             }
 
-        }.onAppear(perform: self.loadData)
-         .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
-             self.loadData()
-         })
+        }
+        .onAppear(perform: self.initialLoad)
+        .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
+            self.loadData(causeError: self.dataReloadHandler.causeError)
+        })
+    }
+
+    /*
+     * Do the initial load
+     */
+    private func initialLoad() {
+        self.loadData(causeError: false)
     }
 
     /*
      * Load our data
      */
-    private func loadData() {
+    private func loadData(causeError: Bool) {
 
         // Run async operations in a coroutine
         DispatchQueue.main.startCoroutine {
 
             do {
 
-                // Reset state
-                self.viewManager.onViewLoading()
+                // Initialise for this request
                 self.error = nil
+                let options = ApiRequestOptions(causeError: causeError)
 
                 // Make the API call on a background thread
+                self.viewManager.onViewLoading()
                 try DispatchQueue.global().await {
-                    self.data = try self.apiClient.getCompanyTransactions(companyId: self.companyId).await()
-                }
 
+                    self.data = try self.apiClient.getCompanyTransactions(
+                        companyId: self.companyId,
+                        options: options)
+                            .await()
+                }
                 self.viewManager.onViewLoaded()
 
             } catch {

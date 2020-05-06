@@ -47,17 +47,24 @@ struct UserInfoView: View {
             // Render user info if it exists, and register for the receive data event
             Text(self.getUserName())
                 .font(.system(size: 14))
-                .onAppear(perform: self.loadData)
+                .onAppear(perform: self.initialLoad)
                 .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
-                    self.loadData()
+                    self.loadData(causeError: self.dataReloadHandler.causeError)
                 })
         }
     }
 
     /*
+     * Do the initial load
+     */
+    private func initialLoad() {
+        self.loadData(causeError: false)
+    }
+
+    /*
      * Call the API to get data
      */
-    private func loadData() {
+    private func loadData(causeError: Bool) {
 
         // Check preconditions
         if !self.shouldLoad {
@@ -70,15 +77,15 @@ struct UserInfoView: View {
 
             do {
 
-                // Reset state
-                self.viewManager!.onViewLoading()
+                // Initialise for this request
                 self.error = nil
+                let options = ApiRequestOptions(causeError: false)
 
                 // Make the API call on a background thread
+                self.viewManager!.onViewLoading()
                 try DispatchQueue.global().await {
-                    self.userInfo = try self.apiClient!.getUserInfo().await()
+                    self.userInfo = try self.apiClient!.getUserInfo(options: options).await()
                 }
-
                 self.viewManager!.onViewLoaded()
 
             } catch {

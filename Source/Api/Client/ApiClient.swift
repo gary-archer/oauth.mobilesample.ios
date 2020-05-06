@@ -28,13 +28,17 @@ class ApiClient {
     /*
      * Make an API call to get user info
      */
-    func getUserInfo() -> CoFuture<UserInfoClaims> {
+    func getUserInfo(options: ApiRequestOptions?) -> CoFuture<UserInfoClaims> {
 
         let promise = CoPromise<UserInfoClaims>()
 
         do {
             // Make the API call
-            let data = try self.callApi(path: "userclaims/current", method: "GET").await()
+            let data = try self.callApi(
+                path: "userclaims/current",
+                method: "GET",
+                jsonData: nil,
+                options: options).await()
 
             // Deserialize and return data
             let userInfo: UserInfoClaims = try self.deserialize(data: data!).await()
@@ -50,13 +54,17 @@ class ApiClient {
     /*
      * Make an API call to get companies
      */
-    func getCompanies() -> CoFuture<[Company]> {
+    func getCompanies(options: ApiRequestOptions?) -> CoFuture<[Company]> {
 
         let promise = CoPromise<[Company]>()
 
         do {
             // Make the API call
-            let data = try self.callApi(path: "companies", method: "GET").await()
+            let data = try self.callApi(
+                path: "companies",
+                method: "GET",
+                jsonData: nil,
+                options: options).await()
 
             // Deserialize and return data
             let companies: [Company] = try self.deserialize(data: data!).await()
@@ -72,14 +80,20 @@ class ApiClient {
     /*
      * Get the list of transactions for a company
      */
-    func getCompanyTransactions(companyId: String) -> CoFuture<CompanyTransactions> {
+    func getCompanyTransactions(
+        companyId: String,
+        options: ApiRequestOptions?) -> CoFuture<CompanyTransactions> {
 
         let promise = CoPromise<CompanyTransactions>()
 
         do {
 
             // Make the API call
-            let data = try self.callApi(path: "companies/\(companyId)/transactions", method: "GET").await()
+            let data = try self.callApi(
+                path: "companies/\(companyId)/transactions",
+                method: "GET",
+                jsonData: nil,
+                options: options).await()
 
             // Deserialize and return data
             let transactions: CompanyTransactions = try self.deserialize(data: data!).await()
@@ -95,7 +109,11 @@ class ApiClient {
     /*
      * Do the HTTP plumbing to make the remote call
      */
-    private func callApi(path: String, method: String) throws -> CoFuture<Data?> {
+    private func callApi(
+        path: String,
+        method: String,
+        jsonData: Data?,
+        options: ApiRequestOptions?) throws -> CoFuture<Data?> {
 
         let promise = CoPromise<Data?>()
 
@@ -112,7 +130,8 @@ class ApiClient {
                 requestUrl: requestUrl,
                 method: method,
                 jsonData: nil,
-                accessToken: accessToken)
+                accessToken: accessToken,
+                options: options)
                     .await()
 
             // Return the result to the caller
@@ -135,7 +154,8 @@ class ApiClient {
                         requestUrl: requestUrl,
                         method: method,
                         jsonData: nil,
-                        accessToken: accessToken)
+                        accessToken: accessToken,
+                        options: options)
                             .await()
 
                     // Return the result to the caller
@@ -161,7 +181,8 @@ class ApiClient {
         requestUrl: URL,
         method: String,
         jsonData: Data?,
-        accessToken: String) -> CoFuture<Data?> {
+        accessToken: String,
+        options: ApiRequestOptions?) -> CoFuture<Data?> {
 
         let promise = CoPromise<Data?>()
 
@@ -171,7 +192,7 @@ class ApiClient {
 
         // Add the access token to the request and then any custom headers
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        self.addCustomHeaders(request: &request)
+        self.addCustomHeaders(request: &request, options: options)
 
         // Add body data if supplied
         if jsonData != nil {
@@ -218,14 +239,16 @@ class ApiClient {
     /*
      * Add custom headers to identify the calling UI to the API and enable log lookup
      */
-    private func addCustomHeaders(request: inout URLRequest) {
+    private func addCustomHeaders(request: inout URLRequest, options: ApiRequestOptions?) {
 
         request.addValue("BasicIosApp", forHTTPHeaderField: "x-mycompany-api-client")
         request.addValue(self.sessionId, forHTTPHeaderField: "x-mycompany-session-id")
         request.addValue(UUID().uuidString, forHTTPHeaderField: "x-mycompany-correlation-id")
 
         // A special header can be sent to thr API to cause a simulated exception
-        // request.addValue("SampleApi", forHTTPHeaderField: "x-mycompany-test-exception")
+        if options != nil && options!.causeError {
+            request.addValue("SampleApi", forHTTPHeaderField: "x-mycompany-test-exception")
+        }
     }
 
     /*

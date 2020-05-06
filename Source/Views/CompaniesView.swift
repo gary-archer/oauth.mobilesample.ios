@@ -118,10 +118,11 @@ struct CompaniesView: View {
                 }
             }
 
-        }.onAppear(perform: self.loadData)
-         .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
-             self.loadData()
-         })
+        }
+        .onAppear(perform: self.initialLoad)
+        .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
+            self.loadData(causeError: self.dataReloadHandler.causeError)
+        })
     }
 
     /*
@@ -133,23 +134,30 @@ struct CompaniesView: View {
     }
 
     /*
+     * Do the initial load
+     */
+    private func initialLoad() {
+        self.loadData(causeError: false)
+    }
+
+    /*
      * Call the API to get data
      */
-    private func loadData() {
+    private func loadData(causeError: Bool) {
 
         // Run async operations in a coroutine
         DispatchQueue.main.startCoroutine {
 
             do {
-                // Reset state
-                self.viewManager.onViewLoading()
+                // Initialise for this request
                 self.error = nil
+                let options = ApiRequestOptions(causeError: causeError)
 
                 // Make the API call on a background thread
+                self.viewManager.onViewLoading()
                 try DispatchQueue.global().await {
-                    self.companies = try self.apiClient.getCompanies().await()
+                    self.companies = try self.apiClient.getCompanies(options: options).await()
                 }
-
                 self.viewManager.onViewLoaded()
 
             } catch {

@@ -5,6 +5,9 @@ import SwiftUI
  */
 struct HeaderButtonsView: View {
 
+    // External objects
+    @EnvironmentObject var dataReloadHandler: DataReloadHandler
+
     // Properties
     private var sessionButtonsDisabled: Bool
     private let onHome: () -> Void
@@ -46,7 +49,7 @@ struct HeaderButtonsView: View {
             }.buttonStyle(HeaderButtonStyle(width: deviceWidth / 6))
 
             // Inform the parent view when a data reload is requested
-            Button(action: self.onReloadData) {
+            Button(action: self.onReloadPressed) {
                 Text("Reload").multilineTextAlignment(.center)
             }
             .disabled(self.sessionButtonsDisabled)
@@ -77,5 +80,24 @@ struct HeaderButtonsView: View {
             .buttonStyle(
                 HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
         }
+    }
+
+    /*
+     * Normal reload clicks call the API normally
+     */
+    private func onReloadPressed() {
+
+        dataReloadHandler.causeError = false
+        self.onReloadData()
+    }
+
+    /*
+     * The reload button can be used to simulate API errors and demonstrate supportability
+     * If it is long clicked for 2 seconds or more then a custom header is sent to the cloud API
+     */
+    private func onReloadLongPressed() {
+
+        dataReloadHandler.causeError = true
+        self.onReloadData()
     }
 }
