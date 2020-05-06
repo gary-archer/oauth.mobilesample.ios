@@ -3,7 +3,7 @@ import Foundation
 /*
 * A helper class to format error fields for display
 */
-struct ErrorReporter {
+struct ErrorFormatter {
 
     /*
      * Return a collection of error lines from the error object

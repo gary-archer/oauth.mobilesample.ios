@@ -22,7 +22,6 @@
 		4E1888F923DE01CC0014638D /* ErrorSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1888F823DE01CC0014638D /* ErrorSummaryView.swift */; };
 		4E1888FB23DE01D80014638D /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1888FA23DE01D80014638D /* SessionView.swift */; };
 		4E1D614B245B346900F41850 /* ConcurrentActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */; };
-		4E29A1A52461CB2C00095F11 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E29A1A42461CB2C00095F11 /* Counter.swift */; };
 		4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E29A1A62461DBE100095F11 /* OrientationHandler.swift */; };
 		4E32863624531A8800B44823 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 4E32863524531A8800B44823 /* Cartfile */; };
 		4E3F8D3F24559F9B00EC7EB0 /* LoginRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */; };
@@ -39,7 +38,6 @@
 		4E87A39E245884FE00E522BF /* apple-app-site-association in Resources */ = {isa = PBXBuildFile; fileRef = 4E87A39C245884FE00E522BF /* apple-app-site-association */; };
 		4E87A3A12458890300E522BF /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E87A3A02458890300E522BF /* Entitlements.plist */; };
 		4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB180DB24508FC600A2C045 /* ErrorLine.swift */; };
-		4EB180DE2450901300A2C045 /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB180DD2450901300A2C045 /* ErrorReporter.swift */; };
 		4EB386EC244C4D1A00FC2B17 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386EB244C4D1A00FC2B17 /* ErrorHandler.swift */; };
 		4EB386F5244C68F600FC2B17 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386F4244C68F600FC2B17 /* Authenticator.swift */; };
 		4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAA723F967A70007A311 /* CompaniesView.swift */; };
@@ -55,6 +53,11 @@
 		4EF4FDF223F9E269008C3022 /* mobile_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF023F9E268008C3022 /* mobile_config.json */; };
 		4EF4FDF323F9E269008C3022 /* mobile_config_localapi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */; };
 		4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */; };
+		4EFCE67B24631D5D00BD1443 /* LogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67A24631D5D00BD1443 /* LogoutManager.swift */; };
+		4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67C24631E8F00BD1443 /* CognitoLogoutManager.swift */; };
+		4EFCE67F24631E9400BD1443 /* OktaLogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67E24631E9400BD1443 /* OktaLogoutManager.swift */; };
+		4EFCE6822463273200BD1443 /* ErrorConsoleReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */; };
+		4EFCE6832463273200BD1443 /* ErrorFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6812463273200BD1443 /* ErrorFormatter.swift */; };
 		4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC252451D13D0057C78D /* AppConfiguration.swift */; };
 		4EFEFC292451D13D0057C78D /* OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC262451D13D0057C78D /* OAuthConfiguration.swift */; };
 		4EFEFC2A2451D13D0057C78D /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC272451D13D0057C78D /* Configuration.swift */; };
@@ -83,7 +86,6 @@
 		4E1888FA23DE01D80014638D /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentActionHandler.swift; sourceTree = "<group>"; };
 		4E23798C23CE6D910066DE08 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4E29A1A42461CB2C00095F11 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		4E29A1A62461DBE100095F11 /* OrientationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrientationHandler.swift; sourceTree = "<group>"; };
 		4E32863524531A8800B44823 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredView.swift; sourceTree = "<group>"; };
@@ -101,7 +103,6 @@
 		4E87A3A02458890300E522BF /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = basicmobileapp.entitlements; sourceTree = "<group>"; };
 		4EB180DB24508FC600A2C045 /* ErrorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLine.swift; sourceTree = "<group>"; };
-		4EB180DD2450901300A2C045 /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
 		4EB386EB244C4D1A00FC2B17 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		4EB386F4244C68F600FC2B17 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
 		4EB6DAA723F967A70007A311 /* CompaniesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesView.swift; sourceTree = "<group>"; };
@@ -117,6 +118,11 @@
 		4EF4FDF023F9E268008C3022 /* mobile_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config.json; sourceTree = "<group>"; };
 		4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config_localapi.json; sourceTree = "<group>"; };
 		4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetailsView.swift; sourceTree = "<group>"; };
+		4EFCE67A24631D5D00BD1443 /* LogoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutManager.swift; sourceTree = "<group>"; };
+		4EFCE67C24631E8F00BD1443 /* CognitoLogoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CognitoLogoutManager.swift; sourceTree = "<group>"; };
+		4EFCE67E24631E9400BD1443 /* OktaLogoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OktaLogoutManager.swift; sourceTree = "<group>"; };
+		4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorConsoleReporter.swift; sourceTree = "<group>"; };
+		4EFCE6812463273200BD1443 /* ErrorFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorFormatter.swift; sourceTree = "<group>"; };
 		4EFEFC252451D13D0057C78D /* AppConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		4EFEFC262451D13D0057C78D /* OAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthConfiguration.swift; sourceTree = "<group>"; };
 		4EFEFC272451D13D0057C78D /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -202,7 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */,
-				4E29A1A42461CB2C00095F11 /* Counter.swift */,
 			);
 			name = Utilities;
 			path = Source/Plumbing/Utilities;
@@ -255,9 +260,10 @@
 			isa = PBXGroup;
 			children = (
 				4EFEFC2B2451D2860057C78D /* ErrorCodes.swift */,
+				4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */,
+				4EFCE6812463273200BD1443 /* ErrorFormatter.swift */,
 				4EB386EB244C4D1A00FC2B17 /* ErrorHandler.swift */,
 				4EB180DB24508FC600A2C045 /* ErrorLine.swift */,
-				4EB180DD2450901300A2C045 /* ErrorReporter.swift */,
 				4E79B09B241428310054C382 /* UIError.swift */,
 			);
 			path = Errors;
@@ -282,6 +288,7 @@
 		4EB386F3244C68CD00FC2B17 /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
+				4EFCE67924631D4200BD1443 /* Logout */,
 				4EB386F4244C68F600FC2B17 /* Authenticator.swift */,
 				4E126DBA2454854D0065863E /* AuthenticatorImpl.swift */,
 				4E126DBC2454A8F00065863E /* TokenData.swift */,
@@ -317,6 +324,16 @@
 				4EE4CABD245364910033B3C5 /* SceneDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		4EFCE67924631D4200BD1443 /* Logout */ = {
+			isa = PBXGroup;
+			children = (
+				4EFCE67C24631E8F00BD1443 /* CognitoLogoutManager.swift */,
+				4EFCE67A24631D5D00BD1443 /* LogoutManager.swift */,
+				4EFCE67E24631E9400BD1443 /* OktaLogoutManager.swift */,
+			);
+			path = Logout;
 			sourceTree = "<group>";
 		};
 		4EFEFC242451D13D0057C78D /* Configuration */ = {
@@ -477,16 +494,16 @@
 				4E1888F923DE01CC0014638D /* ErrorSummaryView.swift in Sources */,
 				4EE4CABF245364910033B3C5 /* SceneDelegate.swift in Sources */,
 				4EFEFC2C2451D2860057C78D /* ErrorCodes.swift in Sources */,
-				4EB180DE2450901300A2C045 /* ErrorReporter.swift in Sources */,
 				4ECD97662452F25E00D7E271 /* MainView.swift in Sources */,
 				4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */,
-				4E29A1A52461CB2C00095F11 /* Counter.swift in Sources */,
 				4E3F8D412455A41300EC7EB0 /* ViewManager.swift in Sources */,
 				4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */,
+				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,
 				4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */,
 				4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */,
 				4EB386F5244C68F600FC2B17 /* Authenticator.swift in Sources */,
 				4ECD97622452E01D00D7E271 /* AppView.swift in Sources */,
+				4EFCE67B24631D5D00BD1443 /* LogoutManager.swift in Sources */,
 				4EFEFC292451D13D0057C78D /* OAuthConfiguration.swift in Sources */,
 				4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */,
 				4E432516244EEAEE00A1582E /* UserInfoClaims.swift in Sources */,
@@ -500,9 +517,12 @@
 				4E43251A244EFCED00A1582E /* CompanyTransactions.swift in Sources */,
 				4E3F8D3F24559F9B00EC7EB0 /* LoginRequiredView.swift in Sources */,
 				4EB6DAB023F970F20007A311 /* Company.swift in Sources */,
+				4EFCE67F24631E9400BD1443 /* OktaLogoutManager.swift in Sources */,
 				4EFEFC332451EE4F0057C78D /* HeaderButtonStyle.swift in Sources */,
 				4E126DBB2454854D0065863E /* AuthenticatorImpl.swift in Sources */,
+				4EFCE6832463273200BD1443 /* ErrorFormatter.swift in Sources */,
 				4EFEFC322451EE4F0057C78D /* TextStyles.swift in Sources */,
+				4EFCE6822463273200BD1443 /* ErrorConsoleReporter.swift in Sources */,
 				4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */,
 				4E43251C244EFD6500A1582E /* Transaction.swift in Sources */,
 				4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */,

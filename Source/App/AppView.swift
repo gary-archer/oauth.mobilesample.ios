@@ -207,28 +207,21 @@ struct AppView: View {
                 try self.model.authenticator!.logout(viewController: self.mainWindow.rootViewController!)
                     .await()
 
-                // Move to the login required view after logging out
+                // Move to the login required view and update UI state
                 self.viewRouter.currentViewType = LoginRequiredView.Type.self
                 self.viewRouter.params = []
-
-                // Also update UI state
                 self.model.isDataLoaded = false
 
             } catch {
 
+                // On error, only output logout errors to the MacOS console rather than impacting the end user
                 let uiError = ErrorHandler().fromException(error: error)
-                if uiError.errorCode == ErrorCodes.loginCancelled {
+                ErrorConsoleReporter().output(error: uiError)
 
-                    // Move to login required and update UI state
-                    self.viewRouter.currentViewType = LoginRequiredView.Type.self
-                    self.viewRouter.params = []
-                    self.model.isDataLoaded = false
-
-                } else {
-
-                    // Otherwise render the error in the UI
-                    self.error = uiError
-                }
+                // Move to the login required view and update UI state
+                self.viewRouter.currentViewType = LoginRequiredView.Type.self
+                self.viewRouter.params = []
+                self.model.isDataLoaded = false
             }
         }
     }

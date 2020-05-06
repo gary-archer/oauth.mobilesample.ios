@@ -6,7 +6,7 @@ import Combine
  * Include this as an environment object in any views that need to be redrawn
  * https://stackoverflow.com/questions/57441654/swiftui-repaint-view-components-on-device-rotationhange
  */
-final class OrientationHandler: ObservableObject {
+class OrientationHandler: ObservableObject {
 
     @Published var isLandscape: Bool = false
 }

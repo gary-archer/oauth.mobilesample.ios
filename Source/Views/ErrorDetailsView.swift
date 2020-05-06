@@ -19,7 +19,7 @@ struct ErrorDetailsView: View {
     init (dialogTitle: String, error: UIError) {
         self.error = error
         self.dialogTitle = dialogTitle
-        self.errorLines = ErrorReporter().getErrorLines(error: self.error)
+        self.errorLines = ErrorFormatter().getErrorLines(error: self.error)
     }
 
     /*
@@ -60,7 +60,7 @@ struct ErrorDetailsView: View {
                                .labelStyle()
                                .frame(width: geometry.size.width * 0.3, alignment: .leading)
 
-                            Text(item.value!)
+                            Text(item.value)
                                 .valueStyle(textColor: item.name == "Instance Id" ? Color.red : Color.black)
                                .frame(width: geometry.size.width * 0.55, alignment: .leading)
 

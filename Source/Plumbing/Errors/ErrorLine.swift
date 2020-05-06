@@ -5,5 +5,5 @@ import Foundation
  */
 struct ErrorLine {
     let name: String
-    let value: String?
+    let value: String
 }

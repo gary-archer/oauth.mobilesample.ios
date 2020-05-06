@@ -1,6 +1,5 @@
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
-// swiftlint:disable function_body_length
 
 import AppAuth
 import SwiftCoroutine
@@ -170,6 +169,10 @@ class AuthenticatorImpl: Authenticator {
 
         let promise = CoPromise<Void>()
 
+        if self.tokenData == nil || self.tokenData!.idToken == nil {
+            promise.success(Void())
+        }
+
         do {
             // Clear tokens from memory and storage
             let idToken = self.tokenData!.idToken!
@@ -319,28 +322,22 @@ class AuthenticatorImpl: Authenticator {
             return promise
         }
 
-        // Cognito has no end session endpoint and does not return one in its metadata
-        // So create an updated metadata object with its vendor specific logout URL
-        let metadataWithEndSessionEndpoint = OIDServiceConfiguration(
-            authorizationEndpoint: metadata.authorizationEndpoint,
-            tokenEndpoint: metadata.tokenEndpoint,
-            issuer: metadata.issuer,
-            registrationEndpoint: metadata.registrationEndpoint,
-            endSessionEndpoint: logoutUri)
+        // Create an object to manage provider differences
+        let logoutManager = self.createLogoutManager()
 
-        // Build the logout request and include extra vendor specific parameters that Cognito requires
-        let request = OIDEndSessionRequest(
-            configuration: metadataWithEndSessionEndpoint,
-            idTokenHint: idToken,
-            postLogoutRedirectURL: postLogoutRedirectUri,
-            state: "",
-            additionalParameters: [
-                "client_id": self.configuration.clientId,
-                "logout_uri": self.configuration.postLogoutRedirectUri
-            ])
-        let agent = OIDExternalUserAgentIOS(presenting: viewController)
+        // If required, create an updated metadata object with an end session endpoint
+        let metadataWithEndSessionEndpoint = logoutManager.updateMetadata(
+            metadata: metadata,
+            logoutUri: logoutUri)
+
+        // Build the end session request
+        let request = logoutManager.createEndSessionRequest(
+            metadata: metadataWithEndSessionEndpoint,
+            idToken: idToken,
+            postLogoutRedirectUri: postLogoutRedirectUri)
 
         // Do the logout redirect, and use the current authorization flow parameter
+        let agent = OIDExternalUserAgentIOS(presenting: viewController)
         self.currentOAuthSession =
             OIDAuthorizationService.present(request, externalUserAgent: agent!) { _, error in
 
@@ -357,8 +354,8 @@ class AuthenticatorImpl: Authenticator {
                         return
                     }
 
-                    // Treat state mismatch errors as success, since Cognito does not return a state in the response
-                    if error!.localizedDescription.lowercased().contains("state mismatch") {
+                    // Ignore benign errors
+                    if logoutManager.isExpectedError(error: error!) {
                         promise.success(Void())
                         return
                     }
@@ -425,7 +422,7 @@ class AuthenticatorImpl: Authenticator {
         let promise = CoPromise<Void>()
 
         do {
-            // First get metadata
+            // First get metadata from the authorization server
             let metadata = try self.getMetadata()
                 .await()
 
@@ -535,5 +532,17 @@ class AuthenticatorImpl: Authenticator {
     private func matchesAppAuthError(error: Error, domain: String, code: Int) -> Bool {
         let authError = error as NSError
         return authError.domain == domain && authError.code == code
+    }
+
+    /*
+     * Return the logout manager for the active provider
+     */
+    private func createLogoutManager() -> LogoutManager {
+
+        if self.configuration.authority.lowercased().contains("cognito") {
+            return CognitoLogoutManager(configuration: self.configuration)
+        } else {
+            return OktaLogoutManager(configuration: self.configuration)
+        }
     }
 }

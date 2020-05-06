@@ -1,19 +1,15 @@
 TODO
 ----
-1. Okta to get working and use logout strategies
-   Logout errors to ignore as for SPA and desktop samples
-   Update iPad certs and test Okta on a real device
-
-2. Long press to invoke 500 error - will require a boolean field in the published event
+1. Long press to invoke 500 error - will require a boolean field in the published event
    Can I change to an Orientation Handler approach with published data pushed to onReceive handlers???
    API client to receive and use request options
    Ensure that error views are centred in both portrait and landscape - including modal dialog
    https://stackoverflow.com/questions/58284994/swiftui-how-to-handle-both-tap-long-press-of-button
 
-3. Prerequisites - require or detect secured device
+2. Prerequisites - require or detect secured device
    https://www.raywenderlich.com/236-how-to-secure-ios-user-data-the-keychain-and-biometrics-face-id-or-touch-id
 
-4. Stack traces to improve
+3. Stack traces to improve
    Pass stack traces to uiError from system errors
 
 INTERSTITIAL PAGE PROBLEM
