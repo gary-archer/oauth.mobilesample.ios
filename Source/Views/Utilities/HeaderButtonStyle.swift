@@ -20,7 +20,7 @@ struct HeaderButtonStyle: ButtonStyle {
     }
 
     /*
-     * Return the custom style for our button behaviour
+     * Apply custom styles for our button behaviour
      */
     func makeBody(configuration: Self.Configuration) -> some View {
 

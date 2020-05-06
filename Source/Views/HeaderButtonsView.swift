@@ -41,44 +41,46 @@ struct HeaderButtonsView: View {
     var body: some View {
 
         let deviceWidth = UIScreen.main.bounds.size.width
+        let buttonStyle = HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled)
+        let textButtonModifier = HeaderTextButtonModifier(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled)
+
         return HStack {
 
             // Inform the parent view when the home button is clicked
             Button(action: self.onHome) {
                Text("Home").multilineTextAlignment(.center)
-            }.buttonStyle(HeaderButtonStyle(width: deviceWidth / 6))
+            }
+            .buttonStyle(buttonStyle)
 
             // Inform the parent view when a data reload is requested
-            Button(action: self.onReloadPressed) {
-                Text("Reload").multilineTextAlignment(.center)
-            }
-            .disabled(self.sessionButtonsDisabled)
-            .buttonStyle(
-                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
+            // Handling both button presses and long presses with a button is problematic in SwiftUI
+            Text("Reload")
+                .multilineTextAlignment(.center)
+                .onTapGesture(perform: self.onReloadPressed)
+                .onLongPressGesture(minimumDuration: 2, perform: self.onReloadLongPressed)
+                .disabled(self.sessionButtonsDisabled)
+                .modifier(textButtonModifier)
 
             // Initiate a test operation to make the access token act expired
             Button(action: self.onExpireAccessToken) {
                 Text("Expire Access Token").multilineTextAlignment(.center)
             }
             .disabled(self.sessionButtonsDisabled)
-            .buttonStyle(
-                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
+            .buttonStyle(buttonStyle)
 
             // Initiate a test operation to make the refresh token act expired
             Button(action: self.onExpireRefreshToken) {
                 Text("Expire Refresh Token").multilineTextAlignment(.center)
             }
             .disabled(self.sessionButtonsDisabled)
-            .buttonStyle(
-                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
+            .buttonStyle(buttonStyle)
 
             // Initiate a logout operation
             Button(action: self.onLogout) {
                 Text("Logout").multilineTextAlignment(.center)
             }
             .disabled(self.sessionButtonsDisabled)
-            .buttonStyle(
-                HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled))
+            .buttonStyle(buttonStyle)
         }
     }
 
