@@ -1,11 +1,11 @@
 TODO
 ----
-1. Long press causes Home to get disabled
-   No scale effect for text button
-   Error Summary to have a centred property that adds top padding by default
+1. Error Summary to have a centred property that adds top padding by default
    User info is the only view that opts out of this
 
 2. Update SPA / Desktop samples to fail both the Main and User Info API calls
+
+3. Get long press errors working somehow
 
 3. Stack traces to improve
    Pass stack traces to uiError from system errors
