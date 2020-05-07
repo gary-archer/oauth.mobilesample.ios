@@ -16,7 +16,10 @@ struct ErrorSummaryView: View {
     /*
      * Initialise data
      */
-    init (hyperlinkText: String, dialogTitle: String, error: UIError) {
+    init (
+        hyperlinkText: String,
+        dialogTitle: String,
+        error: UIError) {
 
         self.hyperlinkText = hyperlinkText
         self.dialogTitle = dialogTitle

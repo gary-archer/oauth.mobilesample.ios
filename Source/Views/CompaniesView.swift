@@ -50,6 +50,7 @@ struct CompaniesView: View {
                     hyperlinkText: "Problem Encountered in Companies View",
                     dialogTitle: "Companies View Error",
                     error: self.error!)
+                        .padding(.top)
             }
 
             // Render the companies list if we can retrieve it
