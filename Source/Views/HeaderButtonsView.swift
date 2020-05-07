@@ -49,49 +49,53 @@ struct HeaderButtonsView: View {
 
             // A button to navigate home
             Button(action: self.onHome) {
-               Text("Home").multilineTextAlignment(.center)
+               Text("Home")
             }
             .buttonStyle(homeButtonStyle)
 
-            // The reload button supports the long press event
-            Button(action: self.onReloadPressed) {
-                Text("Reload").multilineTextAlignment(.center)
+            // The reload button also support a long press event
+            Button(action: self.onReloadDefaultAction) {
+                Text("Reload")
             }
             .buttonStyle(sessionButtonStyle)
-            .onLongPressGesture(minimumDuration: 2, perform: self.onReloadLongPressed)
+            .disabled(self.sessionButtonsDisabled)
+            .modifier(LongPressModifier(
+                isDisabled: self.sessionButtonsDisabled,
+                completionHandler: self.onReloadPressed))
 
             // A button to make the current access token act expired
             Button(action: self.onExpireAccessToken) {
                 Text("Expire Access Token").multilineTextAlignment(.center)
             }
             .buttonStyle(sessionButtonStyle)
+            .disabled(self.sessionButtonsDisabled)
 
             // A button to make the current refresh token act expired
             Button(action: self.onExpireRefreshToken) {
                 Text("Expire Refresh Token").multilineTextAlignment(.center)
             }
             .buttonStyle(sessionButtonStyle)
+            .disabled(self.sessionButtonsDisabled)
 
             // A button to initiate a logout
             Button(action: self.onLogout) {
-                Text("Logout").multilineTextAlignment(.center)
+                Text("Logout")
             }
             .buttonStyle(sessionButtonStyle)
+            .disabled(self.sessionButtonsDisabled)
         }
     }
 
     /*
-     * Normal reload clicks call the API normally
+     * The default action for the reload button is overridden so that it does nothing
      */
-    private func onReloadPressed() {
-        self.onReloadData(false)
+    private func onReloadDefaultAction() {
     }
 
     /*
-     * The reload button can be used to simulate API errors and demonstrate supportability
-     * If it is long clicked for 2 seconds or more then a custom header is sent to the cloud API
+     * Reload clicks are handled via the LongPressModifier which returns a boolean result
      */
-    private func onReloadLongPressed() {
-        self.onReloadData(true)
+    private func onReloadPressed(isLongPress: Bool) {
+        self.onReloadData(isLongPress)
     }
 }

@@ -24,8 +24,7 @@ struct DeviceNotSecuredView: View {
 
             Button(action: self.onOpenSystemSettings) {
                Text("Open Settings / Touch ID & Passcode")
-                    .multilineTextAlignment(.center)
-                    .padding()
+                   .padding()
             }
                 .foregroundColor(Color.black)
                 .background(Color.green)

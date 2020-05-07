@@ -154,7 +154,7 @@ struct TransactionsView: View {
             } catch {
 
                 // Handle the error
-                let uiError = ErrorHandler().fromException(error: error)
+                let uiError = ErrorHandler.fromException(error: error)
                 let isExpected = self.handleApiError(error: uiError)
                 if isExpected {
 

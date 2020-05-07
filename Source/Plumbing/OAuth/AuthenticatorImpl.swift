@@ -91,7 +91,7 @@ class AuthenticatorImpl: Authenticator {
             } else {
 
                 // Otherwise indicate a login is required
-                promise.fail(ErrorHandler().fromLoginRequired())
+                promise.fail(ErrorHandler.fromLoginRequired())
             }
         } catch {
 
@@ -156,7 +156,7 @@ class AuthenticatorImpl: Authenticator {
 
             // Handle errors
             self.currentOAuthSession = nil
-            promise.fail(ErrorHandler().fromException(error: error))
+            promise.fail(ErrorHandler.fromException(error: error))
         }
 
         return promise
@@ -198,7 +198,7 @@ class AuthenticatorImpl: Authenticator {
 
             // Handle errors
             self.currentOAuthSession = nil
-            promise.fail(ErrorHandler().fromException(error: error))
+            promise.fail(ErrorHandler.fromException(error: error))
         }
 
         return promise
@@ -214,7 +214,7 @@ class AuthenticatorImpl: Authenticator {
         // Get the metadata endpoint as a URL object
         guard let issuerUrl = URL(string: self.configuration.authority) else {
             let message = "Unable to create URL from \(self.configuration.authority)"
-            promise.fail(ErrorHandler().fromMessage(message: message))
+            promise.fail(ErrorHandler.fromMessage(message: message))
             return promise
         }
 
@@ -223,7 +223,7 @@ class AuthenticatorImpl: Authenticator {
             forIssuer: issuerUrl) { metadata, error in
 
                 if error != nil {
-                    promise.fail(ErrorHandler().fromException(error: error!))
+                    promise.fail(ErrorHandler.fromException(error: error!))
                 } else {
                     promise.success(metadata!)
                 }
@@ -244,7 +244,7 @@ class AuthenticatorImpl: Authenticator {
         // Get the redirect address into a URL object
         guard let redirectUri = URL(string: self.configuration.redirectUri) else {
             let message = "Error creating URL for : \(self.configuration.redirectUri)"
-            promise.fail(ErrorHandler().fromMessage(message: message))
+            promise.fail(ErrorHandler.fromMessage(message: message))
             return promise
         }
 
@@ -272,12 +272,12 @@ class AuthenticatorImpl: Authenticator {
                         domain: OIDGeneralErrorDomain,
                         code: OIDErrorCode.userCanceledAuthorizationFlow.rawValue) {
 
-                        promise.fail(ErrorHandler().fromRedirectCancelled())
+                        promise.fail(ErrorHandler.fromRedirectCancelled())
                         return
                     }
 
                     // Handle other errors
-                    let uiError = ErrorHandler().fromAppAuthError(
+                    let uiError = ErrorHandler.fromAppAuthError(
                         error: error!,
                         errorCode: ErrorCodes.loginResponseFailed)
                     promise.fail(uiError)
@@ -287,7 +287,7 @@ class AuthenticatorImpl: Authenticator {
                 // Make a sanity check to ensure we have a response
                 if response == nil || response!.authorizationCode == nil {
                     let message = "No authorization code was received after a successful login redirect"
-                    promise.fail(ErrorHandler().fromMessage(message: message))
+                    promise.fail(ErrorHandler.fromMessage(message: message))
                     return
                 }
 
@@ -311,7 +311,7 @@ class AuthenticatorImpl: Authenticator {
         // Get the post logout address as a URL object
         guard let postLogoutRedirectUri = URL(string: self.configuration.postLogoutRedirectUri) else {
             let message = "Error creating URL for : \(self.configuration.postLogoutRedirectUri)"
-            promise.fail(ErrorHandler().fromMessage(message: message))
+            promise.fail(ErrorHandler.fromMessage(message: message))
             return promise
         }
 
@@ -341,7 +341,7 @@ class AuthenticatorImpl: Authenticator {
                         domain: OIDGeneralErrorDomain,
                         code: OIDErrorCode.userCanceledAuthorizationFlow.rawValue) {
 
-                        promise.fail(ErrorHandler().fromRedirectCancelled())
+                        promise.fail(ErrorHandler.fromRedirectCancelled())
                         return
                     }
 
@@ -352,7 +352,7 @@ class AuthenticatorImpl: Authenticator {
                     }
 
                     // Report other errors
-                    let uiError = ErrorHandler().fromAppAuthError(
+                    let uiError = ErrorHandler.fromAppAuthError(
                         error: error!,
                         errorCode: ErrorCodes.logoutFailed)
                     promise.fail(uiError)
@@ -381,7 +381,7 @@ class AuthenticatorImpl: Authenticator {
 
             // Handle errors
             if error != nil {
-                let uiError = ErrorHandler().fromAppAuthError(
+                let uiError = ErrorHandler.fromAppAuthError(
                     error: error!,
                     errorCode: ErrorCodes.authorizationCodeGrantFailed)
                 promise.fail(uiError)
@@ -391,7 +391,7 @@ class AuthenticatorImpl: Authenticator {
             // Make a sanity check to ensure we have tokens
             if tokenResponse == nil || tokenResponse!.accessToken == nil {
                 let message = "No tokens were received in the Authorization Code Grant message"
-                promise.fail(ErrorHandler().fromMessage(message: message))
+                promise.fail(ErrorHandler.fromMessage(message: message))
                 return
             }
 
@@ -450,7 +450,7 @@ class AuthenticatorImpl: Authenticator {
                     }
 
                     // Handle other errors
-                    let uiError = ErrorHandler().fromAppAuthError(
+                    let uiError = ErrorHandler.fromAppAuthError(
                         error: error!,
                         errorCode: ErrorCodes.authorizationCodeGrantFailed)
                     promise.fail(uiError)
@@ -460,7 +460,7 @@ class AuthenticatorImpl: Authenticator {
                 // Make a sanity check to ensure we have tokens
                 if tokenResponse == nil || tokenResponse!.accessToken == nil {
                     let message = "No tokens were received in the Refresh Token Grant message"
-                    promise.fail(ErrorHandler().fromMessage(message: message))
+                    promise.fail(ErrorHandler.fromMessage(message: message))
                     return
                 }
 
@@ -471,7 +471,7 @@ class AuthenticatorImpl: Authenticator {
         } catch {
 
             // Handle errors
-            promise.fail(ErrorHandler().fromException(error: error))
+            promise.fail(ErrorHandler.fromException(error: error))
         }
 
         return promise

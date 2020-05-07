@@ -29,22 +29,23 @@ class UIError: Error {
         self.instanceId = 0
         self.details = ""
         self.url = ""
-
-        // Format the date
-        let now = Date()
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        formatter.dateFormat = "MMM dd yyyy HH:mm"
-        self.utcTime = formatter.string(from: now)
-
-        // Record the stack trace
+        self.utcTime = ""
         self.stack = Thread.callStackSymbols
+        self.utcTime = DateUtils.dateToUtcDisplayString(date: Date())
     }
 
     /*
-     * Return whether we contain an error
+     * Update fields from an API response
      */
-    func isEmpty() -> Bool {
-        return self.errorCode.isEmpty
+    func setApiErrorDetails(area: String, instanceId: Int, utcTime: String) {
+
+        self.area = area
+        self.instanceId = instanceId
+
+        // The API returns an ISO8601 timestamp for the error time
+        let date = DateUtils.apiErrorTimestampToDate(isoTimestamp: utcTime)
+        if date != nil {
+            self.utcTime = DateUtils.dateToUtcDisplayString(date: date!)
+        }
     }
 }

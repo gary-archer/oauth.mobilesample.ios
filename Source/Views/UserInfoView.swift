@@ -91,7 +91,7 @@ struct UserInfoView: View {
             } catch {
 
                 // Report errors
-                let uiError = ErrorHandler().fromException(error: error)
+                let uiError = ErrorHandler.fromException(error: error)
                 self.viewManager!.onViewLoadFailed(error: uiError)
                 self.error = uiError
             }

@@ -8,7 +8,7 @@ struct ErrorFormatter {
     /*
      * Return a collection of error lines from the error object
      */
-    func getErrorLines(error: UIError) -> [ErrorLine] {
+    static func getErrorLines(error: UIError) -> [ErrorLine] {
 
         var result: [ErrorLine] = []
 
@@ -50,7 +50,7 @@ struct ErrorFormatter {
         // https://stackoverflow.com/questions/30754796/how-to-print-call-stack-in-swift
         #if DEBUG
         if error.stack.count > 0 {
-            let stackTrace = self.getFormattedStackTrace(stack: error.stack)
+            let stackTrace = ErrorFormatter.getFormattedStackTrace(stack: error.stack)
             result.append(ErrorLine(name: "Stack", value: String(stackTrace)))
         }
         #endif
@@ -62,7 +62,7 @@ struct ErrorFormatter {
      * Try to get the stack trace into a format for output
      * I would like to demangle the call stack but currently there seems to be no clean way to do that
      */
-    private func getFormattedStackTrace(stack: [String]) -> String {
+    private static func getFormattedStackTrace(stack: [String]) -> String {
 
         var result: String = ""
         for symbol: String in stack {

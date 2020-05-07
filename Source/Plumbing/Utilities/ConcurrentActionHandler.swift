@@ -66,7 +66,7 @@ class ConcurrentActionHandler {
             } catch {
 
                 // Resolve all promises with the same error
-                let uiError = ErrorHandler().fromException(error: error)
+                let uiError = ErrorHandler.fromException(error: error)
                 queue.sync {
                     self.callbacks.forEach { callback in
                         callback.1(uiError)

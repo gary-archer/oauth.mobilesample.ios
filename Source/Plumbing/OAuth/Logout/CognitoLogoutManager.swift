@@ -21,7 +21,7 @@ struct CognitoLogoutManager: LogoutManager {
 
         guard let logoutUri = URL(string: self.configuration.logoutEndpoint) else {
             let message = "Error creating URL for : \(self.configuration.logoutEndpoint)"
-            throw ErrorHandler().fromMessage(message: message)
+            throw ErrorHandler.fromMessage(message: message)
         }
 
         return OIDServiceConfiguration(

@@ -19,7 +19,7 @@ struct ErrorDetailsView: View {
     init (dialogTitle: String, error: UIError) {
         self.error = error
         self.dialogTitle = dialogTitle
-        self.errorLines = ErrorFormatter().getErrorLines(error: self.error)
+        self.errorLines = ErrorFormatter.getErrorLines(error: self.error)
     }
 
     /*
@@ -57,12 +57,14 @@ struct ErrorDetailsView: View {
 
                         HStack(alignment: .top) {
                             Text(item.name)
-                               .labelStyle()
-                               .frame(width: geometry.size.width * 0.3, alignment: .leading)
+                                .labelStyle()
+                                .frame(width: geometry.size.width / 3, alignment: .leading)
+                                .padding(.leading, geometry.size.width / 12)
 
                             Text(item.value)
                                 .valueStyle(textColor: item.name == "Instance Id" ? Color.red : Color.black)
-                               .frame(width: geometry.size.width * 0.55, alignment: .leading)
+                                .frame(width: geometry.size.width / 3, alignment: .leading)
+                                .padding(.leading, geometry.size.width / 12)
 
                         }.padding()
                     }

@@ -8,7 +8,7 @@ struct ErrorSummaryView: View {
     // Properties
     private let hyperlinkText: String
     private let dialogTitle: String
-    private let error: UIError
+    private let error: UIError?
 
     // This view's state
     @State private var showModal = false
@@ -34,7 +34,7 @@ struct ErrorSummaryView: View {
         VStack {
 
             // Show a hidden control when there is no error to display
-            if self.error.isEmpty() || self.error.errorCode == ErrorCodes.loginRequired {
+            if self.error == nil || self.error!.errorCode == ErrorCodes.loginRequired {
 
                 Text("")
                     .hidden()
@@ -49,7 +49,7 @@ struct ErrorSummaryView: View {
                     .sheet(isPresented: self.$showModal) {
 
                         // Render the error details view in a modal sheet when the link is clicked
-                        ErrorDetailsView(dialogTitle: self.dialogTitle, error: self.error)
+                        ErrorDetailsView(dialogTitle: self.dialogTitle, error: self.error!)
                     }
                     .onTapGesture {
                         self.showModal = true

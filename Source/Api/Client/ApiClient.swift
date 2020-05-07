@@ -17,7 +17,7 @@ class ApiClient {
     init(appConfiguration: AppConfiguration, authenticator: Authenticator) throws {
 
         guard let url = URL(string: appConfiguration.apiBaseUrl) else {
-            throw ErrorHandler().fromMessage(message: "Invalid base URL received in API Client")
+            throw ErrorHandler.fromMessage(message: "Invalid base URL received in API Client")
         }
 
         self.apiBaseUrl = url
@@ -140,7 +140,7 @@ class ApiClient {
         } catch {
 
             // Handle 401s specially
-            let uiError = ErrorHandler().fromException(error: error)
+            let uiError = ErrorHandler.fromException(error: error)
             if uiError.statusCode == 401 {
 
                 // Try to refresh the access token
@@ -204,7 +204,7 @@ class ApiClient {
 
             // Handle API request errors
             if let receivedError = error {
-                let uiError = ErrorHandler().fromApiRequestError(
+                let uiError = ErrorHandler.fromApiRequestError(
                     error: receivedError,
                     url: requestUrl.absoluteString)
                 promise.fail(uiError)
@@ -212,7 +212,7 @@ class ApiClient {
 
             // Get the response as an HTTP response
             guard let httpResponse = response as? HTTPURLResponse else {
-                let uiError = ErrorHandler().fromMessage(
+                let uiError = ErrorHandler.fromMessage(
                     message: "Invalid HTTP response object received after an API call")
                 promise.fail(uiError)
                 return
@@ -220,7 +220,7 @@ class ApiClient {
 
             // Check for a successful status
             if httpResponse.statusCode < 200 || httpResponse.statusCode > 299 {
-                let uiError = ErrorHandler().fromApiResponseError(
+                let uiError = ErrorHandler.fromApiResponseError(
                     response: httpResponse,
                     data: data,
                     url: requestUrl.absoluteString)
@@ -262,7 +262,7 @@ class ApiClient {
         if let userInfo = try? decoder.decode(T.self, from: data) {
             promise.success(userInfo)
         } else {
-            let error = ErrorHandler().fromMessage(message: "Unable to deserialize user info")
+            let error = ErrorHandler.fromMessage(message: "Unable to deserialize user info")
             promise.fail(error)
         }
 

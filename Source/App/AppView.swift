@@ -111,7 +111,7 @@ struct AppView: View {
         } catch {
 
             // Output error details
-            let uiError = ErrorHandler().fromException(error: error)
+            let uiError = ErrorHandler.fromException(error: error)
             self.model.error = uiError
         }
     }
@@ -185,7 +185,7 @@ struct AppView: View {
 
             } catch {
 
-                let uiError = ErrorHandler().fromException(error: error)
+                let uiError = ErrorHandler.fromException(error: error)
                 if uiError.errorCode == ErrorCodes.loginCancelled {
 
                     // If the login was cancelled, move to the login required view
@@ -222,8 +222,8 @@ struct AppView: View {
             } catch {
 
                 // On error, only output logout errors to the MacOS console rather than impacting the end user
-                let uiError = ErrorHandler().fromException(error: error)
-                ErrorConsoleReporter().output(error: uiError)
+                let uiError = ErrorHandler.fromException(error: error)
+                ErrorConsoleReporter.output(error: uiError)
 
                 // Move to the login required view and update UI state
                 self.viewRouter.currentViewType = LoginRequiredView.Type.self

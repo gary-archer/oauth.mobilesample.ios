@@ -9,7 +9,7 @@ struct ErrorHandler {
     /*
      * Return a typed error from a general UI exception
      */
-    func fromException (error: Error) -> UIError {
+    static func fromException (error: Error) -> UIError {
 
         // Already handled
         var uiError = error as? UIError
@@ -30,7 +30,7 @@ struct ErrorHandler {
      * Used to throw programming level errors that should not occur
      * Equivalent to throwing a RuntimeException in Android
      */
-    func fromMessage(message: String) -> UIError {
+    static func fromMessage(message: String) -> UIError {
 
         return UIError(
             area: "Mobile UI",
@@ -41,7 +41,7 @@ struct ErrorHandler {
     /*
      * If the device does not have a passcode do not allow the app to run
      */
-    func fromDeviceNotSecured() -> UIError {
+    static func fromDeviceNotSecured() -> UIError {
 
         return UIError(
             area: "Mobile UI",
@@ -52,7 +52,7 @@ struct ErrorHandler {
     /*
      * Return an error to short circuit execution
      */
-    func fromLoginRequired() -> UIError {
+    static func fromLoginRequired() -> UIError {
 
         return UIError(
             area: "Login",
@@ -63,7 +63,7 @@ struct ErrorHandler {
     /*
      * Return an error to indicate that the Safari View Controller window was closed
      */
-    func fromRedirectCancelled() -> UIError {
+    static func fromRedirectCancelled() -> UIError {
 
         return UIError(
             area: "Login",
@@ -74,7 +74,7 @@ struct ErrorHandler {
     /*
      * Handle errors returned from AppAuth libraries
      */
-    func fromAppAuthError(error: Error, errorCode: String) -> UIError {
+    static func fromAppAuthError(error: Error, errorCode: String) -> UIError {
 
         let authError = error as NSError
 
@@ -96,7 +96,7 @@ struct ErrorHandler {
     /*
      * Get details when we cannot connect to the API
      */
-    func fromApiRequestError(error: Error, url: String) -> UIError {
+    static func fromApiRequestError(error: Error, url: String) -> UIError {
 
         let uiError = UIError(
             area: "API",
@@ -110,7 +110,7 @@ struct ErrorHandler {
     /*
      * Get details from the HTTP response
      */
-    func fromApiResponseError(response: HTTPURLResponse, data: Data?, url: String) -> UIError {
+    static func fromApiResponseError(response: HTTPURLResponse, data: Data?, url: String) -> UIError {
 
         // Set base fields
         let error = UIError(
@@ -122,7 +122,7 @@ struct ErrorHandler {
 
         // Process response errors when received
         if data != nil {
-            self.updateFromApiErrorResponse(error: error, responseData: data!)
+            ErrorHandler.updateFromApiErrorResponse(error: error, responseData: data!)
         }
 
         return error
@@ -131,7 +131,7 @@ struct ErrorHandler {
     /*
      * Try to update the default API error with response details
      */
-    private func updateFromApiErrorResponse(error: UIError, responseData: Data) {
+    static private func updateFromApiErrorResponse(error: UIError, responseData: Data) {
 
         if let json = try? JSONSerialization.jsonObject(with: responseData, options: []) {
 
@@ -150,9 +150,7 @@ struct ErrorHandler {
                 let id = fields["id"] as? Int
                 let utcTime = fields["utcTime"] as? String
                 if area != nil && id != nil && utcTime != nil {
-                    error.area = area!
-                    error.instanceId = id!
-                    error.utcTime = utcTime!
+                    error.setApiErrorDetails(area: area!, instanceId: id!, utcTime: utcTime!)
                 }
             }
         }

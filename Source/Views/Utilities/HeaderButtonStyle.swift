@@ -14,18 +14,17 @@ struct HeaderButtonStyle: ButtonStyle {
     /*
      * Set values from input
      */
-    init (width: CGFloat, disabled: Bool? = false) {
+    init (width: CGFloat, disabled: Bool) {
         self.width = width
-        self.disabled = disabled ?? false
+        self.disabled = disabled
     }
 
     /*
-     * Apply custom styles for our button behaviour
+     * Apply custom styles to the button label
      */
     func makeBody(configuration: ButtonStyleConfiguration) -> some View {
 
         configuration.label
-            .disabled(self.disabled)
             .frame(width: self.width, height: 60)
             .foregroundColor(Color.black)
             .background(Colors.lightBlue)

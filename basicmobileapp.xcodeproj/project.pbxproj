@@ -52,6 +52,8 @@
 		4EE4CABF245364910033B3C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABD245364910033B3C5 /* SceneDelegate.swift */; };
 		4EE6B1DA246479A700B43FF3 /* DeviceSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */; };
 		4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */; };
+		4EE6B1DE24649DB700B43FF3 /* LongPressModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */; };
+		4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */; };
 		4EF4FDF223F9E269008C3022 /* mobile_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF023F9E268008C3022 /* mobile_config.json */; };
 		4EF4FDF323F9E269008C3022 /* mobile_config_localapi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */; };
 		4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */; };
@@ -120,6 +122,8 @@
 		4EE4CABD245364910033B3C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSecurity.swift; sourceTree = "<group>"; };
 		4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNotSecuredView.swift; sourceTree = "<group>"; };
+		4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressModifier.swift; sourceTree = "<group>"; };
+		4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		4EF4FDF023F9E268008C3022 /* mobile_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config.json; sourceTree = "<group>"; };
 		4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config_localapi.json; sourceTree = "<group>"; };
 		4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetailsView.swift; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 			children = (
 				4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */,
 				4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */,
+				4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */,
 			);
 			name = Utilities;
 			path = Source/Plumbing/Utilities;
@@ -366,6 +371,7 @@
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				4E3F8D402455A41300EC7EB0 /* ViewManager.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
+				4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -500,6 +506,7 @@
 				4E79B09C241428310054C382 /* UIError.swift in Sources */,
 				4EFEFC2A2451D13D0057C78D /* Configuration.swift in Sources */,
 				4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */,
+				4EE6B1DE24649DB700B43FF3 /* LongPressModifier.swift in Sources */,
 				4E1888F923DE01CC0014638D /* ErrorSummaryView.swift in Sources */,
 				4EE4CABF245364910033B3C5 /* SceneDelegate.swift in Sources */,
 				4EFEFC2C2451D2860057C78D /* ErrorCodes.swift in Sources */,
@@ -508,6 +515,7 @@
 				4E3F8D412455A41300EC7EB0 /* ViewManager.swift in Sources */,
 				4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */,
 				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,
+				4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */,
 				4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */,
 				4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */,
 				4EB386F5244C68F600FC2B17 /* Authenticator.swift in Sources */,

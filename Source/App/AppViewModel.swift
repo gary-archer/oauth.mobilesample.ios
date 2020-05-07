@@ -29,7 +29,7 @@ class AppViewModel: ObservableObject {
 
         // Load the configuration file
         guard let filePath = Bundle.main.path(forResource: "mobile_config", ofType: "json") else {
-            throw ErrorHandler().fromMessage(message: "Unable to load mobile configuration file")
+            throw ErrorHandler.fromMessage(message: "Unable to load mobile configuration file")
         }
 
         // Create the decoder
@@ -41,7 +41,7 @@ class AppViewModel: ObservableObject {
         if let configuration = try? decoder.decode(Configuration.self, from: jsonData) {
             self.configuration = configuration
         } else {
-            throw ErrorHandler().fromMessage(message: "Unable to deserialize mobile configuration file JSON data")
+            throw ErrorHandler.fromMessage(message: "Unable to deserialize mobile configuration file JSON data")
         }
 
         // Create the global authenticator

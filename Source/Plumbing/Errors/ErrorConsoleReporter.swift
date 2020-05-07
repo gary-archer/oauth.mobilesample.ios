@@ -8,9 +8,9 @@ struct ErrorConsoleReporter {
     /*
      * Output names and values
      */
-    func output(error: UIError) {
+    static func output(error: UIError) {
 
-        let lines = ErrorFormatter().getErrorLines(error: error)
+        let lines = ErrorFormatter.getErrorLines(error: error)
         lines.forEach { line in
             NSLog("BasicMobileApp Error: \(line.name) = \(line.value)")
         }
