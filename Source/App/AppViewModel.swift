@@ -24,7 +24,7 @@ class AppViewModel: ObservableObject {
 
         // Reset state flags
         self.isInitialised = false
-        self.isDeviceSecured = DeviceSecurity().isDeviceSecured()
+        self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
         self.isDataLoaded = false
 
         // Load the configuration file

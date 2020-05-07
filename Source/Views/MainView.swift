@@ -37,7 +37,7 @@ struct MainView: View {
 
             if !self.isDeviceSecured {
 
-                // If security preconditions are not met then move to a device view
+                // We require a secured device so move here if prerequisites are not met
                 DeviceNotSecuredView()
 
             } else if self.viewRouter.currentViewType == TransactionsView.Type.self {

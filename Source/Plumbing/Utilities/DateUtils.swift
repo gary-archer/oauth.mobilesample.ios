@@ -12,7 +12,7 @@ struct DateUtils {
 
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(abbreviation: "UTC")
-        formatter.dateFormat = "MMM dd yyyy HH:mm"
+        formatter.dateFormat = "MMM dd yyyy HH:mm:ss"
         return formatter.string(from: date)
     }
 

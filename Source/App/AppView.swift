@@ -130,7 +130,7 @@ struct AppView: View {
 
             // Recheck device security if required
             if !self.model.isDeviceSecured {
-                self.model.isDeviceSecured = DeviceSecurity().isDeviceSecured()
+                self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
             }
 
             // Move to the home view

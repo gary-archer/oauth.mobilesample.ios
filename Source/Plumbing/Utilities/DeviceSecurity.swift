@@ -9,7 +9,7 @@ struct DeviceSecurity {
     /*
      * Return true for secured devices
      */
-    func isDeviceSecured() -> Bool {
+    static func isDeviceSecured() -> Bool {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
     }
 }
