@@ -59,7 +59,6 @@
 		4EFCE6822463273200BD1443 /* ErrorConsoleReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */; };
 		4EFCE6832463273200BD1443 /* ErrorFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6812463273200BD1443 /* ErrorFormatter.swift */; };
 		4EFCE68524632F2600BD1443 /* ApiRequestOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE68424632F2600BD1443 /* ApiRequestOptions.swift */; };
-		4EFCE687246344EE00BD1443 /* HeaderTextButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE686246344EE00BD1443 /* HeaderTextButtonModifier.swift */; };
 		4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC252451D13D0057C78D /* AppConfiguration.swift */; };
 		4EFEFC292451D13D0057C78D /* OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC262451D13D0057C78D /* OAuthConfiguration.swift */; };
 		4EFEFC2A2451D13D0057C78D /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC272451D13D0057C78D /* Configuration.swift */; };
@@ -126,7 +125,6 @@
 		4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorConsoleReporter.swift; sourceTree = "<group>"; };
 		4EFCE6812463273200BD1443 /* ErrorFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorFormatter.swift; sourceTree = "<group>"; };
 		4EFCE68424632F2600BD1443 /* ApiRequestOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestOptions.swift; sourceTree = "<group>"; };
-		4EFCE686246344EE00BD1443 /* HeaderTextButtonModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTextButtonModifier.swift; sourceTree = "<group>"; };
 		4EFEFC252451D13D0057C78D /* AppConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		4EFEFC262451D13D0057C78D /* OAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthConfiguration.swift; sourceTree = "<group>"; };
 		4EFEFC272451D13D0057C78D /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -358,7 +356,6 @@
 				4EFEFC302451EE4F0057C78D /* Colors.swift */,
 				4ECD97632452E57800D7E271 /* DataReloadHandler.swift */,
 				4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */,
-				4EFCE686246344EE00BD1443 /* HeaderTextButtonModifier.swift */,
 				4E29A1A62461DBE100095F11 /* OrientationHandler.swift */,
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				4E3F8D402455A41300EC7EB0 /* ViewManager.swift */,
@@ -513,7 +510,6 @@
 				4EFEFC292451D13D0057C78D /* OAuthConfiguration.swift in Sources */,
 				4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */,
 				4E432516244EEAEE00A1582E /* UserInfoClaims.swift in Sources */,
-				4EFCE687246344EE00BD1443 /* HeaderTextButtonModifier.swift in Sources */,
 				4E1888F723DE01130014638D /* HeaderButtonsView.swift in Sources */,
 				4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */,
 				4EFCE68524632F2600BD1443 /* ApiRequestOptions.swift in Sources */,

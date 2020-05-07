@@ -26,7 +26,7 @@ struct HeaderButtonStyle: ButtonStyle {
 
         configuration.label
             .disabled(self.disabled)
-            .frame(width: width, height: 60)
+            .frame(width: self.width, height: 60)
             .foregroundColor(Color.black)
             .background(Colors.lightBlue)
             .font(self.disabled ? disabledFont : enabledFont)

@@ -7,6 +7,7 @@ struct HeaderButtonsView: View {
 
     // External objects
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
+    @GestureState private var reloadTapped = false
 
     // Properties
     private var sessionButtonsDisabled: Bool
@@ -41,46 +42,40 @@ struct HeaderButtonsView: View {
     var body: some View {
 
         let deviceWidth = UIScreen.main.bounds.size.width
-        let buttonStyle = HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled)
-        let textButtonModifier = HeaderTextButtonModifier(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled)
+        let homeButtonStyle = HeaderButtonStyle(width: deviceWidth / 6, disabled: false)
+        let sessionButtonStyle = HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled)
 
         return HStack {
 
-            // Inform the parent view when the home button is clicked
+            // A button to navigate home
             Button(action: self.onHome) {
                Text("Home").multilineTextAlignment(.center)
             }
-            .buttonStyle(buttonStyle)
+            .buttonStyle(homeButtonStyle)
 
-            // Inform the parent view when a data reload is requested
-            // Handling both button presses and long presses with a button is problematic in SwiftUI
-            Text("Reload")
-                .multilineTextAlignment(.center)
-                .onTapGesture(perform: self.onReloadPressed)
-                .onLongPressGesture(minimumDuration: 2, perform: self.onReloadLongPressed)
-                .disabled(self.sessionButtonsDisabled)
-                .modifier(textButtonModifier)
+            // A button to reload data, and a long press intentionally causes an error
+            Button(action: self.onReloadPressed) {
+                Text("Reload").multilineTextAlignment(.center)
+            }
+            .buttonStyle(sessionButtonStyle)
 
-            // Initiate a test operation to make the access token act expired
+            // A button to make the current access token act expired
             Button(action: self.onExpireAccessToken) {
                 Text("Expire Access Token").multilineTextAlignment(.center)
             }
-            .disabled(self.sessionButtonsDisabled)
-            .buttonStyle(buttonStyle)
+            .buttonStyle(sessionButtonStyle)
 
-            // Initiate a test operation to make the refresh token act expired
+            // A button to make the current refresh token act expired
             Button(action: self.onExpireRefreshToken) {
                 Text("Expire Refresh Token").multilineTextAlignment(.center)
             }
-            .disabled(self.sessionButtonsDisabled)
-            .buttonStyle(buttonStyle)
+            .buttonStyle(sessionButtonStyle)
 
-            // Initiate a logout operation
+            // A button to initiate a logout
             Button(action: self.onLogout) {
                 Text("Logout").multilineTextAlignment(.center)
             }
-            .disabled(self.sessionButtonsDisabled)
-            .buttonStyle(buttonStyle)
+            .buttonStyle(sessionButtonStyle)
         }
     }
 
