@@ -34,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Create the main window
             let window = UIWindow(windowScene: windowScene)
 
-            // Initialise environment objects
+            // Set the initial orientation
             orientationHandler.isLandscape = windowScene.interfaceOrientation.isLandscape
 
             // Create the main view and supply environment objects
@@ -66,8 +66,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation,
         traitCollection previousTraitCollection: UITraitCollection) {
 
+        // Set the updated orientation
         orientationHandler.isLandscape = windowScene.interfaceOrientation.isLandscape
-        // self.orientationHandler.sendViewUpdateEvent()
     }
 
     /*

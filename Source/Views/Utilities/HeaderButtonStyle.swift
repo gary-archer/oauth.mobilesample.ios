@@ -22,7 +22,7 @@ struct HeaderButtonStyle: ButtonStyle {
     /*
      * Apply custom styles for our button behaviour
      */
-    func makeBody(configuration: Self.Configuration) -> some View {
+    func makeBody(configuration: ButtonStyleConfiguration) -> some View {
 
         configuration.label
             .disabled(self.disabled)

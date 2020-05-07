@@ -8,15 +8,12 @@ import Combine
 class DataReloadHandler: ObservableObject {
 
     // An object to publish
-    let objectWillChange = PassthroughSubject<(), Never>()
-
-    // This is set by pressing or long pressing the reload button
-    @Published var causeError: Bool = false
+    let objectWillChange = PassthroughSubject<Bool, Never>()
 
     /*
      * Publish the reload event, which views can subscribe to via their onReceive handler
      */
-    func sendReloadEvent() {
-        objectWillChange.send()
+    func sendReloadEvent(causeError: Bool) {
+        objectWillChange.send(causeError)
     }
 }

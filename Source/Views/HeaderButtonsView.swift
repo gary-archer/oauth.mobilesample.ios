@@ -12,7 +12,7 @@ struct HeaderButtonsView: View {
     // Properties
     private var sessionButtonsDisabled: Bool
     private let onHome: () -> Void
-    private let onReloadData: () -> Void
+    private let onReloadData: (Bool) -> Void
     private let onExpireAccessToken: () -> Void
     private let onExpireRefreshToken: () -> Void
     private let onLogout: () -> Void
@@ -23,7 +23,7 @@ struct HeaderButtonsView: View {
     init (
         sessionButtonsEnabled: Bool,
         onHome: @escaping () -> Void,
-        onReloadData: @escaping () -> Void,
+        onReloadData: @escaping (Bool) -> Void,
         onExpireAccessToken: @escaping () -> Void,
         onExpireRefreshToken: @escaping () -> Void,
         onLogout: @escaping () -> Void) {
@@ -53,11 +53,12 @@ struct HeaderButtonsView: View {
             }
             .buttonStyle(homeButtonStyle)
 
-            // A button to reload data, and a long press intentionally causes an error
+            // The reload button supports the long press event
             Button(action: self.onReloadPressed) {
                 Text("Reload").multilineTextAlignment(.center)
             }
             .buttonStyle(sessionButtonStyle)
+            .onLongPressGesture(minimumDuration: 2, perform: self.onReloadLongPressed)
 
             // A button to make the current access token act expired
             Button(action: self.onExpireAccessToken) {
@@ -83,9 +84,7 @@ struct HeaderButtonsView: View {
      * Normal reload clicks call the API normally
      */
     private func onReloadPressed() {
-
-        dataReloadHandler.causeError = false
-        self.onReloadData()
+        self.onReloadData(false)
     }
 
     /*
@@ -93,8 +92,6 @@ struct HeaderButtonsView: View {
      * If it is long clicked for 2 seconds or more then a custom header is sent to the cloud API
      */
     private func onReloadLongPressed() {
-
-        dataReloadHandler.causeError = true
-        self.onReloadData()
+        self.onReloadData(true)
     }
 }

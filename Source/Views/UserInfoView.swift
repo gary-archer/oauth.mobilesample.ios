@@ -48,8 +48,8 @@ struct UserInfoView: View {
             Text(self.getUserName())
                 .font(.system(size: 14))
                 .onAppear(perform: self.initialLoad)
-                .onReceive(self.dataReloadHandler.objectWillChange, perform: { _ in
-                    self.loadData(causeError: self.dataReloadHandler.causeError)
+                .onReceive(self.dataReloadHandler.objectWillChange, perform: {causeError in
+                    self.loadData(causeError: causeError)
                 })
         }
     }

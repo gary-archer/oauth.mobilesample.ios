@@ -132,7 +132,7 @@ struct AppView: View {
 
             // If there is an error loading data from the API then force a reload
             if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
-                self.onReloadData()
+                self.onReloadData(causeError: false)
             }
         }
     }
@@ -140,9 +140,9 @@ struct AppView: View {
     /*
      * Handle reload data button clicks by publishing the reload event
      */
-    private func onReloadData() {
+    private func onReloadData(causeError: Bool) {
         self.viewManager!.setViewCount(count: 2)
-        self.dataReloadHandler.sendReloadEvent()
+        self.dataReloadHandler.sendReloadEvent(causeError: causeError)
     }
 
     /*
@@ -174,7 +174,7 @@ struct AppView: View {
                     .await()
 
                 // Reload data after signing in
-                self.onReloadData()
+                self.onReloadData(causeError: false)
 
             } catch {
 
