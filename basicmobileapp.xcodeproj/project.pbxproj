@@ -50,6 +50,8 @@
 		4EE4CAB8245336430033B3C5 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4EE4CAB7245336430033B3C5 /* .swiftlint.yml */; };
 		4EE4CABE245364910033B3C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABC245364910033B3C5 /* AppDelegate.swift */; };
 		4EE4CABF245364910033B3C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABD245364910033B3C5 /* SceneDelegate.swift */; };
+		4EE6B1DA246479A700B43FF3 /* DeviceSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */; };
+		4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */; };
 		4EF4FDF223F9E269008C3022 /* mobile_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF023F9E268008C3022 /* mobile_config.json */; };
 		4EF4FDF323F9E269008C3022 /* mobile_config_localapi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */; };
 		4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */; };
@@ -116,6 +118,8 @@
 		4EE4CAB7245336430033B3C5 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		4EE4CABC245364910033B3C5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EE4CABD245364910033B3C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSecurity.swift; sourceTree = "<group>"; };
+		4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNotSecuredView.swift; sourceTree = "<group>"; };
 		4EF4FDF023F9E268008C3022 /* mobile_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config.json; sourceTree = "<group>"; };
 		4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config_localapi.json; sourceTree = "<group>"; };
 		4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetailsView.swift; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 			children = (
 				4EFEFC2D2451EE4F0057C78D /* Utilities */,
 				4EB6DAA723F967A70007A311 /* CompaniesView.swift */,
+				4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */,
 				4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */,
 				4E1888F823DE01CC0014638D /* ErrorSummaryView.swift */,
 				4E1888F623DE01130014638D /* HeaderButtonsView.swift */,
@@ -210,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */,
+				4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */,
 			);
 			name = Utilities;
 			path = Source/Plumbing/Utilities;
@@ -511,6 +517,7 @@
 				4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */,
 				4E432516244EEAEE00A1582E /* UserInfoClaims.swift in Sources */,
 				4E1888F723DE01130014638D /* HeaderButtonsView.swift in Sources */,
+				4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */,
 				4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */,
 				4EFCE68524632F2600BD1443 /* ApiRequestOptions.swift in Sources */,
 				4EFEFC352451EE4F0057C78D /* ViewRouter.swift in Sources */,
@@ -529,6 +536,7 @@
 				4EFCE6822463273200BD1443 /* ErrorConsoleReporter.swift in Sources */,
 				4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */,
 				4E43251C244EFD6500A1582E /* Transaction.swift in Sources */,
+				4EE6B1DA246479A700B43FF3 /* DeviceSecurity.swift in Sources */,
 				4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */,
 				4E3F8D432455E9C400EC7EB0 /* AppViewModel.swift in Sources */,
 			);

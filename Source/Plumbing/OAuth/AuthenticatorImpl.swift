@@ -304,16 +304,9 @@ class AuthenticatorImpl: Authenticator {
     private func performLogoutRedirect(
         viewController: UIViewController,
         metadata: OIDServiceConfiguration,
-        idToken: String) -> CoFuture<Void> {
+        idToken: String) throws -> CoFuture<Void> {
 
         let promise = CoPromise<Void>()
-
-        // Get the logout endpoint as a URL object
-        guard let logoutUri = URL(string: self.configuration.logoutEndpoint) else {
-            let message = "Error creating URL for : \(self.configuration.logoutEndpoint)"
-            promise.fail(ErrorHandler().fromMessage(message: message))
-            return promise
-        }
 
         // Get the post logout address as a URL object
         guard let postLogoutRedirectUri = URL(string: self.configuration.postLogoutRedirectUri) else {
@@ -326,9 +319,7 @@ class AuthenticatorImpl: Authenticator {
         let logoutManager = self.createLogoutManager()
 
         // If required, create an updated metadata object with an end session endpoint
-        let metadataWithEndSessionEndpoint = logoutManager.updateMetadata(
-            metadata: metadata,
-            logoutUri: logoutUri)
+        let metadataWithEndSessionEndpoint = try logoutManager.updateMetadata(metadata: metadata)
 
         // Build the end session request
         let request = logoutManager.createEndSessionRequest(

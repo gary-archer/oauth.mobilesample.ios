@@ -18,9 +18,6 @@ struct AppView: View {
     private let viewManager: ViewManager?
     private var viewRouter: ViewRouter
 
-    // State used for rendering within this view
-    @State private var error: UIError?
-
     /*
      * Initialise properties that we can set here
      */
@@ -46,7 +43,10 @@ struct AppView: View {
             TitleView(
                 apiClient: self.model.apiClient,
                 viewManager: self.viewManager,
-                shouldLoadUserInfo: self.model.isInitialised && !self.isInLoginRequired())
+                shouldLoadUserInfo:
+                    self.model.isInitialised &&
+                    self.model.isDeviceSecured &&
+                    !self.isInLoginRequired())
 
             // Next display the header buttons view
             HeaderButtonsView(
@@ -59,12 +59,12 @@ struct AppView: View {
                     .padding(.bottom)
 
             // Display errors if applicable
-            if self.error != nil {
+            if self.model.error != nil {
 
                 ErrorSummaryView(
                     hyperlinkText: "Application Problem Encountered",
                     dialogTitle: "Application Error",
-                    error: self.error!)
+                    error: self.model.error!)
                         .padding(.bottom)
             }
 
@@ -74,14 +74,15 @@ struct AppView: View {
                 // Render the API session id
                 SessionView(
                     apiClient: self.model.apiClient!,
-                    isVisible: self.model.authenticator!.isLoggedIn())
+                    isVisible: self.model.isDeviceSecured && self.model.authenticator!.isLoggedIn())
                         .padding(.bottom)
 
                 // Render the main view depending on the router location
                 MainView(
                     viewRouter: self.viewRouter,
                     viewManager: self.viewManager!,
-                    apiClient: self.model.apiClient!)
+                    apiClient: self.model.apiClient!,
+                    isDeviceSecured: self.model.isDeviceSecured)
             }
 
             // Fill up the remainder of the view if needed
@@ -97,6 +98,7 @@ struct AppView: View {
     private func initialiseApp() {
 
         do {
+
             // Initialise the model, which manages mutable data
             try self.model.initialise()
 
@@ -110,7 +112,7 @@ struct AppView: View {
 
             // Output error details
             let uiError = ErrorHandler().fromException(error: error)
-            self.error = uiError
+            self.model.error = uiError
         }
     }
 
@@ -125,6 +127,11 @@ struct AppView: View {
         }
 
         if self.model.isInitialised {
+
+            // Recheck device security if required
+            if !self.model.isDeviceSecured {
+                self.model.isDeviceSecured = DeviceSecurity().isDeviceSecured()
+            }
 
             // Move to the home view
             self.viewRouter.currentViewType = CompaniesView.Type.self
@@ -188,7 +195,7 @@ struct AppView: View {
                 } else {
 
                     // Otherwise render the error in the UI
-                    self.error = uiError
+                    self.model.error = uiError
                 }
             }
         }

@@ -16,7 +16,7 @@ struct OktaLogoutManager: LogoutManager {
     /*
      * For Okta this is a no op since it has a standard end session endpoint
      */
-    func updateMetadata(metadata: OIDServiceConfiguration, logoutUri: URL) -> OIDServiceConfiguration {
+    func updateMetadata(metadata: OIDServiceConfiguration) throws -> OIDServiceConfiguration {
         return metadata
     }
 

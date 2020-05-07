@@ -11,9 +11,11 @@ class AppViewModel: ObservableObject {
     @Published var apiClient: ApiClient?
     @Published var authenticator: AuthenticatorImpl?
 
-    // State flags used by the view
+    // State used by the view
     @Published var isInitialised = false
+    @Published var isDeviceSecured = false
     @Published var isDataLoaded = false
+    @Published var error: UIError?
 
     /*
      * Initialise or reinitialise data
@@ -22,6 +24,7 @@ class AppViewModel: ObservableObject {
 
         // Reset state flags
         self.isInitialised = false
+        self.isDeviceSecured = DeviceSecurity().isDeviceSecured()
         self.isDataLoaded = false
 
         // Load the configuration file

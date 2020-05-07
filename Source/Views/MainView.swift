@@ -8,6 +8,7 @@ struct MainView: View {
     // Properties
     private let viewManager: ViewManager?
     private let apiClient: ApiClient
+    private let isDeviceSecured: Bool
 
     // The router
     @ObservedObject var viewRouter: ViewRouter
@@ -18,11 +19,13 @@ struct MainView: View {
     init (
         viewRouter: ViewRouter,
         viewManager: ViewManager,
-        apiClient: ApiClient) {
+        apiClient: ApiClient,
+        isDeviceSecured: Bool) {
 
         self.viewRouter = viewRouter
         self.viewManager = viewManager
         self.apiClient = apiClient
+        self.isDeviceSecured = isDeviceSecured
     }
 
     /*
@@ -32,7 +35,12 @@ struct MainView: View {
 
         VStack {
 
-            if self.viewRouter.currentViewType == TransactionsView.Type.self {
+            if !self.isDeviceSecured {
+
+                // If security preconditions are not met then move to a device view
+                DeviceNotSecuredView()
+
+            } else if self.viewRouter.currentViewType == TransactionsView.Type.self {
 
                 // Render the transactions view
                 TransactionsView(

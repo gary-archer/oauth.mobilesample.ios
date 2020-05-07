@@ -8,7 +8,7 @@ import SwiftCoroutine
 protocol LogoutManager {
 
     // Deal with metadata and the end session endpoint
-    func updateMetadata(metadata: OIDServiceConfiguration, logoutUri: URL) -> OIDServiceConfiguration
+    func updateMetadata(metadata: OIDServiceConfiguration) throws -> OIDServiceConfiguration
 
     // Return the end session request object
     func createEndSessionRequest(

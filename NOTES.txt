@@ -1,14 +1,6 @@
 TODO
 ----
-1. Update SPA / Desktop samples to fail both the Main and User Info API calls
-
-2. Stack traces to improve
-   Pass stack traces to uiError from system errors
-
-3. Prerequisites - require or detect secured device
-   https://www.raywenderlich.com/236-how-to-secure-ios-user-data-the-keychain-and-biometrics-face-id-or-touch-id
-
-4. Get long press errors working somehow
+1. Get long press errors working somehow
 
 INTERSTITIAL PAGE PROBLEM
 -------------------------

@@ -59,7 +59,8 @@ struct ErrorFormatter {
     }
 
     /*
-     * Try to get the stack trace in a readable format
+     * Try to get the stack trace into a format for output
+     * I would like to demangle the call stack but currently there seems to be no clean way to do that
      */
     private func getFormattedStackTrace(stack: [String]) -> String {
 

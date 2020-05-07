@@ -17,7 +17,12 @@ struct CognitoLogoutManager: LogoutManager {
      * Cognito has no end session endpoint and does not return one in its metadata
      * So create an updated metadata object with its vendor specific logout URL
      */
-    func updateMetadata(metadata: OIDServiceConfiguration, logoutUri: URL) -> OIDServiceConfiguration {
+    func updateMetadata(metadata: OIDServiceConfiguration) throws -> OIDServiceConfiguration {
+
+        guard let logoutUri = URL(string: self.configuration.logoutEndpoint) else {
+            let message = "Error creating URL for : \(self.configuration.logoutEndpoint)"
+            throw ErrorHandler().fromMessage(message: message)
+        }
 
         return OIDServiceConfiguration(
             authorizationEndpoint: metadata.authorizationEndpoint,
