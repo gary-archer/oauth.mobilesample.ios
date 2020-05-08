@@ -6,7 +6,7 @@ import SwiftUI
 struct MainView: View {
 
     // Properties
-    private let viewManager: ViewManager?
+    private let viewManager: ViewManager
     private let apiClient: ApiClient
     private let isDeviceSecured: Bool
 
@@ -45,7 +45,7 @@ struct MainView: View {
                 // Render the transactions view
                 TransactionsView(
                     viewRouter: viewRouter,
-                    viewManager: viewManager!,
+                    viewManager: viewManager,
                     apiClient: self.apiClient)
 
             } else if self.viewRouter.currentViewType == LoginRequiredView.Type.self {
@@ -58,7 +58,7 @@ struct MainView: View {
                 // Render the companies view by default
                 CompaniesView(
                     viewRouter: viewRouter,
-                    viewManager: viewManager!,
+                    viewManager: viewManager,
                     apiClient: self.apiClient)
             }
         }

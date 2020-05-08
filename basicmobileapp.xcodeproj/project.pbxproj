@@ -361,11 +361,11 @@
 				4EFEFC302451EE4F0057C78D /* Colors.swift */,
 				4ECD97632452E57800D7E271 /* DataReloadHandler.swift */,
 				4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */,
+				4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */,
 				4E29A1A62461DBE100095F11 /* OrientationHandler.swift */,
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				4E3F8D402455A41300EC7EB0 /* ViewManager.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
-				4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";

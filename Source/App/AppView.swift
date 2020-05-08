@@ -15,7 +15,7 @@ struct AppView: View {
 
     // Properties
     private let mainWindow: UIWindow
-    private let viewManager: ViewManager?
+    private let viewManager: ViewManager
     private var viewRouter: ViewRouter
 
     /*
@@ -80,7 +80,7 @@ struct AppView: View {
                 // Render the main view depending on the router location
                 MainView(
                     viewRouter: self.viewRouter,
-                    viewManager: self.viewManager!,
+                    viewManager: self.viewManager,
                     apiClient: self.model.apiClient!,
                     isDeviceSecured: self.model.isDeviceSecured)
             }
@@ -103,10 +103,10 @@ struct AppView: View {
             try self.model.initialise()
 
             // Initialise the view manager
-            self.viewManager!.initialise(
+            self.viewManager.initialise(
                 onLoadStateChanged: self.onLoadStateChanged,
                 onLoginRequired: self.onLoginRequired)
-            self.viewManager!.setViewCount(count: 2)
+            self.viewManager.setViewCount(count: 2)
 
         } catch {
 
@@ -148,7 +148,8 @@ struct AppView: View {
      * Handle reload data button clicks by publishing the reload event
      */
     private func onReloadData(causeError: Bool) {
-        self.viewManager!.setViewCount(count: 2)
+
+        self.viewManager.setViewCount(count: 2)
         self.dataReloadHandler.sendReloadEvent(causeError: causeError)
     }
 
