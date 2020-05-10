@@ -59,8 +59,8 @@ struct ErrorHandler {
     static func fromRedirectCancelled() -> UIError {
 
         return UIError(
-            area: "Login",
-            errorCode: ErrorCodes.loginCancelled,
+            area: "Redirect",
+            errorCode: ErrorCodes.redirectCancelled,
             userMessage: "The redirect request was cancelled")
     }
 
@@ -69,7 +69,13 @@ struct ErrorHandler {
      */
     static func fromLoginRequestError(error: Error) -> UIError {
 
-        let uiError = UIError(
+        // Already handled
+        var uiError = error as? UIError
+        if uiError != nil {
+            return uiError!
+        }
+
+        uiError = UIError(
             area: "Login",
             errorCode: ErrorCodes.loginRequestFailed,
             userMessage: "A technical problem occurred during login processing"
@@ -77,12 +83,12 @@ struct ErrorHandler {
 
         // Update it from the expcetion
         if ErrorHandler.isAppAuthError(error: error) {
-            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError!)
         } else {
-            ErrorHandler.updateFromException(error: error, uiError: uiError)
+            ErrorHandler.updateFromException(error: error, uiError: uiError!)
         }
 
-        return uiError
+        return uiError!
     }
 
     /*
@@ -90,7 +96,13 @@ struct ErrorHandler {
      */
     static func fromLoginResponseError(error: Error) -> UIError {
 
-        let uiError = UIError(
+        // Already handled
+        var uiError = error as? UIError
+        if uiError != nil {
+            return uiError!
+        }
+
+        uiError = UIError(
             area: "Login",
             errorCode: ErrorCodes.loginResponseFailed,
             userMessage: "A technical problem occurred during login processing"
@@ -98,12 +110,12 @@ struct ErrorHandler {
 
         // Update it from the expcetion
         if ErrorHandler.isAppAuthError(error: error) {
-            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError!)
         } else {
-            ErrorHandler.updateFromException(error: error, uiError: uiError)
+            ErrorHandler.updateFromException(error: error, uiError: uiError!)
         }
 
-        return uiError
+        return uiError!
     }
 
     /*
@@ -111,20 +123,26 @@ struct ErrorHandler {
      */
     static func fromLogoutRequestError(error: Error) -> UIError {
 
+        // Already handled
+        var uiError = error as? UIError
+        if uiError != nil {
+            return uiError!
+        }
+
         // Create the error
-        let uiError = UIError(
+        uiError = UIError(
             area: "Logout",
             errorCode: ErrorCodes.logoutRequestFailed,
             userMessage: "A technical problem occurred during logout processing")
 
         // Update it from the expcetion
         if ErrorHandler.isAppAuthError(error: error) {
-            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError!)
         } else {
-            ErrorHandler.updateFromException(error: error, uiError: uiError)
+            ErrorHandler.updateFromException(error: error, uiError: uiError!)
         }
 
-        return uiError
+        return uiError!
     }
 
     /*
@@ -132,20 +150,26 @@ struct ErrorHandler {
      */
     static func fromTokenError(error: Error, errorCode: String) -> UIError {
 
+        // Already handled
+        var uiError = error as? UIError
+        if uiError != nil {
+            return uiError!
+        }
+
         // Create the error
-        let uiError = UIError(
+        uiError = UIError(
             area: "Token",
             errorCode: errorCode,
             userMessage: "A technical problem occurred during token processing")
 
         // Update it from the expcetion
         if ErrorHandler.isAppAuthError(error: error) {
-            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError!)
         } else {
-            ErrorHandler.updateFromException(error: error, uiError: uiError)
+            ErrorHandler.updateFromException(error: error, uiError: uiError!)
         }
 
-        return uiError
+        return uiError!
     }
 
     /*
@@ -153,14 +177,20 @@ struct ErrorHandler {
      */
     static func fromApiRequestError(error: Error, url: String) -> UIError {
 
-        let uiError = UIError(
+        // Already handled
+        var uiError = error as? UIError
+        if uiError != nil {
+            return uiError!
+        }
+
+        uiError = UIError(
             area: "API",
             errorCode: ErrorCodes.apiNetworkError,
             userMessage: "A network problem occurred when the UI called the server")
 
-        ErrorHandler.updateFromException(error: error, uiError: uiError)
-        uiError.url = url
-        return uiError
+        ErrorHandler.updateFromException(error: error, uiError: uiError!)
+        uiError!.url = url
+        return uiError!
     }
 
     /*

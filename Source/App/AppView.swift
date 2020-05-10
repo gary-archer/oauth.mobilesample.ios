@@ -170,6 +170,7 @@ struct AppView: View {
     private func onLogin() {
 
         // Run async operations in a coroutine
+        self.model.isTopMost = false
         DispatchQueue.main.startCoroutine {
 
             do {
@@ -180,11 +181,12 @@ struct AppView: View {
 
                 // Reload data after signing in
                 self.onReloadData(causeError: false)
+                self.model.isTopMost = true
 
             } catch {
 
                 let uiError = ErrorHandler.fromException(error: error)
-                if uiError.errorCode == ErrorCodes.loginCancelled {
+                if uiError.errorCode == ErrorCodes.redirectCancelled {
 
                     // If the login was cancelled, move to the login required view
                     self.viewRouter.currentViewType = LoginRequiredView.Type.self
@@ -195,6 +197,7 @@ struct AppView: View {
                     // Otherwise render the error in the UI
                     self.model.error = uiError
                 }
+                self.model.isTopMost = true
             }
         }
     }
@@ -205,6 +208,7 @@ struct AppView: View {
     private func onLogout() {
 
         // Run async operations in a coroutine
+        self.model.isTopMost = true
         DispatchQueue.main.startCoroutine {
 
             do {
@@ -212,23 +216,32 @@ struct AppView: View {
                 try self.model.authenticator!.logout(viewController: self.mainWindow.rootViewController!)
                     .await()
 
-                // Move to the login required view and update UI state
-                self.viewRouter.currentViewType = LoginRequiredView.Type.self
-                self.viewRouter.params = []
-                self.model.isDataLoaded = false
+                // Do post logout processing
+                self.postLogout()
 
             } catch {
 
                 // On error, only output logout errors to the console rather than impacting the end user
                 let uiError = ErrorHandler.fromException(error: error)
-                ErrorConsoleReporter.output(error: uiError)
+                if uiError.errorCode != ErrorCodes.redirectCancelled {
+                    ErrorConsoleReporter.output(error: uiError)
+                }
 
-                // Move to the login required view and update UI state
-                self.viewRouter.currentViewType = LoginRequiredView.Type.self
-                self.viewRouter.params = []
-                self.model.isDataLoaded = false
+                // Do post logout processing
+                self.postLogout()
             }
         }
+    }
+
+    /*
+     * Move to the login required view and update UI state
+     */
+    private func postLogout() {
+
+        self.viewRouter.currentViewType = LoginRequiredView.Type.self
+        self.viewRouter.params = []
+        self.model.isDataLoaded = false
+        self.model.isTopMost = true
     }
 
     /*

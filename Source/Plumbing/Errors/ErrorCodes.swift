@@ -8,8 +8,8 @@ struct ErrorCodes {
     // Used to indicate that the API cannot be called until the user logs in
     static let loginRequired = "login_required"
 
-    // Used to indicate that the Safari View Controller was cancelled
-    static let loginCancelled = "login_cancelled"
+    // Used to indicaten that the Safari View Controller was cancelled
+    static let redirectCancelled = "redirect_cancelled"
 
     // A technical error starting a login request, such as contacting the metadata endpoint
     static let loginRequestFailed = "login_request_failed"
