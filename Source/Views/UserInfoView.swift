@@ -79,7 +79,7 @@ struct UserInfoView: View {
 
                 // Initialise for this request
                 self.error = nil
-                let options = ApiRequestOptions(causeError: false)
+                let options = ApiRequestOptions(causeError: causeError)
 
                 // Make the API call on a background thread
                 self.viewManager.onViewLoading()
@@ -91,6 +91,7 @@ struct UserInfoView: View {
             } catch {
 
                 // Report errors
+                self.userInfo = nil
                 let uiError = ErrorHandler.fromException(error: error)
                 self.viewManager.onViewLoadFailed(error: uiError)
                 self.error = uiError

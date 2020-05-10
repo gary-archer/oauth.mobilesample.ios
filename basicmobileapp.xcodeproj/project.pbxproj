@@ -37,6 +37,7 @@
 		4E79B09C241428310054C382 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79B09B241428310054C382 /* UIError.swift */; };
 		4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85F2CB2414039300E0ACA8 /* ApiClient.swift */; };
 		4E87A39E245884FE00E522BF /* apple-app-site-association in Resources */ = {isa = PBXBuildFile; fileRef = 4E87A39C245884FE00E522BF /* apple-app-site-association */; };
+		4EA718782468A3300081FDE2 /* ReloadPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA718772468A3300081FDE2 /* ReloadPublisher.swift */; };
 		4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB180DB24508FC600A2C045 /* ErrorLine.swift */; };
 		4EB386EC244C4D1A00FC2B17 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386EB244C4D1A00FC2B17 /* ErrorHandler.swift */; };
 		4EB386F5244C68F600FC2B17 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386F4244C68F600FC2B17 /* Authenticator.swift */; };
@@ -106,6 +107,7 @@
 		4E85F2CB2414039300E0ACA8 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		4E87A39C245884FE00E522BF /* apple-app-site-association */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "apple-app-site-association"; sourceTree = "<group>"; };
 		4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = basicmobileapp.entitlements; sourceTree = "<group>"; };
+		4EA718772468A3300081FDE2 /* ReloadPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadPublisher.swift; sourceTree = "<group>"; };
 		4EB180DB24508FC600A2C045 /* ErrorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLine.swift; sourceTree = "<group>"; };
 		4EB386EB244C4D1A00FC2B17 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		4EB386F4244C68F600FC2B17 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 				4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */,
 				4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */,
 				4E29A1A62461DBE100095F11 /* OrientationHandler.swift */,
+				4EA718772468A3300081FDE2 /* ReloadPublisher.swift */,
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				4E3F8D402455A41300EC7EB0 /* ViewManager.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
@@ -510,6 +513,7 @@
 				4E3F8D412455A41300EC7EB0 /* ViewManager.swift in Sources */,
 				4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */,
 				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,
+				4EA718782468A3300081FDE2 /* ReloadPublisher.swift in Sources */,
 				4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */,
 				4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */,
 				4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */,
