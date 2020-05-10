@@ -51,38 +51,38 @@ struct HeaderButtonsView: View {
             Button(action: self.onHome) {
                Text("Home")
             }
-            .buttonStyle(homeButtonStyle)
+                .buttonStyle(homeButtonStyle)
 
             // The reload button also support a long press event
             Button(action: self.onReloadDefaultAction) {
                 Text("Reload")
             }
-            .buttonStyle(sessionButtonStyle)
-            .disabled(self.sessionButtonsDisabled)
-            .modifier(LongPressModifier(
-                isDisabled: self.sessionButtonsDisabled,
-                completionHandler: self.onReloadPressed))
+                .buttonStyle(sessionButtonStyle)
+                .disabled(self.sessionButtonsDisabled)
+                .modifier(LongPressModifier(
+                    isDisabled: self.sessionButtonsDisabled,
+                    completionHandler: self.onReloadPressed))
 
             // A button to make the current access token act expired
             Button(action: self.onExpireAccessToken) {
                 Text("Expire Access Token").multilineTextAlignment(.center)
             }
-            .buttonStyle(sessionButtonStyle)
-            .disabled(self.sessionButtonsDisabled)
+                .buttonStyle(sessionButtonStyle)
+                .disabled(self.sessionButtonsDisabled)
 
             // A button to make the current refresh token act expired
             Button(action: self.onExpireRefreshToken) {
                 Text("Expire Refresh Token").multilineTextAlignment(.center)
             }
-            .buttonStyle(sessionButtonStyle)
-            .disabled(self.sessionButtonsDisabled)
+                .buttonStyle(sessionButtonStyle)
+                .disabled(self.sessionButtonsDisabled)
 
             // A button to initiate a logout
             Button(action: self.onLogout) {
                 Text("Logout")
             }
-            .buttonStyle(sessionButtonStyle)
-            .disabled(self.sessionButtonsDisabled)
+                .buttonStyle(sessionButtonStyle)
+                .disabled(self.sessionButtonsDisabled)
         }
     }
 

@@ -39,17 +39,6 @@ struct ErrorHandler {
     }
 
     /*
-     * If the device does not have a passcode do not allow the app to run
-     */
-    static func fromDeviceNotSecured() -> UIError {
-
-        return UIError(
-            area: "Mobile UI",
-            errorCode: ErrorCodes.deviceNotSecured,
-            userMessage: "Please configure a passcode on the device before running this app")
-    }
-
-    /*
      * Return an error to short circuit execution
      */
     static func fromLoginRequired() -> UIError {

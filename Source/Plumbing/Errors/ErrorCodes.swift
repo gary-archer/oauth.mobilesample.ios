@@ -5,9 +5,6 @@ import Foundation
  */
 struct ErrorCodes {
 
-    // If no passcode is configured then present a startup error
-    static let deviceNotSecured = "device_not_secured"
-
     // Used to indicate that the API cannot be called until the user logs in
     static let loginRequired = "login_required"
 

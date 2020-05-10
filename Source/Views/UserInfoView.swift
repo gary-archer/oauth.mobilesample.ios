@@ -9,7 +9,7 @@ struct UserInfoView: View {
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
     // Properties
-    private let apiClient: ApiClient?
+    private let apiClient: ApiClient
     private let viewManager: ViewManager
     private let shouldLoad: Bool
 
@@ -20,7 +20,7 @@ struct UserInfoView: View {
     /*
      * Initialise from input
      */
-    init (apiClient: ApiClient?, viewManager: ViewManager, shouldLoad: Bool) {
+    init (apiClient: ApiClient, viewManager: ViewManager, shouldLoad: Bool) {
         self.apiClient = apiClient
         self.viewManager = viewManager
         self.shouldLoad = shouldLoad
@@ -67,7 +67,7 @@ struct UserInfoView: View {
     private func loadData(causeError: Bool) {
 
         // Check preconditions
-        if apiClient == nil || !self.shouldLoad {
+        if !self.shouldLoad {
             self.viewManager.onViewLoaded()
             return
         }
@@ -84,7 +84,7 @@ struct UserInfoView: View {
                 // Make the API call on a background thread
                 self.viewManager.onViewLoading()
                 try DispatchQueue.global().await {
-                    self.userInfo = try self.apiClient!.getUserInfo(options: options).await()
+                    self.userInfo = try self.apiClient.getUserInfo(options: options).await()
                 }
                 self.viewManager.onViewLoaded()
 

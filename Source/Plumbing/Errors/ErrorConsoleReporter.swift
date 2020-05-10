@@ -1,8 +1,8 @@
 import Foundation
 
 /*
-* A helper class to output error details to the MacOS console during development
-*/
+ * A helper class to output error details to the console and avoid end users
+ */
 struct ErrorConsoleReporter {
 
     /*

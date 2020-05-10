@@ -23,6 +23,7 @@
 		4E1888FB23DE01D80014638D /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1888FA23DE01D80014638D /* SessionView.swift */; };
 		4E1D614B245B346900F41850 /* ConcurrentActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */; };
 		4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E29A1A62461DBE100095F11 /* OrientationHandler.swift */; };
+		4E2C334A246889850095ACEC /* ConfigurationLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2C3349246889850095ACEC /* ConfigurationLoader.swift */; };
 		4E32863624531A8800B44823 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 4E32863524531A8800B44823 /* Cartfile */; };
 		4E3F8D3F24559F9B00EC7EB0 /* LoginRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */; };
 		4E3F8D412455A41300EC7EB0 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D402455A41300EC7EB0 /* ViewManager.swift */; };
@@ -90,6 +91,7 @@
 		4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentActionHandler.swift; sourceTree = "<group>"; };
 		4E23798C23CE6D910066DE08 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E29A1A62461DBE100095F11 /* OrientationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrientationHandler.swift; sourceTree = "<group>"; };
+		4E2C3349246889850095ACEC /* ConfigurationLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationLoader.swift; sourceTree = "<group>"; };
 		4E32863524531A8800B44823 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredView.swift; sourceTree = "<group>"; };
 		4E3F8D402455A41300EC7EB0 /* ViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 				4EFEFC252451D13D0057C78D /* AppConfiguration.swift */,
 				4EFEFC272451D13D0057C78D /* Configuration.swift */,
 				4EFEFC262451D13D0057C78D /* OAuthConfiguration.swift */,
+				4E2C3349246889850095ACEC /* ConfigurationLoader.swift */,
 			);
 			name = Configuration;
 			path = Source/Configuration;
@@ -527,6 +530,7 @@
 				4E126DBD2454A8F00065863E /* TokenData.swift in Sources */,
 				4E43251A244EFCED00A1582E /* CompanyTransactions.swift in Sources */,
 				4E3F8D3F24559F9B00EC7EB0 /* LoginRequiredView.swift in Sources */,
+				4E2C334A246889850095ACEC /* ConfigurationLoader.swift in Sources */,
 				4EB6DAB023F970F20007A311 /* Company.swift in Sources */,
 				4EFCE67F24631E9400BD1443 /* OktaLogoutManager.swift in Sources */,
 				4EFEFC332451EE4F0057C78D /* HeaderButtonStyle.swift in Sources */,

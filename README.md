@@ -19,4 +19,6 @@
 
 * The [AppAuth-iOS Library](https://github.com/openid/AppAuth-iOS) is used to implement the Authorization Code Flow (PKCE)
 * AWS Cognito is used as a Cloud Authorization Server
-* AWS API Gateway is used to host our sample OAuth 2.0 Secured API
+* The iOS Keychain is used to store encrypted tokens on the device after login
+* AWS API Gateway is used to host the back end OAuth 2.0 Secured Web API
+* AWS Cloudfront is used to host mobile deep linking asset files

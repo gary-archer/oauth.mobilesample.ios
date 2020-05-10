@@ -45,8 +45,7 @@ struct AppView: View {
                 viewManager: self.viewManager,
                 shouldLoadUserInfo:
                     self.model.isInitialised &&
-                    self.model.isDeviceSecured &&
-                    !self.isInLoginRequired())
+                    self.model.isDeviceSecured)
 
             // Next display the header buttons view
             HeaderButtonsView(
@@ -124,23 +123,21 @@ struct AppView: View {
         // If there is a startup error then reinitialise the app
         if !self.model.isInitialised {
             self.initialiseApp()
+            return
         }
 
-        if self.model.isInitialised {
+        // If we have prompted the user to open settings and click home, update this flag
+        if !self.model.isDeviceSecured {
+            self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
+        }
 
-            // Recheck device security if required
-            if !self.model.isDeviceSecured {
-                self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-            }
+        // Move to the home view
+        self.viewRouter.currentViewType = CompaniesView.Type.self
+        self.viewRouter.params = []
 
-            // Move to the home view
-            self.viewRouter.currentViewType = CompaniesView.Type.self
-            self.viewRouter.params = []
-
-            // If there is an error loading data from the API then force a reload
-            if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
-                self.onReloadData(causeError: false)
-            }
+        // If there is an error loading data from the API then force a reload
+        if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
+            self.onReloadData(causeError: false)
         }
     }
 
@@ -222,7 +219,7 @@ struct AppView: View {
 
             } catch {
 
-                // On error, only output logout errors to the MacOS console rather than impacting the end user
+                // On error, only output logout errors to the console rather than impacting the end user
                 let uiError = ErrorHandler.fromException(error: error)
                 ErrorConsoleReporter.output(error: uiError)
 
@@ -232,13 +229,6 @@ struct AppView: View {
                 self.model.isDataLoaded = false
             }
         }
-    }
-
-    /*
-     * Return true if our location is the login required view
-     */
-    private func isInLoginRequired() -> Bool {
-        return self.viewRouter.currentViewType == LoginRequiredView.Type.self
     }
 
     /*
