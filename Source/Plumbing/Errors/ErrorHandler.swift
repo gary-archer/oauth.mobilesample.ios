@@ -6,6 +6,8 @@ import AppAuth
  */
 struct ErrorHandler {
 
+    static let AppAuthNamespace = "org.openid.appauth"
+
     /*
      * Return a typed error from a general UI exception
      */
@@ -17,12 +19,14 @@ struct ErrorHandler {
             return uiError!
         }
 
-        // Otherwise translate from the caught error
+        // Create the error
         uiError = UIError(
             area: "Mobile UI",
             errorCode: ErrorCodes.generalUIError,
             userMessage: "A technical problem was encountered in the UI")
-        uiError!.details = error.localizedDescription
+
+        // Update from the caught exception
+        ErrorHandler.updateFromException(error: error, uiError: uiError!)
         return uiError!
     }
 
@@ -61,24 +65,86 @@ struct ErrorHandler {
     }
 
     /*
-     * Handle errors returned from AppAuth libraries
+     * Handle errors triggering login requests
      */
-    static func fromAppAuthError(error: Error, errorCode: String) -> UIError {
+    static func fromLoginRequestError(error: Error) -> UIError {
 
-        let authError = error as NSError
+        let uiError = UIError(
+            area: "Login",
+            errorCode: ErrorCodes.loginRequestFailed,
+            userMessage: "A technical problem occurred during login processing"
+        )
+
+        // Update it from the expcetion
+        if ErrorHandler.isAppAuthError(error: error) {
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+        } else {
+            ErrorHandler.updateFromException(error: error, uiError: uiError)
+        }
+
+        return uiError
+    }
+
+    /*
+     * Handle errors processing login responses
+     */
+    static func fromLoginResponseError(error: Error) -> UIError {
+
+        let uiError = UIError(
+            area: "Login",
+            errorCode: ErrorCodes.loginResponseFailed,
+            userMessage: "A technical problem occurred during login processing"
+        )
+
+        // Update it from the expcetion
+        if ErrorHandler.isAppAuthError(error: error) {
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+        } else {
+            ErrorHandler.updateFromException(error: error, uiError: uiError)
+        }
+
+        return uiError
+    }
+
+    /*
+     * Handle logout errors
+     */
+    static func fromLogoutRequestError(error: Error) -> UIError {
 
         // Create the error
         let uiError = UIError(
-            area: "OAuth",
+            area: "Logout",
+            errorCode: ErrorCodes.logoutRequestFailed,
+            userMessage: "A technical problem occurred during logout processing")
+
+        // Update it from the expcetion
+        if ErrorHandler.isAppAuthError(error: error) {
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+        } else {
+            ErrorHandler.updateFromException(error: error, uiError: uiError)
+        }
+
+        return uiError
+    }
+
+    /*
+     * Handle token related errors
+     */
+    static func fromTokenError(error: Error, errorCode: String) -> UIError {
+
+        // Create the error
+        let uiError = UIError(
+            area: "Token",
             errorCode: errorCode,
-            userMessage: "A problem was encountered during a login related operation")
+            userMessage: "A technical problem occurred during token processing")
 
-        // Get the AppAuth error category from the domain field and shorten it for readability
-        let category = authError.domain.replacingOccurrences(of: "org.openid.appauth.", with: "").uppercased()
+        // Update it from the expcetion
+        if ErrorHandler.isAppAuthError(error: error) {
+            ErrorHandler.updateFromAppAuthException(error: error, uiError: uiError)
+        } else {
+            ErrorHandler.updateFromException(error: error, uiError: uiError)
+        }
 
-        // Set other fields from the AppAuth error and extract the error code
-        uiError.details = error.localizedDescription
-        uiError.appAuthCode = "\(category) / \(authError.code)"
         return uiError
     }
 
@@ -91,7 +157,8 @@ struct ErrorHandler {
             area: "API",
             errorCode: ErrorCodes.apiNetworkError,
             userMessage: "A network problem occurred when the UI called the server")
-        uiError.details = error.localizedDescription
+
+        ErrorHandler.updateFromException(error: error, uiError: uiError)
         uiError.url = url
         return uiError
     }
@@ -111,7 +178,7 @@ struct ErrorHandler {
 
         // Process response errors when received
         if data != nil {
-            ErrorHandler.updateFromApiErrorResponse(error: error, responseData: data!)
+            self.updateFromApiErrorResponse(error: error, responseData: data!)
         }
 
         return error
@@ -120,7 +187,7 @@ struct ErrorHandler {
     /*
      * Try to update the default API error with response details
      */
-    static private func updateFromApiErrorResponse(error: UIError, responseData: Data) {
+    private static func updateFromApiErrorResponse(error: UIError, responseData: Data) {
 
         if let json = try? JSONSerialization.jsonObject(with: responseData, options: []) {
 
@@ -143,5 +210,38 @@ struct ErrorHandler {
                 }
             }
         }
+    }
+
+    /*
+     * See if the error was returned from AppAuth libraries
+     */
+    private static func isAppAuthError(error: Error) -> Bool {
+
+        let authError = error as NSError
+        return authError.domain.contains(ErrorHandler.AppAuthNamespace)
+    }
+
+    /*
+     * Get details from the AppAuth error
+     */
+    private static func updateFromAppAuthException(error: Error, uiError: UIError) {
+
+        let authError = error as NSError
+
+        // Get the AppAuth error category from the domain field and shorten it for readability
+        let category = authError.domain.replacingOccurrences(
+            of: ErrorHandler.AppAuthNamespace,
+            with: "").uppercased()
+
+        // Set other fields from the AppAuth error and extract the error code
+        uiError.details = authError.localizedDescription
+        uiError.appAuthCode = "\(category) / \(authError.code)"
+    }
+
+    /*
+     * Get details from the exception
+     */
+    private static func updateFromException(error: Error, uiError: UIError) {
+        uiError.details = error.localizedDescription
     }
 }

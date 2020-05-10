@@ -156,7 +156,8 @@ class AuthenticatorImpl: Authenticator {
 
             // Handle errors
             self.currentOAuthSession = nil
-            promise.fail(ErrorHandler.fromException(error: error))
+            let uiError = ErrorHandler.fromLoginRequestError(error: error)
+            promise.fail(uiError)
         }
 
         return promise
@@ -198,7 +199,8 @@ class AuthenticatorImpl: Authenticator {
 
             // Handle errors
             self.currentOAuthSession = nil
-            promise.fail(ErrorHandler.fromException(error: error))
+            let uiError = ErrorHandler.fromLogoutRequestError(error: error)
+            promise.fail(uiError)
         }
 
         return promise
@@ -277,9 +279,7 @@ class AuthenticatorImpl: Authenticator {
                     }
 
                     // Handle other errors
-                    let uiError = ErrorHandler.fromAppAuthError(
-                        error: error!,
-                        errorCode: ErrorCodes.loginResponseFailed)
+                    let uiError = ErrorHandler.fromLoginResponseError(error: error!)
                     promise.fail(uiError)
                     return
                 }
@@ -352,9 +352,7 @@ class AuthenticatorImpl: Authenticator {
                     }
 
                     // Report other errors
-                    let uiError = ErrorHandler.fromAppAuthError(
-                        error: error!,
-                        errorCode: ErrorCodes.logoutFailed)
+                    let uiError = ErrorHandler.fromLogoutRequestError(error: error!)
                     promise.fail(uiError)
                     return
                 }
@@ -381,7 +379,7 @@ class AuthenticatorImpl: Authenticator {
 
             // Handle errors
             if error != nil {
-                let uiError = ErrorHandler.fromAppAuthError(
+                let uiError = ErrorHandler.fromTokenError(
                     error: error!,
                     errorCode: ErrorCodes.authorizationCodeGrantFailed)
                 promise.fail(uiError)
@@ -450,9 +448,9 @@ class AuthenticatorImpl: Authenticator {
                     }
 
                     // Handle other errors
-                    let uiError = ErrorHandler.fromAppAuthError(
+                    let uiError = ErrorHandler.fromTokenError(
                         error: error!,
-                        errorCode: ErrorCodes.authorizationCodeGrantFailed)
+                        errorCode: ErrorCodes.refreshTokenGrantFailed)
                     promise.fail(uiError)
                     return
                 }

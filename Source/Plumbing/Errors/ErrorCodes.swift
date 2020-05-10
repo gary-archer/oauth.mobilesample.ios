@@ -11,6 +11,9 @@ struct ErrorCodes {
     // Used to indicate that the Safari View Controller was cancelled
     static let loginCancelled = "login_cancelled"
 
+    // A technical error starting a login request, such as contacting the metadata endpoint
+    static let loginRequestFailed = "login_request_failed"
+
     // A technical error processing the login response containing the authorization code
     static let loginResponseFailed = "login_response_failed"
 
@@ -21,7 +24,7 @@ struct ErrorCodes {
     static let refreshTokenGrantFailed = "refresh_token_grant"
 
     // A technical error during a logout redirect
-    static let logoutFailed = "logout_failed"
+    static let logoutRequestFailed = "logout_request_failed"
 
     // A general exception in the UI
     static let generalUIError = "ui_error"
