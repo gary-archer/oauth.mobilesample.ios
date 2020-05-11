@@ -14,7 +14,6 @@ class AppViewModel: ObservableObject {
     @Published var isInitialised = false
     @Published var isDeviceSecured = false
     @Published var isDataLoaded = false
-    @Published var isTopMost = true
     @Published var error: UIError?
 
     /*
@@ -26,7 +25,6 @@ class AppViewModel: ObservableObject {
         self.isInitialised = false
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
         self.isDataLoaded = false
-        self.isTopMost = true
 
         // Load the configuration from the embedded resource
         self.configuration = try ConfigurationLoader.load()

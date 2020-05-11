@@ -33,7 +33,7 @@ struct MainView: View {
      */
     var body: some View {
 
-        VStack {
+        return VStack {
 
             if !self.isDeviceSecured {
 

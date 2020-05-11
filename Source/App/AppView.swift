@@ -126,7 +126,7 @@ struct AppView: View {
             return
         }
 
-        // If we have prompted the user to open settings and click home, update this flag
+        // If we have prompted the user to open settings and click home, update the model's flag
         if !self.model.isDeviceSecured {
             self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
         }
@@ -170,7 +170,7 @@ struct AppView: View {
     private func onLogin() {
 
         // Run async operations in a coroutine
-        self.model.isTopMost = false
+        self.viewRouter.isTopMost = false
         DispatchQueue.main.startCoroutine {
 
             do {
@@ -181,7 +181,7 @@ struct AppView: View {
 
                 // Reload data after signing in
                 self.onReloadData(causeError: false)
-                self.model.isTopMost = true
+                self.viewRouter.isTopMost = true
 
             } catch {
 
@@ -197,7 +197,7 @@ struct AppView: View {
                     // Otherwise render the error in the UI
                     self.model.error = uiError
                 }
-                self.model.isTopMost = true
+                self.viewRouter.isTopMost = true
             }
         }
     }
@@ -208,7 +208,7 @@ struct AppView: View {
     private func onLogout() {
 
         // Run async operations in a coroutine
-        self.model.isTopMost = true
+        self.viewRouter.isTopMost = false
         DispatchQueue.main.startCoroutine {
 
             do {
@@ -241,7 +241,7 @@ struct AppView: View {
         self.viewRouter.currentViewType = LoginRequiredView.Type.self
         self.viewRouter.params = []
         self.model.isDataLoaded = false
-        self.model.isTopMost = true
+        self.viewRouter.isTopMost = true
     }
 
     /*

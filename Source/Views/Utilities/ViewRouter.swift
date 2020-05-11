@@ -1,20 +1,29 @@
 import Foundation
 
 /*
-* A class to contain navigation details related to the main area of the UI
+* A class to encapsulate navigation details
 */
 class ViewRouter: ObservableObject {
 
     // The current view
     @Published var currentViewType: Any.Type = CompaniesView.Type.self
 
-    // Any data used for navigation
+    // Data passed during navigation
     @Published var params: [Any] = [Any]()
+
+    // This is set to false when a Safari View Controller is active
+    var isTopMost: Bool = true
 
     /*
      * Update the location based on the deep link supplied
      */
     func handleDeepLink(url: URL) {
+
+        // Do nothing if our views are not top most
+        // This is the case during OAuth redirects, when the system browser is top most
+        if !self.isTopMost {
+            return
+        }
 
         var target: Any.Type = CompaniesView.Type.self
         var params = [Any]()
