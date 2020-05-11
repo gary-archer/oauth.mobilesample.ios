@@ -165,8 +165,9 @@ struct CompaniesView: View {
 
                 // Report errors
                 let uiError = ErrorHandler.fromException(error: error)
-                self.viewManager.onViewLoadFailed(error: uiError)
+                self.companies = [Company]()
                 self.error = uiError
+                self.viewManager.onViewLoadFailed(error: uiError)
             }
         }
     }

@@ -91,10 +91,10 @@ struct UserInfoView: View {
             } catch {
 
                 // Report errors
-                self.userInfo = nil
                 let uiError = ErrorHandler.fromException(error: error)
-                self.viewManager.onViewLoadFailed(error: uiError)
+                self.userInfo = nil
                 self.error = uiError
+                self.viewManager.onViewLoadFailed(error: uiError)
             }
         }
     }

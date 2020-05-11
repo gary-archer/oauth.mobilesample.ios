@@ -165,8 +165,9 @@ struct TransactionsView: View {
 
                 } else {
 
-                    self.viewManager.onViewLoadFailed(error: uiError)
+                    self.data = nil
                     self.error = uiError
+                    self.viewManager.onViewLoadFailed(error: uiError)
                 }
             }
         }
