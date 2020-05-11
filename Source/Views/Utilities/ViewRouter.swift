@@ -19,8 +19,7 @@ class ViewRouter: ObservableObject {
      */
     func handleDeepLink(url: URL) {
 
-        // Do nothing if our views are not top most
-        // This is the case during OAuth redirects, when the system browser is top most
+        // Do nothing during OAuth redirects, when the system browser is top most
         if !self.isTopMost {
             return
         }
