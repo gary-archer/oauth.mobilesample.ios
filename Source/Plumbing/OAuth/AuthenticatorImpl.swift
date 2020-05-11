@@ -143,10 +143,8 @@ class AuthenticatorImpl: Authenticator {
                     .await()
 
             // Next swap the authorization code for tokens
-            try DispatchQueue.global().await {
-                try self.exchangeAuthorizationCode(authResponse: response)
-                    .await()
-            }
+            try self.exchangeAuthorizationCode(authResponse: response)
+                .await()
 
             // Indicate success
             self.currentOAuthSession = nil
