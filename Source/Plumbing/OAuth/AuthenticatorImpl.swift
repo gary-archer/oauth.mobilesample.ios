@@ -12,9 +12,10 @@ class AuthenticatorImpl: Authenticator {
 
     // Properties
     private let configuration: OAuthConfiguration
-    private var currentOAuthSession: OIDExternalUserAgentSession?
+    private var metadata: OIDServiceConfiguration?
     private var tokenData: TokenData?
     private let concurrencyHandler: ConcurrentActionHandler
+    private var currentOAuthSession: OIDExternalUserAgentSession?
     private let storageKey = "com.authguidance.basicmobileapp.tokendata"
 
     /*
@@ -103,6 +104,101 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
+     * The OAuth entry point for login processing runs on the UI thread
+     */
+    func startLogin(viewController: UIViewController) -> CoFuture<OIDAuthorizationResponse> {
+
+        let promise = CoPromise<OIDAuthorizationResponse>()
+
+        do {
+
+            // Trigger the login redirect and get the authorization code
+            let response = try self.performLoginRedirect(viewController: viewController)
+                .await()
+
+            // Indicate success
+            promise.success(response)
+
+        } catch {
+
+            // Handle errors
+            self.currentOAuthSession = nil
+            let uiError = ErrorHandler.fromLoginRequestError(error: error)
+            promise.fail(uiError)
+        }
+
+        return promise
+    }
+
+    /*
+     * The authorization code grant runs on a background thread
+     */
+    func finishLogin(authResponse: OIDAuthorizationResponse) -> CoFuture<Void> {
+
+        let promise = CoPromise<Void>()
+
+        do {
+
+            // Next swap the authorization code for tokens
+            try self.exchangeAuthorizationCode(authResponse: authResponse)
+                .await()
+
+            // Indicate success and clean up
+            self.currentOAuthSession = nil
+            promise.success(Void())
+
+        } catch {
+
+            // Handle errors
+            self.currentOAuthSession = nil
+            let uiError = ErrorHandler.fromLoginResponseError(error: error)
+            promise.fail(uiError)
+        }
+
+        return promise
+    }
+
+    /*
+     * The OAuth entry point for logout processing
+     */
+    func logout(viewController: UIViewController) -> CoFuture<Void> {
+
+        let promise = CoPromise<Void>()
+
+        // Do nothing if already logged out
+        if self.tokenData == nil || self.tokenData!.idToken == nil {
+            promise.success(Void())
+        }
+
+        do {
+
+            // Clear tokens from memory and storage
+            let idToken = self.tokenData!.idToken!
+            KeychainWrapper.standard.removeObject(forKey: self.storageKey)
+            self.tokenData = nil
+
+            // Do the work of the logout redirect
+            try self.performLogoutRedirect(
+                viewController: viewController,
+                idToken: idToken)
+                    .await()
+
+            // Indicate success
+            self.currentOAuthSession = nil
+            promise.success(Void())
+
+        } catch {
+
+            // Handle errors
+            self.currentOAuthSession = nil
+            let uiError = ErrorHandler.fromLogoutRequestError(error: error)
+            promise.fail(uiError)
+        }
+
+        return promise
+    }
+
+    /*
      * A hacky method for testing, to update token storage to make the access token act like it is expired
      */
     func expireAccessToken() {
@@ -124,92 +220,17 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
-     * The OAuth entry point for login processing
-     */
-    func login(viewController: UIViewController) -> CoFuture<Void> {
-
-        let promise = CoPromise<Void>()
-
-        do {
-
-            // First get metadata
-            let metadata = try self.getMetadata()
-                .await()
-
-            // Next trigger the login redirect and get the authorization code
-            let response = try self.performLoginRedirect(
-                viewController: viewController,
-                metadata: metadata)
-                    .await()
-
-            // Next swap the authorization code for tokens
-            try self.exchangeAuthorizationCode(authResponse: response)
-                .await()
-
-            // Indicate success
-            self.currentOAuthSession = nil
-            promise.success(Void())
-
-        } catch {
-
-            // Handle errors
-            self.currentOAuthSession = nil
-            let uiError = ErrorHandler.fromLoginRequestError(error: error)
-            promise.fail(uiError)
-        }
-
-        return promise
-    }
-
-    /*
-     * The OAuth entry point for logout processing
-     */
-    func logout(viewController: UIViewController) -> CoFuture<Void> {
-
-        let promise = CoPromise<Void>()
-
-        if self.tokenData == nil || self.tokenData!.idToken == nil {
-            promise.success(Void())
-        }
-
-        do {
-            // Clear tokens from memory and storage
-            let idToken = self.tokenData!.idToken!
-            KeychainWrapper.standard.removeObject(forKey: self.storageKey)
-            self.tokenData = nil
-
-            // Get metadata
-            let metadata = try self.getMetadata()
-                .await()
-
-            // Do the work of the logout redirect
-            try self.performLogoutRedirect(
-                viewController: viewController,
-                metadata: metadata,
-                idToken: idToken)
-                    .await()
-
-            // Indicate success
-            self.currentOAuthSession = nil
-            promise.success(Void())
-
-        } catch {
-
-            // Handle errors
-            self.currentOAuthSession = nil
-            let uiError = ErrorHandler.fromLogoutRequestError(error: error)
-            promise.fail(uiError)
-        }
-
-        return promise
-    }
-
-    /*
      * Download Open Id Connect metadata and return it to the caller
      */
-    private func getMetadata() -> CoFuture<OIDServiceConfiguration> {
+    private func getMetadata() -> CoFuture<Void> {
 
-        let promise = CoPromise<OIDServiceConfiguration>()
+        let promise = CoPromise<Void>()
+
+        // Do nothing if already loaded
+        if self.metadata != nil {
+            promise.success(Void())
+            return promise
+        }
 
         // Get the metadata endpoint as a URL object
         guard let issuerUrl = URL(string: self.configuration.authority) else {
@@ -222,10 +243,11 @@ class AuthenticatorImpl: Authenticator {
         OIDAuthorizationService.discoverConfiguration(
             forIssuer: issuerUrl) { metadata, error in
 
+                self.metadata = metadata
                 if error != nil {
                     promise.fail(ErrorHandler.fromException(error: error!))
                 } else {
-                    promise.success(metadata!)
+                    promise.success(Void())
                 }
         }
 
@@ -236,10 +258,12 @@ class AuthenticatorImpl: Authenticator {
      * Do the work of the login redirect and return the authorization code
      */
     private func performLoginRedirect(
-        viewController: UIViewController,
-        metadata: OIDServiceConfiguration) -> CoFuture<OIDAuthorizationResponse> {
+        viewController: UIViewController) throws -> CoFuture<OIDAuthorizationResponse> {
 
         let promise = CoPromise<OIDAuthorizationResponse>()
+
+        // First get metadata if required
+        try self.getMetadata().await()
 
         // Get the redirect address into a URL object
         guard let redirectUri = URL(string: self.configuration.redirectUri) else {
@@ -251,7 +275,7 @@ class AuthenticatorImpl: Authenticator {
         // Build the authorization request
         let scopesArray = self.configuration.scope.components(separatedBy: " ")
         let request = OIDAuthorizationRequest(
-            configuration: metadata,
+            configuration: self.metadata!,
             clientId: self.configuration.clientId,
             clientSecret: nil,
             scopes: scopesArray,
@@ -291,72 +315,6 @@ class AuthenticatorImpl: Authenticator {
 
                 // On success, return the authorization response to the caller
                 promise.success(response!)
-            }
-
-        return promise
-    }
-
-    /*
-     * Do the work of the logout redirect
-     */
-    private func performLogoutRedirect(
-        viewController: UIViewController,
-        metadata: OIDServiceConfiguration,
-        idToken: String) throws -> CoFuture<Void> {
-
-        let promise = CoPromise<Void>()
-
-        // Get the post logout address as a URL object
-        guard let postLogoutRedirectUri = URL(string: self.configuration.postLogoutRedirectUri) else {
-            let message = "Error creating URL for : \(self.configuration.postLogoutRedirectUri)"
-            promise.fail(ErrorHandler.fromMessage(message: message))
-            return promise
-        }
-
-        // Create an object to manage provider differences
-        let logoutManager = self.createLogoutManager()
-
-        // If required, create an updated metadata object with an end session endpoint
-        let metadataWithEndSessionEndpoint = try logoutManager.updateMetadata(metadata: metadata)
-
-        // Build the end session request
-        let request = logoutManager.createEndSessionRequest(
-            metadata: metadataWithEndSessionEndpoint,
-            idToken: idToken,
-            postLogoutRedirectUri: postLogoutRedirectUri)
-
-        // Do the logout redirect, and use the current authorization flow parameter
-        let agent = OIDExternalUserAgentIOS(presenting: viewController)
-        self.currentOAuthSession =
-            OIDAuthorizationService.present(request, externalUserAgent: agent!) { _, error in
-
-                // Handle errors
-                if error != nil {
-
-                    // If the user cancels the login we throw a special error
-                    if self.matchesAppAuthError(
-                        error: error!,
-                        domain: OIDGeneralErrorDomain,
-                        code: OIDErrorCode.userCanceledAuthorizationFlow.rawValue) {
-
-                        promise.fail(ErrorHandler.fromRedirectCancelled())
-                        return
-                    }
-
-                    // Ignore benign errors
-                    if logoutManager.isExpectedError(error: error!) {
-                        promise.success(Void())
-                        return
-                    }
-
-                    // Report other errors
-                    let uiError = ErrorHandler.fromLogoutRequestError(error: error!)
-                    promise.fail(uiError)
-                    return
-                }
-
-                // Indicate success
-                promise.success(Void())
             }
 
         return promise
@@ -409,13 +367,12 @@ class AuthenticatorImpl: Authenticator {
         let promise = CoPromise<Void>()
 
         do {
-            // First get metadata from the authorization server
-            let metadata = try self.getMetadata()
-                .await()
+            // First get metadata if required
+            try self.getMetadata().await()
 
             // Create the refresh token grant request
             let request = OIDTokenRequest(
-                configuration: metadata,
+                configuration: self.metadata!,
                 grantType: OIDGrantTypeRefreshToken,
                 authorizationCode: nil,
                 redirectURL: nil,
@@ -469,6 +426,75 @@ class AuthenticatorImpl: Authenticator {
             // Handle errors
             promise.fail(ErrorHandler.fromException(error: error))
         }
+
+        return promise
+    }
+
+    /*
+     * Do the work of the logout redirect
+     */
+    private func performLogoutRedirect(
+        viewController: UIViewController,
+        idToken: String) throws -> CoFuture<Void> {
+
+        let promise = CoPromise<Void>()
+
+        // First get metadata if required
+        try self.getMetadata().await()
+
+        // Get the post logout address as a URL object
+        guard let postLogoutRedirectUri = URL(string: self.configuration.postLogoutRedirectUri) else {
+            let message = "Error creating URL for : \(self.configuration.postLogoutRedirectUri)"
+            promise.fail(ErrorHandler.fromMessage(message: message))
+            return promise
+        }
+
+        // Create an object to manage provider differences
+        let logoutManager = self.createLogoutManager()
+
+        // If required, create an updated metadata object with an end session endpoint
+        let metadataWithEndSessionEndpoint = try logoutManager.updateMetadata(
+            metadata: self.metadata!)
+
+        // Build the end session request
+        let request = logoutManager.createEndSessionRequest(
+            metadata: metadataWithEndSessionEndpoint,
+            idToken: idToken,
+            postLogoutRedirectUri: postLogoutRedirectUri)
+
+        // Do the logout redirect, and use the current authorization flow parameter
+        let agent = OIDExternalUserAgentIOS(presenting: viewController)
+        self.currentOAuthSession =
+            OIDAuthorizationService.present(request, externalUserAgent: agent!) { _, error in
+
+                // Handle errors
+                if error != nil {
+
+                    // If the user cancels the login we throw a special error
+                    if self.matchesAppAuthError(
+                        error: error!,
+                        domain: OIDGeneralErrorDomain,
+                        code: OIDErrorCode.userCanceledAuthorizationFlow.rawValue) {
+
+                        promise.fail(ErrorHandler.fromRedirectCancelled())
+                        return
+                    }
+
+                    // Ignore benign errors
+                    if logoutManager.isExpectedError(error: error!) {
+                        promise.success(Void())
+                        return
+                    }
+
+                    // Report other errors
+                    let uiError = ErrorHandler.fromLogoutRequestError(error: error!)
+                    promise.fail(uiError)
+                    return
+                }
+
+                // Indicate success
+                promise.success(Void())
+            }
 
         return promise
     }

@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import AppAuth
 import SwiftCoroutine
 
 /*
@@ -22,9 +23,12 @@ protocol Authenticator {
     // For testing, make the refresh token act expired
     func expireRefreshToken()
 
-    // Perform a login redirect
-    func login(viewController: UIViewController) -> CoFuture<Void>
+    // Start a login redirect
+    func startLogin(viewController: UIViewController) -> CoFuture<OIDAuthorizationResponse>
 
-    // Perform a logout redirect
+    // Complete a login
+    func finishLogin(authResponse: OIDAuthorizationResponse) -> CoFuture<Void>
+
+    // Perform a logout
     func logout(viewController: UIViewController) -> CoFuture<Void>
 }

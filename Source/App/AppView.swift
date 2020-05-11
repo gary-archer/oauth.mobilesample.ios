@@ -175,9 +175,16 @@ struct AppView: View {
 
             do {
 
-                // Ask the authenticator to do the OAuth work
-                try self.model.authenticator!.login(viewController: self.mainWindow.rootViewController!)
-                    .await()
+                // Do the login redirect on the UI thread
+                let response = try self.model.authenticator!.startLogin(
+                    viewController: self.mainWindow.rootViewController!)
+                        .await()
+
+                // Do the code exchange on a background thread
+                try DispatchQueue.global().await {
+                    try self.model.authenticator!.finishLogin(authResponse: response)
+                        .await()
+                }
 
                 // Reload data after signing in
                 self.onReloadData(causeError: false)
