@@ -7,8 +7,8 @@
 
 ### Details
 
-* See the iOS Code Sample Overview for an overview of behaviour
-* See the iOS Code Sample Instructions for details on how to run the code
+* See the [iOS Code Sample Overview](https://authguidance.com/2020/02/22/ios-code-sample-overview/) for an overview of behaviour
+* See the [iOS Code Sample Instructions](https://authguidance.com/2020/02/22/how-to-run-the-ios-code-sample/) for details on how to run the code
 
 ### Technologies
 
