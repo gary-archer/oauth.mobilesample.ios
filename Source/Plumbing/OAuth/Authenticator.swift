@@ -29,9 +29,7 @@ protocol Authenticator {
     func resumeOperation(sceneDelegate: SceneDelegate, responseUrl: URL)
 
     // Complete a login
-    func finishLogin(
-        sceneDelegate: SceneDelegate,
-        authResponse: OIDAuthorizationResponse) -> CoFuture<Void>
+    func finishLogin(authResponse: OIDAuthorizationResponse) -> CoFuture<Void>
 
     // Perform a logout
     func logout(

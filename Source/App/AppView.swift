@@ -184,10 +184,8 @@ struct AppView: View {
                 try DispatchQueue.global().await {
 
                     // Do the code exchange on a background thread
-                    try self.model.authenticator!.finishLogin(
-                        sceneDelegate: sceneDelegate,
-                        authResponse: response)
-                            .await()
+                    try self.model.authenticator!.finishLogin(authResponse: response)
+                        .await()
                 }
 
                 // Reload data after signing in

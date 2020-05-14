@@ -98,7 +98,6 @@
 		4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredView.swift; sourceTree = "<group>"; };
 		4E3F8D402455A41300EC7EB0 /* ViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		4E3F8D422455E9C400EC7EB0 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
-		4E41188B246D3DDE004CD4F3 /* NOTES.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES.txt; sourceTree = SOURCE_ROOT; };
 		4E432515244EEAEE00A1582E /* UserInfoClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoClaims.swift; sourceTree = "<group>"; };
 		4E432517244EEB5A00A1582E /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		4E432519244EFCED00A1582E /* CompanyTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyTransactions.swift; sourceTree = "<group>"; };
@@ -232,7 +231,6 @@
 		4E23798323CE6D900066DE08 = {
 			isa = PBXGroup;
 			children = (
-				4E41188B246D3DDE004CD4F3 /* NOTES.txt */,
 				4E1888E123DDFEB20014638D /* Source */,
 				4E05212D24531F3400C84A9F /* Frameworks */,
 				4EBCC9552458809900D5A2A9 /* Security */,

@@ -124,6 +124,7 @@ class AuthenticatorImpl: Authenticator {
         } catch {
 
             // Handle errors
+            sceneDelegate.currentOAuthSession = nil
             let uiError = ErrorHandler.fromLoginRequestError(error: error)
             promise.fail(uiError)
         }
@@ -134,9 +135,7 @@ class AuthenticatorImpl: Authenticator {
     /*
      * The authorization code grant runs on a background thread
      */
-    func finishLogin(
-        sceneDelegate: SceneDelegate,
-        authResponse: OIDAuthorizationResponse) -> CoFuture<Void> {
+    func finishLogin(authResponse: OIDAuthorizationResponse) -> CoFuture<Void> {
 
         let promise = CoPromise<Void>()
 
@@ -193,6 +192,7 @@ class AuthenticatorImpl: Authenticator {
         } catch {
 
             // Handle errors
+            sceneDelegate.currentOAuthSession = nil
             let uiError = ErrorHandler.fromLogoutRequestError(error: error)
             promise.fail(uiError)
         }
