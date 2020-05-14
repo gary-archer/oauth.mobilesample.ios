@@ -76,6 +76,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
 
         if userActivity.webpageURL != nil {
+            print("GJA: scene receiving deep link: \(userActivity.webpageURL!)")
             self.viewRouter.handleDeepLink(url: userActivity.webpageURL!)
         }
     }

@@ -4,10 +4,10 @@
   },
   "oauth": {
     "authority":             "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_mZ3NBYpTo",
-    "clientId":              "2je0vp1r31dmpse0um0gmlafqe",
-    "redirectUri":           "com.authguidance.basicmobileapp:/callback",
+    "clientId":              "33e7b58s51oof5lbj77qa0qhbe",
+    "redirectUri":           "https://web.authguidance-examples.com/mobile-oauth/postlogin.html",
     "logoutEndpoint":        "https://login.authguidance-examples.com/logout",
-    "postLogoutRedirectUri": "com.authguidance.basicmobilelogout:/callback",
+    "postLogoutRedirectUri": "https://web.authguidance-examples.com/mobile-oauth/postlogout.html",
     "scope":                 "openid profile email"
   }
 }
