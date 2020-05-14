@@ -206,31 +206,36 @@ class AuthenticatorImpl: Authenticator {
     func isOAuthResponse(responseUrl: URL) -> Bool {
 
         return
-            responseUrl.absoluteString.lowercased() == self.getLoginReactivateUri().lowercased() ||
-            responseUrl.absoluteString.lowercased() == self.getPostLogoutReactivateUri().lowercased()
+            responseUrl.absoluteString.lowercased().starts(
+                with: self.getLoginReactivateUri().lowercased()) ||
+            responseUrl.absoluteString.lowercased().starts(
+                with: self.getPostLogoutReactivateUri().lowercased())
     }
 
     /*
      * Resume a login or logout operation
+     * We need to work around this AppAuth iOS issue: https://github.com/openid/AppAuth-iOS/issues/356
+     * To do so we must resume on the original redirect URI so some string replacement is needed
      */
     func resumeOperation(sceneDelegate: SceneDelegate, responseUrl: URL) {
 
         if sceneDelegate.currentOAuthSession != nil {
 
             var resumeUrl: String?
+            let queryString = responseUrl.query ?? ""
 
             // If we are invoked on the login activation URL then resume on the login redirect URI
             let loginActivationUri = self.getLoginReactivateUri().lowercased()
             let loginRedirectUri = self.getLoginRedirectUri().lowercased()
-            if responseUrl.absoluteString.lowercased() == loginActivationUri {
-                resumeUrl = loginRedirectUri
+            if responseUrl.absoluteString.lowercased().starts(with: loginActivationUri) {
+                resumeUrl = "\(loginRedirectUri)?\(queryString)"
             }
 
             // If we are invoked on the logout activation URL then resume on the logout redirect URI
             let logoutActivationUri = self.getPostLogoutReactivateUri().lowercased()
             let logoutRedirectUri = self.getPostLogoutRedirectUri().lowercased()
-            if responseUrl.absoluteString.lowercased() == logoutActivationUri {
-                resumeUrl = logoutRedirectUri
+            if responseUrl.absoluteString.lowercased().starts(with: logoutActivationUri) {
+                resumeUrl = "\(logoutRedirectUri)?\(queryString)"
             }
 
             if resumeUrl != nil {
@@ -603,7 +608,7 @@ class AuthenticatorImpl: Authenticator {
      * https://web.authguidance-examples.com/mobile-oauth/postlogin.html
      */
     private func getLoginRedirectUri() -> String {
-        return "\(self.configuration.webDomain)\(self.configuration.loginRedirectPath)"
+        return "https://\(self.configuration.webDomain)\(self.configuration.loginRedirectPath)"
     }
 
     /*
@@ -611,7 +616,7 @@ class AuthenticatorImpl: Authenticator {
      * https://web.authguidance-examples.com/mobile-oauth/postlogout.html
      */
     private func getPostLogoutRedirectUri() -> String {
-        return "\(self.configuration.webDomain)\(self.configuration.postLogoutRedirectPath)"
+        return "https://\(self.configuration.webDomain)\(self.configuration.postLogoutRedirectPath)"
     }
 
     /*
@@ -619,7 +624,7 @@ class AuthenticatorImpl: Authenticator {
      * https://authguidance-examples.com/oauth/callback
      */
     private func getLoginReactivateUri() -> String {
-        return "\(self.configuration.deepLinkDomain)\(self.configuration.loginActivatePath)"
+        return "https://\(self.configuration.deepLinkDomain)\(self.configuration.loginActivatePath)"
     }
 
     /*
@@ -627,7 +632,7 @@ class AuthenticatorImpl: Authenticator {
      * https://authguidance-examples.com/oauth/logoutcallback
      */
     private func getPostLogoutReactivateUri() -> String {
-        return "\(self.configuration.deepLinkDomain)\(self.configuration.postLogoutActivatePath)"
+        return "https://\(self.configuration.deepLinkDomain)\(self.configuration.postLogoutActivatePath)"
     }
 
     /*

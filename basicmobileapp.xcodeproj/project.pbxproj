@@ -28,7 +28,6 @@
 		4E3F8D3F24559F9B00EC7EB0 /* LoginRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */; };
 		4E3F8D412455A41300EC7EB0 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D402455A41300EC7EB0 /* ViewManager.swift */; };
 		4E3F8D432455E9C400EC7EB0 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F8D422455E9C400EC7EB0 /* AppViewModel.swift */; };
-		4E41188C246D3DDE004CD4F3 /* NOTES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E41188B246D3DDE004CD4F3 /* NOTES.txt */; };
 		4E432516244EEAEE00A1582E /* UserInfoClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E432515244EEAEE00A1582E /* UserInfoClaims.swift */; };
 		4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E432517244EEB5A00A1582E /* UserInfoView.swift */; };
 		4E43251A244EFCED00A1582E /* CompanyTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E432519244EFCED00A1582E /* CompanyTransactions.swift */; };
@@ -445,7 +444,6 @@
 				4E05212C24531E4F00C84A9F /* .gitignore in Resources */,
 				4E32863624531A8800B44823 /* Cartfile in Resources */,
 				4E712AAA245C5D1700022757 /* launch.png in Resources */,
-				4E41188C246D3DDE004CD4F3 /* NOTES.txt in Resources */,
 				4EF4FDF323F9E269008C3022 /* mobile_config_localapi.json in Resources */,
 				4E1888EC23DDFEB20014638D /* Preview Assets.xcassets in Resources */,
 				4E05212A24531E1400C84A9F /* Cartfile.resolved in Resources */,
