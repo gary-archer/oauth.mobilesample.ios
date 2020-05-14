@@ -15,7 +15,6 @@ class AuthenticatorImpl: Authenticator {
     private var metadata: OIDServiceConfiguration?
     private var tokenData: TokenData?
     private let concurrencyHandler: ConcurrentActionHandler
-    private var currentOAuthSession: OIDExternalUserAgentSession?
     private let storageKey = "com.authguidance.basicmobileapp.tokendata"
 
     /*
@@ -106,15 +105,18 @@ class AuthenticatorImpl: Authenticator {
     /*
      * The OAuth entry point for login processing runs on the UI thread
      */
-    func startLogin(viewController: UIViewController) -> CoFuture<OIDAuthorizationResponse> {
+    func startLogin(
+        sceneDelegate: SceneDelegate,
+        viewController: UIViewController) -> CoFuture<OIDAuthorizationResponse> {
 
         let promise = CoPromise<OIDAuthorizationResponse>()
 
         do {
-
             // Trigger the login redirect and get the authorization code
-            let response = try self.performLoginRedirect(viewController: viewController)
-                .await()
+            let response = try self.performLoginRedirect(
+                sceneDelegate: sceneDelegate,
+                viewController: viewController)
+                    .await()
 
             // Indicate success
             promise.success(response)
@@ -122,7 +124,6 @@ class AuthenticatorImpl: Authenticator {
         } catch {
 
             // Handle errors
-            self.currentOAuthSession = nil
             let uiError = ErrorHandler.fromLoginRequestError(error: error)
             promise.fail(uiError)
         }
@@ -133,7 +134,9 @@ class AuthenticatorImpl: Authenticator {
     /*
      * The authorization code grant runs on a background thread
      */
-    func finishLogin(authResponse: OIDAuthorizationResponse) -> CoFuture<Void> {
+    func finishLogin(
+        sceneDelegate: SceneDelegate,
+        authResponse: OIDAuthorizationResponse) -> CoFuture<Void> {
 
         let promise = CoPromise<Void>()
 
@@ -144,13 +147,11 @@ class AuthenticatorImpl: Authenticator {
                 .await()
 
             // Indicate success and clean up
-            self.currentOAuthSession = nil
             promise.success(Void())
 
         } catch {
 
             // Handle errors
-            self.currentOAuthSession = nil
             let uiError = ErrorHandler.fromLoginResponseError(error: error)
             promise.fail(uiError)
         }
@@ -161,7 +162,9 @@ class AuthenticatorImpl: Authenticator {
     /*
      * The OAuth entry point for logout processing
      */
-    func logout(viewController: UIViewController) -> CoFuture<Void> {
+    func logout(
+        sceneDelegate: SceneDelegate,
+        viewController: UIViewController) -> CoFuture<Void> {
 
         let promise = CoPromise<Void>()
 
@@ -179,23 +182,67 @@ class AuthenticatorImpl: Authenticator {
 
             // Do the work of the logout redirect
             try self.performLogoutRedirect(
+                sceneDelegate: sceneDelegate,
                 viewController: viewController,
                 idToken: idToken)
                     .await()
 
             // Indicate success
-            self.currentOAuthSession = nil
             promise.success(Void())
 
         } catch {
 
             // Handle errors
-            self.currentOAuthSession = nil
             let uiError = ErrorHandler.fromLogoutRequestError(error: error)
             promise.fail(uiError)
         }
 
         return promise
+    }
+
+    /*
+     * Return true if the URL matches an OAuth response reactivation URL from the interstitial page
+     */
+    func isOAuthResponse(responseUrl: URL) -> Bool {
+
+        return
+            responseUrl.absoluteString.lowercased() == self.getLoginReactivateUri().lowercased() ||
+            responseUrl.absoluteString.lowercased() == self.getPostLogoutReactivateUri().lowercased()
+    }
+
+    /*
+     * Resume a login or logout operation
+     */
+    func resumeOperation(sceneDelegate: SceneDelegate, responseUrl: URL) {
+
+        if sceneDelegate.currentOAuthSession != nil {
+
+            var resumeUrl: String?
+
+            // If we are invoked on the login activation URL then resume on the login redirect URI
+            let loginActivationUri = self.getLoginReactivateUri().lowercased()
+            let loginRedirectUri = self.getLoginRedirectUri().lowercased()
+            if responseUrl.absoluteString.lowercased() == loginActivationUri {
+                resumeUrl = loginRedirectUri
+            }
+
+            // If we are invoked on the logout activation URL then resume on the logout redirect URI
+            let logoutActivationUri = self.getPostLogoutReactivateUri().lowercased()
+            let logoutRedirectUri = self.getPostLogoutRedirectUri().lowercased()
+            if responseUrl.absoluteString.lowercased() == logoutActivationUri {
+                resumeUrl = logoutRedirectUri
+            }
+
+            if resumeUrl != nil {
+
+                // Resume OAuth processing
+                sceneDelegate.currentOAuthSession!.resumeExternalUserAgentFlow(
+                    with: URL(string: resumeUrl!)!)
+
+                // Free resources once complete
+                sceneDelegate.currentOAuthSession = nil
+            }
+        }
     }
 
     /*
@@ -258,6 +305,7 @@ class AuthenticatorImpl: Authenticator {
      * Do the work of the login redirect and return the authorization code
      */
     private func performLoginRedirect(
+        sceneDelegate: SceneDelegate,
         viewController: UIViewController) throws -> CoFuture<OIDAuthorizationResponse> {
 
         let promise = CoPromise<OIDAuthorizationResponse>()
@@ -266,8 +314,9 @@ class AuthenticatorImpl: Authenticator {
         try self.getMetadata().await()
 
         // Get the redirect address into a URL object
-        guard let redirectUri = URL(string: self.configuration.redirectUri) else {
-            let message = "Error creating URL for : \(self.configuration.redirectUri)"
+        let redirectUri = self.getLoginRedirectUri()
+        guard let loginRedirectUri = URL(string: redirectUri) else {
+            let message = "Error creating URL for : \(redirectUri)"
             promise.fail(ErrorHandler.fromMessage(message: message))
             return promise
         }
@@ -279,12 +328,12 @@ class AuthenticatorImpl: Authenticator {
             clientId: self.configuration.clientId,
             clientSecret: nil,
             scopes: scopesArray,
-            redirectURL: redirectUri,
+            redirectURL: loginRedirectUri,
             responseType: OIDResponseTypeCode,
             additionalParameters: nil)
 
         // Do the redirect
-        self.currentOAuthSession =
+        sceneDelegate.currentOAuthSession =
             OIDAuthorizationService.present(request, presenting: viewController) { response, error in
 
                 // Handle errors
@@ -434,6 +483,7 @@ class AuthenticatorImpl: Authenticator {
      * Do the work of the logout redirect
      */
     private func performLogoutRedirect(
+        sceneDelegate: SceneDelegate,
         viewController: UIViewController,
         idToken: String) throws -> CoFuture<Void> {
 
@@ -443,8 +493,9 @@ class AuthenticatorImpl: Authenticator {
         try self.getMetadata().await()
 
         // Get the post logout address as a URL object
-        guard let postLogoutRedirectUri = URL(string: self.configuration.postLogoutRedirectUri) else {
-            let message = "Error creating URL for : \(self.configuration.postLogoutRedirectUri)"
+        let postLogoutUrl = self.getPostLogoutRedirectUri()
+        guard let postLogoutRedirectUri = URL(string: postLogoutUrl) else {
+            let message = "Error creating URL for : \(postLogoutUrl)"
             promise.fail(ErrorHandler.fromMessage(message: message))
             return promise
         }
@@ -462,9 +513,9 @@ class AuthenticatorImpl: Authenticator {
             idToken: idToken,
             postLogoutRedirectUri: postLogoutRedirectUri)
 
-        // Do the logout redirect, and use the current authorization flow parameter
+        // Do the logout redirect
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
-        self.currentOAuthSession =
+        sceneDelegate.currentOAuthSession =
             OIDAuthorizationService.present(request, externalUserAgent: agent!) { _, error in
 
                 // Handle errors
@@ -545,6 +596,38 @@ class AuthenticatorImpl: Authenticator {
     private func matchesAppAuthError(error: Error, domain: String, code: Int) -> Bool {
         let authError = error as NSError
         return authError.domain == domain && authError.code == code
+    }
+
+    /*
+     * Return the URL to the interstitial page used for login redirects
+     * https://web.authguidance-examples.com/mobile-oauth/postlogin.html
+     */
+    private func getLoginRedirectUri() -> String {
+        return "\(self.configuration.webDomain)\(self.configuration.loginRedirectPath)"
+    }
+
+    /*
+     * Return the URL to the interstitial page used for logout redirects
+     * https://web.authguidance-examples.com/mobile-oauth/postlogout.html
+     */
+    private func getPostLogoutRedirectUri() -> String {
+        return "\(self.configuration.webDomain)\(self.configuration.postLogoutRedirectPath)"
+    }
+
+    /*
+     * Return the URL that the interstitial page reactivates the app on after login
+     * https://authguidance-examples.com/oauth/callback
+     */
+    private func getLoginReactivateUri() -> String {
+        return "\(self.configuration.deepLinkDomain)\(self.configuration.loginActivatePath)"
+    }
+
+    /*
+     * Return the URL that the interstitial page reactivates the app on after logout
+     * https://authguidance-examples.com/oauth/logoutcallback
+     */
+    private func getPostLogoutReactivateUri() -> String {
+        return "\(self.configuration.deepLinkDomain)\(self.configuration.postLogoutActivatePath)"
     }
 
     /*

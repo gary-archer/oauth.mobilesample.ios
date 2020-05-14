@@ -17,18 +17,30 @@ protocol Authenticator {
     // Refresh the current access token
     func refreshAccessToken() -> CoFuture<String>
 
+    // Start a login redirect
+    func startLogin(
+        sceneDelegate: SceneDelegate,
+        viewController: UIViewController) -> CoFuture<OIDAuthorizationResponse>
+
+    // When a deep link is received, see if it is a Claimed HTTPS scheme OAuth response
+    func isOAuthResponse(responseUrl: URL) -> Bool
+
+    // Resume AppAuth handling when we receive the login or logout response
+    func resumeOperation(sceneDelegate: SceneDelegate, responseUrl: URL)
+
+    // Complete a login
+    func finishLogin(
+        sceneDelegate: SceneDelegate,
+        authResponse: OIDAuthorizationResponse) -> CoFuture<Void>
+
+    // Perform a logout
+    func logout(
+        sceneDelegate: SceneDelegate,
+        viewController: UIViewController) -> CoFuture<Void>
+
     // For testing, make the access token act expired
     func expireAccessToken()
 
     // For testing, make the refresh token act expired
     func expireRefreshToken()
-
-    // Start a login redirect
-    func startLogin(viewController: UIViewController) -> CoFuture<OIDAuthorizationResponse>
-
-    // Complete a login
-    func finishLogin(authResponse: OIDAuthorizationResponse) -> CoFuture<Void>
-
-    // Perform a logout
-    func logout(viewController: UIViewController) -> CoFuture<Void>
 }
