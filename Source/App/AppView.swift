@@ -14,7 +14,6 @@ struct AppView: View {
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
     // Properties
-    private let mainWindow: UIWindow
     private let viewManager: ViewManager
     private var viewRouter: ViewRouter
 
@@ -24,7 +23,6 @@ struct AppView: View {
     init(window: UIWindow, viewRouter: ViewRouter) {
 
         // Store window related objects
-        self.mainWindow = window
         self.viewRouter = viewRouter
         self.viewManager = ViewManager()
 
@@ -174,14 +172,18 @@ struct AppView: View {
         DispatchQueue.main.startCoroutine {
 
             do {
+                // The scene delegate stores the AppAuth session
+                let sceneDelegate = try self.getSceneDelegate()
 
                 // Do the login redirect on the UI thread
                 let response = try self.model.authenticator!.startLogin(
-                    viewController: self.mainWindow.rootViewController!)
+                    sceneDelegate: sceneDelegate,
+                    viewController: sceneDelegate.window!.rootViewController!)
                         .await()
 
-                // Do the code exchange on a background thread
                 try DispatchQueue.global().await {
+
+                    // Do the code exchange on a background thread
                     try self.model.authenticator!.finishLogin(authResponse: response)
                         .await()
                 }
@@ -210,6 +212,27 @@ struct AppView: View {
     }
 
     /*
+     * Handle resuming claimed HTTPS scheme responses
+     */
+    private func resumeOAuthOperation(responseUrl: URL) {
+
+        do {
+
+            // Forward to the authenticator class
+            let sceneDelegate = try self.getSceneDelegate()
+            self.model.authenticator!.resumeOperation(
+                sceneDelegate: sceneDelegate,
+                responseUrl: responseUrl)
+
+        } catch {
+
+            // Handle errors
+            let uiError = ErrorHandler.fromException(error: error)
+            self.model.error = uiError
+        }
+    }
+
+    /*
      * The logout entry point
      */
     private func onLogout() {
@@ -219,9 +242,14 @@ struct AppView: View {
         DispatchQueue.main.startCoroutine {
 
             do {
+                // The scene delegate stores the AppAuth session
+                let sceneDelegate = try self.getSceneDelegate()
+
                 // Ask the authenticator to do the OAuth work
-                try self.model.authenticator!.logout(viewController: self.mainWindow.rootViewController!)
-                    .await()
+                try self.model.authenticator!.logout(
+                    sceneDelegate: sceneDelegate,
+                    viewController: sceneDelegate.window!.rootViewController!)
+                        .await()
 
                 // Do post logout processing
                 self.postLogout()
@@ -252,6 +280,36 @@ struct AppView: View {
     }
 
     /*
+     * Process any deep link notifications, including login / logout responses
+     */
+    func handleDeepLink(url: URL) {
+
+        do {
+
+            if self.model.authenticator!.isOAuthResponse(responseUrl: url) {
+
+                // Handle claimed HTTPS scheme login or logout responses
+                let sceneDelegate = try self.getSceneDelegate()
+                self.model.authenticator!.resumeOperation(
+                    sceneDelegate: sceneDelegate,
+                    responseUrl: url)
+
+            } else {
+
+                // Handle ordinary deep links otherwise, unless a login window is topmost
+                if viewRouter.isTopMost {
+                    DeepLinkHelper.handleDeepLink(url: url, viewRouter: self.viewRouter)
+                }
+            }
+        } catch {
+
+                // Handle errors
+                let uiError = ErrorHandler.fromException(error: error)
+                self.model.error = uiError
+        }
+    }
+
+    /*
      * Make the access token act expired
      */
     private func onExpireAccessToken() {
@@ -263,5 +321,19 @@ struct AppView: View {
      */
     private func onExpireRefreshToken() {
         self.model.authenticator!.expireRefreshToken()
+    }
+
+    /*
+     * A helper method to get the scene delegate, on which the login response is received
+     */
+    private func getSceneDelegate() throws -> SceneDelegate {
+
+        let scene = UIApplication.shared.connectedScenes.first
+        if let sceneDelegate = scene?.delegate as? SceneDelegate {
+            return sceneDelegate
+        }
+
+        let message = "Unable to get scene delegate during an OAuth operation"
+        throw ErrorHandler.fromMessage(message: message)
     }
 }

@@ -1,18 +1,20 @@
-/*
- * Deals with UI lifecycle
- */
-
 import UIKit
 import SwiftUI
+import AppAuth
+
 /*
- * Handle one instance of the app's user interface
+ * Application startup and lifecycle events
  */
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    // Built in properties
+    // Window objects
     var window: UIWindow?
 
-    // Custom properties for this app
+    // Properties used for claimed HTTPS scheme responses
+    var currentOAuthSession: OIDExternalUserAgentSession?
+    private var appView: AppView?
+
+    // Published objects for this app
     private var viewRouter = ViewRouter()
     private var orientationHandler = OrientationHandler()
     private var reloadPublisher = DataReloadHandler()
@@ -34,25 +36,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Create the main window
             let window = UIWindow(windowScene: windowScene)
 
-            // Set the initial orientation
-            orientationHandler.isLandscape = windowScene.interfaceOrientation.isLandscape
+            // Create the main view
+            self.appView = AppView(window: window, viewRouter: self.viewRouter)
 
-            // Create the main view and supply environment objects
-            let appView = AppView(window: window, viewRouter: self.viewRouter)
-                .environmentObject(self.orientationHandler)
-                .environmentObject(self.reloadPublisher)
-
-            // Set the root view controller
-            window.rootViewController = UIHostingController(rootView: appView)
-
-            // Present the window
+            // Finish window creation and supply environment objects
+            self.orientationHandler.isLandscape = windowScene.interfaceOrientation.isLandscape
+            window.rootViewController = UIHostingController(
+                rootView: self.appView
+                    .environmentObject(self.orientationHandler)
+                    .environmentObject(self.reloadPublisher))
             self.window = window
             window.makeKeyAndVisible()
 
-            // Deep link notifications are received here when the app is not running yet
+            // Deep link notifications that start the app are processed here
             let startupDeepLinkActivity = connectionOptions.userActivities.first
             if startupDeepLinkActivity != nil {
-                self.viewRouter.handleDeepLink(url: startupDeepLinkActivity!.webpageURL!)
+                self.appView?.handleDeepLink(url: startupDeepLinkActivity!.webpageURL!)
             }
         }
     }
@@ -71,12 +70,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     /*
-     * Deep link notifications are received here after the app has started
+     * Deep link notifications are received here after the app has started, including login / logout responses
      */
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
 
         if userActivity.webpageURL != nil {
-            self.viewRouter.handleDeepLink(url: userActivity.webpageURL!)
+            self.appView?.handleDeepLink(url: userActivity.webpageURL!)
         }
     }
 

@@ -48,7 +48,7 @@ struct CognitoLogoutManager: LogoutManager {
             state: "",
             additionalParameters: [
                 "client_id": self.configuration.clientId,
-                "logout_uri": self.configuration.postLogoutRedirectUri
+                "logout_uri": postLogoutRedirectUri.absoluteString
             ])
     }
 
