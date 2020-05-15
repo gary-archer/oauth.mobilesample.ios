@@ -14,10 +14,10 @@ struct TransactionsView: View {
     // Properties
     private let viewManager: ViewManager
     private let apiClient: ApiClient
-    private var companyId: String = "0"
 
     // This view's state
     @State private var data: CompanyTransactions?
+    @State private var companyId: String = "0"
     @State private var error: UIError?
     @State private var redraw: Bool = false
 
@@ -30,9 +30,9 @@ struct TransactionsView: View {
         self.viewManager = viewManager
         self.apiClient = apiClient
 
-        // Get the supplied company id
+        // Get the supplied company id when we first navigate here
         if let companyId = viewRouter.params[0] as? String {
-            self.companyId = companyId
+            self._companyId = State(initialValue: companyId)
         }
     }
 
@@ -129,6 +129,12 @@ struct TransactionsView: View {
      * Load our data
      */
     private func loadData(causeError: Bool) {
+
+        // Update to the latest router value, since we can navigate to this view while it is already active
+        // If viewing company 1 transactions and we deep link to company 2, this will force an update to 2
+        if let companyId = viewRouter.params[0] as? String {
+            self.companyId = companyId
+        }
 
         // Run async operations in a coroutine
         DispatchQueue.main.startCoroutine {

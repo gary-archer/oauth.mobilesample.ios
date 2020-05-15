@@ -28,8 +28,6 @@ struct AppView: View {
 
         // Create the model, which manages mutable state
         self.model = AppViewModel()
-
-        print("MAIN CONSTRUCT")
     }
 
     /*
@@ -97,8 +95,6 @@ struct AppView: View {
     private func initialiseApp() {
 
         do {
-            print("MAIN APPEAR")
-
             // Initialise the model, which manages mutable data
             try self.model.initialise()
 
