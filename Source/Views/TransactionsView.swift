@@ -14,29 +14,26 @@ struct TransactionsView: View {
     // Properties
     private let viewManager: ViewManager
     private let apiClient: ApiClient
-    private let companyId: String
+    private var companyId: String = "0"
 
     // This view's state
     @State private var data: CompanyTransactions?
     @State private var error: UIError?
+    @State private var redraw: Bool = false
 
     /*
      * Initialise the view from input
      */
     init (viewRouter: ViewRouter, viewManager: ViewManager, apiClient: ApiClient) {
 
-        // Store supplied values
         self.viewRouter = viewRouter
         self.viewManager = viewManager
         self.apiClient = apiClient
 
-        // Get the company from the router
-        guard let companyId = viewRouter.params[0] as? String else {
-            self.companyId = "0"
-            return
+        // Get the supplied company id
+        if let companyId = viewRouter.params[0] as? String {
+            self.companyId = companyId
         }
-
-        self.companyId = companyId
     }
 
     /*
@@ -48,11 +45,13 @@ struct TransactionsView: View {
         return VStack {
 
             // Render the heading
-            Text("Today's Transactions for Company \(self.companyId)")
-                .font(.headline)
-                .frame(width: deviceWidth)
-                .padding()
-                .background(Colors.lightBlue)
+            if self.companyId != "0" {
+                Text("Today's Transactions for Company \(self.companyId)")
+                    .font(.headline)
+                    .frame(width: deviceWidth)
+                    .padding()
+                    .background(Colors.lightBlue)
+            }
 
             // Render errors getting data if required
             if self.error != nil {
@@ -160,8 +159,9 @@ struct TransactionsView: View {
 
                     // For 'expected' errors, return to the home view
                     self.viewManager.onViewLoaded()
-                    self.viewRouter.currentViewType = CompaniesView.Type.self
-                    self.viewRouter.params = []
+                    self.viewRouter.changeMainView(
+                        newViewType: CompaniesView.Type.self,
+                        newViewParams: [])
 
                 } else {
 

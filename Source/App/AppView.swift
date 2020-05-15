@@ -23,11 +23,13 @@ struct AppView: View {
     init(window: UIWindow, viewRouter: ViewRouter) {
 
         // Store window related objects
-        self.viewRouter = viewRouter
         self.viewManager = ViewManager()
+        self.viewRouter = viewRouter
 
         // Create the model, which manages mutable state
         self.model = AppViewModel()
+
+        print("MAIN CONSTRUCT")
     }
 
     /*
@@ -95,6 +97,7 @@ struct AppView: View {
     private func initialiseApp() {
 
         do {
+            print("MAIN APPEAR")
 
             // Initialise the model, which manages mutable data
             try self.model.initialise()
@@ -104,6 +107,10 @@ struct AppView: View {
                 onLoadStateChanged: self.onLoadStateChanged,
                 onLoginRequired: self.onLoginRequired)
             self.viewManager.setViewCount(count: 2)
+
+            // Set navigation callbacks
+            self.viewRouter.handleOAuthDeepLink = self.handleOAuthDeepLink
+            self.viewRouter.onDeepLinkCompleted = self.onDeepLinkCompleted
 
         } catch {
 
@@ -130,8 +137,7 @@ struct AppView: View {
         }
 
         // Move to the home view
-        self.viewRouter.currentViewType = CompaniesView.Type.self
-        self.viewRouter.params = []
+        self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
 
         // If there is an error loading data from the API then force a reload
         if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
@@ -173,7 +179,7 @@ struct AppView: View {
 
             do {
                 // The scene delegate stores the AppAuth session
-                let sceneDelegate = try self.getSceneDelegate()
+                let sceneDelegate = self.getSceneDelegate()!
 
                 // Do the login redirect on the UI thread
                 let response = try self.model.authenticator!.startLogin(
@@ -198,8 +204,7 @@ struct AppView: View {
                 if uiError.errorCode == ErrorCodes.redirectCancelled {
 
                     // If the login was cancelled, move to the login required view
-                    self.viewRouter.currentViewType = LoginRequiredView.Type.self
-                    self.viewRouter.params = []
+                    self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
 
                 } else {
 
@@ -212,24 +217,19 @@ struct AppView: View {
     }
 
     /*
-     * Handle resuming claimed HTTPS scheme responses
+     * Process any deep link notifications, including login / logout responses
      */
-    private func resumeOAuthOperation(responseUrl: URL) {
+    func handleOAuthDeepLink(url: URL) -> Bool {
 
-        do {
-
-            // Forward to the authenticator class
-            let sceneDelegate = try self.getSceneDelegate()
-            self.model.authenticator!.resumeOperation(
-                sceneDelegate: sceneDelegate,
-                responseUrl: responseUrl)
-
-        } catch {
-
-            // Handle errors
-            let uiError = ErrorHandler.fromException(error: error)
-            self.model.error = uiError
+        // If this is not a login or logout response, the view router handles the deep link
+        if !self.model.authenticator!.isOAuthResponse(responseUrl: url) {
+            return false
         }
+
+        // Handle claimed HTTPS scheme login or logout responses
+        let sceneDelegate = self.getSceneDelegate()!
+        self.model.authenticator!.resumeOperation(sceneDelegate: sceneDelegate, responseUrl: url)
+        return true
     }
 
     /*
@@ -243,7 +243,7 @@ struct AppView: View {
 
             do {
                 // The scene delegate stores the AppAuth session
-                let sceneDelegate = try self.getSceneDelegate()
+                let sceneDelegate = self.getSceneDelegate()!
 
                 // Ask the authenticator to do the OAuth work
                 try self.model.authenticator!.logout(
@@ -273,39 +273,21 @@ struct AppView: View {
      */
     private func postLogout() {
 
-        self.viewRouter.currentViewType = LoginRequiredView.Type.self
-        self.viewRouter.params = []
+        self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
         self.model.isDataLoaded = false
         self.viewRouter.isTopMost = true
     }
 
     /*
-     * Process any deep link notifications, including login / logout responses
+     * Post deep linking actions
      */
-    func handleDeepLink(url: URL) {
+    func onDeepLinkCompleted(isSameView: Bool) {
 
-        do {
-
-            if self.model.authenticator!.isOAuthResponse(responseUrl: url) {
-
-                // Handle claimed HTTPS scheme login or logout responses
-                let sceneDelegate = try self.getSceneDelegate()
-                self.model.authenticator!.resumeOperation(
-                    sceneDelegate: sceneDelegate,
-                    responseUrl: url)
-
-            } else {
-
-                // Handle ordinary deep links otherwise, unless a login window is topmost
-                if viewRouter.isTopMost {
-                    DeepLinkHelper.handleDeepLink(url: url, viewRouter: self.viewRouter)
-                }
-            }
-        } catch {
-
-                // Handle errors
-                let uiError = ErrorHandler.fromException(error: error)
-                self.model.error = uiError
+        // Handle an issue deep linking to transactions for company 1 when transactions for company 2 are active
+        // In this case the onAppear function is not called within the transactions view so we need to force an update
+        // https://github.com/onmyway133/blog/issues/468
+        if isSameView {
+            self.onReloadData(causeError: false)
         }
     }
 
@@ -326,14 +308,9 @@ struct AppView: View {
     /*
      * A helper method to get the scene delegate, on which the login response is received
      */
-    private func getSceneDelegate() throws -> SceneDelegate {
+    private func getSceneDelegate() -> SceneDelegate? {
 
         let scene = UIApplication.shared.connectedScenes.first
-        if let sceneDelegate = scene?.delegate as? SceneDelegate {
-            return sceneDelegate
-        }
-
-        let message = "Unable to get scene delegate during an OAuth operation"
-        throw ErrorHandler.fromMessage(message: message)
+        return scene!.delegate as? SceneDelegate
     }
 }

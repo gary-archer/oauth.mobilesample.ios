@@ -3,7 +3,7 @@
  */
 struct Configuration: Decodable {
 
-    // Application code properties
+    // Application properties
     let app: AppConfiguration
 
     // OAuth plumbing properties

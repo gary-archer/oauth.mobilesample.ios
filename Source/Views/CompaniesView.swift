@@ -130,8 +130,10 @@ struct CompaniesView: View {
      * When a company is clicked, move to the transactions view and indicate which item
      */
     private func moveToTransactions(id: Int) {
-        self.viewRouter.currentViewType = TransactionsView.Type.self
-        self.viewRouter.params = [String(id)]
+
+        self.viewRouter.changeMainView(
+            newViewType: TransactionsView.Type.self,
+            newViewParams: [String(id)])
     }
 
     /*

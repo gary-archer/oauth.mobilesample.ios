@@ -1,29 +1,17 @@
 import Foundation
 
 /*
- * A class to manage universal link notifications
+ * A class to manage parsing of deep link notifications
  */
 class DeepLinkHelper {
 
     /*
-     * Return true if this is a login or logout response
+     * Calculate and return the new view
      */
-    static func isOAuthResponse() -> Bool {
-        return true
-    }
+    static func handleDeepLink(url: URL) -> (target: Any.Type, params: [Any]) {
 
-    /*
-     * Update the location based on the deep link supplied
-     */
-    static func handleDeepLink(url: URL, viewRouter: ViewRouter) {
-
-        var target: Any.Type = CompaniesView.Type.self
-        var params = [Any]()
-
-        // Only handle our deep linking URL
-        if url.host != "authguidance-examples.com" {
-            return
-        }
+        var newView: Any.Type = CompaniesView.Type.self
+        var newViewParams = [Any]()
 
         // Check for a hash fragment
         let hash = url.fragment
@@ -32,14 +20,12 @@ class DeepLinkHelper {
             // If we have a company id then move to the transactions view
             let companyId = self.getDeepLinkedCompanyId(hashFragment: hash!)
             if companyId != nil {
-                target = TransactionsView.Type.self
-                params = [companyId!]
+                newView = TransactionsView.Type.self
+                newViewParams = [companyId!]
             }
         }
 
-        // Update the view router so that navigation is triggered
-        viewRouter.currentViewType = target
-        viewRouter.params = params
+        return (target: newView, params: newViewParams)
     }
 
     /*

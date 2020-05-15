@@ -12,12 +12,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // Properties used for claimed HTTPS scheme responses
     var currentOAuthSession: OIDExternalUserAgentSession?
-    private var appView: AppView?
 
     // Published objects for this app
     private var viewRouter = ViewRouter()
     private var orientationHandler = OrientationHandler()
-    private var reloadPublisher = DataReloadHandler()
+    private var dataReloadHandler = DataReloadHandler()
 
     /*
      * Use this method to optionally configure and attach the UIWindow to the provided UIWindowScene
@@ -33,25 +32,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller
         if let windowScene = scene as? UIWindowScene {
 
-            // Create the main window
-            let window = UIWindow(windowScene: windowScene)
-
             // Create the main view
-            self.appView = AppView(window: window, viewRouter: self.viewRouter)
+            let window = UIWindow(windowScene: windowScene)
+            let appView = AppView(window: window, viewRouter: self.viewRouter)
 
             // Finish window creation and supply environment objects
             self.orientationHandler.isLandscape = windowScene.interfaceOrientation.isLandscape
             window.rootViewController = UIHostingController(
-                rootView: self.appView
+                rootView: appView
                     .environmentObject(self.orientationHandler)
-                    .environmentObject(self.reloadPublisher))
+                    .environmentObject(self.dataReloadHandler))
+
             self.window = window
             window.makeKeyAndVisible()
 
             // Deep link notifications that start the app are processed here
-            let startupDeepLinkActivity = connectionOptions.userActivities.first
-            if startupDeepLinkActivity != nil {
-                self.appView?.handleDeepLink(url: startupDeepLinkActivity!.webpageURL!)
+            let activity = connectionOptions.userActivities.first
+            if activity != nil {
+                self.viewRouter.handleStartupDeepLink(url: activity!.webpageURL!)
             }
         }
     }
@@ -75,7 +73,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
 
         if userActivity.webpageURL != nil {
-            self.appView?.handleDeepLink(url: userActivity.webpageURL!)
+            self.viewRouter.handleDeepLink(url: userActivity.webpageURL!)
         }
     }
 

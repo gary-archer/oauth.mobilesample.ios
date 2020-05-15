@@ -42,7 +42,7 @@ struct LongPressModifier: ViewModifier {
             }
             .onEnded { _ in
 
-                if self.isDisabled {
+                if self.isDisabled || self.startTime == nil {
                     return
                 }
 

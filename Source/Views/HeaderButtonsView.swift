@@ -6,7 +6,6 @@ import SwiftUI
 struct HeaderButtonsView: View {
 
     // External objects
-    @EnvironmentObject var dataReloadHandler: DataReloadHandler
     @GestureState private var reloadTapped = false
 
     // Properties
