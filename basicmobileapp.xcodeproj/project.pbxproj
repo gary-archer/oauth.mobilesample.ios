@@ -47,6 +47,8 @@
 		4ECD97622452E01D00D7E271 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97612452E01D00D7E271 /* AppView.swift */; };
 		4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* DataReloadHandler.swift */; };
 		4ECD97662452F25E00D7E271 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97652452F25E00D7E271 /* MainView.swift */; };
+		4ED03265246FE81E00441C53 /* postlogout.html in Resources */ = {isa = PBXBuildFile; fileRef = 4ED03263246FE81D00441C53 /* postlogout.html */; };
+		4ED03266246FE81E00441C53 /* postlogin.html in Resources */ = {isa = PBXBuildFile; fileRef = 4ED03264246FE81E00441C53 /* postlogin.html */; };
 		4EE4CAB8245336430033B3C5 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4EE4CAB7245336430033B3C5 /* .swiftlint.yml */; };
 		4EE4CABE245364910033B3C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABC245364910033B3C5 /* AppDelegate.swift */; };
 		4EE4CABF245364910033B3C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABD245364910033B3C5 /* SceneDelegate.swift */; };
@@ -117,6 +119,8 @@
 		4ECD97612452E01D00D7E271 /* AppView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4ECD97632452E57800D7E271 /* DataReloadHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReloadHandler.swift; sourceTree = "<group>"; };
 		4ECD97652452F25E00D7E271 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		4ED03263246FE81D00441C53 /* postlogout.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postlogout.html; sourceTree = "<group>"; };
+		4ED03264246FE81E00441C53 /* postlogin.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postlogin.html; sourceTree = "<group>"; };
 		4EE4CAB7245336430033B3C5 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		4EE4CABC245364910033B3C5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EE4CABD245364910033B3C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				4E1888E123DDFEB20014638D /* Source */,
 				4E05212D24531F3400C84A9F /* Frameworks */,
 				4EBCC9552458809900D5A2A9 /* Security */,
+				4ED03262246FE76B00441C53 /* Web */,
 				4E1888E923DDFEB20014638D /* Info.plist */,
 				4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */,
 				4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */,
@@ -325,6 +330,15 @@
 				4E87A39B245884FE00E522BF /* .well-known */,
 			);
 			path = Security;
+			sourceTree = "<group>";
+		};
+		4ED03262246FE76B00441C53 /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				4ED03264246FE81E00441C53 /* postlogin.html */,
+				4ED03263246FE81D00441C53 /* postlogout.html */,
+			);
+			path = Web;
 			sourceTree = "<group>";
 		};
 		4EE4CABB245364910033B3C5 /* App */ = {
@@ -436,11 +450,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ED03265246FE81E00441C53 /* postlogout.html in Resources */,
 				4E05212C24531E4F00C84A9F /* .gitignore in Resources */,
 				4E32863624531A8800B44823 /* Cartfile in Resources */,
 				4E712AAA245C5D1700022757 /* launch.png in Resources */,
 				4EF4FDF323F9E269008C3022 /* mobile_config_localapi.json in Resources */,
 				4E1888EC23DDFEB20014638D /* Preview Assets.xcassets in Resources */,
+				4ED03266246FE81E00441C53 /* postlogin.html in Resources */,
 				4E05212A24531E1400C84A9F /* Cartfile.resolved in Resources */,
 				4E1888ED23DDFEB20014638D /* LaunchScreen.storyboard in Resources */,
 				4E1888EB23DDFEB20014638D /* Assets.xcassets in Resources */,

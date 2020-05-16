@@ -605,7 +605,7 @@ class AuthenticatorImpl: Authenticator {
 
     /*
      * Return the URL to the interstitial page used for login redirects
-     * https://web.authguidance-examples.com/mobile-oauth/postlogin.html
+     * https://web.authguidance-examples.com/mobile/postlogin.html
      */
     private func getLoginRedirectUri() -> String {
         return "https://\(self.configuration.webDomain)\(self.configuration.loginRedirectPath)"
@@ -613,7 +613,7 @@ class AuthenticatorImpl: Authenticator {
 
     /*
      * Return the URL to the interstitial page used for logout redirects
-     * https://web.authguidance-examples.com/mobile-oauth/postlogout.html
+     * https://web.authguidance-examples.com/mobile/postlogout.html
      */
     private func getPostLogoutRedirectUri() -> String {
         return "https://\(self.configuration.webDomain)\(self.configuration.postLogoutRedirectPath)"
