@@ -13,20 +13,14 @@ struct AppView: View {
     @EnvironmentObject var orientationHandler: OrientationHandler
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
-    // Properties
-    private let viewManager: ViewManager
+    // Navigation properties
     private var viewRouter: ViewRouter
 
     /*
-     * Initialise properties that we can set here
+     * Initialise properties that we can safely set here
      */
     init(window: UIWindow, viewRouter: ViewRouter) {
-
-        // Store window related objects
-        self.viewManager = ViewManager()
         self.viewRouter = viewRouter
-
-        // Create the model, which manages mutable state
         self.model = AppViewModel()
     }
 
@@ -40,7 +34,7 @@ struct AppView: View {
             // Display the title row including user info
             TitleView(
                 apiClient: self.model.apiClient,
-                viewManager: self.viewManager,
+                viewManager: self.model.viewManager,
                 shouldLoadUserInfo:
                     self.model.isInitialised &&
                     self.model.isDeviceSecured)
@@ -50,8 +44,8 @@ struct AppView: View {
                 sessionButtonsEnabled: self.model.isDataLoaded,
                 onHome: self.onHome,
                 onReloadData: self.onReloadData,
-                onExpireAccessToken: self.onExpireAccessToken,
-                onExpireRefreshToken: self.onExpireRefreshToken,
+                onExpireAccessToken: self.model.onExpireAccessToken,
+                onExpireRefreshToken: self.model.onExpireRefreshToken,
                 onLogout: self.onLogout)
                     .padding(.bottom)
 
@@ -77,7 +71,7 @@ struct AppView: View {
                 // Render the main view depending on the router location
                 MainView(
                     viewRouter: self.viewRouter,
-                    viewManager: self.viewManager,
+                    viewManager: self.model.viewManager!,
                     apiClient: self.model.apiClient!,
                     isDeviceSecured: self.model.isDeviceSecured)
             }
@@ -96,13 +90,7 @@ struct AppView: View {
 
         do {
             // Initialise the model, which manages mutable data
-            try self.model.initialise()
-
-            // Initialise the view manager
-            self.viewManager.initialise(
-                onLoadStateChanged: self.onLoadStateChanged,
-                onLoginRequired: self.onLoginRequired)
-            self.viewManager.setViewCount(count: 2)
+            try self.model.initialise(onLoginRequired: self.onLoginRequired)
 
             // Set navigation callbacks
             self.viewRouter.handleOAuthDeepLink = self.handleOAuthDeepLink
@@ -146,70 +134,35 @@ struct AppView: View {
      */
     private func onReloadData(causeError: Bool) {
 
-        self.viewManager.setViewCount(count: 2)
+        self.model.viewManager!.setViewCount(count: 2)
         self.dataReloadHandler.sendReloadEvent(causeError: causeError)
-    }
-
-    /*
-     * Update session button state while the main view loads
-     */
-    private func onLoadStateChanged(loaded: Bool) {
-        self.model.isDataLoaded = loaded
     }
 
     /*
      * Start a login redirect when the view manager informs us that a permanent 401 has occurred
      */
     private func onLoginRequired() {
-        self.onLogin()
-    }
 
-    /*
-     * The login entry point
-     */
-    private func onLogin() {
-
-        // Run async operations in a coroutine
-        self.viewRouter.isTopMost = false
-        DispatchQueue.main.startCoroutine {
-
-            do {
-                // The scene delegate stores the AppAuth session
-                let sceneDelegate = self.getSceneDelegate()!
-
-                // Do the login redirect on the UI thread
-                let response = try self.model.authenticator!.startLogin(
-                    sceneDelegate: sceneDelegate,
-                    viewController: sceneDelegate.window!.rootViewController!)
-                        .await()
-
-                try DispatchQueue.global().await {
-
-                    // Do the code exchange on a background thread
-                    try self.model.authenticator!.finishLogin(authResponse: response)
-                        .await()
-                }
-
-                // Reload data after signing in
-                self.onReloadData(causeError: false)
-                self.viewRouter.isTopMost = true
-
-            } catch {
-
-                let uiError = ErrorHandler.fromException(error: error)
-                if uiError.errorCode == ErrorCodes.redirectCancelled {
-
-                    // If the login was cancelled, move to the login required view
-                    self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
-
-                } else {
-
-                    // Otherwise render the error in the UI
-                    self.model.error = uiError
-                }
-                self.viewRouter.isTopMost = true
-            }
+        // Reload data after signing in
+        let onSuccess = {
+            self.onReloadData(causeError: false)
+            self.viewRouter.isTopMost = true
         }
+
+        // Handle cancelled logins by moving to login required
+        let onError: (UIError) -> Void = { uiError in
+            if uiError.errorCode == ErrorCodes.redirectCancelled {
+                self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
+            }
+            self.viewRouter.isTopMost = true
+        }
+
+        // Indicate that we are no longer top most then get the model to do logic of the login
+        self.viewRouter.isTopMost = true
+        self.model.login(
+            sceneDelegate: self.getSceneDelegate()!,
+            onSuccess: onSuccess,
+            onError: onError)
     }
 
     /*
@@ -217,15 +170,9 @@ struct AppView: View {
      */
     func handleOAuthDeepLink(url: URL) -> Bool {
 
-        // If this is not a login or logout response, the view router handles the deep link
-        if !self.model.authenticator!.isOAuthResponse(responseUrl: url) {
-            return false
-        }
-
-        // Handle claimed HTTPS scheme login or logout responses
-        let sceneDelegate = self.getSceneDelegate()!
-        self.model.authenticator!.resumeOperation(sceneDelegate: sceneDelegate, responseUrl: url)
-        return true
+        return self.model.handleOAuthDeepLink(
+            url: url,
+            sceneDelegate: self.getSceneDelegate()!)
     }
 
     /*
@@ -233,35 +180,25 @@ struct AppView: View {
      */
     private func onLogout() {
 
-        // Run async operations in a coroutine
-        self.viewRouter.isTopMost = false
-        DispatchQueue.main.startCoroutine {
-
-            do {
-                // The scene delegate stores the AppAuth session
-                let sceneDelegate = self.getSceneDelegate()!
-
-                // Ask the authenticator to do the OAuth work
-                try self.model.authenticator!.logout(
-                    sceneDelegate: sceneDelegate,
-                    viewController: sceneDelegate.window!.rootViewController!)
-                        .await()
-
-                // Do post logout processing
-                self.postLogout()
-
-            } catch {
-
-                // On error, only output logout errors to the console rather than impacting the end user
-                let uiError = ErrorHandler.fromException(error: error)
-                if uiError.errorCode != ErrorCodes.redirectCancelled {
-                    ErrorConsoleReporter.output(error: uiError)
-                }
-
-                // Do post logout processing
-                self.postLogout()
-            }
+        // Do post logout processing on success
+        let onSuccess = {
+            self.postLogout()
         }
+
+        // If there is a logout error then we don't impact the user
+        let onError: (UIError) -> Void = { uiError in
+            if uiError.errorCode != ErrorCodes.redirectCancelled {
+                ErrorConsoleReporter.output(error: uiError)
+            }
+            self.postLogout()
+        }
+
+        // Indicate that we are no longer top most then get the model to do logic of the logout
+        self.viewRouter.isTopMost = true
+        self.model.logout(
+            sceneDelegate: self.getSceneDelegate()!,
+            onSuccess: onSuccess,
+            onError: onError)
     }
 
     /*
@@ -285,20 +222,6 @@ struct AppView: View {
         if isSameView {
             self.onReloadData(causeError: false)
         }
-    }
-
-    /*
-     * Make the access token act expired
-     */
-    private func onExpireAccessToken() {
-        self.model.authenticator!.expireAccessToken()
-    }
-
-    /*
-     * Make the refresh token act expired
-     */
-    private func onExpireRefreshToken() {
-        self.model.authenticator!.expireRefreshToken()
     }
 
     /*

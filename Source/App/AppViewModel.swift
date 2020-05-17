@@ -5,10 +5,11 @@ import Foundation
  */
 class AppViewModel: ObservableObject {
 
-    // Global objects created after construction and used by the main app view
-    @Published var configuration: Configuration?
-    @Published var apiClient: ApiClient?
-    @Published var authenticator: AuthenticatorImpl?
+    // Global objects created after construction
+    private var configuration: Configuration?
+    var apiClient: ApiClient?
+    var authenticator: AuthenticatorImpl?
+    var viewManager: ViewManager?
 
     // State used by the view
     @Published var isInitialised = false
@@ -17,9 +18,9 @@ class AppViewModel: ObservableObject {
     @Published var error: UIError?
 
     /*
-     * Initialise or reinitialise data
+     * Initialise or reinitialise global objects, including processing configuration
      */
-    func initialise() throws {
+    func initialise(onLoginRequired: @escaping () -> Void) throws {
 
         // Reset state flags
         self.isInitialised = false
@@ -37,7 +38,122 @@ class AppViewModel: ObservableObject {
             appConfiguration: self.configuration!.app,
             authenticator: self.authenticator!)
 
+        // Create the view manager
+        self.viewManager = ViewManager()
+        self.viewManager!.initialise(
+            onLoadStateChanged: self.onLoadStateChanged,
+            onLoginRequired: onLoginRequired)
+        self.viewManager!.setViewCount(count: 2)
+
         // Indicate successful startup
         self.isInitialised = true
+    }
+
+    /*
+     * Do the login redirect
+     */
+    func login(
+        sceneDelegate: SceneDelegate,
+        onSuccess: @escaping () -> Void,
+        onError: @escaping (UIError) -> Void) {
+
+        // Run async operations in a coroutine
+        DispatchQueue.main.startCoroutine {
+
+            do {
+                // Do the login redirect on the UI thread
+                let response = try self.authenticator!.startLogin(
+                    sceneDelegate: sceneDelegate,
+                    viewController: sceneDelegate.window!.rootViewController!)
+                        .await()
+
+                // Do the code exchange on a background thread
+                try DispatchQueue.global().await {
+                    try self.authenticator!.finishLogin(authResponse: response)
+                        .await()
+                }
+
+                // Update the view
+                onSuccess()
+
+            } catch {
+
+                let uiError = ErrorHandler.fromException(error: error)
+                if uiError.errorCode != ErrorCodes.redirectCancelled {
+                    self.error = uiError
+                }
+
+                onError(uiError)
+            }
+        }
+    }
+
+    /*
+     * Process any deep link notifications, including login / logout responses
+     */
+    func handleOAuthDeepLink(url: URL, sceneDelegate: SceneDelegate) -> Bool {
+
+        // If this is not a login or logout response, the view router handles the deep link
+        if !self.authenticator!.isOAuthResponse(responseUrl: url) {
+            return false
+        }
+
+        // Handle claimed HTTPS scheme login or logout responses
+        self.authenticator!.resumeOperation(
+            sceneDelegate: sceneDelegate,
+            responseUrl: url)
+
+        return true
+    }
+
+    /*
+     * The logout entry point
+     */
+    func logout(
+        sceneDelegate: SceneDelegate,
+        onSuccess: @escaping () -> Void,
+        onError: @escaping (UIError) -> Void) {
+
+        // Run async operations in a coroutine
+        DispatchQueue.main.startCoroutine {
+
+            do {
+                // Ask the authenticator to do the OAuth work
+                try self.authenticator!.logout(
+                    sceneDelegate: sceneDelegate,
+                    viewController: sceneDelegate.window!.rootViewController!)
+                        .await()
+
+                // Do post logout processing
+                onSuccess()
+
+            } catch {
+
+                // Do post logout processing
+                let uiError = ErrorHandler.fromException(error: error)
+                onError(uiError)
+            }
+        }
+    }
+
+    /*
+     * Update session button state while the main view loads
+     */
+    private func onLoadStateChanged(loaded: Bool) {
+        self.isDataLoaded = loaded
+    }
+
+    /*
+     * Make the access token act expired
+     */
+    func onExpireAccessToken() {
+        self.authenticator!.expireAccessToken()
+    }
+
+    /*
+     * Make the refresh token act expired
+     */
+    func onExpireRefreshToken() {
+        self.authenticator!.expireRefreshToken()
     }
 }

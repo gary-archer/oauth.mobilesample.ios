@@ -10,7 +10,7 @@ struct TitleView: View {
 
     // Properties supplied as input
     private let apiClient: ApiClient?
-    private let viewManager: ViewManager
+    private let viewManager: ViewManager?
     private var shouldLoadUserInfo = false
 
     // This view's state
@@ -19,7 +19,7 @@ struct TitleView: View {
     /*
      * Called once 
      */
-    init (apiClient: ApiClient?, viewManager: ViewManager, shouldLoadUserInfo: Bool) {
+    init (apiClient: ApiClient?, viewManager: ViewManager?, shouldLoadUserInfo: Bool) {
         self.apiClient = apiClient
         self.viewManager = viewManager
         self.shouldLoadUserInfo = shouldLoadUserInfo
@@ -50,7 +50,7 @@ struct TitleView: View {
 
                 UserInfoView(
                     apiClient: self.apiClient!,
-                    viewManager: self.viewManager,
+                    viewManager: self.viewManager!,
                     shouldLoad: self.shouldLoadUserInfo)
                         .padding(20)
                         .frame(width: userInfoWidth, alignment: .trailing)

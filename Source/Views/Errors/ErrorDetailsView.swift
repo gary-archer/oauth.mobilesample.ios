@@ -52,22 +52,7 @@ struct ErrorDetailsView: View {
 
                 // Show each error field on a row as a label / value pair
                 List(self.errorLines, id: \.name) { item in
-
-                    VStack {
-
-                        HStack(alignment: .top) {
-                            Text(item.name)
-                                .labelStyle()
-                                .frame(width: geometry.size.width / 3, alignment: .leading)
-                                .padding(.leading, geometry.size.width / 12)
-
-                            Text(item.value)
-                                .valueStyle(textColor: item.name == "Instance Id" ? Color.red : Color.black)
-                                .frame(width: geometry.size.width / 3, alignment: .leading)
-                                .padding(.leading, geometry.size.width / 12)
-
-                        }.padding()
-                    }
+                    ErrorDetailsItemView(errorLine: item, dialogWidth: geometry.size.width)
                 }
 
             }.contentShape(Rectangle())
