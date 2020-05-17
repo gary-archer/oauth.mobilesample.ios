@@ -6,7 +6,7 @@ import Foundation
 class ViewRouter: ObservableObject {
 
     // The current view and its parameters
-    @Published var currentViewType: Any.Type?
+    @Published var currentViewType: Any.Type = CompaniesView.Type.self
     @Published var params: [Any] = [Any]()
 
     // Callbacks to the app view
@@ -44,7 +44,7 @@ class ViewRouter: ObservableObject {
                 self.processDeepLink(url: url)
 
                 // Notify the parent, since deep linking to the same view requires reload actions
-                let isSameView = oldViewType != nil && oldViewType == self.currentViewType
+                let isSameView = oldViewType == self.currentViewType
                 self.onDeepLinkCompleted!(isSameView)
             }
         }

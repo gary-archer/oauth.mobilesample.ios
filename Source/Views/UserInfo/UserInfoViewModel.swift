@@ -40,16 +40,16 @@ class UserInfoViewModel: ObservableObject {
 
                 // Initialise for this request
                 self.error = nil
-                var userInfo: UserInfoClaims?
+                var newUserInfo: UserInfoClaims?
 
                 // Make the API call on a background thread
                 self.viewManager.onViewLoading()
                 try DispatchQueue.global().await {
-                    userInfo = try self.apiClient.getUserInfo(options: options).await()
+                    newUserInfo = try self.apiClient.getUserInfo(options: options).await()
                 }
 
                 // Update published properties on the main thread
-                self.userInfo = userInfo
+                self.userInfo = newUserInfo
                 self.viewManager.onViewLoaded()
 
             } catch {

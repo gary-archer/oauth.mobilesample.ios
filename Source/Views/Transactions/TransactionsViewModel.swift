@@ -38,16 +38,16 @@ class TransactionsViewModel: ObservableObject {
                 // Initialise for this request
                 self.error = nil
                 self.viewManager.onViewLoading()
-                var data: CompanyTransactions?
+                var newData: CompanyTransactions?
 
                 // Make the API call on a background thread
                 try DispatchQueue.global().await {
-                    data = try self.apiClient.getCompanyTransactions(companyId: self.companyId, options: options)
+                    newData = try self.apiClient.getCompanyTransactions(companyId: self.companyId, options: options)
                         .await()
                 }
 
                 // Update published properties on the main thread
-                self.data = data
+                self.data = newData
                 self.viewManager.onViewLoaded()
 
             } catch {

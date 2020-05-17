@@ -106,31 +106,6 @@ struct AppView: View {
     }
 
     /*
-     * Handle home button clicks
-     */
-    private func onHome() {
-
-        // If there is a startup error then reinitialise the app
-        if !self.model.isInitialised {
-            self.initialiseApp()
-            return
-        }
-
-        // If we have prompted the user to open settings and click home, update the model's flag
-        if !self.model.isDeviceSecured {
-            self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-        }
-
-        // Move to the home view
-        self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
-
-        // If there is an error loading data from the API then force a reload
-        if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
-            self.onReloadData(causeError: false)
-        }
-    }
-
-    /*
      * Handle reload data button clicks by publishing the reload event
      */
     private func onReloadData(causeError: Bool) {
@@ -210,6 +185,33 @@ struct AppView: View {
         self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
         self.model.isDataLoaded = false
         self.viewRouter.isTopMost = true
+    }
+
+    /*
+     * Handle home button clicks
+     */
+    private func onHome() {
+
+        // If there is a startup error then reinitialise the app
+        if !self.model.isInitialised {
+            self.initialiseApp()
+            return
+        }
+
+        // If we have prompted the user to open settings and click home, update the model's flag
+        if !self.model.isDeviceSecured {
+            self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
+        }
+
+        // Move to the home view
+        if self.viewRouter.currentViewType != CompaniesView.Type.self {
+            self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
+        }
+
+        // If there is an error loading data from the API then force a reload
+        if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
+            self.onReloadData(causeError: false)
+        }
     }
 
     /*

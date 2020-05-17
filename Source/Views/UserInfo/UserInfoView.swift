@@ -25,25 +25,27 @@ struct UserInfoView: View {
      */
     var body: some View {
 
-        VStack {
+        return VStack {
 
-            // Render error details if they exist
             if self.model.error != nil && self.model.error!.errorCode != ErrorCodes.loginRequired {
+
+                // Render error details if they exist
                 ErrorSummaryView(
                     hyperlinkText: "Problem Encountered",
                     dialogTitle: "User Info Error",
                     error: self.model.error!)
-                        .padding(.top)
-            }
 
-            // Render user info if it exists, and register for the receive data event
-            Text(self.model.getUserName(shouldLoad: self.shouldLoad))
-                .font(.system(size: 14))
-                .onAppear(perform: self.initialLoad)
-                .onReceive(self.dataReloadHandler.objectWillChange, perform: { causeError in
-                    self.loadData(causeError: causeError)
-                })
+            } else {
+
+                // Render user info if it exists
+                Text(self.model.getUserName(shouldLoad: self.shouldLoad))
+                    .font(.system(size: 14))
+            }
         }
+        .onAppear(perform: self.initialLoad)
+        .onReceive(self.dataReloadHandler.objectWillChange, perform: { causeError in
+            self.loadData(causeError: causeError)
+        })
     }
 
     /*

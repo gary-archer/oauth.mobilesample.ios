@@ -78,8 +78,10 @@ struct TransactionsView: View {
 
         // Update to the latest router value, since we can navigate to this view while it is already active
         // If viewing company 1 transactions and we deep link to company 2, this will force an update to 2
-        if let companyId = viewRouter.params[0] as? String {
-            self.model.companyId = companyId
+        if self.viewRouter.params.count > 0 {
+            if let companyId = self.viewRouter.params[0] as? String {
+                self.model.companyId = companyId
+            }
         }
 
         // For expected errors we navigate back to the home view
