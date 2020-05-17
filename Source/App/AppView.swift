@@ -36,7 +36,9 @@ struct AppView: View {
                 viewManager: self.model.viewManager,
                 shouldLoadUserInfo:
                     self.model.isInitialised &&
-                    self.model.isDeviceSecured)
+                    self.model.isDeviceSecured &&
+                    !self.viewRouter.isInLoginRequired()
+            )
 
             // Next display the header buttons view
             HeaderButtonsView(

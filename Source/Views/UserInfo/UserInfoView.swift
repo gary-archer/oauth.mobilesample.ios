@@ -6,23 +6,17 @@ import SwiftUI
 struct UserInfoView: View {
 
     // External objects
+    @ObservedObject var model: UserInfoViewModel
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
 
     // Properties
-    private let apiClient: ApiClient
-    private let viewManager: ViewManager
     private let shouldLoad: Bool
-
-    // This view's state
-    @State private var userInfo: UserInfoClaims?
-    @State private var error: UIError?
 
     /*
      * Initialise from input
      */
     init (apiClient: ApiClient, viewManager: ViewManager, shouldLoad: Bool) {
-        self.apiClient = apiClient
-        self.viewManager = viewManager
+        self.model = UserInfoViewModel(viewManager: viewManager, apiClient: apiClient)
         self.shouldLoad = shouldLoad
     }
 
@@ -34,18 +28,16 @@ struct UserInfoView: View {
         VStack {
 
             // Render error details if they exist
-            if self.error != nil && self.error!.errorCode != ErrorCodes.loginRequired {
-
+            if self.model.error != nil && self.model.error!.errorCode != ErrorCodes.loginRequired {
                 ErrorSummaryView(
                     hyperlinkText: "Problem Encountered",
                     dialogTitle: "User Info Error",
-                    error: self.error!)
+                    error: self.model.error!)
                         .padding(.top)
-
             }
 
             // Render user info if it exists, and register for the receive data event
-            Text(self.getUserName())
+            Text(self.model.getUserName(shouldLoad: self.shouldLoad))
                 .font(.system(size: 14))
                 .onAppear(perform: self.initialLoad)
                 .onReceive(self.dataReloadHandler.objectWillChange, perform: { causeError in
@@ -62,52 +54,10 @@ struct UserInfoView: View {
     }
 
     /*
-     * Call the API to get data
+     * Ask the model to call the API to get data
      */
     private func loadData(causeError: Bool) {
-
-        // Check preconditions
-        if !self.shouldLoad {
-            self.viewManager.onViewLoaded()
-            return
-        }
-
-        // Run async operations in a coroutine
-        DispatchQueue.main.startCoroutine {
-
-            do {
-
-                // Initialise for this request
-                self.error = nil
-                let options = ApiRequestOptions(causeError: causeError)
-
-                // Make the API call on a background thread
-                self.viewManager.onViewLoading()
-                try DispatchQueue.global().await {
-                    self.userInfo = try self.apiClient.getUserInfo(options: options).await()
-                }
-                self.viewManager.onViewLoaded()
-
-            } catch {
-
-                // Report errors
-                let uiError = ErrorHandler.fromException(error: error)
-                self.userInfo = nil
-                self.error = uiError
-                self.viewManager.onViewLoadFailed(error: uiError)
-            }
-        }
-    }
-
-    /*
-     * Return the user name to display
-     */
-    private func getUserName() -> String {
-
-        if !self.shouldLoad || self.userInfo == nil {
-            return ""
-        }
-
-        return "\(self.userInfo!.givenName) \(self.userInfo!.familyName)"
+        let options = ApiRequestOptions(causeError: causeError)
+        self.model.callApi(options: options, shouldLoad: self.shouldLoad)
     }
 }

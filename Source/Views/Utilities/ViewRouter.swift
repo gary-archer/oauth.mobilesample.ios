@@ -67,4 +67,11 @@ class ViewRouter: ObservableObject {
         let result = DeepLinkHelper.handleDeepLink(url: url)
         self.changeMainView(newViewType: result.0, newViewParams: result.1)
     }
+
+    /*
+     * Some operations are disabled in this view
+     */
+    func isInLoginRequired() -> Bool {
+        return self.currentViewType == LoginRequiredView.Type.self
+    }
 }

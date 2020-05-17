@@ -2,16 +2,16 @@ import Foundation
 import SwiftCoroutine
 
 /*
- * Data and non UI logic for the companies view
+ * Data and non UI logic for the user info view
  */
-class CompaniesViewModel: ObservableObject {
+class UserInfoViewModel: ObservableObject {
 
     // Properties
     private let viewManager: ViewManager
     private let apiClient: ApiClient
 
     // Published state
-    @Published var companies = [Company]()
+    @Published var userInfo: UserInfoClaims?
     @Published var error: UIError?
 
     /*
@@ -25,34 +25,53 @@ class CompaniesViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: ApiRequestOptions) {
+    func callApi(options: ApiRequestOptions, shouldLoad: Bool) {
+
+        // Check preconditions
+        if !shouldLoad {
+            self.viewManager.onViewLoaded()
+            return
+        }
 
         // Run async operations in a coroutine
         DispatchQueue.main.startCoroutine {
 
             do {
+
                 // Initialise for this request
                 self.error = nil
-                self.viewManager.onViewLoading()
-                var companies = [Company]()
+                var userInfo: UserInfoClaims?
 
-                // Make the API call on a background thread and update state on success
+                // Make the API call on a background thread
+                self.viewManager.onViewLoading()
                 try DispatchQueue.global().await {
-                    companies = try self.apiClient.getCompanies(options: options).await()
+                    userInfo = try self.apiClient.getUserInfo(options: options).await()
                 }
 
                 // Update published properties on the main thread
-                self.companies = companies
+                self.userInfo = userInfo
                 self.viewManager.onViewLoaded()
 
             } catch {
 
-                // Update error state
+                // Handle errors
                 let uiError = ErrorHandler.fromException(error: error)
-                self.companies = [Company]()
+                self.userInfo = nil
                 self.error = uiError
                 self.viewManager.onViewLoadFailed(error: uiError)
             }
         }
+    }
+
+    /*
+     * Return the user name to display
+     */
+    func getUserName(shouldLoad: Bool) -> String {
+
+        if !shouldLoad || self.userInfo == nil {
+            return ""
+        }
+
+        return "\(self.userInfo!.givenName) \(self.userInfo!.familyName)"
     }
 }

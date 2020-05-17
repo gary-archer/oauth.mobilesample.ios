@@ -11,7 +11,7 @@ struct TitleView: View {
     // Properties supplied as input
     private let apiClient: ApiClient?
     private let viewManager: ViewManager?
-    private var shouldLoadUserInfo = false
+    private var shouldLoadUserInfo: Bool
 
     // This view's state
     @State private var title = "OAuth 2.0 Demo App"

@@ -24,6 +24,8 @@
 		4E1D614B245B346900F41850 /* ConcurrentActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1D614A245B346900F41850 /* ConcurrentActionHandler.swift */; };
 		4E282AF724719ABE00C9690B /* ErrorDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E282AF624719ABE00C9690B /* ErrorDetailsItemView.swift */; };
 		4E282AF92471AEE100C9690B /* CompaniesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E282AF82471AEE100C9690B /* CompaniesViewModel.swift */; };
+		4E282AFB2471B2BB00C9690B /* TransactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E282AFA2471B2BB00C9690B /* TransactionsViewModel.swift */; };
+		4E282AFD2471B70000C9690B /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E282AFC2471B70000C9690B /* UserInfoViewModel.swift */; };
 		4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E29A1A62461DBE100095F11 /* OrientationHandler.swift */; };
 		4E2C334A246889850095ACEC /* ConfigurationLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2C3349246889850095ACEC /* ConfigurationLoader.swift */; };
 		4E32863624531A8800B44823 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 4E32863524531A8800B44823 /* Cartfile */; };
@@ -99,6 +101,8 @@
 		4E23798C23CE6D910066DE08 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E282AF624719ABE00C9690B /* ErrorDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetailsItemView.swift; sourceTree = "<group>"; };
 		4E282AF82471AEE100C9690B /* CompaniesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesViewModel.swift; sourceTree = "<group>"; };
+		4E282AFA2471B2BB00C9690B /* TransactionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsViewModel.swift; sourceTree = "<group>"; };
+		4E282AFC2471B70000C9690B /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
 		4E29A1A62461DBE100095F11 /* OrientationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrientationHandler.swift; sourceTree = "<group>"; };
 		4E2C3349246889850095ACEC /* ConfigurationLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationLoader.swift; sourceTree = "<group>"; };
 		4E32863524531A8800B44823 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
@@ -380,6 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				4E432517244EEB5A00A1582E /* UserInfoView.swift */,
+				4E282AFC2471B70000C9690B /* UserInfoViewModel.swift */,
 			);
 			path = UserInfo;
 			sourceTree = "<group>";
@@ -389,6 +394,7 @@
 			children = (
 				4EEF02F8247196B80022E063 /* TransactionItemView.swift */,
 				4EB6DAA923F967D30007A311 /* TransactionsView.swift */,
+				4E282AFA2471B2BB00C9690B /* TransactionsViewModel.swift */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -575,6 +581,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EE4CABE245364910033B3C5 /* AppDelegate.swift in Sources */,
+				4E282AFB2471B2BB00C9690B /* TransactionsViewModel.swift in Sources */,
 				4E1888FB23DE01D80014638D /* SessionView.swift in Sources */,
 				4EFEFC342451EE4F0057C78D /* Colors.swift in Sources */,
 				4E79B09C241428310054C382 /* UIError.swift in Sources */,
@@ -600,6 +607,7 @@
 				4EFCE67B24631D5D00BD1443 /* LogoutManager.swift in Sources */,
 				4EFEFC292451D13D0057C78D /* OAuthConfiguration.swift in Sources */,
 				4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */,
+				4E282AFD2471B70000C9690B /* UserInfoViewModel.swift in Sources */,
 				4E432516244EEAEE00A1582E /* UserInfoClaims.swift in Sources */,
 				4E1888F723DE01130014638D /* HeaderButtonsView.swift in Sources */,
 				4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */,
