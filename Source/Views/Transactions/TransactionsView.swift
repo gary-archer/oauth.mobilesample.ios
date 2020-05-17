@@ -64,53 +64,10 @@ struct TransactionsView: View {
 
             // Render the transactions list if we can retrieve it
             if self.data != nil && self.data!.transactions.count > 0 {
-
                 List(self.data!.transactions, id: \.id) { item in
-
-                    VStack {
-
-                        HStack {
-                            Text("Transaction Id")
-                                .labelStyle()
-                                .frame(width: deviceWidth / 3, alignment: .leading)
-                                .padding(.leading, deviceWidth / 12)
-
-                            Text(item.id)
-                                .valueStyle()
-                                .frame(width: deviceWidth / 3, alignment: .leading)
-                                .padding(.leading, deviceWidth / 12)
-
-                        }.padding()
-
-                        HStack {
-                            Text("Investor Id")
-                                .labelStyle()
-                                .frame(width: deviceWidth / 3, alignment: .leading)
-                                .padding(.leading, deviceWidth / 12)
-
-                            Text(item.investorId)
-                                .valueStyle()
-                                .frame(width: deviceWidth / 3, alignment: .leading)
-                                .padding(.leading, deviceWidth / 12)
-
-                        }.padding()
-
-                        HStack {
-                            Text("Amount USD")
-                                .labelStyle()
-                                .frame(width: deviceWidth / 3, alignment: .leading)
-                                .padding(.leading, deviceWidth / 12)
-
-                            Text(String(item.amountUsd))
-                                .valueStyle(textColor: Colors.paleGreen)
-                                .frame(width: deviceWidth / 3, alignment: .leading)
-                                .padding(.leading, deviceWidth / 12)
-
-                        }.padding()
-                    }
+                    TransactionItemView(transaction: item)
                 }
             }
-
         }
         .onAppear(perform: self.initialLoad)
         .onReceive(self.dataReloadHandler.objectWillChange, perform: { causeError in

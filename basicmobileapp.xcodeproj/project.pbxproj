@@ -56,6 +56,8 @@
 		4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */; };
 		4EE6B1DE24649DB700B43FF3 /* LongPressModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */; };
 		4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */; };
+		4EEF02F2247193330022E063 /* CompanyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEF02F1247193330022E063 /* CompanyItemView.swift */; };
+		4EEF02F9247196B80022E063 /* TransactionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEF02F8247196B80022E063 /* TransactionItemView.swift */; };
 		4EF4FDF223F9E269008C3022 /* mobile_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF023F9E268008C3022 /* mobile_config.json */; };
 		4EF4FDF323F9E269008C3022 /* mobile_config_localapi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */; };
 		4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */; };
@@ -128,6 +130,8 @@
 		4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNotSecuredView.swift; sourceTree = "<group>"; };
 		4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressModifier.swift; sourceTree = "<group>"; };
 		4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
+		4EEF02F1247193330022E063 /* CompanyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyItemView.swift; sourceTree = "<group>"; };
+		4EEF02F8247196B80022E063 /* TransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionItemView.swift; sourceTree = "<group>"; };
 		4EF4FDF023F9E268008C3022 /* mobile_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config.json; sourceTree = "<group>"; };
 		4EF4FDF123F9E269008C3022 /* mobile_config_localapi.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mobile_config_localapi.json; sourceTree = "<group>"; };
 		4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetailsView.swift; sourceTree = "<group>"; };
@@ -194,18 +198,13 @@
 		4E1888F223DDFF480014638D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4EEF02F7247196630022E063 /* Errors */,
+				4EEF02F6247196340022E063 /* Security */,
+				4EEF02F0247192EF0022E063 /* Companies */,
+				4EEF02F5247196130022E063 /* Transactions */,
+				4EEF02F4247196030022E063 /* UserInfo */,
+				4EEF02F3247195F20022E063 /* Headings */,
 				4EFEFC2D2451EE4F0057C78D /* Utilities */,
-				4EB6DAA723F967A70007A311 /* CompaniesView.swift */,
-				4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */,
-				4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */,
-				4E1888F823DE01CC0014638D /* ErrorSummaryView.swift */,
-				4E1888F623DE01130014638D /* HeaderButtonsView.swift */,
-				4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */,
-				4ECD97652452F25E00D7E271 /* MainView.swift */,
-				4E1888FA23DE01D80014638D /* SessionView.swift */,
-				4E1888F423DDFFDB0014638D /* TitleView.swift */,
-				4EB6DAA923F967D30007A311 /* TransactionsView.swift */,
-				4E432517244EEB5A00A1582E /* UserInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -350,6 +349,61 @@
 				4EE4CABD245364910033B3C5 /* SceneDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		4EEF02F0247192EF0022E063 /* Companies */ = {
+			isa = PBXGroup;
+			children = (
+				4EB6DAA723F967A70007A311 /* CompaniesView.swift */,
+				4EEF02F1247193330022E063 /* CompanyItemView.swift */,
+			);
+			path = Companies;
+			sourceTree = "<group>";
+		};
+		4EEF02F3247195F20022E063 /* Headings */ = {
+			isa = PBXGroup;
+			children = (
+				4E1888F623DE01130014638D /* HeaderButtonsView.swift */,
+				4ECD97652452F25E00D7E271 /* MainView.swift */,
+				4E1888FA23DE01D80014638D /* SessionView.swift */,
+				4E1888F423DDFFDB0014638D /* TitleView.swift */,
+			);
+			path = Headings;
+			sourceTree = "<group>";
+		};
+		4EEF02F4247196030022E063 /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				4E432517244EEB5A00A1582E /* UserInfoView.swift */,
+			);
+			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		4EEF02F5247196130022E063 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				4EB6DAA923F967D30007A311 /* TransactionsView.swift */,
+				4EEF02F8247196B80022E063 /* TransactionItemView.swift */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		4EEF02F6247196340022E063 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */,
+				4E3F8D3E24559F9B00EC7EB0 /* LoginRequiredView.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		4EEF02F7247196630022E063 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */,
+				4E1888F823DE01CC0014638D /* ErrorSummaryView.swift */,
+			);
+			path = Errors;
 			sourceTree = "<group>";
 		};
 		4EFCE67924631D4200BD1443 /* Logout */ = {
@@ -532,6 +586,7 @@
 				4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */,
 				4E679949246D9723002B7E5F /* DeepLinkHelper.swift in Sources */,
 				4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */,
+				4EEF02F9247196B80022E063 /* TransactionItemView.swift in Sources */,
 				4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */,
 				4EB386F5244C68F600FC2B17 /* Authenticator.swift in Sources */,
 				4ECD97622452E01D00D7E271 /* AppView.swift in Sources */,
@@ -551,6 +606,7 @@
 				4E43251A244EFCED00A1582E /* CompanyTransactions.swift in Sources */,
 				4E3F8D3F24559F9B00EC7EB0 /* LoginRequiredView.swift in Sources */,
 				4E2C334A246889850095ACEC /* ConfigurationLoader.swift in Sources */,
+				4EEF02F2247193330022E063 /* CompanyItemView.swift in Sources */,
 				4EB6DAB023F970F20007A311 /* Company.swift in Sources */,
 				4EFCE67F24631E9400BD1443 /* OktaLogoutManager.swift in Sources */,
 				4EFEFC332451EE4F0057C78D /* HeaderButtonStyle.swift in Sources */,
