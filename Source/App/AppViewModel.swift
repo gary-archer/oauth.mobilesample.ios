@@ -1,4 +1,5 @@
 import Foundation
+import SwiftCoroutine
 
 /*
  * A primitive view model class to manage global objects and state

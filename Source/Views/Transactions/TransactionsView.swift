@@ -15,11 +15,10 @@ struct TransactionsView: View {
     private let viewManager: ViewManager
     private let apiClient: ApiClient
 
-    // This view's state
+    // Mutable state
+    @State private var companyId: String = ""
     @State private var data: CompanyTransactions?
-    @State private var companyId: String = "0"
     @State private var error: UIError?
-    @State private var redraw: Bool = false
 
     /*
      * Initialise the view from input
@@ -45,7 +44,7 @@ struct TransactionsView: View {
         return VStack {
 
             // Render the heading
-            if self.companyId != "0" {
+            if !self.companyId.isEmpty {
                 Text("Today's Transactions for Company \(self.companyId)")
                     .font(.headline)
                     .frame(width: deviceWidth)

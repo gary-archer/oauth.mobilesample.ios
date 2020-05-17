@@ -1,7 +1,6 @@
 // If the login was cancelled, move to the login required view
 import SwiftUI
 import AppAuth
-import SwiftCoroutine
 
 /*
  * The main application view composes other views

@@ -1,32 +1,21 @@
 import SwiftUI
-import SwiftCoroutine
 
 /*
  * The home view to show a list of companies
  */
 struct CompaniesView: View {
 
-    // External objects
     @ObservedObject var viewRouter: ViewRouter
+    @ObservedObject var model: CompaniesViewModel
     @EnvironmentObject var orientationHandler: OrientationHandler
     @EnvironmentObject var dataReloadHandler: DataReloadHandler
-
-    // Properties
-    private let viewManager: ViewManager
-    private let apiClient: ApiClient
-
-    // This view's state
-    @State private var companies = [Company]()
-    @State private var error: UIError?
 
     /*
      * Initialise from input
      */
     init (viewRouter: ViewRouter, viewManager: ViewManager, apiClient: ApiClient) {
-
         self.viewRouter = viewRouter
-        self.viewManager = viewManager
-        self.apiClient = apiClient
+        self.model = CompaniesViewModel(viewManager: viewManager, apiClient: apiClient)
     }
 
     /*
@@ -45,17 +34,17 @@ struct CompaniesView: View {
                 .background(Colors.lightBlue)
 
             // Render errors getting data if required
-            if self.error != nil {
+            if self.model.error != nil {
                 ErrorSummaryView(
                     hyperlinkText: "Problem Encountered in Companies View",
                     dialogTitle: "Companies View Error",
-                    error: self.error!)
+                    error: self.model.error!)
                         .padding(.top)
             }
 
             // Render the companies list
-            if companies.count > 0 {
-                List(companies, id: \.id) { item in
+            if self.model.companies.count > 0 {
+                List(self.model.companies, id: \.id) { item in
                     CompanyItemView(viewRouter: self.viewRouter, company: item)
                 }
             }
@@ -74,33 +63,10 @@ struct CompaniesView: View {
     }
 
     /*
-     * Call the API to get data
+     * Ask the model to call the API to get data
      */
     private func loadData(causeError: Bool) {
-
-        // Run async operations in a coroutine
-        DispatchQueue.main.startCoroutine {
-
-            do {
-                // Initialise for this request
-                self.error = nil
-                let options = ApiRequestOptions(causeError: causeError)
-
-                // Make the API call on a background thread
-                self.viewManager.onViewLoading()
-                try DispatchQueue.global().await {
-                    self.companies = try self.apiClient.getCompanies(options: options).await()
-                }
-                self.viewManager.onViewLoaded()
-
-            } catch {
-
-                // Report errors
-                let uiError = ErrorHandler.fromException(error: error)
-                self.companies = [Company]()
-                self.error = uiError
-                self.viewManager.onViewLoadFailed(error: uiError)
-            }
-        }
+        let options = ApiRequestOptions(causeError: causeError)
+        self.model.callApi(options: options)
     }
 }
