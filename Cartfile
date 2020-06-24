@@ -1,0 +1,16 @@
+#
+# External dependencies used by the Carthage dependency system
+# Run 'carthage update' before opening the project in XCode
+#
+# I also updated 'Build Phases / Run Script' according to the instructions here
+# https://github.com/Carthage/Carthage#quick-start
+#
+
+# The AppAuth library used for OAuth related operations
+github "openid/AppAuth-iOS" == 1.3.1
+
+# A library to simplify interacting with the keychain
+github "jrendel/SwiftKeychainWrapper" == 3.4.0
+
+# Swift Coroutines for an async / await syntax
+github "belozierov/SwiftCoroutine" == 2.0.23

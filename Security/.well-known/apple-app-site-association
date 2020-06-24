@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "U3VTCHYEM7.com.authguidance.basicmobileapp",
+                "paths": [ "*" ]
+            }
+        ]
+    }
+}
