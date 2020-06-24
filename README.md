@@ -16,7 +16,7 @@
 
 ### Middleware Used
 
-* The [AppAuth-iOS Library](https://github.com/openid/AppAuth-iOS) is used to implement Authorization Code Flow (PKCE) via a Claimed HTTPS Scheme
+* The [AppAuth-iOS Library](https://github.com/openid/AppAuth-iOS) implements Authorization Code Flow (PKCE) via a Claimed HTTPS Scheme
 * AWS Cognito is used as a Cloud Authorization Server
 * The iOS Keychain is used to store encrypted tokens on the device after login
 * AWS API Gateway is used to host the back end OAuth 2.0 Secured Web API
