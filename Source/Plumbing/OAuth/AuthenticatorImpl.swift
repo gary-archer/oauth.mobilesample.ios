@@ -562,7 +562,7 @@ class AuthenticatorImpl: Authenticator {
 
     /*
      * Return the URL to the interstitial page used for login redirects
-     * https://web.authguidance-examples.com/mobile/postlogin.html
+     * https://mobile.authsamples.com/mobile/postlogin.html
      */
     private func getLoginRedirectUri() -> String {
         return "https://\(self.configuration.webDomain)\(self.configuration.loginRedirectPath)"
@@ -570,7 +570,7 @@ class AuthenticatorImpl: Authenticator {
 
     /*
      * Return the URL to the interstitial page used for logout redirects
-     * https://web.authguidance-examples.com/mobile/postlogout.html
+     * https://mobile.authsamples.com/mobile/postlogout.html
      */
     private func getPostLogoutRedirectUri() -> String {
         return "https://\(self.configuration.webDomain)\(self.configuration.postLogoutRedirectPath)"
@@ -578,7 +578,7 @@ class AuthenticatorImpl: Authenticator {
 
     /*
      * Return the URL that the interstitial page reactivates the app on after login
-     * https://authguidance-examples.com/oauth/callback
+     * https://mobile.authsamples.com/oauth/callback
      */
     private func getLoginReactivateUri() -> String {
         return "https://\(self.configuration.deepLinkDomain)\(self.configuration.loginActivatePath)"
@@ -586,7 +586,7 @@ class AuthenticatorImpl: Authenticator {
 
     /*
      * Return the URL that the interstitial page reactivates the app on after logout
-     * https://authguidance-examples.com/oauth/logoutcallback
+     * https://mobile.authsamples.com/oauth/logoutcallback
      */
     private func getPostLogoutReactivateUri() -> String {
         return "https://\(self.configuration.deepLinkDomain)\(self.configuration.postLogoutActivatePath)"
