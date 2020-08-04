@@ -565,7 +565,7 @@ class AuthenticatorImpl: Authenticator {
      * https://mobile.authsamples.com/mobile/postlogin.html
      */
     private func getLoginRedirectUri() -> String {
-        return "https://\(self.configuration.webDomain)\(self.configuration.loginRedirectPath)"
+        return "\(self.configuration.mobileBaseUrl)\(self.configuration.loginRedirectPath)"
     }
 
     /*
@@ -573,7 +573,7 @@ class AuthenticatorImpl: Authenticator {
      * https://mobile.authsamples.com/mobile/postlogout.html
      */
     private func getPostLogoutRedirectUri() -> String {
-        return "https://\(self.configuration.webDomain)\(self.configuration.postLogoutRedirectPath)"
+        return "\(self.configuration.mobileBaseUrl)\(self.configuration.postLogoutRedirectPath)"
     }
 
     /*
@@ -581,7 +581,7 @@ class AuthenticatorImpl: Authenticator {
      * https://mobile.authsamples.com/oauth/callback
      */
     private func getLoginReactivateUri() -> String {
-        return "https://\(self.configuration.deepLinkDomain)\(self.configuration.loginActivatePath)"
+        return "\(self.configuration.mobileBaseUrl)\(self.configuration.loginActivatePath)"
     }
 
     /*
@@ -589,7 +589,7 @@ class AuthenticatorImpl: Authenticator {
      * https://mobile.authsamples.com/oauth/logoutcallback
      */
     private func getPostLogoutReactivateUri() -> String {
-        return "https://\(self.configuration.deepLinkDomain)\(self.configuration.postLogoutActivatePath)"
+        return "\(self.configuration.mobileBaseUrl)\(self.configuration.postLogoutActivatePath)"
     }
 
     /*
