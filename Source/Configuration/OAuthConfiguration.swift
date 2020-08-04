@@ -9,14 +9,17 @@ struct OAuthConfiguration: Decodable {
     // The identifier for our mobile app
     let clientId: String
 
-    // The mobile HTTPS domain name
-    let mobileBaseUrl: String
+    // The base URL for interstitial post login pages
+    let webBaseUrl: String
 
     // The interstitial page that receives the login response
     let loginRedirectPath: String
 
     // The interstitial page that receives the logout response
     let postLogoutRedirectPath: String
+
+    // The base URL for deep linking
+    let deepLinkBaseUrl: String
 
     // The deep linking path on which the app is invoked, after login
     let loginActivatePath: String
