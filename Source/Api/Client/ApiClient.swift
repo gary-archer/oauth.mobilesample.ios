@@ -262,7 +262,7 @@ class ApiClient {
         if let userInfo = try? decoder.decode(T.self, from: data) {
             promise.success(userInfo)
         } else {
-            let error = ErrorHandler.fromMessage(message: "Unable to deserialize user info")
+            let error = ErrorHandler.fromMessage(message: "Unable to deserialize data")
             promise.fail(error)
         }
 
