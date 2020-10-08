@@ -18,8 +18,8 @@ xcuserdata/
 ## Build output
 build/
 
-# Carthage
-Carthage/
+# Cocoapods
+Pods/
 
 # Do not check in frameworks and rely on carthage to populate the folder
 Frameworks/
