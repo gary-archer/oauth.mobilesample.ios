@@ -20,20 +20,18 @@ struct DemoAppApp: App {
             AppView(model: AppViewModel(), viewRouter: self.viewRouter)
                 .environmentObject(self.orientationHandler)
                 .environmentObject(self.dataReloadHandler)
-                .onOpenURL(perform: self.onOpenUrl)
+                .onOpenURL(perform: { url in
+
+                    // All deep link notifications are received here
+                    // This includes claimed HTTPS scheme login / logout responses and deep links that start the app
+                    self.viewRouter.handleDeepLink(url: url)
+                })
                 .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
 
-                    // We must also include the orientiation handler environment object in all views that need redrawing
+                    // Handle orientation changes in the app by updating the handler
+                    // We also need to include the handler as an environment object in all views which need redrawing
                     self.orientationHandler.isLandscape = UIDevice.current.orientation.isLandscape
                 }
         }
-    }
-
-    /*
-     * All deep link notifications are received here
-     * This includes claimed HTTPS scheme login / logout responses and deep links that start the app
-     */
-    private func onOpenUrl(url: URL) {
-        self.viewRouter.handleDeepLink(url: url)
     }
 }
