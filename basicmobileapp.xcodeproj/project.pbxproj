@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -43,6 +43,7 @@
 		4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAA723F967A70007A311 /* CompaniesView.swift */; };
 		4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAA923F967D30007A311 /* TransactionsView.swift */; };
 		4EB6DAB023F970F20007A311 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAAF23F970F20007A311 /* Company.swift */; };
+		4EC0615925755BA3009050F3 /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC0615825755BA3009050F3 /* DemoApp.swift */; };
 		4ECD97622452E01D00D7E271 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97612452E01D00D7E271 /* AppView.swift */; };
 		4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* DataReloadHandler.swift */; };
 		4ECD97662452F25E00D7E271 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97652452F25E00D7E271 /* MainView.swift */; };
@@ -50,8 +51,6 @@
 		4ED03266246FE81E00441C53 /* postlogin.html in Resources */ = {isa = PBXBuildFile; fileRef = 4ED03264246FE81E00441C53 /* postlogin.html */; };
 		4ED89C2C247443E100F2667E /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED89C2B247443E100F2667E /* TokenStorage.swift */; };
 		4EE4CAB8245336430033B3C5 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4EE4CAB7245336430033B3C5 /* .swiftlint.yml */; };
-		4EE4CABE245364910033B3C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABC245364910033B3C5 /* AppDelegate.swift */; };
-		4EE4CABF245364910033B3C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE4CABD245364910033B3C5 /* SceneDelegate.swift */; };
 		4EE6B1DA246479A700B43FF3 /* DeviceSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */; };
 		4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */; };
 		4EE6B1DE24649DB700B43FF3 /* LongPressModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */; };
@@ -121,6 +120,7 @@
 		4EB6DAA723F967A70007A311 /* CompaniesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesView.swift; sourceTree = "<group>"; };
 		4EB6DAA923F967D30007A311 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
 		4EB6DAAF23F970F20007A311 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		4EC0615825755BA3009050F3 /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
 		4ECD97612452E01D00D7E271 /* AppView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4ECD97632452E57800D7E271 /* DataReloadHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReloadHandler.swift; sourceTree = "<group>"; };
 		4ECD97652452F25E00D7E271 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -128,8 +128,6 @@
 		4ED03264246FE81E00441C53 /* postlogin.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postlogin.html; sourceTree = "<group>"; };
 		4ED89C2B247443E100F2667E /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		4EE4CAB7245336430033B3C5 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		4EE4CABC245364910033B3C5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4EE4CABD245364910033B3C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSecurity.swift; sourceTree = "<group>"; };
 		4EE6B1DB2464809C00B43FF3 /* DeviceNotSecuredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNotSecuredView.swift; sourceTree = "<group>"; };
 		4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressModifier.swift; sourceTree = "<group>"; };
@@ -338,8 +336,7 @@
 			children = (
 				4ECD97612452E01D00D7E271 /* AppView.swift */,
 				4E3F8D422455E9C400EC7EB0 /* AppViewModel.swift */,
-				4EE4CABC245364910033B3C5 /* AppDelegate.swift */,
-				4EE4CABD245364910033B3C5 /* SceneDelegate.swift */,
+				4EC0615825755BA3009050F3 /* DemoApp.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -483,7 +480,7 @@
 				};
 			};
 			buildConfigurationList = 4E23798723CE6D900066DE08 /* Build configuration list for PBXProject "basicmobileapp" */;
-			compatibilityVersion = "Xcode 11.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -552,8 +549,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EE4CABE245364910033B3C5 /* AppDelegate.swift in Sources */,
 				4E282AFB2471B2BB00C9690B /* TransactionsViewModel.swift in Sources */,
+				4EC0615925755BA3009050F3 /* DemoApp.swift in Sources */,
 				4E1888FB23DE01D80014638D /* SessionView.swift in Sources */,
 				4ED89C2C247443E100F2667E /* TokenStorage.swift in Sources */,
 				4EFEFC342451EE4F0057C78D /* Colors.swift in Sources */,
@@ -562,7 +559,6 @@
 				4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */,
 				4EE6B1DE24649DB700B43FF3 /* LongPressModifier.swift in Sources */,
 				4E1888F923DE01CC0014638D /* ErrorSummaryView.swift in Sources */,
-				4EE4CABF245364910033B3C5 /* SceneDelegate.swift in Sources */,
 				4EFEFC2C2451D2860057C78D /* ErrorCodes.swift in Sources */,
 				4ECD97662452F25E00D7E271 /* MainView.swift in Sources */,
 				4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */,
@@ -752,6 +748,7 @@
 				DEVELOPMENT_TEAM = U3VTCHYEM7;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -775,6 +772,7 @@
 				DEVELOPMENT_TEAM = U3VTCHYEM7;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
