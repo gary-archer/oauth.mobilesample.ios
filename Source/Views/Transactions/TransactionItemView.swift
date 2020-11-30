@@ -5,6 +5,7 @@ import SwiftUI
  */
 struct TransactionItemView: View {
 
+    @EnvironmentObject private var orientationHandler: OrientationHandler
     private let transaction: Transaction
 
     init(transaction: Transaction) {
