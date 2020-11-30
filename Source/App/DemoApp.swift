@@ -7,9 +7,17 @@ import SwiftUI
 @main
 struct DemoAppApp: App {
 
-    private let viewRouter = ViewRouter()
-    private let orientationHandler = OrientationHandler()
-    private let dataReloadHandler = DataReloadHandler()
+    private let model: AppViewModel
+    private let viewRouter: ViewRouter
+    private let orientationHandler: OrientationHandler
+    private let dataReloadHandler: DataReloadHandler
+
+    init() {
+        self.model = AppViewModel()
+        self.viewRouter = ViewRouter(handleOAuthDeepLink: model.handleOAuthDeepLink)
+        self.orientationHandler = OrientationHandler()
+        self.dataReloadHandler = DataReloadHandler()
+    }
 
     /*
      * The app's main layout
@@ -17,7 +25,7 @@ struct DemoAppApp: App {
     var body: some Scene {
 
         WindowGroup {
-            AppView(model: AppViewModel(), viewRouter: self.viewRouter)
+            AppView(model: self.model, viewRouter: self.viewRouter)
                 .environmentObject(self.orientationHandler)
                 .environmentObject(self.dataReloadHandler)
                 .onOpenURL(perform: { url in

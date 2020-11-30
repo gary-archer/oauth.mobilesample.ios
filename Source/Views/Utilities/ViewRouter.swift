@@ -10,17 +10,13 @@ class ViewRouter: ObservableObject {
     @Published var params: [Any] = [Any]()
 
     // Callbacks to the app view
-    var handleOAuthDeepLink: ((URL) -> Bool)?
-    var onDeepLinkCompleted: ((Bool) -> Void)?
+    var handleOAuthDeepLink: ((URL) -> Bool)
 
     // This is set to false when the ASWebAuthenticationSession window is on top
     var isTopMost: Bool = true
 
-    /*
-     * Startup deep links simply switch the initial view properties
-     */
-    func handleStartupDeepLink(url: URL) {
-        self.processDeepLink(url: url)
+    init(handleOAuthDeepLink: @escaping ((URL) -> Bool)) {
+        self.handleOAuthDeepLink = handleOAuthDeepLink
     }
 
     /*
@@ -28,24 +24,20 @@ class ViewRouter: ObservableObject {
      */
     func handleDeepLink(url: URL) {
 
-        if self.handleOAuthDeepLink == nil || self.onDeepLinkCompleted == nil {
-            return
-        }
-
-        // Let the parent handle OAuth responses
-        let processed = self.handleOAuthDeepLink!(url)
+        // Handle OAuth responses specially
+        let processed = self.handleOAuthDeepLink(url)
         if !processed {
 
             // Do not handle deep links when the ASWebAuthenticationSession window is top most
             if self.isTopMost {
 
                 // Handle the link in the standard way
-                let oldViewType = self.currentViewType
                 self.processDeepLink(url: url)
 
                 // Notify the parent, since deep linking to the same view requires reload actions
-                let isSameView = oldViewType == self.currentViewType
-                self.onDeepLinkCompleted!(isSameView)
+                // let oldViewType = self.currentViewType
+                // let isSameView = oldViewType == self.currentViewType
+                // self.onDeepLinkCompleted!(isSameView)
             }
         }
     }
@@ -60,7 +52,7 @@ class ViewRouter: ObservableObject {
     }
 
     /*
-     * Do the parsing and then change view properties
+     * Handle standard deep link messages to change location within the app
      */
     private func processDeepLink(url: URL) {
 

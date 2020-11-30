@@ -82,8 +82,7 @@ struct AppView: View {
             try self.model.initialise(onLoginRequired: self.onLoginRequired)
 
             // Set navigation callbacks
-            self.viewRouter.handleOAuthDeepLink = self.handleOAuthDeepLink
-            self.viewRouter.onDeepLinkCompleted = self.onDeepLinkCompleted
+            // self.viewRouter.onDeepLinkCompleted = self.onDeepLinkCompleted
 
         } catch {
 
@@ -136,13 +135,6 @@ struct AppView: View {
             viewController: self.getHostingViewController(),
             onSuccess: onSuccess,
             onError: onError)
-    }
-
-    /*
-     * Process any deep link notifications, including login / logout responses
-     */
-    func handleOAuthDeepLink(url: URL) -> Bool {
-        return self.model.handleOAuthDeepLink(url: url)
     }
 
     /*
@@ -211,7 +203,7 @@ struct AppView: View {
     /*
      * Post deep linking actions
      */
-    func onDeepLinkCompleted(isSameView: Bool) {
+    /*func onDeepLinkCompleted(isSameView: Bool) {
 
         // Handle an issue deep linking to transactions for company 1 when transactions for company 2 are active
         // In this case the onAppear function is not called within the transactions view so we need to force an update
@@ -219,7 +211,7 @@ struct AppView: View {
         if isSameView {
             self.onReloadData(causeError: false)
         }
-    }
+    }*/
 
     /*
      * A helper method to get the scene delegate, on which the login response is received
