@@ -79,7 +79,6 @@ class AppViewModel: ObservableObject {
         onError: @escaping (UIError) -> Void) {
 
         // Run async operations in a coroutine
-        print("****** LOGIN ENTRY POINT")
         DispatchQueue.main.startCoroutine {
 
             do {

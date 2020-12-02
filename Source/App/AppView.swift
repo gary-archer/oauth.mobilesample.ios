@@ -79,14 +79,14 @@ struct AppView: View {
     private func initialiseApp() {
 
         do {
+            // Initialise the model, which loads configuration and creates global objects
+            try self.model.initialise(viewManager: self.viewManager)
+
             // Initialise the view manager
             self.viewManager.initialise(
                 onLoadStateChanged: self.model.onLoadStateChanged,
                 onLoginRequired: self.onLoginRequired)
             self.viewManager.setViewCount(count: 2)
-
-            // Initialise the model, which loads configuration and creates global objects
-            try self.model.initialise(viewManager: self.viewManager)
 
         } catch {
 
@@ -189,8 +189,8 @@ struct AppView: View {
             self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
         }
 
-        // If there is an error loading data from the API then force a reload
-        if self.model.isLoggedIn() && !self.model.isDataLoaded {
+        // If there is an error loading data then force a reload
+        if !self.model.isDataLoaded {
             self.onReloadData(causeError: false)
         }
     }
