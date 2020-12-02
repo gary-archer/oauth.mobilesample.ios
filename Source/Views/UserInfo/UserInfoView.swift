@@ -5,8 +5,8 @@ import SwiftUI
  */
 struct UserInfoView: View {
 
-    @ObservedObject private var model: UserInfoViewModel
     @EnvironmentObject private var dataReloadHandler: DataReloadHandler
+    @ObservedObject private var model: UserInfoViewModel
     private let shouldLoad: Bool
 
     init (model: UserInfoViewModel, shouldLoad: Bool) {

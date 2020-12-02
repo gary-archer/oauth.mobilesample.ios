@@ -7,19 +7,29 @@ import SwiftUI
 @main
 struct DemoAppApp: App {
 
+    private let dataReloadHandler: DataReloadHandler
+    private let orientationHandler: OrientationHandler
     private let model: AppViewModel
     private let viewRouter: ViewRouter
-    private let orientationHandler: OrientationHandler
-    private let dataReloadHandler: DataReloadHandler
+    private let viewManager: ViewManager
 
     /*
-     * Create global models and environment objects during application startup
+     * Create environment objects and global models during application startup
      */
     init() {
-        self.model = AppViewModel()
-        self.viewRouter = ViewRouter()
-        self.orientationHandler = OrientationHandler()
+
+        // First create environment objects
         self.dataReloadHandler = DataReloadHandler()
+        self.orientationHandler = OrientationHandler()
+
+        // Create global view models
+        self.model = AppViewModel(dataReloadHandler: dataReloadHandler)
+
+        // Create global view helpers
+        self.viewRouter = ViewRouter(
+            handleOAuthDeepLink: model.handleOAuthDeepLink,
+            onDeepLinkCompleted: model.onDeepLinkCompleted)
+        self.viewManager = ViewManager()
     }
 
     /*
@@ -28,7 +38,7 @@ struct DemoAppApp: App {
     var body: some Scene {
 
         WindowGroup {
-            AppView(model: self.model, viewRouter: self.viewRouter)
+            AppView(model: self.model, viewRouter: self.viewRouter, viewManager: self.viewManager)
                 .environmentObject(self.orientationHandler)
                 .environmentObject(self.dataReloadHandler)
                 .onOpenURL(perform: { url in

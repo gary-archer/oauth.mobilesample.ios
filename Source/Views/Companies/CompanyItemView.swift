@@ -5,8 +5,8 @@ import SwiftUI
  */
 struct CompanyItemView: View {
 
-    @ObservedObject private var viewRouter: ViewRouter
     @EnvironmentObject private var orientationHandler: OrientationHandler
+    @ObservedObject private var viewRouter: ViewRouter
     private let company: Company
 
     init (viewRouter: ViewRouter, company: Company) {

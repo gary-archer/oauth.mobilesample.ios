@@ -6,10 +6,10 @@ import SwiftCoroutine
  */
 struct TransactionsView: View {
 
-    @ObservedObject private var model: TransactionsViewModel
-    @ObservedObject private var viewRouter: ViewRouter
     @EnvironmentObject private var orientationHandler: OrientationHandler
     @EnvironmentObject private var dataReloadHandler: DataReloadHandler
+    @ObservedObject private var model: TransactionsViewModel
+    @ObservedObject private var viewRouter: ViewRouter
 
     init (model: TransactionsViewModel, viewRouter: ViewRouter) {
 

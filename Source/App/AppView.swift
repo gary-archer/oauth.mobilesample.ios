@@ -6,17 +6,18 @@ import AppAuth
  */
 struct AppView: View {
 
-    @ObservedObject private var model: AppViewModel
     @EnvironmentObject private var orientationHandler: OrientationHandler
-    @EnvironmentObject private var dataReloadHandler: DataReloadHandler
+    @ObservedObject private var model: AppViewModel
     private var viewRouter: ViewRouter
+    private var viewManager: ViewManager
 
     /*
      * Initialise properties that we can safely set here
      */
-    init(model: AppViewModel, viewRouter: ViewRouter) {
+    init(model: AppViewModel, viewRouter: ViewRouter, viewManager: ViewManager) {
         self.model = model
         self.viewRouter = viewRouter
+        self.viewManager = viewManager
     }
 
     /*
@@ -78,28 +79,21 @@ struct AppView: View {
     private func initialiseApp() {
 
         do {
-            // Initialise the model, which manages mutable data
-            try self.model.initialise(onLoginRequired: self.onLoginRequired)
+            // Initialise the view manager
+            self.viewManager.initialise(
+                onLoadStateChanged: self.model.onLoadStateChanged,
+                onLoginRequired: self.onLoginRequired)
+            self.viewManager.setViewCount(count: 2)
 
-            // Set navigation callbacks
-            self.viewRouter.handleOAuthDeepLink = self.handleOAuthDeepLink
-            self.viewRouter.onDeepLinkCompleted = self.onDeepLinkCompleted
+            // Initialise the model, which loads configuration and creates global objects
+            try self.model.initialise(viewManager: self.viewManager)
 
         } catch {
 
-            // Output error details
+            // Render any error details
             let uiError = ErrorHandler.fromException(error: error)
             self.model.error = uiError
         }
-    }
-
-    /*
-     * Handle reload data button clicks by publishing the reload event
-     */
-    private func onReloadData(causeError: Bool) {
-
-        self.model.viewManager!.setViewCount(count: 2)
-        self.dataReloadHandler.sendReloadEvent(causeError: causeError)
     }
 
     /*
@@ -131,18 +125,11 @@ struct AppView: View {
         }
 
         // Indicate that we are no longer top most then get the model to do logic of the login
-        self.viewRouter.isTopMost = true
+        self.viewRouter.isTopMost = false
         self.model.login(
             viewController: self.getHostingViewController(),
             onSuccess: onSuccess,
             onError: onError)
-    }
-
-    /*
-     * Process any deep link notifications, including login / logout responses
-     */
-    func handleOAuthDeepLink(url: URL) -> Bool {
-        return self.model.handleOAuthDeepLink(url: url)
     }
 
     /*
@@ -164,7 +151,7 @@ struct AppView: View {
         }
 
         // Indicate that we are no longer top most then get the model to do logic of the logout
-        self.viewRouter.isTopMost = true
+        self.viewRouter.isTopMost = false
         self.model.logout(
             viewController: self.getHostingViewController(),
             onSuccess: onSuccess,
@@ -203,21 +190,18 @@ struct AppView: View {
         }
 
         // If there is an error loading data from the API then force a reload
-        if self.model.authenticator!.isLoggedIn() && !self.model.isDataLoaded {
+        if self.model.isLoggedIn() && !self.model.isDataLoaded {
             self.onReloadData(causeError: false)
         }
     }
 
     /*
-     * Handle an issue deep linking to transactions for company 1 when transactions for company 2 are active
-     * In this case the onAppear function is not called within the transactions view so we need to force an update
-     * https://github.com/onmyway133/blog/issues/468
+     * Handle reload data button clicks by publishing the reload event
      */
-    func onDeepLinkCompleted(isSameView: Bool) {
+    private func onReloadData(causeError: Bool) {
 
-        if isSameView {
-            self.onReloadData(causeError: false)
-        }
+        self.viewManager.setViewCount(count: 2)
+        self.model.dataReloadHandler.sendReloadEvent(causeError: causeError)
     }
 
     /*

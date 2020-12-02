@@ -5,10 +5,10 @@ import SwiftUI
  */
 struct CompaniesView: View {
 
-    @ObservedObject private var model: CompaniesViewModel
-    @ObservedObject private var viewRouter: ViewRouter
     @EnvironmentObject private var orientationHandler: OrientationHandler
     @EnvironmentObject private var dataReloadHandler: DataReloadHandler
+    @ObservedObject private var model: CompaniesViewModel
+    @ObservedObject private var viewRouter: ViewRouter
 
     init (model: CompaniesViewModel, viewRouter: ViewRouter) {
         self.model = model

@@ -7,11 +7,13 @@ import SwiftUI
  */
 class AppViewModel: ObservableObject {
 
-    // Global objects created after construction
+    // Global objects supplied during construction
+    let dataReloadHandler: DataReloadHandler
+
+    // Global objects created after configuration has been read
     private var configuration: Configuration?
     private var apiClient: ApiClient?
-    var authenticator: AuthenticatorImpl?
-    var viewManager: ViewManager?
+    private var authenticator: AuthenticatorImpl?
 
     // State used by the app view
     @Published var isInitialised = false
@@ -25,9 +27,16 @@ class AppViewModel: ObservableObject {
     @Published var userInfoViewModel = UserInfoViewModel()
 
     /*
+     * Receive environment objects
+     */
+    init(dataReloadHandler: DataReloadHandler) {
+        self.dataReloadHandler = dataReloadHandler
+    }
+
+    /*
      * Initialise or reinitialise global objects, including processing configuration
      */
-    func initialise(onLoginRequired: @escaping () -> Void) throws {
+    func initialise(viewManager: ViewManager) throws {
 
         // Reset state flags
         self.isInitialised = false
@@ -45,20 +54,20 @@ class AppViewModel: ObservableObject {
             appConfiguration: self.configuration!.app,
             authenticator: self.authenticator!)
 
-        // Create the view manager, to manage synchronising OAuth operations across multiple views
-        self.viewManager = ViewManager()
-        self.viewManager!.initialise(
-            onLoadStateChanged: self.onLoadStateChanged,
-            onLoginRequired: onLoginRequired)
-        self.viewManager!.setViewCount(count: 2)
-
-        // Initialise view models for the main views
-        self.companiesViewModel.initialise(viewManager: self.viewManager!, apiClient: self.apiClient!)
-        self.transactionsViewModel.initialise(viewManager: self.viewManager!, apiClient: self.apiClient!)
-        self.userInfoViewModel.initialise(viewManager: self.viewManager!, apiClient: self.apiClient!)
+        // Initialise view models that manage API data
+        self.companiesViewModel.initialise(viewManager: viewManager, apiClient: self.apiClient!)
+        self.transactionsViewModel.initialise(viewManager: viewManager, apiClient: self.apiClient!)
+        self.userInfoViewModel.initialise(viewManager: viewManager, apiClient: self.apiClient!)
 
         // Indicate successful startup
         self.isInitialised = true
+    }
+
+    /*
+     * Inform the view whether we are logged in
+     */
+    func isLoggedIn() -> Bool {
+        return self.authenticator != nil && self.authenticator!.isLoggedIn()
     }
 
     /*
@@ -70,6 +79,7 @@ class AppViewModel: ObservableObject {
         onError: @escaping (UIError) -> Void) {
 
         // Run async operations in a coroutine
+        print("****** LOGIN ENTRY POINT")
         DispatchQueue.main.startCoroutine {
 
             do {
@@ -99,7 +109,7 @@ class AppViewModel: ObservableObject {
     }
 
     /*
-     * Process any deep link notifications, including login / logout responses
+     * Process login / logout responses if required
      */
     func handleOAuthDeepLink(url: URL) -> Bool {
 
@@ -111,6 +121,18 @@ class AppViewModel: ObservableObject {
         // Handle claimed HTTPS scheme login or logout responses
         self.authenticator!.resumeOperation(responseUrl: url)
         return true
+    }
+
+    /*
+     * Handle an issue deep linking to transactions for company 1 when transactions for company 2 are active
+     * In this case the onAppear function is not called within the transactions view so we need to force an update
+     * https://github.com/onmyway133/blog/issues/468
+     */
+    func onDeepLinkCompleted(isSameView: Bool) {
+
+        if isSameView {
+            self.dataReloadHandler.sendReloadEvent(causeError: false)
+        }
     }
 
     /*
@@ -152,7 +174,7 @@ class AppViewModel: ObservableObject {
     /*
      * Update session button state while the main view loads
      */
-    private func onLoadStateChanged(loaded: Bool) {
+    func onLoadStateChanged(loaded: Bool) {
         self.isDataLoaded = loaded
     }
 
