@@ -12,9 +12,12 @@ struct DemoAppApp: App {
     private let orientationHandler: OrientationHandler
     private let dataReloadHandler: DataReloadHandler
 
+    /*
+     * Create global models and environment objects during application startup
+     */
     init() {
         self.model = AppViewModel()
-        self.viewRouter = ViewRouter(handleOAuthDeepLink: model.handleOAuthDeepLink)
+        self.viewRouter = ViewRouter()
         self.orientationHandler = OrientationHandler()
         self.dataReloadHandler = DataReloadHandler()
     }
