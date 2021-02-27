@@ -23,11 +23,13 @@ struct CompanyItemView: View {
         return VStack {
 
             HStack {
-                Image(String(self.company.id))
-                    .frame(width: deviceWidth / 3, height: 0, alignment: .leading)
+                Text(self.company.name)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .frame(width: deviceWidth / 3, alignment: .leading)
                     .padding(.leading, deviceWidth / 12)
 
-                Text(self.company.name)
+                Text(self.company.region)
                     .font(.headline)
                     .fontWeight(.bold)
                     .frame(width: deviceWidth / 3, alignment: .leading)
