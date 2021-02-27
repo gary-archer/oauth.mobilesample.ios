@@ -7,7 +7,7 @@ struct TitleView: View {
 
     @EnvironmentObject private var orientationHandler: OrientationHandler
     @ObservedObject private var userInfoViewModel: UserInfoViewModel
-    @State private var title = "OAuth 2.x Demo App"
+    @State private var title = "OAuth Demo App"
     private var shouldLoadUserInfo: Bool
 
     /*
