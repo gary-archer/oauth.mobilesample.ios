@@ -21,7 +21,7 @@ struct TransactionItemView: View {
         return VStack {
 
             HStack {
-                Text("Transaction Id")
+                Text("Transaction ID")
                     .labelStyle()
                     .frame(width: deviceWidth / 3, alignment: .leading)
                     .padding(.leading, deviceWidth / 12)
@@ -34,7 +34,7 @@ struct TransactionItemView: View {
             }.padding()
 
             HStack {
-                Text("Investor Id")
+                Text("Investor ID")
                     .labelStyle()
                     .frame(width: deviceWidth / 3, alignment: .leading)
                     .padding(.leading, deviceWidth / 12)
