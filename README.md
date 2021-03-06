@@ -1,4 +1,4 @@
-# authguidance.mobilesample.ios
+# oauth.mobilesample.ios
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f7629f3989ab40a199043f1d84dd8fb5)](https://www.codacy.com/gh/gary-archer/authguidance.mobilesample.ios/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/authguidance.mobilesample.ios&amp;utm_campaign=Badge_Grade)
 
