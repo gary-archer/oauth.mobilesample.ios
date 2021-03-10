@@ -4,5 +4,4 @@
 struct UserInfoClaims: Decodable {
     let givenName: String
     let familyName: String
-    let email: String?
 }
