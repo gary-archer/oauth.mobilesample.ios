@@ -31,7 +31,7 @@ class ApiClient {
         do {
             // Make the API call
             let data = try self.callApi(
-                path: "userclaims/current",
+                path: "userinfo",
                 method: "GET",
                 jsonData: nil,
                 options: options).await()
