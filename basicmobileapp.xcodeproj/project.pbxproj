@@ -49,7 +49,7 @@
 		4EB6DAB023F970F20007A311 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAAF23F970F20007A311 /* Company.swift */; };
 		4EC0615925755BA3009050F3 /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC0615825755BA3009050F3 /* SampleApp.swift */; };
 		4ECD97622452E01D00D7E271 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97612452E01D00D7E271 /* AppView.swift */; };
-		4ECD97642452E57800D7E271 /* EventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* EventPublisher.swift */; };
+		4ECD97642452E57800D7E271 /* EventBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* EventBus.swift */; };
 		4ECD97662452F25E00D7E271 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97652452F25E00D7E271 /* MainView.swift */; };
 		4ED03265246FE81E00441C53 /* postlogout.html in Resources */ = {isa = PBXBuildFile; fileRef = 4ED03263246FE81D00441C53 /* postlogout.html */; };
 		4ED03266246FE81E00441C53 /* postlogin.html in Resources */ = {isa = PBXBuildFile; fileRef = 4ED03264246FE81E00441C53 /* postlogin.html */; };
@@ -130,7 +130,7 @@
 		4EB6DAAF23F970F20007A311 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		4EC0615825755BA3009050F3 /* SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleApp.swift; sourceTree = "<group>"; };
 		4ECD97612452E01D00D7E271 /* AppView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		4ECD97632452E57800D7E271 /* EventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventPublisher.swift; sourceTree = "<group>"; };
+		4ECD97632452E57800D7E271 /* EventBus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBus.swift; sourceTree = "<group>"; };
 		4ECD97652452F25E00D7E271 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4ED03263246FE81D00441C53 /* postlogout.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postlogout.html; sourceTree = "<group>"; };
 		4ED03264246FE81E00441C53 /* postlogin.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postlogin.html; sourceTree = "<group>"; };
@@ -260,7 +260,7 @@
 		4E670F812722A41C0064EC73 /* Events */ = {
 			isa = PBXGroup;
 			children = (
-				4ECD97632452E57800D7E271 /* EventPublisher.swift */,
+				4ECD97632452E57800D7E271 /* EventBus.swift */,
 				4E670F842722A8D70064EC73 /* DataStatusEvent.swift */,
 				4E670F862722A9C10064EC73 /* LoginRequiredEvent.swift */,
 				4EE54242259E437800573D22 /* ReloadMainViewEvent.swift */,
@@ -600,7 +600,7 @@
 				4E432516244EEAEE00A1582E /* UserInfo.swift in Sources */,
 				4E1888F723DE01130014638D /* HeaderButtonsView.swift in Sources */,
 				4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */,
-				4ECD97642452E57800D7E271 /* EventPublisher.swift in Sources */,
+				4ECD97642452E57800D7E271 /* EventBus.swift in Sources */,
 				4EE54243259E437800573D22 /* ReloadMainViewEvent.swift in Sources */,
 				4E670F8B2722B6CF0064EC73 /* ApiViewNames.swift in Sources */,
 				4EFCE68524632F2600BD1443 /* ApiRequestOptions.swift in Sources */,

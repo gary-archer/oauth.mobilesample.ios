@@ -16,7 +16,7 @@ struct SampleApp: App {
     private let model: AppViewModel
 
     // Environment objects
-    private let eventPublisher: EventPublisher
+    private let eventBus: EventBus
     private let orientationHandler: OrientationHandler
     private let viewRouter: ViewRouter
 
@@ -39,7 +39,7 @@ struct SampleApp: App {
             authenticator: self.authenticator)
 
         // First create environment objects
-        self.eventPublisher = EventPublisher()
+        self.eventBus = EventBus()
         self.orientationHandler = OrientationHandler()
 
         // Create global view models
@@ -47,7 +47,7 @@ struct SampleApp: App {
             configuration: self.configuration,
             authenticator: self.authenticator,
             apiClient: self.apiClient,
-            eventPublisher: self.eventPublisher)
+            eventBus: self.eventBus)
 
         // Create a router object
         self.viewRouter = ViewRouter(
@@ -63,7 +63,7 @@ struct SampleApp: App {
         WindowGroup {
             AppView(model: self.model, viewRouter: self.viewRouter)
                 .environmentObject(self.orientationHandler)
-                .environmentObject(self.eventPublisher)
+                .environmentObject(self.eventBus)
                 .onOpenURL(perform: { url in
 
                     // All deep link notifications are received here

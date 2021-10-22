@@ -14,7 +14,7 @@ class AppViewModel: ObservableObject {
 
     // Global objects used for view management
     let apiViewEvents: ApiViewEvents
-    let eventPublisher: EventPublisher
+    let eventBus: EventBus
 
     // State used by the app view
     @Published var isDeviceSecured = false
@@ -33,17 +33,17 @@ class AppViewModel: ObservableObject {
         configuration: Configuration,
         authenticator: Authenticator,
         apiClient: ApiClient,
-        eventPublisher: EventPublisher) {
+        eventBus: EventBus) {
 
         // Store input
         self.configuration = configuration
         self.authenticator = authenticator
         self.apiClient = apiClient
-        self.eventPublisher = eventPublisher
+        self.eventBus = eventBus
 
         // Create a helper class to notify us about views that make API calls
         // This will enable us to only trigger a login redirect once, after all views have tried to load
-        self.apiViewEvents = ApiViewEvents(eventPublisher: eventPublisher)
+        self.apiViewEvents = ApiViewEvents(eventBus: eventBus)
         self.apiViewEvents.addView(name: ApiViewNames.Main)
         self.apiViewEvents.addView(name: ApiViewNames.UserInfo)
 
@@ -155,7 +155,7 @@ class AppViewModel: ObservableObject {
     func onDeepLinkCompleted(isSameView: Bool) {
 
         if isSameView {
-            self.eventPublisher.sendReloadMainViewEvent(causeError: false)
+            self.eventBus.sendReloadMainViewEvent(causeError: false)
         }
     }
 

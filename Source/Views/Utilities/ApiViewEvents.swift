@@ -5,16 +5,16 @@ import SwiftUI
 */
 class ApiViewEvents {
 
-    private let eventPublisher: EventPublisher
+    private let eventBus: EventBus
     private var views: [String: Bool]
     private var loginRequired = false
 
     /*
      * Set the initial state
      */
-    init (eventPublisher: EventPublisher) {
+    init (eventBus: EventBus) {
 
-        self.eventPublisher = eventPublisher
+        self.eventBus = eventBus
         self.views = [String: Bool]()
         self.loginRequired = false
     }
@@ -34,7 +34,7 @@ class ApiViewEvents {
         views[name] = false
 
         if name == ApiViewNames.Main {
-            self.eventPublisher.sendDataStatusEvent(loaded: false)
+            self.eventBus.sendDataStatusEvent(loaded: false)
         }
     }
 
@@ -46,7 +46,7 @@ class ApiViewEvents {
         views[name] = true
 
         if name == ApiViewNames.Main {
-            self.eventPublisher.sendDataStatusEvent(loaded: true)
+            self.eventBus.sendDataStatusEvent(loaded: true)
         }
 
         self.triggerLoginIfRequired()
@@ -85,7 +85,7 @@ class ApiViewEvents {
 
         let allViewsLoaded = self.views.filter({item in item.value == true}).count == self.views.count
         if allViewsLoaded && self.loginRequired {
-            self.eventPublisher.sendLoginRequiredEvent()
+            self.eventBus.sendLoginRequiredEvent()
         }
     }
 }

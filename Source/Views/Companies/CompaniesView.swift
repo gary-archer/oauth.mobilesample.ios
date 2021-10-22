@@ -6,7 +6,7 @@ import SwiftUI
 struct CompaniesView: View {
 
     @EnvironmentObject private var orientationHandler: OrientationHandler
-    @EnvironmentObject private var eventPublisher: EventPublisher
+    @EnvironmentObject private var eventBus: EventBus
     @ObservedObject private var model: CompaniesViewModel
     @ObservedObject private var viewRouter: ViewRouter
 
@@ -47,7 +47,7 @@ struct CompaniesView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.eventPublisher.reloadMainViewTopic, perform: {data in
+        .onReceive(self.eventBus.reloadMainViewTopic, perform: {data in
             self.handleReloadData(event: data)
         })
     }

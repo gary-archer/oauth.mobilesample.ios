@@ -2,10 +2,10 @@ import Foundation
 import Combine
 
 /*
- * An object to manage sending events
+ * An object to manage publishing and subscribing to events
  * http://onmyway133.com/blog/How-to-reload-data-without-using-onAppear-in-SwiftUI-in-watchOS/
  */
-class EventPublisher: ObservableObject {
+class EventBus: ObservableObject {
 
     let loginRequiredTopic = PassthroughSubject<LoginRequiredEvent, Never>()
     let dataStatusTopic = PassthroughSubject<DataStatusEvent, Never>()

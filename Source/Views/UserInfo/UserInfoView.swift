@@ -5,7 +5,7 @@ import SwiftUI
  */
 struct UserInfoView: View {
 
-    @EnvironmentObject private var eventPublisher: EventPublisher
+    @EnvironmentObject private var eventBus: EventBus
     @ObservedObject private var model: UserInfoViewModel
     private let shouldLoad: Bool
 
@@ -37,7 +37,7 @@ struct UserInfoView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.eventPublisher.reloadUserInfoTopic, perform: { data in
+        .onReceive(self.eventBus.reloadUserInfoTopic, perform: { data in
             self.handleReloadEvent(event: data)
         })
     }

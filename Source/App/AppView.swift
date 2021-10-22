@@ -61,10 +61,10 @@ struct AppView: View {
             // Fill up the remainder of the view if needed
             Spacer()
         }
-        .onReceive(self.model.eventPublisher.dataStatusTopic, perform: {data in
+        .onReceive(self.model.eventBus.dataStatusTopic, perform: {data in
             self.handleDataStatusUpdate(event: data)
         })
-        .onReceive(self.model.eventPublisher.loginRequiredTopic, perform: {_ in
+        .onReceive(self.model.eventBus.loginRequiredTopic, perform: {_ in
             self.onLoginRequired()
         })
     }
@@ -177,7 +177,7 @@ struct AppView: View {
         if self.viewRouter.isInHomeView() {
 
             // Force the main view to reload
-            self.model.eventPublisher.sendReloadMainViewEvent(causeError: false)
+            self.model.eventBus.sendReloadMainViewEvent(causeError: false)
 
         } else {
 
@@ -192,8 +192,8 @@ struct AppView: View {
     private func onReloadData(causeError: Bool) {
 
         self.model.apiViewEvents.clearState()
-        self.model.eventPublisher.sendReloadMainViewEvent(causeError: causeError)
-        self.model.eventPublisher.sendReloadUserInfoEvent(causeError: causeError)
+        self.model.eventBus.sendReloadMainViewEvent(causeError: causeError)
+        self.model.eventBus.sendReloadUserInfoEvent(causeError: causeError)
     }
 
     /*
