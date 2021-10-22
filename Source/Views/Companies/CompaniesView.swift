@@ -44,6 +44,7 @@ struct CompaniesView: View {
                 List(self.model.companies, id: \.id) { item in
                     CompanyItemView(viewRouter: self.viewRouter, company: item)
                 }
+                .listStyle(.plain)
             }
         }
         .onAppear(perform: self.initialLoad)

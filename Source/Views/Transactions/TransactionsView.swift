@@ -48,6 +48,7 @@ struct TransactionsView: View {
                 List(self.model.data!.transactions, id: \.id) { item in
                     TransactionItemView(transaction: item)
                 }
+                .listStyle(.plain)
             }
         }
         .onAppear(perform: self.initialLoad)
