@@ -18,7 +18,7 @@ class AppViewModel: ObservableObject {
 
     // State used by the app view
     @Published var isDeviceSecured = false
-    @Published var isMainViewLoaded = false
+    @Published var hasData = false
     @Published var error: UIError?
 
     // Child view models
@@ -49,7 +49,7 @@ class AppViewModel: ObservableObject {
 
         // Update state
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-        self.isMainViewLoaded = false
+        self.hasData = false
     }
 
     /*
@@ -86,13 +86,6 @@ class AppViewModel: ObservableObject {
         }
 
         return self.userInfoViewModel!
-    }
-
-    /*
-     * Inform the view whether we are logged in
-     */
-    func isLoggedIn() -> Bool {
-        return self.authenticator.isLoggedIn()
     }
 
     /*
@@ -192,14 +185,7 @@ class AppViewModel: ObservableObject {
      */
     func onLogout() {
         self.userInfoViewModel!.clearUserInfo()
-        self.isMainViewLoaded = false
-    }
-
-    /*
-     * Update session button state while the main view loads
-     */
-    func onMainLoadStateChanged(loaded: Bool) {
-        self.isMainViewLoaded = loaded
+        self.hasData = false
     }
 
     /*

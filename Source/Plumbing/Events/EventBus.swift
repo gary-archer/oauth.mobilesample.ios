@@ -3,7 +3,6 @@ import Combine
 
 /*
  * An object to manage publishing and subscribing to events
- * http://onmyway133.com/blog/How-to-reload-data-without-using-onAppear-in-SwiftUI-in-watchOS/
  */
 class EventBus: ObservableObject {
 

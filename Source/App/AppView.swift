@@ -33,7 +33,7 @@ struct AppView: View {
 
             // Next display the header buttons view
             HeaderButtonsView(
-                sessionButtonsEnabled: self.model.isMainViewLoaded,
+                hasData: self.model.hasData,
                 onHome: self.onHome,
                 onReloadData: self.onReloadData,
                 onExpireAccessToken: self.model.onExpireAccessToken,
@@ -70,7 +70,7 @@ struct AppView: View {
     }
 
     private func handleDataStatusUpdate(event: DataStatusEvent) {
-        self.model.isMainViewLoaded = event.loaded
+        self.model.hasData = event.loaded
     }
 
     /*
