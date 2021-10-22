@@ -8,16 +8,17 @@ import Combine
 class EventPublisher: ObservableObject {
 
     let loginRequiredTopic = PassthroughSubject<LoginRequiredEvent, Never>()
-    let getDataTopic = PassthroughSubject<GetDataEvent, Never>()
-    let reloadDataTopic = PassthroughSubject<ReloadEvent, Never>()
+    let dataStatusTopic = PassthroughSubject<DataStatusEvent, Never>()
+    let reloadMainViewTopic = PassthroughSubject<ReloadMainViewEvent, Never>()
+    let reloadUserInfoTopic = PassthroughSubject<ReloadUserInfoEvent, Never>()
 
     /*
      * Publish an event to inform views of the data loading state
      */
-    func sendGetDataEvent(loaded: Bool) {
+    func sendDataStatusEvent(loaded: Bool) {
 
-        let event = GetDataEvent(loaded: loaded)
-        getDataTopic.send(event)
+        let event = DataStatusEvent(loaded: loaded)
+        dataStatusTopic.send(event)
     }
 
     /*
@@ -30,11 +31,20 @@ class EventPublisher: ObservableObject {
     }
 
     /*
-     * Publish the reload event for the named view, which views can subscribe to via their onReceive handler
+     * Publish the reload event for the main view
      */
-    func sendReloadEvent(viewName: String, causeError: Bool) {
+    func sendReloadMainViewEvent(causeError: Bool) {
 
-        let data = ReloadEvent(viewName: viewName, causeError: causeError)
-        reloadDataTopic.send(data)
+        let data = ReloadMainViewEvent(causeError: causeError)
+        reloadMainViewTopic.send(data)
+    }
+
+    /*
+     * Publish the reload event for the user info view
+     */
+    func sendReloadUserInfoEvent(causeError: Bool) {
+
+        let data = ReloadUserInfoEvent(causeError: causeError)
+        reloadUserInfoTopic.send(data)
     }
 }

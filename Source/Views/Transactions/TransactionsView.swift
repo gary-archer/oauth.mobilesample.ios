@@ -51,7 +51,7 @@ struct TransactionsView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.eventPublisher.reloadDataTopic, perform: { data in
+        .onReceive(self.eventPublisher.reloadMainViewTopic, perform: { data in
             self.handleReloadEvent(event: data)
         })
     }
@@ -66,11 +66,8 @@ struct TransactionsView: View {
     /*
      * Receive events
      */
-    private func handleReloadEvent(event: ReloadEvent) {
-
-        if event.viewName == ApiViewNames.Main {
-            self.loadData(causeError: event.causeError)
-        }
+    private func handleReloadEvent(event: ReloadMainViewEvent) {
+        self.loadData(causeError: event.causeError)
     }
 
     /*

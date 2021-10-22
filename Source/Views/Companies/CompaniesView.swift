@@ -47,7 +47,7 @@ struct CompaniesView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.eventPublisher.reloadDataTopic, perform: {data in
+        .onReceive(self.eventPublisher.reloadMainViewTopic, perform: {data in
             self.handleReloadData(event: data)
         })
     }
@@ -55,11 +55,8 @@ struct CompaniesView: View {
     /*
      * Receive events
      */
-    private func handleReloadData(event: ReloadEvent) {
-
-        if event.viewName == ApiViewNames.Main {
-            self.loadData(causeError: event.causeError)
-        }
+    private func handleReloadData(event: ReloadMainViewEvent) {
+         self.loadData(causeError: event.causeError)
     }
 
     /*

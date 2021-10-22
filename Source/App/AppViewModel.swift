@@ -155,7 +155,7 @@ class AppViewModel: ObservableObject {
     func onDeepLinkCompleted(isSameView: Bool) {
 
         if isSameView {
-            self.eventPublisher.sendReloadEvent(viewName: ApiViewNames.Main, causeError: false)
+            self.eventPublisher.sendReloadMainViewEvent(causeError: false)
         }
     }
 

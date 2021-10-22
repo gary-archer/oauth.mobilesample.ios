@@ -34,7 +34,7 @@ class ApiViewEvents {
         views[name] = false
 
         if name == ApiViewNames.Main {
-            self.eventPublisher.sendGetDataEvent(loaded: false)
+            self.eventPublisher.sendDataStatusEvent(loaded: false)
         }
     }
 
@@ -46,7 +46,7 @@ class ApiViewEvents {
         views[name] = true
 
         if name == ApiViewNames.Main {
-            self.eventPublisher.sendGetDataEvent(loaded: true)
+            self.eventPublisher.sendDataStatusEvent(loaded: true)
         }
 
         self.triggerLoginIfRequired()

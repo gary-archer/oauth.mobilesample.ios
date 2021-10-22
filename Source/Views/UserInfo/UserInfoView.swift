@@ -37,7 +37,7 @@ struct UserInfoView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.eventPublisher.reloadDataTopic, perform: { data in
+        .onReceive(self.eventPublisher.reloadUserInfoTopic, perform: { data in
             self.handleReloadEvent(event: data)
         })
     }
@@ -45,11 +45,8 @@ struct UserInfoView: View {
     /*
      * Receive events
      */
-    private func handleReloadEvent(event: ReloadEvent) {
-
-        if event.viewName == ApiViewNames.UserInfo {
-            self.loadData(causeError: event.causeError)
-        }
+    private func handleReloadEvent(event: ReloadUserInfoEvent) {
+        self.loadData(causeError: event.causeError)
     }
 
     /*
