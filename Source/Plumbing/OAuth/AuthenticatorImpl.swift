@@ -25,13 +25,6 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
-     * We are logged in if there are tokens
-     */
-    func isLoggedIn() -> Bool {
-        return self.tokenStorage.loadTokens() != nil
-    }
-
-    /*
      * Try to get an access token, which most commonly involves returning the current one
      */
     func getAccessToken() -> CoFuture<String> {

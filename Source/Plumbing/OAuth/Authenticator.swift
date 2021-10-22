@@ -8,9 +8,6 @@ import SwiftCoroutine
  */
 protocol Authenticator {
 
-    // Query the login state
-    func isLoggedIn() -> Bool
-
     // Return the current access token from secure mobile storage
     func getAccessToken() -> CoFuture<String>
 

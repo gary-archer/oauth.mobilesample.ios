@@ -7,7 +7,7 @@ import SwiftCoroutine
 struct TransactionsView: View {
 
     @EnvironmentObject private var orientationHandler: OrientationHandler
-    @EnvironmentObject private var dataReloadHandler: DataReloadHandler
+    @EnvironmentObject private var eventBus: EventBus
     @ObservedObject private var model: TransactionsViewModel
     @ObservedObject private var viewRouter: ViewRouter
 
@@ -48,15 +48,12 @@ struct TransactionsView: View {
                 List(self.model.data!.transactions, id: \.id) { item in
                     TransactionItemView(transaction: item)
                 }
+                .listStyle(.plain)
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.dataReloadHandler.objectWillChange, perform: { data in
-
-            // Check the message is for this view and then reload
-            if data.viewName == ApiViewNames.Main {
-                self.loadData(causeError: data.causeError)
-            }
+        .onReceive(self.eventBus.reloadMainViewTopic, perform: { data in
+            self.handleReloadEvent(event: data)
         })
     }
 
@@ -65,6 +62,13 @@ struct TransactionsView: View {
      */
     private func initialLoad() {
         self.loadData(causeError: false)
+    }
+
+    /*
+     * Receive events
+     */
+    private func handleReloadEvent(event: ReloadMainViewEvent) {
+        self.loadData(causeError: event.causeError)
     }
 
     /*

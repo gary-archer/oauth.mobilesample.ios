@@ -17,14 +17,14 @@ struct HeaderButtonsView: View {
      * To store callbacks we need to mark them as @escaping
      */
     init (
-        sessionButtonsEnabled: Bool,
+        hasData: Bool,
         onHome: @escaping () -> Void,
         onReloadData: @escaping (Bool) -> Void,
         onExpireAccessToken: @escaping () -> Void,
         onExpireRefreshToken: @escaping () -> Void,
         onLogout: @escaping () -> Void) {
 
-        self.sessionButtonsDisabled = !sessionButtonsEnabled
+        self.sessionButtonsDisabled = !hasData
         self.onHome = onHome
         self.onReloadData = onReloadData
         self.onExpireAccessToken = onExpireAccessToken

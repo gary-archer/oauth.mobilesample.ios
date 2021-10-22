@@ -2,36 +2,57 @@ import Foundation
 import SwiftUI
 
 /*
- * The Swift UI 2 application entry point
+ * The Swift UI application entry point
  */
 @main
 struct SampleApp: App {
 
-    private let dataReloadHandler: DataReloadHandler
-    private let orientationHandler: OrientationHandler
+    // Global objects created on startup
+    private var configuration: Configuration
+    private var authenticator: AuthenticatorImpl
+    private var apiClient: ApiClient
+
+    // The main view model
     private let model: AppViewModel
+
+    // Environment objects
+    private let eventBus: EventBus
+    private let orientationHandler: OrientationHandler
     private let viewRouter: ViewRouter
-    private let apiViewEvents: ApiViewEvents
 
     /*
      * Create environment objects and global models during application startup
      */
     init() {
 
+        // Load the configuration from the embedded resource
+        // swiftlint:disable:next force_try
+        self.configuration = try! ConfigurationLoader.load()
+
+        // Create the global authenticator
+        self.authenticator = AuthenticatorImpl(configuration: self.configuration.oauth)
+
+        // Create the API Client from configuration
+        // swiftlint:disable:next force_try
+        self.apiClient = try! ApiClient(
+            appConfiguration: self.configuration.app,
+            authenticator: self.authenticator)
+
         // First create environment objects
-        self.dataReloadHandler = DataReloadHandler()
+        self.eventBus = EventBus()
         self.orientationHandler = OrientationHandler()
 
         // Create global view models
-        self.model = AppViewModel(dataReloadHandler: dataReloadHandler)
+        self.model = AppViewModel(
+            configuration: self.configuration,
+            authenticator: self.authenticator,
+            apiClient: self.apiClient,
+            eventBus: self.eventBus)
 
         // Create a router object
         self.viewRouter = ViewRouter(
             handleOAuthDeepLink: model.handleOAuthDeepLink,
             onDeepLinkCompleted: model.onDeepLinkCompleted)
-
-        // Create an object to manage waiting for all views to load before triggering login redirects
-        self.apiViewEvents = ApiViewEvents()
     }
 
     /*
@@ -40,9 +61,9 @@ struct SampleApp: App {
     var body: some Scene {
 
         WindowGroup {
-            AppView(model: self.model, viewRouter: self.viewRouter, apiViewEvents: self.apiViewEvents)
+            AppView(model: self.model, viewRouter: self.viewRouter)
                 .environmentObject(self.orientationHandler)
-                .environmentObject(self.dataReloadHandler)
+                .environmentObject(self.eventBus)
                 .onOpenURL(perform: { url in
 
                     // All deep link notifications are received here

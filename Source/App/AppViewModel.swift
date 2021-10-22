@@ -8,66 +8,84 @@ import SwiftUI
 class AppViewModel: ObservableObject {
 
     // Global objects supplied during construction
-    let dataReloadHandler: DataReloadHandler
+    private let configuration: Configuration
+    private let authenticator: Authenticator
+    private let apiClient: ApiClient
 
-    // Global objects created after configuration has been read
-    private var configuration: Configuration?
-    private var apiClient: ApiClient?
-    private var authenticator: AuthenticatorImpl?
+    // Global objects used for view management
+    let apiViewEvents: ApiViewEvents
+    let eventBus: EventBus
 
     // State used by the app view
-    @Published var isInitialised = false
     @Published var isDeviceSecured = false
-    @Published var isMainViewLoaded = false
+    @Published var hasData = false
     @Published var error: UIError?
 
-    // View models for the screens that use API data are created once only
-    @Published var companiesViewModel = CompaniesViewModel()
-    @Published var transactionsViewModel = TransactionsViewModel()
-    @Published var userInfoViewModel = UserInfoViewModel()
+    // Child view models
+    private var companiesViewModel: CompaniesViewModel?
+    private var transactionsViewModel: TransactionsViewModel?
+    private var userInfoViewModel: UserInfoViewModel?
 
     /*
      * Receive environment objects
      */
-    init(dataReloadHandler: DataReloadHandler) {
-        self.dataReloadHandler = dataReloadHandler
-    }
+    init(
+        configuration: Configuration,
+        authenticator: Authenticator,
+        apiClient: ApiClient,
+        eventBus: EventBus) {
 
-    /*
-     * Initialise or reinitialise global objects, including processing configuration
-     */
-    func initialise(apiViewEvents: ApiViewEvents) throws {
+        // Store input
+        self.configuration = configuration
+        self.authenticator = authenticator
+        self.apiClient = apiClient
+        self.eventBus = eventBus
 
-        // Reset state flags
-        self.isInitialised = false
+        // Create a helper class to notify us about views that make API calls
+        // This will enable us to only trigger a login redirect once, after all views have tried to load
+        self.apiViewEvents = ApiViewEvents(eventBus: eventBus)
+        self.apiViewEvents.addView(name: ApiViewNames.Main)
+        self.apiViewEvents.addView(name: ApiViewNames.UserInfo)
+
+        // Update state
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-        self.isMainViewLoaded = false
-
-        // Load the configuration from the embedded resource
-        self.configuration = try ConfigurationLoader.load()
-
-        // Create the global authenticator
-        self.authenticator = AuthenticatorImpl(configuration: self.configuration!.oauth)
-
-        // Create the API Client from configuration
-        self.apiClient = try ApiClient(
-            appConfiguration: self.configuration!.app,
-            authenticator: self.authenticator!)
-
-        // Initialise view models that manage API data
-        self.companiesViewModel.initialise(apiViewEvents: apiViewEvents, apiClient: self.apiClient!)
-        self.transactionsViewModel.initialise(apiViewEvents: apiViewEvents, apiClient: self.apiClient!)
-        self.userInfoViewModel.initialise(apiViewEvents: apiViewEvents, apiClient: self.apiClient!)
-
-        // Indicate successful startup
-        self.isInitialised = true
+        self.hasData = false
     }
 
     /*
-     * Inform the view whether we are logged in
+     * Create the companies view model on first use
      */
-    func isLoggedIn() -> Bool {
-        return self.authenticator != nil && self.authenticator!.isLoggedIn()
+    func getCompaniesViewModel() -> CompaniesViewModel {
+
+        if self.companiesViewModel == nil {
+            self.companiesViewModel = CompaniesViewModel(apiClient: self.apiClient, apiViewEvents: apiViewEvents)
+        }
+
+        return self.companiesViewModel!
+    }
+
+    /*
+     * Create the transactions view model on first use
+     */
+    func getTransactionsViewModel() -> TransactionsViewModel {
+
+        if self.transactionsViewModel == nil {
+            self.transactionsViewModel = TransactionsViewModel(apiClient: self.apiClient, apiViewEvents: apiViewEvents)
+        }
+
+        return self.transactionsViewModel!
+    }
+
+    /*
+     * Create the user info view model on first use
+     */
+    func getUserInfoViewModel() -> UserInfoViewModel {
+
+        if self.userInfoViewModel == nil {
+            self.userInfoViewModel = UserInfoViewModel(apiClient: self.apiClient, apiViewEvents: apiViewEvents)
+        }
+
+        return self.userInfoViewModel!
     }
 
     /*
@@ -83,12 +101,12 @@ class AppViewModel: ObservableObject {
 
             do {
                 // Do the login redirect on the UI thread
-                let response = try self.authenticator!.startLogin(viewController: viewController)
+                let response = try self.authenticator.startLogin(viewController: viewController)
                     .await()
 
                 // Do the code exchange on a background thread
                 try DispatchQueue.global().await {
-                    try self.authenticator!.finishLogin(authResponse: response)
+                    try self.authenticator.finishLogin(authResponse: response)
                         .await()
                 }
 
@@ -113,12 +131,12 @@ class AppViewModel: ObservableObject {
     func handleOAuthDeepLink(url: URL) -> Bool {
 
         // If this is not a login or logout response, the view router handles the deep link
-        if !self.authenticator!.isOAuthResponse(responseUrl: url) {
+        if !self.authenticator.isOAuthResponse(responseUrl: url) {
             return false
         }
 
         // Handle claimed HTTPS scheme login or logout responses
-        self.authenticator!.resumeOperation(responseUrl: url)
+        self.authenticator.resumeOperation(responseUrl: url)
         return true
     }
 
@@ -130,7 +148,7 @@ class AppViewModel: ObservableObject {
     func onDeepLinkCompleted(isSameView: Bool) {
 
         if isSameView {
-            self.dataReloadHandler.sendReloadEvent(viewName: ApiViewNames.Main, causeError: false)
+            self.eventBus.sendReloadMainViewEvent(causeError: false)
         }
     }
 
@@ -147,7 +165,7 @@ class AppViewModel: ObservableObject {
 
             do {
                 // Ask the authenticator to do the OAuth work
-                try self.authenticator!.logout(viewController: viewController)
+                try self.authenticator.logout(viewController: viewController)
                     .await()
 
                 // Do post logout processing
@@ -166,28 +184,21 @@ class AppViewModel: ObservableObject {
      * Update state after logging out
      */
     func onLogout() {
-        self.userInfoViewModel.clearUserInfo()
-        self.isMainViewLoaded = false
-    }
-
-    /*
-     * Update session button state while the main view loads
-     */
-    func onMainLoadStateChanged(loaded: Bool) {
-        self.isMainViewLoaded = loaded
+        self.userInfoViewModel!.clearUserInfo()
+        self.hasData = false
     }
 
     /*
      * Make the access token act expired
      */
     func onExpireAccessToken() {
-        self.authenticator!.expireAccessToken()
+        self.authenticator.expireAccessToken()
     }
 
     /*
      * Make the refresh token act expired
      */
     func onExpireRefreshToken() {
-        self.authenticator!.expireRefreshToken()
+        self.authenticator.expireRefreshToken()
     }
 }

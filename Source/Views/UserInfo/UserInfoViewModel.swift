@@ -7,17 +7,17 @@ import SwiftCoroutine
 class UserInfoViewModel: ObservableObject {
 
     // Late initialised properties
-    private var apiViewEvents: ApiViewEvents?
-    private var apiClient: ApiClient?
+    private let apiViewEvents: ApiViewEvents
+    private let apiClient: ApiClient
 
     // Published state
     @Published var userInfo: UserInfo?
     @Published var error: UIError?
 
     /*
-     * Set objects once they have been created
+     * Receive global objects whenever the view is recreated
      */
-    func initialise(apiViewEvents: ApiViewEvents, apiClient: ApiClient) {
+    init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
         self.apiViewEvents = apiViewEvents
         self.apiClient = apiClient
     }
@@ -29,7 +29,7 @@ class UserInfoViewModel: ObservableObject {
 
         // Check preconditions
         if !shouldLoad {
-            self.apiViewEvents!.onViewLoaded(name: ApiViewNames.UserInfo)
+            self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
             return
         }
 
@@ -43,14 +43,14 @@ class UserInfoViewModel: ObservableObject {
                 var newUserInfo: UserInfo?
 
                 // Make the API call on a background thread
-                self.apiViewEvents!.onViewLoading(name: ApiViewNames.UserInfo)
+                self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
                 try DispatchQueue.global().await {
-                    newUserInfo = try self.apiClient!.getUserInfo(options: options).await()
+                    newUserInfo = try self.apiClient.getUserInfo(options: options).await()
                 }
 
                 // Update published properties on the main thread
                 self.userInfo = newUserInfo
-                self.apiViewEvents!.onViewLoaded(name: ApiViewNames.UserInfo)
+                self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
 
             } catch {
 
@@ -58,7 +58,7 @@ class UserInfoViewModel: ObservableObject {
                 let uiError = ErrorHandler.fromException(error: error)
                 self.userInfo = nil
                 self.error = uiError
-                self.apiViewEvents!.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
+                self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
             }
         }
     }

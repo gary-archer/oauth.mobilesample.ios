@@ -9,15 +9,13 @@ struct AppView: View {
     @EnvironmentObject private var orientationHandler: OrientationHandler
     @ObservedObject private var model: AppViewModel
     private var viewRouter: ViewRouter
-    private var apiViewEvents: ApiViewEvents
 
     /*
      * Initialise properties that we can safely set here
      */
-    init(model: AppViewModel, viewRouter: ViewRouter, apiViewEvents: ApiViewEvents) {
+    init(model: AppViewModel, viewRouter: ViewRouter) {
         self.model = model
         self.viewRouter = viewRouter
-        self.apiViewEvents = apiViewEvents
     }
 
     /*
@@ -29,16 +27,13 @@ struct AppView: View {
 
             // Display the title row including user info
             TitleView(
-                userInfoViewModel: self.model.userInfoViewModel,
-                shouldLoadUserInfo:
-                    self.model.isInitialised &&
-                    self.model.isDeviceSecured &&
-                    !self.viewRouter.isInLoginRequired()
+                userInfoViewModel: self.model.getUserInfoViewModel(),
+                shouldLoadUserInfo: self.model.isDeviceSecured && !self.viewRouter.isInLoginRequired()
             )
 
             // Next display the header buttons view
             HeaderButtonsView(
-                sessionButtonsEnabled: self.model.isMainViewLoaded,
+                hasData: self.model.hasData,
                 onHome: self.onHome,
                 onReloadData: self.onReloadData,
                 onExpireAccessToken: self.model.onExpireAccessToken,
@@ -56,46 +51,26 @@ struct AppView: View {
                         .padding(.bottom)
             }
 
-            // After we've initialised the app, rnder the main view based on the user's current location
-            if self.model.isInitialised {
-
-                MainView(
-                    viewRouter: self.viewRouter,
-                    companiesViewModel: self.model.companiesViewModel,
-                    transactionsViewModel: self.model.transactionsViewModel,
-                    isDeviceSecured: self.model.isDeviceSecured)
-            }
+            // Render the main view based on the user's current location
+            MainView(
+                viewRouter: self.viewRouter,
+                companiesViewModel: self.model.getCompaniesViewModel(),
+                transactionsViewModel: self.model.getTransactionsViewModel(),
+                isDeviceSecured: self.model.isDeviceSecured)
 
             // Fill up the remainder of the view if needed
             Spacer()
-
         }
-        .onAppear(perform: self.initialiseApp)
+        .onReceive(self.model.eventBus.dataStatusTopic, perform: {data in
+            self.handleDataStatusUpdate(event: data)
+        })
+        .onReceive(self.model.eventBus.loginRequiredTopic, perform: {_ in
+            self.onLoginRequired()
+        })
     }
 
-    /*
-     * The main startup logic occurs after the initial render
-     */
-    private func initialiseApp() {
-
-        do {
-            // Initialise the model, which loads configuration and creates global objects
-            try self.model.initialise(apiViewEvents: self.apiViewEvents)
-
-            // Initialise the events helper object with the names of view areas that call the Web API
-            self.apiViewEvents.initialise(
-                onLoginRequiredAction: self.onLoginRequired,
-                onMainLoadStateChanged: self.model.onMainLoadStateChanged
-            )
-            self.apiViewEvents.addView(name: ApiViewNames.Main)
-            self.apiViewEvents.addView(name: ApiViewNames.UserInfo)
-
-        } catch {
-
-            // Render any error details
-            let uiError = ErrorHandler.fromException(error: error)
-            self.model.error = uiError
-        }
+    private func handleDataStatusUpdate(event: DataStatusEvent) {
+        self.model.hasData = event.loaded
     }
 
     /*
@@ -193,29 +168,21 @@ struct AppView: View {
      */
     private func onHome() {
 
-        // If there is a startup error then reinitialise the app
-        if !self.model.isInitialised {
-            self.initialiseApp()
+        // If we have prompted the user to open settings and click home, update the model's flag
+        if !self.model.isDeviceSecured {
+            self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
         }
 
-        if self.model.isInitialised {
+        // Move to the home view
+        if self.viewRouter.isInHomeView() {
 
-            // If we have prompted the user to open settings and click home, update the model's flag
-            if !self.model.isDeviceSecured {
-                self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-            }
+            // Force the main view to reload
+            self.model.eventBus.sendReloadMainViewEvent(causeError: false)
 
-            // Move to the home view
-            if self.viewRouter.isInHomeView() {
+        } else {
 
-                // Force the home view to reload
-                self.model.dataReloadHandler.sendReloadEvent(viewName: ApiViewNames.Main, causeError: false)
-
-            } else {
-
-                // Otherwise move to the home view
-                self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
-            }
+            // Otherwise move to the home view
+            self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
         }
     }
 
@@ -224,9 +191,9 @@ struct AppView: View {
      */
     private func onReloadData(causeError: Bool) {
 
-        self.apiViewEvents.clearState()
-        self.model.dataReloadHandler.sendReloadEvent(viewName: ApiViewNames.Main, causeError: causeError)
-        self.model.dataReloadHandler.sendReloadEvent(viewName: ApiViewNames.UserInfo, causeError: causeError)
+        self.model.apiViewEvents.clearState()
+        self.model.eventBus.sendReloadMainViewEvent(causeError: causeError)
+        self.model.eventBus.sendReloadUserInfoEvent(causeError: causeError)
     }
 
     /*

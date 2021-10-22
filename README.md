@@ -1,11 +1,11 @@
-# oauth.mobilesample.ios
+# iOS OAuth Mobile Sample
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f7629f3989ab40a199043f1d84dd8fb5)](https://www.codacy.com/gh/gary-archer/oauth.mobilesample.ios/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/oauth.mobilesample.ios&amp;utm_campaign=Badge_Grade)
 
 ### Overview
 
-* A mobile sample using OAuth and Open Id Connect, referenced in my blog at https://authguidance.com
-* **The goal of this sample is to implement Open Id Connect mobile logins with best usability and reliability**
+* A mobile sample using OAuth and OpenID Connect, referenced in my blog at https://authguidance.com
+* **The goal is to implement OpenID Connect mobile logins with best usability and reliability**
 
 ### Details
 
@@ -14,11 +14,11 @@
 
 ### Technologies
 
-* XCode 13 and SwiftUI are used to develop an app that connects to a Cloud API and Authorization Server
+* Xcode and SwiftUI are used to develop an app that connects to a Cloud API and Authorization Server
 
 ### Middleware Used
 
-* The [AppAuth-iOS Library](https://github.com/openid/AppAuth-iOS) is used to implement the Authorization Code Flow (PKCE) via a Claimed HTTPS Scheme
+* [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) is used to implement Authorization Code Flow (PKCE) with a Claimed HTTPS Scheme
 * AWS API Gateway is used to host the back end OAuth Secured Web API
 * AWS Cognito is used as the default Authorization Server for the Mobile App and API
 * The iOS Keychain is used to store encrypted tokens on the device after login

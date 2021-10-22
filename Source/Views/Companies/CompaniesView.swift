@@ -6,7 +6,7 @@ import SwiftUI
 struct CompaniesView: View {
 
     @EnvironmentObject private var orientationHandler: OrientationHandler
-    @EnvironmentObject private var dataReloadHandler: DataReloadHandler
+    @EnvironmentObject private var eventBus: EventBus
     @ObservedObject private var model: CompaniesViewModel
     @ObservedObject private var viewRouter: ViewRouter
 
@@ -44,16 +44,20 @@ struct CompaniesView: View {
                 List(self.model.companies, id: \.id) { item in
                     CompanyItemView(viewRouter: self.viewRouter, company: item)
                 }
+                .listStyle(.plain)
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.dataReloadHandler.objectWillChange, perform: {data in
-
-            // Check the message is for this view and then reload
-            if data.viewName == ApiViewNames.Main {
-                self.loadData(causeError: data.causeError)
-            }
+        .onReceive(self.eventBus.reloadMainViewTopic, perform: {data in
+            self.handleReloadData(event: data)
         })
+    }
+
+    /*
+     * Receive events
+     */
+    private func handleReloadData(event: ReloadMainViewEvent) {
+         self.loadData(causeError: event.causeError)
     }
 
     /*
