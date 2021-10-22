@@ -5,7 +5,7 @@ import SwiftUI
  */
 struct UserInfoView: View {
 
-    @EnvironmentObject private var dataReloadHandler: DataReloadHandler
+    @EnvironmentObject private var eventPublisher: EventPublisher
     @ObservedObject private var model: UserInfoViewModel
     private let shouldLoad: Bool
 
@@ -37,13 +37,19 @@ struct UserInfoView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.dataReloadHandler.objectWillChange, perform: { data in
-
-            // Check the message is for this view and then reload
-            if data.viewName == ApiViewNames.UserInfo {
-                self.loadData(causeError: data.causeError)
-            }
+        .onReceive(self.eventPublisher.reloadDataTopic, perform: { data in
+            self.handleReloadEvent(event: data)
         })
+    }
+
+    /*
+     * Receive events
+     */
+    private func handleReloadEvent(event: ReloadEvent) {
+
+        if event.viewName == ApiViewNames.UserInfo {
+            self.loadData(causeError: event.causeError)
+        }
     }
 
     /*

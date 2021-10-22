@@ -5,31 +5,18 @@ import SwiftUI
 */
 class ApiViewEvents {
 
-    // Properties
+    private let eventPublisher: EventPublisher
     private var views: [String: Bool]
-    private var loginRequired: Bool
-
-    // Callbacks to the AppView
-    private var onLoginRequiredAction: (() -> Void)?
-    private var onMainLoadStateChanged: ((Bool) -> Void)?
+    private var loginRequired = false
 
     /*
      * Set the initial state
      */
-    init () {
+    init (eventPublisher: EventPublisher) {
+
+        self.eventPublisher = eventPublisher
         self.views = [String: Bool]()
         self.loginRequired = false
-    }
-
-    /*
-     * Do late initialisation when the app view loads
-     */
-    func initialise(
-        onLoginRequiredAction: @escaping () -> Void,
-        onMainLoadStateChanged: @escaping (Bool) -> Void) {
-
-        self.onLoginRequiredAction = onLoginRequiredAction
-        self.onMainLoadStateChanged = onMainLoadStateChanged
     }
 
     /*
@@ -47,7 +34,7 @@ class ApiViewEvents {
         views[name] = false
 
         if name == ApiViewNames.Main {
-            self.onMainLoadStateChanged!(false)
+            self.eventPublisher.sendGetDataEvent(loaded: false)
         }
     }
 
@@ -59,7 +46,7 @@ class ApiViewEvents {
         views[name] = true
 
         if name == ApiViewNames.Main {
-            self.onMainLoadStateChanged!(true)
+            self.eventPublisher.sendGetDataEvent(loaded: true)
         }
 
         self.triggerLoginIfRequired()
@@ -98,7 +85,7 @@ class ApiViewEvents {
 
         let allViewsLoaded = self.views.filter({item in item.value == true}).count == self.views.count
         if allViewsLoaded && self.loginRequired {
-            self.onLoginRequiredAction!()
+            self.eventPublisher.sendLoginRequiredEvent()
         }
     }
 }

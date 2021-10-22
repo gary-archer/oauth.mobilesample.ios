@@ -32,6 +32,8 @@
 		4E432518244EEB5A00A1582E /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E432517244EEB5A00A1582E /* UserInfoView.swift */; };
 		4E43251A244EFCED00A1582E /* CompanyTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E432519244EFCED00A1582E /* CompanyTransactions.swift */; };
 		4E43251C244EFD6500A1582E /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E43251B244EFD6500A1582E /* Transaction.swift */; };
+		4E670F852722A8D70064EC73 /* GetDataEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E670F842722A8D70064EC73 /* GetDataEvent.swift */; };
+		4E670F872722A9C10064EC73 /* LoginRequiredEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E670F862722A9C10064EC73 /* LoginRequiredEvent.swift */; };
 		4E679949246D9723002B7E5F /* DeepLinkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E679948246D9723002B7E5F /* DeepLinkHelper.swift */; };
 		4E712AAA245C5D1700022757 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E712AA9245C5D1600022757 /* launch.png */; };
 		4E79B09C241428310054C382 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79B09B241428310054C382 /* UIError.swift */; };
@@ -45,7 +47,7 @@
 		4EB6DAB023F970F20007A311 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAAF23F970F20007A311 /* Company.swift */; };
 		4EC0615925755BA3009050F3 /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC0615825755BA3009050F3 /* SampleApp.swift */; };
 		4ECD97622452E01D00D7E271 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97612452E01D00D7E271 /* AppView.swift */; };
-		4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* DataReloadHandler.swift */; };
+		4ECD97642452E57800D7E271 /* EventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97632452E57800D7E271 /* EventPublisher.swift */; };
 		4ECD97662452F25E00D7E271 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD97652452F25E00D7E271 /* MainView.swift */; };
 		4ED03265246FE81E00441C53 /* postlogout.html in Resources */ = {isa = PBXBuildFile; fileRef = 4ED03263246FE81D00441C53 /* postlogout.html */; };
 		4ED03266246FE81E00441C53 /* postlogin.html in Resources */ = {isa = PBXBuildFile; fileRef = 4ED03264246FE81E00441C53 /* postlogin.html */; };
@@ -109,6 +111,8 @@
 		4E432519244EFCED00A1582E /* CompanyTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyTransactions.swift; sourceTree = "<group>"; };
 		4E43251B244EFD6500A1582E /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		4E5EC9CA256565A70020E0FB /* DemoAppProfile.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = DemoAppProfile.mobileprovision; sourceTree = "<group>"; };
+		4E670F842722A8D70064EC73 /* GetDataEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataEvent.swift; sourceTree = "<group>"; };
+		4E670F862722A9C10064EC73 /* LoginRequiredEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredEvent.swift; sourceTree = "<group>"; };
 		4E679948246D9723002B7E5F /* DeepLinkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHelper.swift; sourceTree = "<group>"; };
 		4E712AA9245C5D1600022757 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch.png; sourceTree = "<group>"; };
 		4E79B09B241428310054C382 /* UIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIError.swift; sourceTree = "<group>"; };
@@ -123,7 +127,7 @@
 		4EB6DAAF23F970F20007A311 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		4EC0615825755BA3009050F3 /* SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleApp.swift; sourceTree = "<group>"; };
 		4ECD97612452E01D00D7E271 /* AppView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		4ECD97632452E57800D7E271 /* DataReloadHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReloadHandler.swift; sourceTree = "<group>"; };
+		4ECD97632452E57800D7E271 /* EventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventPublisher.swift; sourceTree = "<group>"; };
 		4ECD97652452F25E00D7E271 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4ED03263246FE81D00441C53 /* postlogout.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postlogout.html; sourceTree = "<group>"; };
 		4ED03264246FE81E00441C53 /* postlogin.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postlogin.html; sourceTree = "<group>"; };
@@ -251,9 +255,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4E670F812722A41C0064EC73 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				4ECD97632452E57800D7E271 /* EventPublisher.swift */,
+				4EE54242259E437800573D22 /* ReloadEvent.swift */,
+				4E670F842722A8D70064EC73 /* GetDataEvent.swift */,
+				4E670F862722A9C10064EC73 /* LoginRequiredEvent.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
 		4E79B099241428200054C382 /* Plumbing */ = {
 			isa = PBXGroup;
 			children = (
+				4E670F812722A41C0064EC73 /* Events */,
 				4E79B09A241428250054C382 /* Errors */,
 				4EB386F3244C68CD00FC2B17 /* OAuth */,
 				4E1D6149245B346900F41850 /* Utilities */,
@@ -429,14 +445,12 @@
 				4E3F8D402455A41300EC7EB0 /* ApiViewEvents.swift */,
 				4EE5423F259E2F3F00573D22 /* ApiViewNames.swift */,
 				4EFEFC302451EE4F0057C78D /* Colors.swift */,
-				4ECD97632452E57800D7E271 /* DataReloadHandler.swift */,
 				4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */,
 				4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */,
 				4EE6B1DD24649DB700B43FF3 /* LongPressModifier.swift */,
 				4E29A1A62461DBE100095F11 /* OrientationHandler.swift */,
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
-				4EE54242259E437800573D22 /* ReloadEvent.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -574,6 +588,7 @@
 				4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */,
 				4EB386F5244C68F600FC2B17 /* Authenticator.swift in Sources */,
 				4ECD97622452E01D00D7E271 /* AppView.swift in Sources */,
+				4E670F872722A9C10064EC73 /* LoginRequiredEvent.swift in Sources */,
 				4E282AF92471AEE100C9690B /* CompaniesViewModel.swift in Sources */,
 				4EFCE67B24631D5D00BD1443 /* LogoutManager.swift in Sources */,
 				4EFEFC292451D13D0057C78D /* OAuthConfiguration.swift in Sources */,
@@ -582,7 +597,7 @@
 				4E432516244EEAEE00A1582E /* UserInfo.swift in Sources */,
 				4E1888F723DE01130014638D /* HeaderButtonsView.swift in Sources */,
 				4EE6B1DC2464809C00B43FF3 /* DeviceNotSecuredView.swift in Sources */,
-				4ECD97642452E57800D7E271 /* DataReloadHandler.swift in Sources */,
+				4ECD97642452E57800D7E271 /* EventPublisher.swift in Sources */,
 				4EE54243259E437800573D22 /* ReloadEvent.swift in Sources */,
 				4EFCE68524632F2600BD1443 /* ApiRequestOptions.swift in Sources */,
 				4EFEFC352451EE4F0057C78D /* ViewRouter.swift in Sources */,
@@ -607,6 +622,7 @@
 				4EE6B1DA246479A700B43FF3 /* DeviceSecurity.swift in Sources */,
 				4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */,
 				4E3F8D432455E9C400EC7EB0 /* AppViewModel.swift in Sources */,
+				4E670F852722A8D70064EC73 /* GetDataEvent.swift in Sources */,
 				4E07E3782497DF1B006B1A5A /* ConcurrentActionHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

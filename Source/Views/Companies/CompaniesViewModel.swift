@@ -7,19 +7,19 @@ import SwiftCoroutine
 class CompaniesViewModel: ObservableObject {
 
     // Late created properties
-    private var apiViewEvents: ApiViewEvents?
-    private var apiClient: ApiClient?
+    private let apiClient: ApiClient
+    private let apiViewEvents: ApiViewEvents
 
     // Published state
     @Published var companies = [Company]()
     @Published var error: UIError?
 
     /*
-     * Set objects once they have been created
+     * Receive global objects whenever the view is recreated
      */
-    func initialise(apiViewEvents: ApiViewEvents, apiClient: ApiClient) {
-        self.apiViewEvents = apiViewEvents
+    init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
         self.apiClient = apiClient
+        self.apiViewEvents = apiViewEvents
     }
 
     /*
@@ -33,16 +33,16 @@ class CompaniesViewModel: ObservableObject {
             do {
                 // Initialise for this request
                 self.error = nil
-                self.apiViewEvents!.onViewLoading(name: ApiViewNames.Main)
+                self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
                 var newCompanies = [Company]()
 
                 // Make the API call on a background thread and update state on success
                 try DispatchQueue.global().await {
-                    newCompanies = try self.apiClient!.getCompanies(options: options).await()
+                    newCompanies = try self.apiClient.getCompanies(options: options).await()
                 }
 
                 // Update published properties on the main thread
-                self.apiViewEvents!.onViewLoaded(name: ApiViewNames.Main)
+                self.apiViewEvents.onViewLoaded(name: ApiViewNames.Main)
                 self.companies = newCompanies
 
             } catch {
@@ -51,7 +51,7 @@ class CompaniesViewModel: ObservableObject {
                 let uiError = ErrorHandler.fromException(error: error)
                 self.companies = [Company]()
                 self.error = uiError
-                self.apiViewEvents!.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
+                self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
             }
         }
     }

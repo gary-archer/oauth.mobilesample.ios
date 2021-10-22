@@ -5,7 +5,6 @@ import SwiftUI
  */
 struct HeaderButtonStyle: ButtonStyle {
 
-    // Properties
     private let width: CGFloat
     private var disabled: Bool
     private let enabledFont = Font.system(.caption).weight(.regular)
