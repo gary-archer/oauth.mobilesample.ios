@@ -6,18 +6,19 @@ import Combine
  */
 class EventBus: ObservableObject {
 
+    let navigatedTopic = PassthroughSubject<NavigatedEvent, Never>()
     let loginRequiredTopic = PassthroughSubject<LoginRequiredEvent, Never>()
     let dataStatusTopic = PassthroughSubject<DataStatusEvent, Never>()
     let reloadMainViewTopic = PassthroughSubject<ReloadMainViewEvent, Never>()
     let reloadUserInfoTopic = PassthroughSubject<ReloadUserInfoEvent, Never>()
 
     /*
-     * Publish an event to inform views of the data loading state
+     * Publish an event to inform views when the main view has changed
      */
-    func sendDataStatusEvent(loaded: Bool) {
+    func sendNavigatedEvent(isMainView: Bool) {
 
-        let event = DataStatusEvent(loaded: loaded)
-        dataStatusTopic.send(event)
+        let event = NavigatedEvent(isMainView: isMainView)
+        navigatedTopic.send(event)
     }
 
     /*
@@ -27,6 +28,15 @@ class EventBus: ObservableObject {
 
         let event = LoginRequiredEvent()
         loginRequiredTopic.send(event)
+    }
+
+    /*
+     * Publish an event to inform views of the data loading state
+     */
+    func sendDataStatusEvent(loaded: Bool) {
+
+        let event = DataStatusEvent(loaded: loaded)
+        dataStatusTopic.send(event)
     }
 
     /*
