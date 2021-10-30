@@ -265,9 +265,9 @@
 				4ECD97632452E57800D7E271 /* EventBus.swift */,
 				4E670F842722A8D70064EC73 /* DataStatusEvent.swift */,
 				4E670F862722A9C10064EC73 /* LoginRequiredEvent.swift */,
+				4E64AF49272C7BCA0063CEF6 /* NavigatedEvent.swift */,
 				4EE54242259E437800573D22 /* ReloadMainViewEvent.swift */,
 				4E670F882722B67D0064EC73 /* ReloadUserInfoEvent.swift */,
-				4E64AF49272C7BCA0063CEF6 /* NavigatedEvent.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";

@@ -21,7 +21,6 @@ struct LoginRequiredView: View {
      * Handler the initial load
      */
     private func initialLoad() {
-        print("Login required navigated")
         self.eventBus.sendNavigatedEvent(isMainView: false)
     }
 }

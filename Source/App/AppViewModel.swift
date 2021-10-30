@@ -89,6 +89,13 @@ class AppViewModel: ObservableObject {
     }
 
     /*
+     * Make this value available for the session view
+     */
+    func getSessionId() -> String {
+        return self.apiClient.sessionId
+    }
+
+    /*
      * Do the login redirect
      */
     func login(

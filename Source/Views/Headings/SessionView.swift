@@ -6,12 +6,14 @@ import SwiftUI
 struct SessionView: View {
 
     @EnvironmentObject private var orientationHandler: OrientationHandler
-    private let apiClient: ApiClient
-    private let isVisible: Bool
+    @EnvironmentObject private var eventBus: EventBus
 
-    init (apiClient: ApiClient, isVisible: Bool) {
-        self.apiClient = apiClient
-        self.isVisible = isVisible
+    private let text: String
+    @State private var isVisible: Bool
+
+    init (sessionId: String) {
+        self.text = "API Session Id: \(sessionId)"
+        self.isVisible = false
     }
 
     /*
@@ -20,7 +22,9 @@ struct SessionView: View {
     var body: some View {
 
         let deviceWidth = UIScreen.main.bounds.size.width
+
         return VStack {
+
             if !self.isVisible {
 
                 Text("")
@@ -29,7 +33,7 @@ struct SessionView: View {
 
             } else {
 
-                Text("API Session Id: \(self.apiClient.sessionId)")
+                Text(self.text)
                     .foregroundColor(Color.gray)
                     .fontWeight(.light)
                     .font(.system(size: 12))
@@ -37,5 +41,15 @@ struct SessionView: View {
                     .padding(.trailing, 25)
             }
         }
+        .onReceive(self.eventBus.navigatedTopic, perform: {data in
+            self.handleNavigateEvent(event: data)
+        })
+    }
+
+    /*
+     * Receive events
+     */
+    private func handleNavigateEvent(event: NavigatedEvent) {
+        self.isVisible = event.isMainView
     }
 }

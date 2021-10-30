@@ -51,6 +51,9 @@ struct AppView: View {
                         .padding(.bottom)
             }
 
+            // Next display the session view
+            SessionView(sessionId: self.model.getSessionId())
+
             // Render the main view based on the user's current location
             MainView(
                 viewRouter: self.viewRouter,
