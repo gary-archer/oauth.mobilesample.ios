@@ -7,11 +7,11 @@ struct UserInfoView: View {
 
     @EnvironmentObject private var eventBus: EventBus
     @ObservedObject private var model: UserInfoViewModel
-    private let shouldLoad: Bool
+    private let viewRouter: ViewRouter
 
-    init (model: UserInfoViewModel, shouldLoad: Bool) {
+    init (model: UserInfoViewModel, viewRouter: ViewRouter) {
         self.model = model
-        self.shouldLoad = shouldLoad
+        self.viewRouter = viewRouter
     }
 
     /*
@@ -32,35 +32,52 @@ struct UserInfoView: View {
             } else {
 
                 // Render user info if it exists
-                Text(self.model.getUserName(shouldLoad: self.shouldLoad))
+                Text(self.model.getUserName())
                     .font(.system(size: 14))
             }
         }
-        .onAppear(perform: self.initialLoad)
+        .onReceive(self.eventBus.navigatedTopic, perform: {data in
+            self.handleNavigateEvent(event: data)
+        })
         .onReceive(self.eventBus.reloadUserInfoTopic, perform: { data in
             self.handleReloadEvent(event: data)
         })
     }
 
     /*
-     * Receive events
+     * Load data when the main view is navigated to
      */
-    private func handleReloadEvent(event: ReloadUserInfoEvent) {
-        self.loadData(causeError: event.causeError)
-    }
+    private func handleNavigateEvent(event: NavigatedEvent) {
+
+        if event.isMainView {
+
+            // Load user data the first time
+            self.loadData()
+
+        } else {
+
+            // Clear data when in the logged out view
+            self.model.clearData()
+        }
+   }
 
     /*
-     * Do the initial load
+     * Handle reload events
      */
-    private func initialLoad() {
-        self.loadData(causeError: false)
+    private func handleReloadEvent(event: ReloadUserInfoEvent) {
+        self.loadData(reload: true, causeError: event.causeError)
     }
 
     /*
      * Ask the model to call the API to get data
      */
-    private func loadData(causeError: Bool) {
-        let options = ApiRequestOptions(causeError: causeError)
-        self.model.callApi(options: options, shouldLoad: self.shouldLoad)
+    private func loadData(reload: Bool = false, causeError: Bool = false) {
+
+        let options = UserInfoLoadOptions(
+            reload: reload,
+            isInLoggedOutView: self.viewRouter.isInLoginRequired(),
+            causeError: causeError)
+
+        self.model.callApi(options: options)
     }
 }

@@ -7,15 +7,15 @@ struct TitleView: View {
 
     @EnvironmentObject private var orientationHandler: OrientationHandler
     @ObservedObject private var userInfoViewModel: UserInfoViewModel
-    @State private var title = "OAuth Demo App"
-    private var shouldLoadUserInfo: Bool
+    private let title = "OAuth Demo App"
+    private let viewRouter: ViewRouter
 
     /*
      * Construct from the user info view model, which is only created once
      */
-    init (userInfoViewModel: UserInfoViewModel, shouldLoadUserInfo: Bool) {
+    init (userInfoViewModel: UserInfoViewModel, viewRouter: ViewRouter) {
         self.userInfoViewModel = userInfoViewModel
-        self.shouldLoadUserInfo = shouldLoadUserInfo
+        self.viewRouter = viewRouter
     }
 
     /*
@@ -24,7 +24,7 @@ struct TitleView: View {
     var body: some View {
 
         let deviceWidth = UIScreen.main.bounds.size.width
-        let titleWidth = shouldLoadUserInfo ? deviceWidth * 0.55 : deviceWidth
+        let titleWidth = deviceWidth * 0.55
         let userInfoWidth = deviceWidth * 0.45
 
         return HStack {
@@ -37,13 +37,9 @@ struct TitleView: View {
                 .frame(width: titleWidth, alignment: .leading)
 
             // Show the user name to the right
-            if self.shouldLoadUserInfo {
-                UserInfoView(
-                    model: self.userInfoViewModel,
-                    shouldLoad: self.shouldLoadUserInfo)
-                        .padding(20)
-                        .frame(width: userInfoWidth, alignment: .trailing)
-            }
+            UserInfoView(model: self.userInfoViewModel, viewRouter: self.viewRouter)
+                .padding(20)
+                .frame(width: userInfoWidth, alignment: .trailing)
         }
     }
 }

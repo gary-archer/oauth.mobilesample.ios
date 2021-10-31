@@ -191,7 +191,7 @@ class AppViewModel: ObservableObject {
      * Update state after logging out
      */
     func onLogout() {
-        self.userInfoViewModel!.clearUserInfo()
+        self.userInfoViewModel!.clearData()
         self.hasData = false
     }
 

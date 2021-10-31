@@ -13,6 +13,7 @@ class UserInfoViewModel: ObservableObject {
     // Published state
     @Published var userInfo: UserInfo?
     @Published var error: UIError?
+    private var isLoaded: Bool
 
     /*
      * Receive global objects whenever the view is recreated
@@ -20,15 +21,16 @@ class UserInfoViewModel: ObservableObject {
     init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
         self.apiViewEvents = apiViewEvents
         self.apiClient = apiClient
+        self.isLoaded = false
     }
 
     /*
      * Do the work of calling the API
      */
-    func callApi(options: ApiRequestOptions, shouldLoad: Bool) {
+    func callApi(options: UserInfoLoadOptions) {
 
         // Check preconditions
-        if !shouldLoad {
+        if options.isInLoggedOutView || (self.isLoaded && !options.reload) {
             self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
             return
         }
@@ -41,23 +43,27 @@ class UserInfoViewModel: ObservableObject {
                 // Initialise for this request
                 self.error = nil
                 var newUserInfo: UserInfo?
+                let requestOptions = ApiRequestOptions(causeError: options.causeError)
 
                 // Make the API call on a background thread
                 self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
                 try DispatchQueue.global().await {
-                    newUserInfo = try self.apiClient.getUserInfo(options: options).await()
+                    newUserInfo = try self.apiClient.getUserInfo(options: requestOptions).await()
                 }
 
                 // Update published properties on the main thread
                 self.userInfo = newUserInfo
+                self.error = nil
+                self.isLoaded = true
                 self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
 
             } catch {
 
                 // Handle errors
                 let uiError = ErrorHandler.fromException(error: error)
-                self.userInfo = nil
                 self.error = uiError
+                self.userInfo = nil
+                self.isLoaded = false
                 self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
             }
         }
@@ -66,16 +72,16 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Remove user info after logout
      */
-    func clearUserInfo() {
+    func clearData() {
         self.userInfo = nil
     }
 
     /*
      * Return the user name to display
      */
-    func getUserName(shouldLoad: Bool) -> String {
+    func getUserName() -> String {
 
-        if !shouldLoad || self.userInfo == nil {
+        if self.userInfo == nil {
             return ""
         }
 

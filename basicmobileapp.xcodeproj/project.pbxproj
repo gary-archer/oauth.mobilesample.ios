@@ -38,6 +38,7 @@
 		4E670F892722B67D0064EC73 /* ReloadUserInfoEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E670F882722B67D0064EC73 /* ReloadUserInfoEvent.swift */; };
 		4E670F8B2722B6CF0064EC73 /* ApiViewNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E670F8A2722B6CF0064EC73 /* ApiViewNames.swift */; };
 		4E679949246D9723002B7E5F /* DeepLinkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E679948246D9723002B7E5F /* DeepLinkHelper.swift */; };
+		4E6CD3FE272E9A37007EFAEF /* UserInfoLoadOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6CD3FD272E9A37007EFAEF /* UserInfoLoadOptions.swift */; };
 		4E712AAA245C5D1700022757 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E712AA9245C5D1600022757 /* launch.png */; };
 		4E79B09C241428310054C382 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79B09B241428310054C382 /* UIError.swift */; };
 		4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85F2CB2414039300E0ACA8 /* ApiClient.swift */; };
@@ -119,6 +120,7 @@
 		4E670F882722B67D0064EC73 /* ReloadUserInfoEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadUserInfoEvent.swift; sourceTree = "<group>"; };
 		4E670F8A2722B6CF0064EC73 /* ApiViewNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiViewNames.swift; path = ../../../../../.Trash/ApiViewNames.swift; sourceTree = "<group>"; };
 		4E679948246D9723002B7E5F /* DeepLinkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHelper.swift; sourceTree = "<group>"; };
+		4E6CD3FD272E9A37007EFAEF /* UserInfoLoadOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoLoadOptions.swift; sourceTree = "<group>"; };
 		4E712AA9245C5D1600022757 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch.png; sourceTree = "<group>"; };
 		4E79B09B241428310054C382 /* UIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIError.swift; sourceTree = "<group>"; };
 		4E85F2CB2414039300E0ACA8 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 			children = (
 				4E432517244EEB5A00A1582E /* UserInfoView.swift */,
 				4E282AFC2471B70000C9690B /* UserInfoViewModel.swift */,
+				4E6CD3FD272E9A37007EFAEF /* UserInfoLoadOptions.swift */,
 			);
 			path = UserInfo;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				4EFEFC2C2451D2860057C78D /* ErrorCodes.swift in Sources */,
 				4ECD97662452F25E00D7E271 /* MainView.swift in Sources */,
 				4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */,
+				4E6CD3FE272E9A37007EFAEF /* UserInfoLoadOptions.swift in Sources */,
 				4E3F8D412455A41300EC7EB0 /* ApiViewEvents.swift in Sources */,
 				4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */,
 				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,
