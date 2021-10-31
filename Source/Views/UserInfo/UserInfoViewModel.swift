@@ -70,6 +70,7 @@ class UserInfoViewModel: ObservableObject {
      */
     func clearData() {
         self.userInfo = nil
+        self.error = nil
     }
 
     /*
