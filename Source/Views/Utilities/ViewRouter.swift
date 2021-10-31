@@ -64,11 +64,4 @@ class ViewRouter: ObservableObject {
     func isInHomeView() -> Bool {
         return self.currentViewType == CompaniesView.Type.self
     }
-
-    /*
-     * User info is fetched when in this view
-     */
-    func isInMainView() -> Bool {
-        return self.currentViewType == CompaniesView.Type.self || self.currentViewType == TransactionsView.Type.self
-    }
 }
