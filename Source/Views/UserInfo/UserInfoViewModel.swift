@@ -30,7 +30,7 @@ class UserInfoViewModel: ObservableObject {
     func callApi(options: UserInfoLoadOptions) {
 
         // Check preconditions
-        if options.isInLoggedOutView || (self.isLoaded && !options.reload) {
+        if !options.isDeviceSecured || options.isInLoggedOutView || (self.isLoaded && !options.reload) {
             self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
             return
         }

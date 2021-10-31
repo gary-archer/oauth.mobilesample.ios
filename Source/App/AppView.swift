@@ -28,7 +28,8 @@ struct AppView: View {
             // Display the title row including user info
             TitleView(
                 userInfoViewModel: self.model.getUserInfoViewModel(),
-                viewRouter: self.viewRouter
+                viewRouter: self.viewRouter,
+                isDeviceSecured: self.model.isDeviceSecured
             )
 
             // Next display the header buttons view
