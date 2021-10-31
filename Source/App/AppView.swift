@@ -26,10 +26,7 @@ struct AppView: View {
         return VStack {
 
             // Display the title row including user info
-            TitleView(
-                userInfoViewModel: self.model.getUserInfoViewModel(),
-                viewRouter: self.viewRouter
-            )
+            TitleView(userInfoViewModel: self.model.getUserInfoViewModel())
 
             // Next display the header buttons view
             HeaderButtonsView(

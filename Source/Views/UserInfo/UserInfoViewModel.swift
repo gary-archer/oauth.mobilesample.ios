@@ -28,7 +28,7 @@ class UserInfoViewModel: ObservableObject {
     func callApi(options: UserInfoLoadOptions) {
 
         // Check preconditions
-        if !options.isInMainView || (self.isLoaded() && !options.reload) {
+        if self.isLoaded() && !options.reload {
             self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
             return
         }

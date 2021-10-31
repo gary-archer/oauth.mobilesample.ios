@@ -7,11 +7,9 @@ struct UserInfoView: View {
 
     @EnvironmentObject private var eventBus: EventBus
     @ObservedObject private var model: UserInfoViewModel
-    private let viewRouter: ViewRouter
 
-    init (model: UserInfoViewModel, viewRouter: ViewRouter) {
+    init (model: UserInfoViewModel) {
         self.model = model
-        self.viewRouter = viewRouter
     }
 
     /*
@@ -75,7 +73,6 @@ struct UserInfoView: View {
 
         let options = UserInfoLoadOptions(
             reload: reload,
-            isInMainView: self.viewRouter.isInMainView(),
             causeError: causeError)
 
         self.model.callApi(options: options)

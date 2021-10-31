@@ -3,6 +3,5 @@
  */
 struct UserInfoLoadOptions {
     var reload: Bool
-    var isInMainView: Bool
     var causeError: Bool
 }
