@@ -59,16 +59,16 @@ class ViewRouter: ObservableObject {
     }
 
     /*
-     * Some operations are disabled in this view
+     * If in the home view the home button behaves differently
      */
     func isInHomeView() -> Bool {
         return self.currentViewType == CompaniesView.Type.self
     }
 
     /*
-     * Some operations are disabled in this view
+     * User info is fetched when in this view
      */
-    func isInLoginRequired() -> Bool {
-        return self.currentViewType == LoginRequiredView.Type.self
+    func isInMainView() -> Bool {
+        return self.currentViewType == CompaniesView.Type.self || self.currentViewType == TransactionsView.Type.self
     }
 }

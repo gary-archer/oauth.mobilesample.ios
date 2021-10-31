@@ -13,7 +13,6 @@ class UserInfoViewModel: ObservableObject {
     // Published state
     @Published var userInfo: UserInfo?
     @Published var error: UIError?
-    private var isLoaded: Bool
 
     /*
      * Receive global objects whenever the view is recreated
@@ -21,7 +20,6 @@ class UserInfoViewModel: ObservableObject {
     init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
         self.apiViewEvents = apiViewEvents
         self.apiClient = apiClient
-        self.isLoaded = false
     }
 
     /*
@@ -30,7 +28,7 @@ class UserInfoViewModel: ObservableObject {
     func callApi(options: UserInfoLoadOptions) {
 
         // Check preconditions
-        if !options.isDeviceSecured || options.isInLoggedOutView || (self.isLoaded && !options.reload) {
+        if !options.isInMainView || (self.isLoaded() && !options.reload) {
             self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
             return
         }
@@ -54,7 +52,6 @@ class UserInfoViewModel: ObservableObject {
                 // Update published properties on the main thread
                 self.userInfo = newUserInfo
                 self.error = nil
-                self.isLoaded = true
                 self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
 
             } catch {
@@ -63,7 +60,6 @@ class UserInfoViewModel: ObservableObject {
                 let uiError = ErrorHandler.fromException(error: error)
                 self.error = uiError
                 self.userInfo = nil
-                self.isLoaded = false
                 self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
             }
         }
@@ -86,5 +82,12 @@ class UserInfoViewModel: ObservableObject {
         }
 
         return "\(self.userInfo!.givenName) \(self.userInfo!.familyName)"
+    }
+
+    /*
+     * Determine whether we need to load data
+     */
+    private func isLoaded() -> Bool {
+        return self.userInfo != nil
     }
 }

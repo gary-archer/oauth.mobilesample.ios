@@ -9,15 +9,13 @@ struct TitleView: View {
     @ObservedObject private var userInfoViewModel: UserInfoViewModel
     private let title = "OAuth Demo App"
     private let viewRouter: ViewRouter
-    private let isDeviceSecured: Bool
 
     /*
      * Construct from the user info view model, which is only created once
      */
-    init (userInfoViewModel: UserInfoViewModel, viewRouter: ViewRouter, isDeviceSecured: Bool) {
+    init (userInfoViewModel: UserInfoViewModel, viewRouter: ViewRouter) {
         self.userInfoViewModel = userInfoViewModel
         self.viewRouter = viewRouter
-        self.isDeviceSecured = isDeviceSecured
     }
 
     /*
@@ -41,8 +39,7 @@ struct TitleView: View {
             // Show the user name to the right
             UserInfoView(
                 model: self.userInfoViewModel,
-                viewRouter: self.viewRouter,
-                isDeviceSecured: self.isDeviceSecured)
+                viewRouter: self.viewRouter)
                     .padding(20)
                     .frame(width: userInfoWidth, alignment: .trailing)
         }

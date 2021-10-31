@@ -8,12 +8,10 @@ struct UserInfoView: View {
     @EnvironmentObject private var eventBus: EventBus
     @ObservedObject private var model: UserInfoViewModel
     private let viewRouter: ViewRouter
-    private let isDeviceSecured: Bool
 
-    init (model: UserInfoViewModel, viewRouter: ViewRouter, isDeviceSecured: Bool) {
+    init (model: UserInfoViewModel, viewRouter: ViewRouter) {
         self.model = model
         self.viewRouter = viewRouter
-        self.isDeviceSecured = isDeviceSecured
     }
 
     /*
@@ -76,9 +74,8 @@ struct UserInfoView: View {
     private func loadData(reload: Bool = false, causeError: Bool = false) {
 
         let options = UserInfoLoadOptions(
-            isDeviceSecured: self.isDeviceSecured,
             reload: reload,
-            isInLoggedOutView: self.viewRouter.isInLoginRequired(),
+            isInMainView: self.viewRouter.isInMainView(),
             causeError: causeError)
 
         self.model.callApi(options: options)
