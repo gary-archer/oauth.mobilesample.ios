@@ -5,6 +5,8 @@ import SwiftUI
 */
 struct DeviceNotSecuredView: View {
 
+    @EnvironmentObject private var eventBus: EventBus
+
     /*
      * Render the UI elements
      */
@@ -32,6 +34,7 @@ struct DeviceNotSecuredView: View {
                 .cornerRadius(5)
                 .frame(width: deviceWidth, height: 60)
         }
+        .onAppear(perform: self.initialLoad)
     }
 
     /*
@@ -44,5 +47,12 @@ struct DeviceNotSecuredView: View {
         }
 
         UIApplication.shared.open(settingsUrl)
+    }
+
+    /*
+     * Handler the initial load
+     */
+    private func initialLoad() {
+        self.eventBus.sendNavigatedEvent(isMainView: false)
     }
 }
