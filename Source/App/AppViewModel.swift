@@ -18,7 +18,6 @@ class AppViewModel: ObservableObject {
 
     // State used by the app view
     @Published var isDeviceSecured = false
-    @Published var hasData = false
     @Published var error: UIError?
 
     // Child view models
@@ -49,7 +48,6 @@ class AppViewModel: ObservableObject {
 
         // Update state
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-        self.hasData = false
     }
 
     /*
@@ -185,14 +183,6 @@ class AppViewModel: ObservableObject {
                 onError(uiError)
             }
         }
-    }
-
-    /*
-     * Update state after logging out
-     */
-    func onLogout() {
-        self.userInfoViewModel!.clearData()
-        self.hasData = false
     }
 
     /*

@@ -5,8 +5,10 @@ import SwiftUI
  */
 struct HeaderButtonsView: View {
 
+    @EnvironmentObject private var eventBus: EventBus
+    @State private var hasData = false
     @GestureState private var reloadTapped = false
-    private var sessionButtonsDisabled: Bool
+
     private let onHome: () -> Void
     private let onReloadData: (Bool) -> Void
     private let onExpireAccessToken: () -> Void
@@ -17,14 +19,12 @@ struct HeaderButtonsView: View {
      * To store callbacks we need to mark them as @escaping
      */
     init (
-        hasData: Bool,
         onHome: @escaping () -> Void,
         onReloadData: @escaping (Bool) -> Void,
         onExpireAccessToken: @escaping () -> Void,
         onExpireRefreshToken: @escaping () -> Void,
         onLogout: @escaping () -> Void) {
 
-        self.sessionButtonsDisabled = !hasData
         self.onHome = onHome
         self.onReloadData = onReloadData
         self.onExpireAccessToken = onExpireAccessToken
@@ -39,7 +39,8 @@ struct HeaderButtonsView: View {
 
         let deviceWidth = UIScreen.main.bounds.size.width
         let homeButtonStyle = HeaderButtonStyle(width: deviceWidth / 6, disabled: false)
-        let sessionButtonStyle = HeaderButtonStyle(width: deviceWidth / 6, disabled: self.sessionButtonsDisabled)
+        let sessionButtonsDisabled = !self.hasData
+        let sessionButtonStyle = HeaderButtonStyle(width: deviceWidth / 6, disabled: sessionButtonsDisabled)
 
         return HStack {
 
@@ -54,9 +55,9 @@ struct HeaderButtonsView: View {
                 Text("Reload")
             }
                 .buttonStyle(sessionButtonStyle)
-                .disabled(self.sessionButtonsDisabled)
+                .disabled(sessionButtonsDisabled)
                 .modifier(LongPressModifier(
-                    isDisabled: self.sessionButtonsDisabled,
+                    isDisabled: sessionButtonsDisabled,
                     completionHandler: self.onReloadPressed))
 
             // A button to make the current access token act expired
@@ -64,22 +65,32 @@ struct HeaderButtonsView: View {
                 Text("Expire Access Token").multilineTextAlignment(.center)
             }
                 .buttonStyle(sessionButtonStyle)
-                .disabled(self.sessionButtonsDisabled)
+                .disabled(sessionButtonsDisabled)
 
             // A button to make the current refresh token act expired
             Button(action: self.onExpireRefreshToken) {
                 Text("Expire Refresh Token").multilineTextAlignment(.center)
             }
                 .buttonStyle(sessionButtonStyle)
-                .disabled(self.sessionButtonsDisabled)
+                .disabled(sessionButtonsDisabled)
 
             // A button to initiate a logout
             Button(action: self.onLogout) {
                 Text("Logout")
             }
                 .buttonStyle(sessionButtonStyle)
-                .disabled(self.sessionButtonsDisabled)
+                .disabled(sessionButtonsDisabled)
         }
+        .onReceive(self.eventBus.dataStatusTopic, perform: {data in
+            self.handleDataStatusEvent(event: data)
+        })
+    }
+
+    /*
+     * Update our state when the event is received
+     */
+    private func handleDataStatusEvent(event: DataStatusEvent) {
+        self.hasData = event.loaded
     }
 
     /*

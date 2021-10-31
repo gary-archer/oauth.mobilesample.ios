@@ -30,7 +30,6 @@ struct AppView: View {
 
             // Next display the header buttons view
             HeaderButtonsView(
-                hasData: self.model.hasData,
                 onHome: self.onHome,
                 onReloadData: self.onReloadData,
                 onExpireAccessToken: self.model.onExpireAccessToken,
@@ -61,16 +60,9 @@ struct AppView: View {
             // Fill up the remainder of the view if needed
             Spacer()
         }
-        .onReceive(self.model.eventBus.dataStatusTopic, perform: {data in
-            self.handleDataStatusUpdate(event: data)
-        })
         .onReceive(self.model.eventBus.loginRequiredTopic, perform: {_ in
             self.onLoginRequired()
         })
-    }
-
-    private func handleDataStatusUpdate(event: DataStatusEvent) {
-        self.model.hasData = event.loaded
     }
 
     /*
@@ -160,7 +152,6 @@ struct AppView: View {
 
         self.viewRouter.isTopMost = true
         self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
-        self.model.onLogout()
     }
 
     /*
