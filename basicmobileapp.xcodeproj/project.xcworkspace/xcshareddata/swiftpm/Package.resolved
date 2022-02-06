@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AppAuth",
+        "repositoryURL": "https://github.com/openid/AppAuth-iOS",
+        "state": {
+          "branch": null,
+          "revision": "01131d68346c8ae552961c768d583c715fbe1410",
+          "version": "1.4.0"
+        }
+      },
+      {
+        "package": "SwiftCoroutine",
+        "repositoryURL": "https://github.com/belozierov/SwiftCoroutine",
+        "state": {
+          "branch": null,
+          "revision": "852de01bf167d33e1b6e1cc154c4dc1d559fccfa",
+          "version": "2.1.9"
+        }
+      },
+      {
+        "package": "SwiftKeychainWrapper",
+        "repositoryURL": "https://github.com/jrendel/SwiftKeychainWrapper",
+        "state": {
+          "branch": null,
+          "revision": "185a3165346a03767101c4f62e9a545a0fe0530f",
+          "version": "4.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
