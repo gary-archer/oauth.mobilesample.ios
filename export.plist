@@ -1,3 +1,13 @@
+<!--
+Used to create an ad-hoc IPA file from a provisioning profile
+- Create a certificate for iOS distribution in the Apple website, and a certificate signing request from Keychain Access
+- Upload the CSR file then download the .CER file and double click to install the public + private keys in Keychain Access
+- Create a provisioning profile linked to the certificate, then download the provisioning profile
+- Open the Security/BasicMobileAppAdHocProfile.mobileprovision file in a text editor to get the UUID
+- Open the Security/BasicMobileAppAdHocProfile.mobileprovision file in XCode to import it under ~/Library/MobileDevice/Provisioning Profiles
+- Get the SHA1 hash of the certificate from Keychain Access / Login / Apple certificate properties / Fingerprints
+-->
+
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">  
 <plist version="1.0">  
 <dict>  
@@ -6,9 +16,9 @@
   <key>provisioningProfiles</key>
   <dict>
       <key>com.authsamples.basicmobileapp</key>
-      <string>provisioning profile UUID</string>
+      <string>fd5a4fb4-79fc-4e4c-9fc9-401c926940bf</string>
   </dict>
   <key>signingCertificate</key>
-  <string>certificate hash</string>  
+  <string>2FD4CB39759D3FCDCBD439B3D3891AEF5E690401</string>  
 </dict>  
-</plist> 
+</plist>

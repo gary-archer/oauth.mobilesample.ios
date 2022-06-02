@@ -26,7 +26,7 @@ fi
 
 #
 # Export the archive to an IPA file, which requires my code signing certificate
-# https://ajpagente.github.io/mobile/xcb-with-xcconfig/
+# This will only works for me, as described in the export.plist file
 #
 xcodebuild -exportArchive -archivePath build/basicmobileapp.xcarchive -exportPath build -exportOptionsPlist export.plist
 if [ $? -ne 0 ]; then
