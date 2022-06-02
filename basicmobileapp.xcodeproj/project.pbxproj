@@ -43,6 +43,8 @@
 		4E78FB212781EB8B00B4CF08 /* SetErrorEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E78FB202781EB8B00B4CF08 /* SetErrorEvent.swift */; };
 		4E79B09C241428310054C382 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79B09B241428310054C382 /* UIError.swift */; };
 		4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85F2CB2414039300E0ACA8 /* ApiClient.swift */; };
+		4EA2E3942848ED5B0058A0B7 /* deploy.sh in Resources */ = {isa = PBXBuildFile; fileRef = 4EA2E3932848ED5B0058A0B7 /* deploy.sh */; };
+		4EA2E3962848ED650058A0B7 /* export.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4EA2E3952848ED650058A0B7 /* export.plist */; };
 		4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB180DB24508FC600A2C045 /* ErrorLine.swift */; };
 		4EB386EC244C4D1A00FC2B17 /* ErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */; };
 		4EB386F5244C68F600FC2B17 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386F4244C68F600FC2B17 /* Authenticator.swift */; };
@@ -125,6 +127,9 @@
 		4E79B09B241428310054C382 /* UIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIError.swift; sourceTree = "<group>"; };
 		4E85F2CB2414039300E0ACA8 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = basicmobileapp.entitlements; sourceTree = "<group>"; };
+		4EA2E3932848ED5B0058A0B7 /* deploy.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = deploy.sh; sourceTree = "<group>"; };
+		4EA2E3952848ED650058A0B7 /* export.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = export.plist; sourceTree = "<group>"; };
+		4EA2E39A28490DD40058A0B7 /* BasicMobileAppAdHocProfile.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = BasicMobileAppAdHocProfile.mobileprovision; sourceTree = "<group>"; };
 		4EB180DB24508FC600A2C045 /* ErrorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLine.swift; sourceTree = "<group>"; };
 		4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
 		4EB386F4244C68F600FC2B17 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
@@ -249,6 +254,8 @@
 				4E05212B24531E4F00C84A9F /* .gitignore */,
 				4E05212724531E0700C84A9F /* README.md */,
 				4E1888E223DDFEB20014638D /* Assets.xcassets */,
+				4EA2E3932848ED5B0058A0B7 /* deploy.sh */,
+				4EA2E3952848ED650058A0B7 /* export.plist */,
 				4E23798D23CE6D910066DE08 /* Products */,
 				4E1888E323DDFEB20014638D /* Preview Content */,
 			);
@@ -336,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				4EFB252827B04FB6008E747C /* BasicMobileAppProfile.mobileprovision */,
+				4EA2E39A28490DD40058A0B7 /* BasicMobileAppAdHocProfile.mobileprovision */,
 				4EFB253127B050D7008E747C /* .well-known */,
 			);
 			path = Security;
@@ -534,6 +542,8 @@
 				4ED03266246FE81E00441C53 /* postlogin.html in Resources */,
 				4E1888ED23DDFEB20014638D /* LaunchScreen.storyboard in Resources */,
 				4E1888EB23DDFEB20014638D /* Assets.xcassets in Resources */,
+				4EA2E3942848ED5B0058A0B7 /* deploy.sh in Resources */,
+				4EA2E3962848ED650058A0B7 /* export.plist in Resources */,
 				4E05212824531E0700C84A9F /* README.md in Resources */,
 				4EF4FDF223F9E269008C3022 /* mobile_config.json in Resources */,
 				4EE4CAB8245336430033B3C5 /* .swiftlint.yml in Resources */,
