@@ -1,10 +1,11 @@
 #!/bin/bash
 
-####################################################################################################
-# A script to build and deploy the release build of the IPA file to the connected emulator or device
-####################################################################################################
+################################################################################################
+# A script to build and deploy the release build of the IPA file to the connected iPhone or iPad
+################################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
+APP_ID='com.authsamples.basicmobileapp'
 
 #
 # Do a clean
@@ -25,8 +26,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Export the archive to an IPA file, which requires my code signing certificate
-# This will only works for me, as described in the export.plist file
+# Export the archive to an IPA file, which works according to the instructions in the export.plist file
 #
 xcodebuild -exportArchive -archivePath build/basicmobileapp.xcarchive -exportPath build -exportOptionsPlist export.plist
 if [ $? -ne 0 ]; then
@@ -34,9 +34,17 @@ if [ $? -ne 0 ]; then
   exit
 fi
 
+
+#
+# The following steps required these tools to be installed as a prerequisite:
+# brew install libimobiledevice  
+# brew install ideviceinstaller  
+#
+
 #
 # Uninstall on an emulator or device if required
 #
+ideviceinstaller --uninstall $APP_ID
 if [ $? -ne 0 ]; then
   echo 'Problem encountered uninstalling the iOS app'
   exit
@@ -45,14 +53,18 @@ fi
 #
 # Deploy to the connected device
 #
+ideviceinstaller --install ./build/Demo.ipa
 if [ $? -ne 0 ]; then
   echo 'Problem encountered deploying the iOS app'
   exit
 fi
+exit
 
 #
-# Then run the app
+# Then run the app, which is not currently working
 #
+DEVICE_UDID=$(ideviceinfo -k UniqueDeviceID)
+idevicedebug run $APP_ID -u $DEVICE_UDID
 if [ $? -ne 0 ]; then
   echo 'Problem encountered running the iOS app'
   exit
