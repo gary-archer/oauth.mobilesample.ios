@@ -1,0 +1,14 @@
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">  
+<plist version="1.0">  
+<dict>  
+  <key>method</key>  
+  <string>ad-hoc</string>
+  <key>provisioningProfiles</key>
+  <dict>
+      <key>com.authsamples.basicmobileapp</key>
+      <string>provisioning profile UUID</string>
+  </dict>
+  <key>signingCertificate</key>
+  <string>certificate hash</string>  
+</dict>  
+</plist> 
