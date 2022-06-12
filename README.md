@@ -18,7 +18,8 @@ The data is returned from an API that authorizes access to resources using domai
 
 Open the app in XCode and ensure that the provisioning profile at `Security/BasicMobileAppProfile` is selected.\
 The run the app on an emulator, to trigger an OpenID Connect login flow using the AppAuth pattern.\
-The login is triggered in an `AsWebAuthenticationSession` window, so that the app cannot access the user's credentials:
+The login runs in the system browser using an `AsWebAuthenticationSession` window.\
+This ensures that the app cannot access the user's credentials:
 
 ![App Login](./doc/login.png)
 
@@ -29,8 +30,9 @@ You can login to the app using my AWS Cognito test account:
 - Password: GuestPassword1
 ```
 
-An HTTPS redirect URI of `https://mobile.authsamples.com/basicmobileapp/oauth/callback` is used to receive the login response via a deep link.\
-An interstitial web page is also used, to ensure that there is a user gesture, so that the return to the app is reliable.\
+An HTTPS redirect URI of `https://mobile.authsamples.com/basicmobileapp/oauth/callback` is used to receive the login response.\
+This requires a deep linking assets file to be registered at https://mobile.authsamples.com/.well-known/apple-app-site-association.\
+An interstitial web page is also used, to ensure that there is a user gesture, so that the return to the app is allowed by the system.\
 You can then test all lifecycle operations, including token refresh, expiry events and logout.
 
 ## Further Information
