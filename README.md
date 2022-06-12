@@ -30,10 +30,11 @@ You can login to the app using my AWS Cognito test account:
 - Password: GuestPassword1
 ```
 
-An HTTPS redirect URI of `https://mobile.authsamples.com/basicmobileapp/oauth/callback` is used to receive the login response.\
-This requires a deep linking assets file to be registered at https://mobile.authsamples.com/.well-known/apple-app-site-association.\
-An interstitial web page is also used, to ensure that there is a user gesture, so that the return to the app is allowed by the system.\
-You can then test all lifecycle operations, including token refresh, expiry events and logout.
+An HTTPS redirect URI of `https://mobile.authsamples.com/basicmobileapp/oauth/callback` is used.\
+Deep links are then used to receive the login response, in the most secure way.\
+A deep linking assets file is registered at https://mobile.authsamples.com/.well-known/apple-app-site-association.\
+An interstitial web page is used to ensure a user gesture after login, so that return to the app is reliable.\
+After login you can test all lifecycle operations, including token refresh, expiry events and logout.
 
 ## Further Information
 
