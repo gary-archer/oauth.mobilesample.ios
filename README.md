@@ -16,7 +16,7 @@
 
 * Xcode and SwiftUI are used to develop an app that connects to a Cloud API and Authorization Server
 
-## Middleware Used
+## Infrastructure
 
 * [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) is used to implement Authorization Code Flow (PKCE) with a Claimed HTTPS Scheme
 * AWS API Gateway is used to host the back end OAuth Secured Web API
