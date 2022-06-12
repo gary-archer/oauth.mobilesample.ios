@@ -7,10 +7,35 @@
 * A mobile sample using OpenID Connect and AppAuth, referenced in my blog at https://authguidance.com
 * **The goal is to implement OpenID Connect mobile logins with best usability and reliability**
 
+## Views
+
+The app is a simple UI with some basic navigation between views, to render fictional resources.\
+The data is returned from an API that authorizes access to resources using domain specific claims.
+
+![App Views](./doc/views.png)
+
+## Local Development Quick Start
+
+Open the app in XCode and ensure that the provisioning profile at `Security/BasicMobileAppProfile` is selected.\
+The run the app on an emulator, to trigger an OpenID Connect login flow using the AppAuth pattern.\
+The login is triggered in an `AsWebAuthenticationSession` window, so that the app cannot access the user's credentials:
+
+![App Login](./doc/login.png)
+
+You can login to the app using my AWS Cognito test account:
+
+```text
+- User: guestuser@mycompany.com
+- Password: GuestPassword1
+```
+
+An HTTPS redirect URI of `https://mobile.authsamples.com/basicmobileapp/oauth/callback` is used to receive the login response via a deep link.\
+An interstitial web page is also used, to ensure that there is a user gesture, so that the return to the app is reliable.\
+You can then test all lifecycle operations, including token refresh, expiry events and logout.
+
 ## Further Information
 
-* See the [iOS Code Sample Overview](https://authguidance.com/2020/02/22/ios-code-sample-overview/) for an overview of behaviour
-* See the [iOS Code Sample Instructions](https://authguidance.com/2020/02/22/how-to-run-the-ios-code-sample/) for details on how to run the code
+Further architecture and non-functional details are described starting in the [iOS Code Sample Overview](https://authguidance.com/2020/02/22/ios-code-sample-overview/) blog post.
 
 ## Programming Languages
 
