@@ -17,7 +17,7 @@ The data is returned from an API that authorizes access to resources using domai
 ## Local Development Quick Start
 
 Open the app in XCode and ensure that the provisioning profile at `Security/BasicMobileAppProfile` is selected.\
-The run the app on an emulator, to trigger an OpenID Connect login flow using the AppAuth pattern.\
+The run the app on a simulator, to trigger an OpenID Connect login flow using the AppAuth pattern.\
 The login runs in the system browser using an `AsWebAuthenticationSession` window.\
 This ensures that the app cannot access the user's credentials:
 
