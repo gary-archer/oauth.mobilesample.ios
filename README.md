@@ -38,7 +38,7 @@ After login you can test all lifecycle operations, including token refresh, expi
 
 ## Further Information
 
-* Further architecture details are described starting in the [iOS Code Sample Overview](https://authguidance.com/2020/02/22/ios-code-sample-overview/) blog post.
+* Further architecture details are described starting in the [iOS Code Sample Overview](https://authguidance.com/2020/02/22/ios-code-sample-overview/) blog post
 * See the [Non Functional Behaviour](https://authguidance.com/2017/10/08/corporate-code-sample-core-behavior/) page for a summary of overall qualities
 
 
