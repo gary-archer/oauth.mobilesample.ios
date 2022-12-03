@@ -152,10 +152,11 @@ class AuthenticatorImpl: Authenticator {
 
         do {
 
-            self.currentOAuthSession = nil
             return try await self.loginResponseHandler.waitForCallback()
 
         } catch {
+
+            self.currentOAuthSession = nil
 
             if self.isCancelledError(error: error) {
                 throw ErrorFactory.fromRedirectCancelled()
@@ -255,10 +256,11 @@ class AuthenticatorImpl: Authenticator {
 
         do {
 
-            self.currentOAuthSession = nil
             return try await self.logoutResponseHandler.waitForCallback()
 
         } catch {
+
+            self.currentOAuthSession = nil
 
             // If the user cancels the logout we throw a special error
             if self.isCancelledError(error: error) {

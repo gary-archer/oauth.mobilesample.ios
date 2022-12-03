@@ -99,17 +99,10 @@ struct AppView: View {
         // Indicate that the ASWebAuthenticationSession window is now topmost and that the view is not
         self.viewRouter.isTopMost = false
 
-        // Use a small delay to work around an intermittent issue if we start the app via a shortcut or deep link
-        // 'The UIWindowScene for the returned window was not in the foreground active state'
-        // https://github.com/openid/AppAuth-iOS/issues/498
-        let secondsToDelay = 0.5
-        DispatchQueue.main.asyncAfter(deadline: .now() + secondsToDelay) {
-
-            self.model.login(
-                viewController: self.getHostingViewController(),
-                onSuccess: onSuccess,
-                onError: onError)
-        }
+        self.model.login(
+            viewController: self.getHostingViewController(),
+            onSuccess: onSuccess,
+            onError: onError)
     }
 
     /*

@@ -132,7 +132,6 @@
 		4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = basicmobileapp.entitlements; sourceTree = "<group>"; };
 		4EA2E3932848ED5B0058A0B7 /* deploy.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = deploy.sh; sourceTree = "<group>"; };
 		4EA2E3952848ED650058A0B7 /* export.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = export.plist; sourceTree = "<group>"; };
-		4EA2E39A28490DD40058A0B7 /* BasicMobileAppAdHocProfile.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = BasicMobileAppAdHocProfile.mobileprovision; sourceTree = "<group>"; };
 		4EB180DB24508FC600A2C045 /* ErrorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLine.swift; sourceTree = "<group>"; };
 		4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
 		4EB386F4244C68F600FC2B17 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
@@ -355,7 +354,6 @@
 			isa = PBXGroup;
 			children = (
 				4EFB252827B04FB6008E747C /* BasicMobileAppProfile.mobileprovision */,
-				4EA2E39A28490DD40058A0B7 /* BasicMobileAppAdHocProfile.mobileprovision */,
 				4EFB253127B050D7008E747C /* .well-known */,
 			);
 			path = Security;

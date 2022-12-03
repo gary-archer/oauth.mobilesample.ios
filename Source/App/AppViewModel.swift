@@ -114,13 +114,17 @@ class AppViewModel: ObservableObject {
                 // Swap the code for tokens on a background thread
                 try await self.authenticator.finishLogin(authResponse: response)
 
-                // Update the view
-                onSuccess()
+                // Update the view on the main thread
+                await MainActor.run {
+                    onSuccess()
+                }
 
             } catch {
 
-                // Report any caught errors
-                onError(ErrorFactory.fromException(error: error))
+                // Report any caught errors on the main thread
+                await MainActor.run {
+                    onError(ErrorFactory.fromException(error: error))
+                }
             }
         }
     }
@@ -147,13 +151,17 @@ class AppViewModel: ObservableObject {
                 // Handle the logout response on a background thread
                 _ = try await self.authenticator.handleLogoutResponse()
 
-                // Update the view
-                onSuccess()
+                // Update the view on the main thread
+                await MainActor.run {
+                    onSuccess()
+                }
 
             } catch {
 
-                // Report any caught errors
-                onError(ErrorFactory.fromException(error: error))
+                // Report any caught errors on the main thread
+                await MainActor.run {
+                    onError(ErrorFactory.fromException(error: error))
+                }
             }
         }
     }

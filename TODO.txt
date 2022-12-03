@@ -1,10 +1,10 @@
-1. Get the app working reliably - currently the return to app does not work
-   Error testing and tracing for API and OAuth requests
+1. Error testing and tracing for API and OAuth requests
+   Fix publishing from main thread
    
-2. API view models, to simplify use of callbacks
-   Perhaps the task should go in the UI class?
-   Compare with Kotlin and React
+   API view models, to simplify use of callbacks
+   Perhaps the task should go in the UI class, followed by a pull of data?
+   Compare with Kotlin and React, and callbacks in desktop app
 
-3. Update backlog with any equivalent Kotlin tasks
-   README updates
+2. Update backlog with any equivalent Kotlin or React tasks
+   README updates to improve wording
    Blog updates
