@@ -1,16 +1,10 @@
-1. Swift Coroutines removed and remove references to coroutines
-   Update AppAuth version
-   View controller warning to fix
-
-2. Get metadata to be called before login and logout redirects
-   Can I do this in an init call when the app starts up?
-
-3. Error testing for APIs and other cases
+1. Get the app working reliably
+   Error testing and tracing for API and OAuth requests
    
-4. API view models, to reduce use of callbacks if possible
+2. API view models, to simplify use of callbacks
    Perhaps the task should go in the UI class?
-   Compare with Kotlin and React also
+   Compare with Kotlin and React and update backlog
 
-5. README updates
+3. README updates
    Blog updates
    Backlog updates

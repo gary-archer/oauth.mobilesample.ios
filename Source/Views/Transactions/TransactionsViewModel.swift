@@ -28,14 +28,13 @@ class TransactionsViewModel: ObservableObject {
         options: ApiRequestOptions,
         onError: @escaping (Bool, UIError) -> Void) {
 
+        self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
         Task {
 
             do {
 
                 // Make the API call on a background thread
-                self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
                 let newData = try await self.apiClient.getCompanyTransactions(companyId: companyId, options: options)
-
                 await MainActor.run {
 
                     // Update published properties on the main thread

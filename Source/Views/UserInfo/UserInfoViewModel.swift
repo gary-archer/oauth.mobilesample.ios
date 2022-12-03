@@ -31,13 +31,13 @@ class UserInfoViewModel: ObservableObject {
             return
         }
 
+        self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
         Task {
 
             do {
 
                 // Make the API call on a background thread
                 let requestOptions = ApiRequestOptions(causeError: options.causeError)
-                self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
                 let newUserInfo = try await self.apiClient.getUserInfo(options: requestOptions)
 
                 await MainActor.run {

@@ -100,6 +100,9 @@ class AppViewModel: ObservableObject {
         Task {
 
             do {
+                // Make sure metadata is loaded
+                try await self.authenticator.getMetadata()
+
                 // Do the login redirect on the main thread
                 try await MainActor.run {
                     try self.authenticator.startLoginRedirect(viewController: viewController)
@@ -133,6 +136,9 @@ class AppViewModel: ObservableObject {
         Task {
 
             do {
+                // Make sure metadata is loaded
+                try await self.authenticator.getMetadata()
+
                 // Do the logout redirect on the main thread
                 try await MainActor.run {
                     try self.authenticator.startLogoutRedirect(viewController: viewController)

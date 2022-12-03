@@ -190,9 +190,11 @@ struct AppView: View {
     }
 
     /*
-     * A helper method to get the scene delegate, on which the login response is received
+     * A helper method to get the root view controller
      */
     private func getHostingViewController() -> UIViewController {
-        return UIApplication.shared.windows.first!.rootViewController!
+
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        return scene!.keyWindow!.rootViewController!
     }
 }
