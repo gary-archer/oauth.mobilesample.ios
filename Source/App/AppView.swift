@@ -72,37 +72,43 @@ struct AppView: View {
             return
         }
 
-        // Reload data after signing in
-        let onSuccess = {
-            self.viewRouter.isTopMost = true
-            self.onReloadData(causeError: false)
-        }
-
-        // Clear error state before trying a login, then handle login errors if required
+        // Clear state and indicate that the ASWebAuthenticationSession window is now topmost
         self.eventBus.sendSetErrorEvent(containingViewName: "main", error: nil)
-        let onError: (UIError) -> Void = { error in
-
-            if error.errorCode == ErrorCodes.redirectCancelled {
-
-                // Move to login required if the login was cancelled
-                self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
-
-            } else {
-
-                // Report other error conditions
-                self.eventBus.sendSetErrorEvent(containingViewName: "main", error: error)
-            }
-
-            self.viewRouter.isTopMost = true
-        }
-
-        // Indicate that the ASWebAuthenticationSession window is now topmost and that the view is not
         self.viewRouter.isTopMost = false
 
-        self.model.login(
-            viewController: self.getHostingViewController(),
-            onSuccess: onSuccess,
-            onError: onError)
+        Task {
+
+            do {
+                // Do the OAuth work
+                try await self.model.login(viewController: self.getHostingViewController())
+
+                // Then update the user interface
+                await MainActor.run {
+                    self.viewRouter.isTopMost = true
+                    self.onReloadData(causeError: false)
+                }
+
+            } catch {
+
+                await MainActor.run {
+
+                    let uiError = ErrorFactory.fromException(error: error)
+
+                    if uiError.errorCode == ErrorCodes.redirectCancelled {
+
+                        // Move to login required if the login was cancelled
+                        self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
+
+                    } else {
+
+                        // Report other error conditions
+                        self.eventBus.sendSetErrorEvent(containingViewName: "main", error: uiError)
+                    }
+
+                    self.viewRouter.isTopMost = true
+                }
+            }
+        }
     }
 
     /*
@@ -115,29 +121,36 @@ struct AppView: View {
             return
         }
 
-        // Do post logout processing on success
-        let onSuccess = {
-            self.postLogout()
-        }
-
-        // If there is a logout error then we silently fail
-        let onError: (UIError) -> Void = { uiError in
-
-            // Output only debug error details
-            if uiError.errorCode != ErrorCodes.redirectCancelled {
-                ErrorConsoleReporter.output(error: uiError)
-            }
-
-            // Move to a post logged out state
-            self.postLogout()
-        }
-
-        // Indicate that we are no longer top most then get the model to run the logout
+        // Indicate that the ASWebAuthenticationSession window is now topmost
         self.viewRouter.isTopMost = false
-        self.model.logout(
-            viewController: self.getHostingViewController(),
-            onSuccess: onSuccess,
-            onError: onError)
+
+        Task {
+
+            do {
+                // Do the OAuth work
+                try await self.model.logout(viewController: self.getHostingViewController())
+
+                // Then update the user interface
+                await MainActor.run {
+                    self.postLogout()
+                }
+
+            } catch {
+
+                await MainActor.run {
+
+                    let uiError = ErrorFactory.fromException(error: error)
+
+                    // Ignore logout errors and just output details to the console
+                    if uiError.errorCode != ErrorCodes.redirectCancelled {
+                        ErrorConsoleReporter.output(error: uiError)
+                    }
+
+                    // Move to a post logged out state
+                    self.postLogout()
+                }
+            }
+        }
     }
 
     /*

@@ -92,78 +92,38 @@ class AppViewModel: ObservableObject {
     /*
      * Do the login redirect
      */
-    func login(
-        viewController: UIViewController,
-        onSuccess: @escaping () -> Void,
-        onError: @escaping (UIError) -> Void) {
+    func login(viewController: UIViewController) async throws {
 
-        Task {
+        // Make sure metadata is loaded
+        try await self.authenticator.getMetadata()
 
-            do {
-                // Make sure metadata is loaded
-                try await self.authenticator.getMetadata()
-
-                // Do the login redirect on the main thread
-                try await MainActor.run {
-                    try self.authenticator.startLoginRedirect(viewController: viewController)
-                }
-
-                // Handle the login response on a background thread
-                let response = try await self.authenticator.handleLoginResponse()
-
-                // Swap the code for tokens on a background thread
-                try await self.authenticator.finishLogin(authResponse: response)
-
-                // Update the view on the main thread
-                await MainActor.run {
-                    onSuccess()
-                }
-
-            } catch {
-
-                // Report any caught errors on the main thread
-                await MainActor.run {
-                    onError(ErrorFactory.fromException(error: error))
-                }
-            }
+        // Do the login redirect on the main thread
+        try await MainActor.run {
+            try self.authenticator.startLoginRedirect(viewController: viewController)
         }
+
+        // Handle the login response on a background thread
+        let response = try await self.authenticator.handleLoginResponse()
+
+        // Swap the code for tokens on a background thread
+        try await self.authenticator.finishLogin(authResponse: response)
     }
 
     /*
      * The logout entry point
      */
-    func logout(
-        viewController: UIViewController,
-        onSuccess: @escaping () -> Void,
-        onError: @escaping (UIError) -> Void) {
+    func logout(viewController: UIViewController) async throws {
 
-        Task {
+        // Make sure metadata is loaded
+        try await self.authenticator.getMetadata()
 
-            do {
-                // Make sure metadata is loaded
-                try await self.authenticator.getMetadata()
-
-                // Do the logout redirect on the main thread
-                try await MainActor.run {
-                    try self.authenticator.startLogoutRedirect(viewController: viewController)
-                }
-
-                // Handle the logout response on a background thread
-                _ = try await self.authenticator.handleLogoutResponse()
-
-                // Update the view on the main thread
-                await MainActor.run {
-                    onSuccess()
-                }
-
-            } catch {
-
-                // Report any caught errors on the main thread
-                await MainActor.run {
-                    onError(ErrorFactory.fromException(error: error))
-                }
-            }
+        // Do the logout redirect on the main thread
+        try await MainActor.run {
+            try self.authenticator.startLogoutRedirect(viewController: viewController)
         }
+
+        // Handle the logout response on a background thread
+        _ = try await self.authenticator.handleLogoutResponse()
     }
 
     /*
