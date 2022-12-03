@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCoroutine
 
 /*
  * Used when multiple UI fragments attempt an action that needs to be synchronised
@@ -9,7 +8,7 @@ class ConcurrentActionHandler {
 
     // Shorthand notation
     private typealias SuccessCallback = () -> Void
-    private typealias ErrorCallback = (UIError) -> Void
+    private typealias ErrorCallback = (Error) -> Void
 
     // Properties
     private var callbacks: [(SuccessCallback, ErrorCallback)]
@@ -26,35 +25,26 @@ class ConcurrentActionHandler {
     /*
      * Run the supplied action the first time only and return a promise to the caller
      */
-    func execute(action: () -> CoFuture<Void>) -> CoFuture<Void> {
-
-        let promise = CoPromise<Void>()
+    func execute(action: () async throws -> Void) async throws {
 
         // Create callbacks through which we'll return the result for this caller
         let onSuccess: SuccessCallback = {
-            promise.success(Void())
         }
-        let onError = { error in
-            promise.fail(error)
+        let onError: ErrorCallback = { _ in
         }
 
         // Add the callback to the collection, in a thread safe manner
-        var performAction = false
         queue.sync {
-
             self.callbacks.append((onSuccess, onError))
-            if self.callbacks.count == 1 {
-                performAction = true
-            }
         }
 
         // Perform the action for the first caller only
-        if performAction {
+        if self.callbacks.count == 1 {
 
             do {
 
                 // Do the work
-                try action().await()
+                try await action()
 
                 // Resolve all promises with the same success result
                 queue.sync {
@@ -79,9 +69,5 @@ class ConcurrentActionHandler {
                 self.callbacks = []
             }
         }
-
-        // Return the promise
-        return promise
     }
-
 }

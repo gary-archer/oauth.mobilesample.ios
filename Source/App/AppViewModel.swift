@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCoroutine
 import SwiftUI
 
 /*
@@ -98,27 +97,27 @@ class AppViewModel: ObservableObject {
         onSuccess: @escaping () -> Void,
         onError: @escaping (UIError) -> Void) {
 
-        // Run async operations in a coroutine
-        DispatchQueue.main.startCoroutine {
+        Task {
 
             do {
-                // Do the login redirect on the UI thread
-                let response = try self.authenticator.startLogin(viewController: viewController)
-                    .await()
-
-                // Do the code exchange on a background thread
-                try DispatchQueue.global().await {
-                    try self.authenticator.finishLogin(authResponse: response)
-                        .await()
+                // Do the login redirect on the main thread
+                try await MainActor.run {
+                    try self.authenticator.startLoginRedirect(viewController: viewController)
                 }
+
+                // Handle the login response on a background thread
+                let response = try await self.authenticator.handleLoginResponse()
+
+                // Swap the code for tokens on a background thread
+                try await self.authenticator.finishLogin(authResponse: response)
 
                 // Update the view
                 onSuccess()
 
             } catch {
 
-                let uiError = ErrorFactory.fromException(error: error)
-                onError(uiError)
+                // Report any caught errors
+                onError(ErrorFactory.fromException(error: error))
             }
         }
     }
@@ -131,22 +130,24 @@ class AppViewModel: ObservableObject {
         onSuccess: @escaping () -> Void,
         onError: @escaping (UIError) -> Void) {
 
-        // Run async operations in a coroutine
-        DispatchQueue.main.startCoroutine {
+        Task {
 
             do {
-                // Ask the authenticator to do the OAuth work
-                try self.authenticator.logout(viewController: viewController)
-                    .await()
+                // Do the logout redirect on the main thread
+                try await MainActor.run {
+                    try self.authenticator.startLogoutRedirect(viewController: viewController)
+                }
 
-                // Do post logout processing
+                // Handle the logout response on a background thread
+                _ = try await self.authenticator.handleLogoutResponse()
+
+                // Update the view
                 onSuccess()
 
             } catch {
 
-                // Do post logout processing
-                let uiError = ErrorFactory.fromException(error: error)
-                onError(uiError)
+                // Report any caught errors
+                onError(ErrorFactory.fromException(error: error))
             }
         }
     }

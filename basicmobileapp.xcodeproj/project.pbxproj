@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28D73D81293BADF000EFA01B /* LoginResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */; };
+		28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */; };
 		4E05212824531E0700C84A9F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4E05212724531E0700C84A9F /* README.md */; };
 		4E05212C24531E4F00C84A9F /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4E05212B24531E4F00C84A9F /* .gitignore */; };
 		4E07E3782497DF1B006B1A5A /* ConcurrentActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E3772497DF1B006B1A5A /* ConcurrentActionHandler.swift */; };
@@ -74,7 +76,6 @@
 		4EFCE6822463273200BD1443 /* ErrorConsoleReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */; };
 		4EFCE6832463273200BD1443 /* ErrorFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6812463273200BD1443 /* ErrorFormatter.swift */; };
 		4EFCE68524632F2600BD1443 /* ApiRequestOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE68424632F2600BD1443 /* ApiRequestOptions.swift */; };
-		4EFE4E8D252FB63A00E18129 /* SwiftCoroutine in Frameworks */ = {isa = PBXBuildFile; productRef = 4EAAF72A252FB0600021D430 /* SwiftCoroutine */; };
 		4EFE4E8E252FB63A00E18129 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */; };
 		4EFE4E8F252FB63A00E18129 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4EAAF736252FB5990021D430 /* AppAuth */; };
 		4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC252451D13D0057C78D /* AppConfiguration.swift */; };
@@ -88,6 +89,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseHandler.swift; sourceTree = "<group>"; };
+		28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResponseHandler.swift; sourceTree = "<group>"; };
 		4E05212724531E0700C84A9F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4E05212B24531E4F00C84A9F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		4E07E3772497DF1B006B1A5A /* ConcurrentActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentActionHandler.swift; sourceTree = "<group>"; };
@@ -178,13 +181,21 @@
 			files = (
 				4EFE4E8F252FB63A00E18129 /* AppAuth in Frameworks */,
 				4EFE4E8E252FB63A00E18129 /* SwiftKeychainWrapper in Frameworks */,
-				4EFE4E8D252FB63A00E18129 /* SwiftCoroutine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28D73D7F293BADD800EFA01B /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */,
+				28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
 		4E1888E123DDFEB20014638D /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +330,7 @@
 		4EB386F3244C68CD00FC2B17 /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
+				28D73D7F293BADD800EFA01B /* Handlers */,
 				4EFCE67924631D4200BD1443 /* Logout */,
 				4EB386F4244C68F600FC2B17 /* Authenticator.swift */,
 				4E126DBA2454854D0065863E /* AuthenticatorImpl.swift */,
@@ -484,7 +496,6 @@
 			);
 			name = basicmobileapp;
 			packageProductDependencies = (
-				4EAAF72A252FB0600021D430 /* SwiftCoroutine */,
 				4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */,
 				4EAAF736252FB5990021D430 /* AppAuth */,
 			);
@@ -518,7 +529,6 @@
 			mainGroup = 4E23798323CE6D900066DE08;
 			packageReferences = (
 				4EAAF727252FB0470021D430 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
-				4EAAF729252FB0600021D430 /* XCRemoteSwiftPackageReference "SwiftCoroutine" */,
 				4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 			);
 			productRefGroup = 4E23798D23CE6D910066DE08 /* Products */;
@@ -598,6 +608,7 @@
 				4E679949246D9723002B7E5F /* DeepLinkHelper.swift in Sources */,
 				4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */,
 				4E78FB1F2781D79C00B4CF08 /* ApiViewNames.swift in Sources */,
+				28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */,
 				4EEF02F9247196B80022E063 /* TransactionItemView.swift in Sources */,
 				4E78FB212781EB8B00B4CF08 /* SetErrorEvent.swift in Sources */,
 				4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */,
@@ -636,6 +647,7 @@
 				4EE6B1DA246479A700B43FF3 /* DeviceSecurity.swift in Sources */,
 				4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */,
 				4E64AF4A272C7BCA0063CEF6 /* NavigatedEvent.swift in Sources */,
+				28D73D81293BADF000EFA01B /* LoginResponseHandler.swift in Sources */,
 				4E670F892722B67D0064EC73 /* ReloadUserInfoEvent.swift in Sources */,
 				4E3F8D432455E9C400EC7EB0 /* AppViewModel.swift in Sources */,
 				4E670F852722A8D70064EC73 /* DataStatusEvent.swift in Sources */,
@@ -853,15 +865,7 @@
 			repositoryURL = "https://github.com/openid/AppAuth-iOS";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
-		4EAAF729252FB0600021D430 /* XCRemoteSwiftPackageReference "SwiftCoroutine" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/belozierov/SwiftCoroutine";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.11;
+				minimumVersion = 1.6.0;
 			};
 		};
 		4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
@@ -875,11 +879,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4EAAF72A252FB0600021D430 /* SwiftCoroutine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4EAAF729252FB0600021D430 /* XCRemoteSwiftPackageReference "SwiftCoroutine" */;
-			productName = SwiftCoroutine;
-		};
 		4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;

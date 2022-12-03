@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftCoroutine
 
 /*
  * The transactions view for a particular company

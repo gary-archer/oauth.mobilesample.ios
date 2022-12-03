@@ -1,6 +1,5 @@
 import Foundation
 import AppAuth
-import SwiftCoroutine
 
 /*
  * The Cognito implementation has some custom vendor specific behaviour
@@ -50,12 +49,5 @@ struct CognitoLogoutManager: LogoutManager {
                 "client_id": self.configuration.clientId,
                 "logout_uri": postLogoutRedirectUri.absoluteString
             ])
-    }
-
-    /*
-     * Treat state mismatch errors as success, since Cognito does not return a state in the response
-     */
-    func isExpectedError(error: Error) -> Bool {
-        return error.localizedDescription.lowercased().contains("state mismatch")
     }
 }

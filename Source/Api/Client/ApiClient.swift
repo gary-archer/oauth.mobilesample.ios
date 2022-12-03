@@ -86,8 +86,7 @@ class ApiClient {
         let requestUrl = apiBaseUrl.appendingPathComponent(path)
 
         // Get the current access token
-        var accessToken = try authenticator.getAccessToken()
-            .await()
+        var accessToken = try await authenticator.getAccessToken()
 
         do {
             // Call the API with the current token
@@ -105,8 +104,7 @@ class ApiClient {
             if uiError.statusCode == 401 {
 
                 // Try to refresh the access token
-                accessToken = try authenticator.refreshAccessToken()
-                    .await()
+                accessToken = try await authenticator.refreshAccessToken()
 
                 do {
 

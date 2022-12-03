@@ -1,6 +1,5 @@
 import Foundation
 import AppAuth
-import SwiftCoroutine
 
 /*
  * A logout implementation based on draft standards
@@ -34,12 +33,5 @@ struct StandardLogoutManager: LogoutManager {
             postLogoutRedirectURL: postLogoutRedirectUri,
             state: "",
             additionalParameters: nil)
-    }
-
-    /*
-     * Treat state mismatch errors as success, since a state is not always returned in the response
-     */
-    func isExpectedError(error: Error) -> Bool {
-        return error.localizedDescription.lowercased().contains("state mismatch")
     }
 }

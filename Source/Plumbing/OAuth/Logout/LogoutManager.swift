@@ -1,6 +1,5 @@
 import Foundation
 import AppAuth
-import SwiftCoroutine
 
 /*
  * An abstraction to deal with differences between providers
@@ -15,7 +14,4 @@ protocol LogoutManager {
         metadata: OIDServiceConfiguration,
         idToken: String,
         postLogoutRedirectUri: URL) -> OIDEndSessionRequest
-
-    // Prevent errors for expected scenarios
-    func isExpectedError(error: Error) -> Bool
 }
