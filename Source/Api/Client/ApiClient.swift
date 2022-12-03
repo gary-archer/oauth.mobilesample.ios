@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCoroutine
 
 /*
  * Plumbing related to making HTTP calls
@@ -24,53 +23,35 @@ class ApiClient {
     /*
      * Make an API call to get user info
      */
-    func getUserInfo(options: ApiRequestOptions?) -> CoFuture<UserInfo> {
+    func getUserInfo(options: ApiRequestOptions?) async throws -> UserInfo {
 
-        let promise = CoPromise<UserInfo>()
+        // Make the API call
+        let data = try await self.callApi(
+            path: "userinfo",
+            method: "GET",
+            jsonData: nil,
+            options: options)
 
-        do {
-            // Make the API call
-            let data = try self.callApi(
-                path: "userinfo",
-                method: "GET",
-                jsonData: nil,
-                options: options).await()
-
-            // Deserialize and return data
-            let userInfo: UserInfo = try self.deserialize(data: data!).await()
-            promise.success(userInfo)
-
-        } catch {
-            promise.fail(error)
-        }
-
-        return promise
+        // Deserialize and return data
+        let userInfo: UserInfo = try self.deserialize(data: data!)
+        return userInfo
     }
 
     /*
      * Make an API call to get companies
      */
-    func getCompanies(options: ApiRequestOptions?) -> CoFuture<[Company]> {
+    func getCompanies(options: ApiRequestOptions?) async throws -> [Company] {
 
-        let promise = CoPromise<[Company]>()
+        // Make the API call
+        let data = try await self.callApi(
+            path: "companies",
+            method: "GET",
+            jsonData: nil,
+            options: options)
 
-        do {
-            // Make the API call
-            let data = try self.callApi(
-                path: "companies",
-                method: "GET",
-                jsonData: nil,
-                options: options).await()
-
-            // Deserialize and return data
-            let companies: [Company] = try self.deserialize(data: data!).await()
-            promise.success(companies)
-
-        } catch {
-            promise.fail(error)
-        }
-
-        return promise
+        // Deserialize and return data
+        let companies: [Company] = try self.deserialize(data: data!)
+        return companies
     }
 
     /*
@@ -78,28 +59,18 @@ class ApiClient {
      */
     func getCompanyTransactions(
         companyId: String,
-        options: ApiRequestOptions?) -> CoFuture<CompanyTransactions> {
+        options: ApiRequestOptions?) async throws -> CompanyTransactions {
 
-        let promise = CoPromise<CompanyTransactions>()
+        // Make the API call
+        let data = try await self.callApi(
+            path: "companies/\(companyId)/transactions",
+            method: "GET",
+            jsonData: nil,
+            options: options)
 
-        do {
-
-            // Make the API call
-            let data = try self.callApi(
-                path: "companies/\(companyId)/transactions",
-                method: "GET",
-                jsonData: nil,
-                options: options).await()
-
-            // Deserialize and return data
-            let transactions: CompanyTransactions = try self.deserialize(data: data!).await()
-            promise.success(transactions)
-
-        } catch {
-            promise.fail(error)
-        }
-
-        return promise
+        // Deserialize and return data
+        let transactions: CompanyTransactions = try self.deserialize(data: data!)
+        return transactions
     }
 
     /*
@@ -109,9 +80,7 @@ class ApiClient {
         path: String,
         method: String,
         jsonData: Data?,
-        options: ApiRequestOptions?) throws -> CoFuture<Data?> {
-
-        let promise = CoPromise<Data?>()
+        options: ApiRequestOptions?) async throws -> Data? {
 
         // Get the full URL
         let requestUrl = apiBaseUrl.appendingPathComponent(path)
@@ -121,17 +90,13 @@ class ApiClient {
             .await()
 
         do {
-            // Call the API
-            let data = try self.callApiWithToken(
+            // Call the API with the current token
+            return try await self.callApiWithToken(
                 requestUrl: requestUrl,
                 method: method,
                 jsonData: nil,
                 accessToken: accessToken,
                 options: options)
-                    .await()
-
-            // Return the result to the caller
-            promise.success(data)
 
         } catch {
 
@@ -146,28 +111,22 @@ class ApiClient {
                 do {
 
                     // Call the API again with the new token
-                    let data = try self.callApiWithToken(
+                    return try await self.callApiWithToken(
                         requestUrl: requestUrl,
                         method: method,
                         jsonData: nil,
                         accessToken: accessToken,
                         options: options)
-                            .await()
-
-                    // Return the result to the caller
-                    promise.success(data)
 
                 } catch {
 
                     // Report errors on the retry
-                    promise.fail(error)
+                    throw error
                 }
             }
 
-            promise.fail(error)
+            throw error
         }
-
-        return promise
     }
 
     /*
@@ -178,9 +137,7 @@ class ApiClient {
         method: String,
         jsonData: Data?,
         accessToken: String,
-        options: ApiRequestOptions?) -> CoFuture<Data?> {
-
-        let promise = CoPromise<Data?>()
+        options: ApiRequestOptions?) async throws -> Data? {
 
         // Create the request object and set parameters
         var request = URLRequest(url: requestUrl, timeoutInterval: 10.0)
@@ -195,41 +152,34 @@ class ApiClient {
             request.httpBody = jsonData
         }
 
-        // Create a data task
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        // Send the request and get the response
+        do {
 
-            // Handle API request errors
-            if let receivedError = error {
-                let uiError = ErrorFactory.fromApiRequestError(
-                    error: receivedError,
-                    url: requestUrl.absoluteString)
-                promise.fail(uiError)
-            }
+            let (data, response) = try await URLSession.shared.data(for: request)
 
             // Get the response as an HTTP response
             guard let httpResponse = response as? HTTPURLResponse else {
-                let uiError = ErrorFactory.fromMessage(
+
+                throw ErrorFactory.fromMessage(
                     message: "Invalid HTTP response object received after an API call")
-                promise.fail(uiError)
-                return
             }
 
             // Check for a successful status
             if httpResponse.statusCode < 200 || httpResponse.statusCode > 299 {
-                let uiError = ErrorFactory.fromApiResponseError(
+
+                throw ErrorFactory.fromApiResponseError(
                     response: httpResponse,
                     data: data,
                     url: requestUrl.absoluteString)
-                promise.fail(uiError)
-                return
             }
 
-            // Return the response data if applicable
-            promise.success(data)
-        }
+            // Return the response data on success
+            return data
 
-        task.resume()
-        return promise
+        } catch {
+
+            throw ErrorFactory.fromApiRequestError(error: error, url: requestUrl.absoluteString)
+        }
     }
 
     /*
@@ -250,18 +200,13 @@ class ApiClient {
     /*
      * A utility to deserialize data into an object
      */
-    private func deserialize<T: Decodable>(data: Data) -> CoFuture<T> {
-
-        let promise = CoPromise<T>()
+    private func deserialize<T: Decodable>(data: Data) throws -> T {
 
         let decoder = JSONDecoder()
         if let result = try? decoder.decode(T.self, from: data) {
-            promise.success(result)
+            return result
         } else {
-            let error = ErrorFactory.fromMessage(message: "Unable to deserialize data")
-            promise.fail(error)
+            throw ErrorFactory.fromMessage(message: "Unable to deserialize data")
         }
-
-        return promise
     }
 }

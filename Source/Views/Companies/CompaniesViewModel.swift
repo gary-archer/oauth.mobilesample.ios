@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCoroutine
 
 /*
  * Data and non UI logic for the companies view
@@ -26,30 +25,31 @@ class CompaniesViewModel: ObservableObject {
      */
     func callApi(options: ApiRequestOptions, onError: @escaping (UIError) -> Void) {
 
-        // Run async operations in a coroutine
-        DispatchQueue.main.startCoroutine {
+        Task {
 
             do {
-                // Initialise for this request
+
+                // Make the API call on a background thread
                 self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
-                var newCompanies = [Company]()
+                let newCompanies = try await self.apiClient.getCompanies(options: options)
 
-                // Make the API call on a background thread and update state on success
-                try DispatchQueue.global().await {
-                    newCompanies = try self.apiClient.getCompanies(options: options).await()
+                await MainActor.run {
+
+                    // Update published properties on the main thread
+                    self.apiViewEvents.onViewLoaded(name: ApiViewNames.Main)
+                    self.companies = newCompanies
                 }
-
-                // Update published properties on the main thread
-                self.apiViewEvents.onViewLoaded(name: ApiViewNames.Main)
-                self.companies = newCompanies
 
             } catch {
 
-                // Update state and report the error
-                self.companies = [Company]()
-                let uiError = ErrorFactory.fromException(error: error)
-                onError(uiError)
-                self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
+                await MainActor.run {
+
+                    // Update state and report the error
+                    self.companies = [Company]()
+                    let uiError = ErrorFactory.fromException(error: error)
+                    onError(uiError)
+                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
+                }
             }
         }
     }

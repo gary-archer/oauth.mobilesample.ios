@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCoroutine
 
 /*
  * Data and non UI logic for the transactions view
@@ -29,39 +28,38 @@ class TransactionsViewModel: ObservableObject {
         options: ApiRequestOptions,
         onError: @escaping (Bool, UIError) -> Void) {
 
-        // Run async operations in a coroutine
-        DispatchQueue.main.startCoroutine {
+        Task {
 
             do {
 
-                // Initialise for this request
-                self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
-                var newData: CompanyTransactions?
-
                 // Make the API call on a background thread
-                try DispatchQueue.global().await {
-                    newData = try self.apiClient.getCompanyTransactions(companyId: companyId, options: options)
-                        .await()
-                }
+                self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
+                let newData = try await self.apiClient.getCompanyTransactions(companyId: companyId, options: options)
 
-                // Update published properties on the main thread
-                self.data = newData
-                self.apiViewEvents.onViewLoaded(name: ApiViewNames.Main)
+                await MainActor.run {
+
+                    // Update published properties on the main thread
+                    self.data = newData
+                    self.apiViewEvents.onViewLoaded(name: ApiViewNames.Main)
+                }
 
             } catch {
 
-                // Handle the error
-                self.data = nil
+                await MainActor.run {
 
-                // If this is a real error we update error state
-                let uiError = ErrorFactory.fromException(error: error)
-                let isExpected = self.handleApiError(error: uiError)
-                if !isExpected {
-                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
+                    // Handle the error
+                    self.data = nil
+
+                    // If this is a real error we update error state
+                    let uiError = ErrorFactory.fromException(error: error)
+                    let isExpected = self.handleApiError(error: uiError)
+                    if !isExpected {
+                        self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
+                    }
+
+                    // Inform the view
+                    onError(isExpected, uiError)
                 }
-
-                // Inform the view
-                onError(isExpected, uiError)
             }
         }
     }

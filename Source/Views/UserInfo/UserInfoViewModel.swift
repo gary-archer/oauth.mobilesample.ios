@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCoroutine
 
 /*
  * Data and non UI logic for the user info view
@@ -32,32 +31,32 @@ class UserInfoViewModel: ObservableObject {
             return
         }
 
-        // Run async operations in a coroutine
-        DispatchQueue.main.startCoroutine {
+        Task {
 
             do {
 
-                // Initialise for this request
-                var newUserInfo: UserInfo?
-                let requestOptions = ApiRequestOptions(causeError: options.causeError)
-
                 // Make the API call on a background thread
+                let requestOptions = ApiRequestOptions(causeError: options.causeError)
                 self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
-                try DispatchQueue.global().await {
-                    newUserInfo = try self.apiClient.getUserInfo(options: requestOptions).await()
-                }
+                let newUserInfo = try await self.apiClient.getUserInfo(options: requestOptions)
 
-                // Update published properties on the main thread
-                self.userInfo = newUserInfo
-                self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
+                await MainActor.run {
+
+                    // Update published properties on the main thread
+                    self.userInfo = newUserInfo
+                    self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
+                }
 
             } catch {
 
-                // Handle errors
-                self.userInfo = nil
-                let uiError = ErrorFactory.fromException(error: error)
-                onError(uiError)
-                self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
+                await MainActor.run {
+
+                    // Handle errors
+                    self.userInfo = nil
+                    let uiError = ErrorFactory.fromException(error: error)
+                    onError(uiError)
+                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
+                }
             }
         }
     }
