@@ -92,7 +92,7 @@ struct TransactionsView: View {
             }
         }
 
-        // Ask the model to call the API
+        // Ask the model to call the API and update its state, which is then published to update the view
         let options = ApiRequestOptions(causeError: causeError)
         self.model.callApi(companyId: self.getCompanyId(), options: options, onError: onError)
     }

@@ -77,7 +77,7 @@ struct CompaniesView: View {
             self.eventBus.sendSetErrorEvent(containingViewName: "companies", error: error)
         }
 
-        // Ask the model to call the API
+        // Ask the model to call the API and update its state, which is then published to update the view
         let options = ApiRequestOptions(causeError: causeError)
         self.model.callApi(options: options, onError: onError)
     }
