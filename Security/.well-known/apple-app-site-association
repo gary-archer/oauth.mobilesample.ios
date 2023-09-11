@@ -1,0 +1,12 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "U3VTCHYEM7.com.authsamples.basicmobileapp",
+                "paths": [ "/basicmobileapp/*" ]
+            }
+        ]
+    }
+}
+
