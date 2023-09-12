@@ -10,13 +10,13 @@
 ## Views
 
 The app is a simple UI with some basic navigation between views, to render fictional resources.\
-The data is returned from an API that authorizes access to resources using domain specific claims.
+The data is returned from an API that authorizes access to resources using claims from multiple sources.
 
 ![App Views](./doc/views.png)
 
 ## Local Development Quick Start
 
-Open the app in XCode, then run the app on a simulator, to trigger an OpenID Connect login flow.\
+Open the app in Xcode, then run the app on a simulator, to trigger an OpenID Connect login flow.\
 The AppAuth pattern is used, where logins use an `AsWebAuthenticationSession` system browser.\
 This ensures that the app cannot access the user's credentials:
 
@@ -38,7 +38,7 @@ After login you can test all lifecycle operations, including token refresh, expi
 ## Further Information
 
 * See the [API Journey - Client Side](https://authguidance.com/api-journey-client-side/) for further information on the app's behaviour
-* Further details about the iOS app are provided, starting in the [Code Sample Overview](https://authguidance.com/ios-code-sample-overview/) blog post
+* Further details specific to the iOS app are provided, starting in the [Code Sample Overview](https://authguidance.com/ios-code-sample-overview/) blog post
 
 ## Programming Languages
 
