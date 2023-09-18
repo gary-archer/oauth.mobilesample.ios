@@ -59,20 +59,21 @@ struct TransactionsView: View {
      */
     private func initialLoad() {
         self.eventBus.sendNavigatedEvent(isMainView: true)
-        self.loadData(causeError: false)
+        self.loadData()
     }
 
     /*
      * Receive events
      */
     private func handleReloadEvent(event: ReloadMainViewEvent) {
-        self.loadData(causeError: event.causeError)
+        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+        self.loadData(options: options)
     }
 
     /*
      * Load our data
      */
-    private func loadData(causeError: Bool) {
+    private func loadData(options: ViewLoadOptions? = nil) {
 
         // Clear error state before calling the API and handle errors afterwards if there is failure
         self.eventBus.sendSetErrorEvent(containingViewName: "transactions", error: nil)
@@ -93,7 +94,6 @@ struct TransactionsView: View {
         }
 
         // Ask the model to call the API and update its state, which is then published to update the view
-        let options = ApiRequestOptions(causeError: causeError)
         self.model.callApi(companyId: self.getCompanyId(), options: options, onError: onError)
     }
 

@@ -32,10 +32,13 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: UserInfoLoadOptions, onError: @escaping (UIError) -> Void) {
+    func callApi(options: ViewLoadOptions? = nil, onError: @escaping (UIError) -> Void) {
+
+        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
+        let forceReload = options?.forceReload ?? false
 
         // Check preconditions
-        if self.isLoaded() && !options.reload {
+        if self.isLoaded() && !forceReload {
             self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
             return
         }
@@ -49,8 +52,7 @@ class UserInfoViewModel: ObservableObject {
                 async let getOAuthUserInfo = try await self.authenticator.getUserInfo()
 
                 // The UI gets domain specific user attributes from its API
-                let requestOptions = ApiRequestOptions(causeError: options.causeError)
-                async let getApiUserInfo = try await self.apiClient.getUserInfo(options: requestOptions)
+                async let getApiUserInfo = try await self.apiClient.getUserInfo(options: fetchOptions)
 
                 // Fire both requests in parallel and wait for both to complete
                 let results = try await ApiRequests(getOAuthUserInfo: getOAuthUserInfo, getApiUserInfo: getApiUserInfo)

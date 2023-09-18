@@ -23,7 +23,9 @@ class CompaniesViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: ApiRequestOptions, onError: @escaping (UIError) -> Void) {
+    func callApi(options: ViewLoadOptions? = nil, onError: @escaping (UIError) -> Void) {
+
+        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
         Task {
@@ -31,7 +33,7 @@ class CompaniesViewModel: ObservableObject {
             do {
 
                 // Make the API call on a background thread
-                let newCompanies = try await self.apiClient.getCompanies(options: options)
+                let newCompanies = try await self.apiClient.getCompanies(options: fetchOptions)
                 await MainActor.run {
 
                     // Update published properties on the main thread

@@ -59,13 +59,14 @@ struct UserInfoView: View {
      * Handle reload events
      */
     private func handleReloadEvent(event: ReloadUserInfoEvent) {
-        self.loadData(reload: true, causeError: event.causeError)
+        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+        self.loadData(options: options)
     }
 
     /*
      * Ask the model to call the API to get data
      */
-    private func loadData(reload: Bool = false, causeError: Bool = false) {
+    private func loadData(options: ViewLoadOptions? = nil) {
 
         // Clear error state before calling the API and handle errors afterwards if there is failure
         self.eventBus.sendSetErrorEvent(containingViewName: "userinfo", error: nil)
@@ -74,7 +75,6 @@ struct UserInfoView: View {
         }
 
         // Ask the model to call the API and update its state, which is then published to update the view
-        let options = UserInfoLoadOptions(reload: reload, causeError: causeError)
         self.model.callApi(options: options, onError: onError)
     }
 }

@@ -55,7 +55,8 @@ struct CompaniesView: View {
      * Receive events
      */
     private func handleReloadData(event: ReloadMainViewEvent) {
-         self.loadData(causeError: event.causeError)
+        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+        self.loadData(options: options)
     }
 
     /*
@@ -63,13 +64,13 @@ struct CompaniesView: View {
      */
     private func initialLoad() {
         self.eventBus.sendNavigatedEvent(isMainView: true)
-        self.loadData(causeError: false)
+        self.loadData()
     }
 
     /*
      * Ask the model to call the API to get data
      */
-    private func loadData(causeError: Bool) {
+    private func loadData(options: ViewLoadOptions? = nil) {
 
         // Clear error state before calling the API and handle errors afterwards if there is failure
         self.eventBus.sendSetErrorEvent(containingViewName: "companies", error: nil)
@@ -78,7 +79,6 @@ struct CompaniesView: View {
         }
 
         // Ask the model to call the API and update its state, which is then published to update the view
-        let options = ApiRequestOptions(causeError: causeError)
         self.model.callApi(options: options, onError: onError)
     }
 }
