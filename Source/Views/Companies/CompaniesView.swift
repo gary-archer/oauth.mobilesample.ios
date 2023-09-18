@@ -73,14 +73,6 @@ struct CompaniesView: View {
      * Ask the model to call the API to get data
      */
     private func loadData(options: ViewLoadOptions? = nil) {
-
-        // Clear error state before calling the API and handle errors afterwards if there is failure
-        self.eventBus.sendSetErrorEvent(containingViewName: "companies", error: nil)
-        let onError: () -> Void = {
-            self.eventBus.sendSetErrorEvent(containingViewName: "companies", error: self.model.error!)
-        }
-
-        // Ask the model to call the API and update its state, which is then published to update the view
-        self.model.callApi(options: options, onError: onError)
+        self.model.callApi(options: options)
     }
 }

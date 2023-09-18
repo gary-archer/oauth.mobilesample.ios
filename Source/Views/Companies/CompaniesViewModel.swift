@@ -24,7 +24,7 @@ class CompaniesViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: ViewLoadOptions? = nil, onError: @escaping () -> Void) {
+    func callApi(options: ViewLoadOptions? = nil) {
 
         let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
 
@@ -51,7 +51,6 @@ class CompaniesViewModel: ObservableObject {
                     // Update state and report the error
                     self.companies = [Company]()
                     self.error = ErrorFactory.fromException(error: error)
-                    onError()
                     self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: self.error!)
                 }
             }
