@@ -33,12 +33,14 @@ struct TransactionsView: View {
                     .background(Colors.lightBlue)
             }
 
-            // Render errors getting data when applicable
-            ErrorSummaryView(
-                containingViewName: "transactions",
-                hyperlinkText: "Problem Encountered in Transactions View",
-                dialogTitle: "Transactions View Error",
-                padding: EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+            // Render errors when applicable
+            if self.model.error != nil {
+                ErrorSummaryView(
+                    error: self.model.error!,
+                    hyperlinkText: "Problem Encountered in Transactions View",
+                    dialogTitle: "Transactions View Error",
+                    padding: EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+            }
 
             // Render the transactions list if we can retrieve it
             if self.model.data != nil && self.model.data!.transactions.count > 0 {
@@ -75,26 +77,17 @@ struct TransactionsView: View {
      */
     private func loadData(options: ViewLoadOptions? = nil) {
 
-        // Clear error state before calling the API and handle errors afterwards if there is failure
-        self.eventBus.sendSetErrorEvent(containingViewName: "transactions", error: nil)
-        let onError: (Bool, UIError) -> Void = { isExpected, error in
+        // For forbidden errors we navigate back to the home view
+        let onForbidden: () -> Void = {
 
-            if isExpected {
-
-                // For expected errors we navigate back to the home view
-                self.viewRouter.changeMainView(
-                    newViewType: CompaniesView.Type.self,
-                    newViewParams: []
-                )
-            } else {
-
-                // Otherwise publish the error details for rendering
-                self.eventBus.sendSetErrorEvent(containingViewName: "transactions", error: error)
-            }
+            self.viewRouter.changeMainView(
+                newViewType: CompaniesView.Type.self,
+                newViewParams: []
+            )
         }
 
         // Ask the model to call the API and update its state, which is then published to update the view
-        self.model.callApi(companyId: self.getCompanyId(), options: options, onError: onError)
+        self.model.callApi(companyId: self.getCompanyId(), options: options, onForbidden: onForbidden)
     }
 
     /*

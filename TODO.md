@@ -1,9 +1,11 @@
-1. Error summary view model to pass in
+1. Store errors in AppViewModel's error object
+   Simplify the AppView code
+   Get rid of set error event
 
-2. Improved view and view model code related to binding and error responses
-   Transactions view and isForbidden naming
+2. Transactions view to handle a change in the company ID
 
 3. View model coordinator interface updates, based on loading and loaded counts
+   Finally keyword missing in Swift so may require some repetition
 
 4. Concurrent hash map for cache
    Concurrent array for token refresh promises
@@ -11,8 +13,11 @@
 5. Fetch client updates for caching
    View model coordinator updates to read cache results
 
-6. Events rename and deletion
+6. Events renaming and deletion
 
-7. Application shell updates
+7. User info tooltip
 
-8. User info tooltip
+OTHER UIs
+---------
+1. Avoid resetting data on every load
+   Perhaps I get away with this in React due to a lack of immediate publishing

@@ -16,6 +16,7 @@ class AppViewModel: ObservableObject {
 
     // State used by the app view
     @Published var isDeviceSecured = false
+    @Published var error: UIError?
 
     // Child view models
     private var companiesViewModel: CompaniesViewModel?

@@ -5,4 +5,3 @@ struct ViewLoadOptions {
     var forceReload: Bool
     var causeError: Bool
 }
-

@@ -13,6 +13,7 @@ class UserInfoViewModel: ObservableObject {
     // Published state
     @Published var oauthUserInfo: OAuthUserInfo?
     @Published var apiUserInfo: ApiUserInfo?
+    @Published var error: UIError?
 
     // A helper to package concurrent API requests
     struct ApiRequests {
@@ -32,7 +33,7 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: ViewLoadOptions? = nil, onError: @escaping (UIError) -> Void) {
+    func callApi(options: ViewLoadOptions? = nil) {
 
         let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
         let forceReload = options?.forceReload ?? false
@@ -44,6 +45,8 @@ class UserInfoViewModel: ObservableObject {
         }
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
+        self.error = nil
+
         Task {
 
             do {
@@ -72,9 +75,8 @@ class UserInfoViewModel: ObservableObject {
                     // Handle errors
                     self.oauthUserInfo = nil
                     self.apiUserInfo = nil
-                    let uiError = ErrorFactory.fromException(error: error)
-                    onError(uiError)
-                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
+                    self.error = ErrorFactory.fromException(error: error)
+                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: self.error!)
                 }
             }
         }

@@ -11,6 +11,7 @@ class TransactionsViewModel: ObservableObject {
 
     // Published state
     @Published var data: CompanyTransactions?
+    @Published var error: UIError?
 
     /*
      * Receive global objects whenever the view is recreated
@@ -26,17 +27,22 @@ class TransactionsViewModel: ObservableObject {
     func callApi(
         companyId: String,
         options: ViewLoadOptions? = nil,
-        onError: @escaping (Bool, UIError) -> Void) {
+        onForbidden: @escaping () -> Void) {
 
         let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
+        self.error = nil
+
         Task {
 
             do {
 
                 // Make the API call on a background thread
-                let newData = try await self.apiClient.getCompanyTransactions(companyId: companyId, options: fetchOptions)
+                let newData = try await self.apiClient.getCompanyTransactions(
+                    companyId: companyId,
+                    options: fetchOptions)
+
                 await MainActor.run {
 
                     // Update published properties on the main thread
@@ -50,16 +56,17 @@ class TransactionsViewModel: ObservableObject {
 
                     // Handle the error
                     self.data = nil
+                    if self.isForbiddenError() {
 
-                    // If this is a real error we update error state
-                    let uiError = ErrorFactory.fromException(error: error)
-                    let isExpected = self.handleApiError(error: uiError)
-                    if !isExpected {
-                        self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
+                        // Inform the view to take an action when access is forbidden
+                        onForbidden()
+
+                    } else {
+
+                        // Otherwise update error state
+                        self.error = ErrorFactory.fromException(error: error)
+                        self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: self.error!)
                     }
-
-                    // Inform the view
-                    onError(isExpected, uiError)
                 }
             }
         }
@@ -68,21 +75,22 @@ class TransactionsViewModel: ObservableObject {
     /*
      * Handle 'business errors' received from the API
      */
-    private func handleApiError(error: UIError) -> Bool {
+    private func isForbiddenError() -> Bool {
 
-        var isExpected = false
+        if self.error != nil {
 
-        if error.statusCode == 404 && error.errorCode == ErrorCodes.companyNotFound {
+            if self.error!.statusCode == 404 && self.error!.errorCode == ErrorCodes.companyNotFound {
 
-            // A deep link could provide an id such as 3, which is unauthorized
-            isExpected = true
+                // A deep link could provide an id such as 3, which is unauthorized
+                return true
 
-        } else if error.statusCode == 400 && error.errorCode == ErrorCodes.invalidCompanyId {
+            } else if self.error!.statusCode == 400 && self.error!.errorCode == ErrorCodes.invalidCompanyId {
 
-            // A deep link could provide an invalid id value such as 'abc'
-            isExpected = true
+                // A deep link could provide an invalid id value such as 'abc'
+                return true
+            }
         }
 
-        return isExpected
+        return false
     }
 }

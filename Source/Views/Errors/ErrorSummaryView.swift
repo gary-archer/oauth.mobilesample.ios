@@ -7,27 +7,24 @@ struct ErrorSummaryView: View {
 
     @EnvironmentObject private var eventBus: EventBus
     @State private var showModal: Bool
-    @State private var error: UIError?
+    @State private var error: UIError
 
-    private let containingViewName: String
     private let hyperlinkText: String
     private let dialogTitle: String
     private let padding: EdgeInsets
 
     init(
-        containingViewName: String,
+        error: UIError,
         hyperlinkText: String,
         dialogTitle: String,
         padding: EdgeInsets
 
     ) {
-        self.containingViewName = containingViewName
+        self.error = error
         self.hyperlinkText = hyperlinkText
         self.dialogTitle = dialogTitle
         self.padding = padding
-
         self.showModal = false
-        self.error = nil
     }
 
     /*
@@ -37,8 +34,8 @@ struct ErrorSummaryView: View {
 
         VStack {
 
-            // Show a hidden control when there is no error to display
-            if self.error == nil {
+            // Show a hidden control when there is an expected error
+            if self.error.errorCode == ErrorCodes.loginRequired {
 
                 Text("")
                     .hidden()
@@ -53,38 +50,13 @@ struct ErrorSummaryView: View {
                     .sheet(isPresented: self.$showModal) {
 
                         // Render the error details view in a modal sheet when the link is clicked
-                        ErrorDetailsView(dialogTitle: self.dialogTitle, error: self.error!)
+                        ErrorDetailsView(dialogTitle: self.dialogTitle, error: self.error)
                     }
                     .onTapGesture {
                         self.showModal = true
                     }
             }
 
-        }.onReceive(self.eventBus.setErrorEventTopic, perform: { data in
-            self.handleSetErrorEvent(event: data)
-        })
-    }
-
-    /*
-     * Receive the event that populates error data and causes it to render
-     */
-    private func handleSetErrorEvent(event: SetErrorEvent) {
-
-        // Ensure that the error is for this instance of the error summary view
-        if self.containingViewName == event.containingViewName {
-
-            if event.error == nil {
-
-                // Clear previous error details before retrying an operation
-                self.error = nil
-
-            } else {
-
-                // Set details unless this is an ignored error, to terminate failed API calls
-                if event.error!.errorCode != ErrorCodes.loginRequired {
-                    self.error = event.error
-                }
-            }
         }
     }
 }

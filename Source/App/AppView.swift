@@ -38,11 +38,13 @@ struct AppView: View {
                 onLogout: self.onLogout)
 
             // Display application level errors when applicable
-            ErrorSummaryView(
-                containingViewName: "main",
-                hyperlinkText: "Application Problem Encountered",
-                dialogTitle: "Application Error",
-                padding: EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
+            if self.model.error != nil {
+                ErrorSummaryView(
+                    error: self.model.error!,
+                    hyperlinkText: "Application Problem Encountered",
+                    dialogTitle: "Application Error",
+                    padding: EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
+            }
 
             // Next display the session view
             SessionView(sessionId: self.model.getSessionId())
