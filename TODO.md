@@ -17,6 +17,9 @@
 
 7. User info tooltip
 
+8. Swift warning improvements to consider
+   Make sure I am using latest dependency versions, eg of swiftlint
+
 OTHER UIs
 ---------
 1. Avoid resetting data on every load
