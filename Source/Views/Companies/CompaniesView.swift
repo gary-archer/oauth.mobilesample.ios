@@ -30,12 +30,14 @@ struct CompaniesView: View {
                 .padding()
                 .background(Colors.lightBlue)
 
-            // Render errors getting data when applicable
-            ErrorSummaryView(
-                containingViewName: "companies",
-                hyperlinkText: "Problem Encountered in Companies View",
-                dialogTitle: "Companies View Error",
-                padding: EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+            // Render errors when applicable
+            if self.model.error != nil {
+                ErrorSummaryView(
+                    error: self.model.error!,
+                    hyperlinkText: "Problem Encountered in Companies View",
+                    dialogTitle: "Companies View Error",
+                    padding: EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+            }
 
             // Render the companies list
             if self.model.companies.count > 0 {
@@ -55,7 +57,8 @@ struct CompaniesView: View {
      * Receive events
      */
     private func handleReloadData(event: ReloadMainViewEvent) {
-         self.loadData(causeError: event.causeError)
+        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+        self.loadData(options: options)
     }
 
     /*
@@ -63,22 +66,13 @@ struct CompaniesView: View {
      */
     private func initialLoad() {
         self.eventBus.sendNavigatedEvent(isMainView: true)
-        self.loadData(causeError: false)
+        self.loadData()
     }
 
     /*
      * Ask the model to call the API to get data
      */
-    private func loadData(causeError: Bool) {
-
-        // Clear error state before calling the API and handle errors afterwards if there is failure
-        self.eventBus.sendSetErrorEvent(containingViewName: "companies", error: nil)
-        let onError: (UIError) -> Void = { error in
-            self.eventBus.sendSetErrorEvent(containingViewName: "companies", error: error)
-        }
-
-        // Ask the model to call the API and update its state, which is then published to update the view
-        let options = ApiRequestOptions(causeError: causeError)
-        self.model.callApi(options: options, onError: onError)
+    private func loadData(options: ViewLoadOptions? = nil) {
+        self.model.callApi(options: options)
     }
 }

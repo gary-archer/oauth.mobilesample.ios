@@ -13,6 +13,7 @@ class UserInfoViewModel: ObservableObject {
     // Published state
     @Published var oauthUserInfo: OAuthUserInfo?
     @Published var apiUserInfo: ApiUserInfo?
+    @Published var error: UIError?
 
     // A helper to package concurrent API requests
     struct ApiRequests {
@@ -32,15 +33,20 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: UserInfoLoadOptions, onError: @escaping (UIError) -> Void) {
+    func callApi(options: ViewLoadOptions? = nil) {
+
+        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
+        let forceReload = options?.forceReload ?? false
 
         // Check preconditions
-        if self.isLoaded() && !options.reload {
+        if self.isLoaded() && !forceReload {
             self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
             return
         }
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
+        self.error = nil
+
         Task {
 
             do {
@@ -49,8 +55,7 @@ class UserInfoViewModel: ObservableObject {
                 async let getOAuthUserInfo = try await self.authenticator.getUserInfo()
 
                 // The UI gets domain specific user attributes from its API
-                let requestOptions = ApiRequestOptions(causeError: options.causeError)
-                async let getApiUserInfo = try await self.apiClient.getUserInfo(options: requestOptions)
+                async let getApiUserInfo = try await self.apiClient.getUserInfo(options: fetchOptions)
 
                 // Fire both requests in parallel and wait for both to complete
                 let results = try await ApiRequests(getOAuthUserInfo: getOAuthUserInfo, getApiUserInfo: getApiUserInfo)
@@ -70,9 +75,8 @@ class UserInfoViewModel: ObservableObject {
                     // Handle errors
                     self.oauthUserInfo = nil
                     self.apiUserInfo = nil
-                    let uiError = ErrorFactory.fromException(error: error)
-                    onError(uiError)
-                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: uiError)
+                    self.error = ErrorFactory.fromException(error: error)
+                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: self.error!)
                 }
             }
         }

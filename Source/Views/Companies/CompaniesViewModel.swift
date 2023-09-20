@@ -11,6 +11,7 @@ class CompaniesViewModel: ObservableObject {
 
     // Published state
     @Published var companies = [Company]()
+    @Published var error: UIError?
 
     /*
      * Receive global objects whenever the view is recreated
@@ -23,15 +24,19 @@ class CompaniesViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: ApiRequestOptions, onError: @escaping (UIError) -> Void) {
+    func callApi(options: ViewLoadOptions? = nil) {
+
+        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
+        self.error = nil
+
         Task {
 
             do {
 
                 // Make the API call on a background thread
-                let newCompanies = try await self.apiClient.getCompanies(options: options)
+                let newCompanies = try await self.apiClient.getCompanies(options: fetchOptions)
                 await MainActor.run {
 
                     // Update published properties on the main thread
@@ -45,9 +50,8 @@ class CompaniesViewModel: ObservableObject {
 
                     // Update state and report the error
                     self.companies = [Company]()
-                    let uiError = ErrorFactory.fromException(error: error)
-                    onError(uiError)
-                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: uiError)
+                    self.error = ErrorFactory.fromException(error: error)
+                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: self.error!)
                 }
             }
         }

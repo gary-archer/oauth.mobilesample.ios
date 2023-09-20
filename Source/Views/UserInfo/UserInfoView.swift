@@ -23,12 +23,14 @@ struct UserInfoView: View {
             Text(self.model.getUserName())
                 .font(.system(size: 14))
 
-            // Render errors getting data when applicable
-            ErrorSummaryView(
-                containingViewName: "userinfo",
-                hyperlinkText: "Problem Encountered",
-                dialogTitle: "User Info Error",
-                padding: EdgeInsets(top: -10, leading: 0, bottom: 0, trailing: 0))
+            // Render errors when applicable
+            if self.model.error != nil {
+                ErrorSummaryView(
+                    error: self.model.error!,
+                    hyperlinkText: "Problem Encountered",
+                    dialogTitle: "User Info Error",
+                    padding: EdgeInsets(top: -10, leading: 0, bottom: 0, trailing: 0))
+            }
         }
         .onReceive(self.eventBus.navigatedTopic, perform: {data in
             self.handleNavigateEvent(event: data)
@@ -59,22 +61,14 @@ struct UserInfoView: View {
      * Handle reload events
      */
     private func handleReloadEvent(event: ReloadUserInfoEvent) {
-        self.loadData(reload: true, causeError: event.causeError)
+        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+        self.loadData(options: options)
     }
 
     /*
      * Ask the model to call the API to get data
      */
-    private func loadData(reload: Bool = false, causeError: Bool = false) {
-
-        // Clear error state before calling the API and handle errors afterwards if there is failure
-        self.eventBus.sendSetErrorEvent(containingViewName: "userinfo", error: nil)
-        let onError: (UIError) -> Void = { error in
-            self.eventBus.sendSetErrorEvent(containingViewName: "userinfo", error: error)
-        }
-
-        // Ask the model to call the API and update its state, which is then published to update the view
-        let options = UserInfoLoadOptions(reload: reload, causeError: causeError)
-        self.model.callApi(options: options, onError: onError)
+    private func loadData(options: ViewLoadOptions? = nil) {
+        self.model.callApi(options: options)
     }
 }
