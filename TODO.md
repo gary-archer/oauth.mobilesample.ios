@@ -1,11 +1,3 @@
-TIDY UP
--------
-1. Transactions view to handle a change in the company ID
-
-2. View model coordinator interface updates, based on loading and loaded counts
-   Finally keyword missing in Swift so may require some repetition
-   Merge code
-
 FETCH CACHE
 -----------
 1. Concurrent hash map
@@ -14,10 +6,13 @@ FETCH CACHE
 2. Fetch client updates
    View model coordinator updates to read cache results
 
-3. Events renaming and deletion
+3. View model coordinator interface updates, based on loading and loaded counts
+   Finally keyword missing in Swift so may require some repetition
+   Merge code
 
-4. Final AppView and AppViewModel consolidation
+4. Events renaming and deletion
 
+5. Final AppView and AppViewModel consolidation
 
 REFINEMENTS
 -----------
@@ -30,3 +25,4 @@ OTHER UIs
 ---------
 1. Avoid resetting data on every load
    Perhaps I get away with this in React due to a lack of immediate publishing
+   Also review usage of companyId in transactions view model, for consistency

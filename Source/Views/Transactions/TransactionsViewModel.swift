@@ -8,6 +8,7 @@ class TransactionsViewModel: ObservableObject {
     // Late created properties
     private let apiClient: ApiClient
     private let apiViewEvents: ApiViewEvents
+    private var companyId: String?
 
     // Published state
     @Published var data: CompanyTransactions?
@@ -19,6 +20,7 @@ class TransactionsViewModel: ObservableObject {
     init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
         self.apiViewEvents = apiViewEvents
         self.apiClient = apiClient
+        self.companyId = nil
     }
 
     /*
@@ -32,6 +34,7 @@ class TransactionsViewModel: ObservableObject {
         let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
+        self.companyId = companyId
         self.error = nil
 
         Task {
