@@ -75,41 +75,28 @@ struct AppView: View {
         }
 
         // Clear state and indicate that the ASWebAuthenticationSession window is now topmost
-        self.eventBus.sendSetErrorEvent(containingViewName: "main", error: nil)
         self.viewRouter.isTopMost = false
 
-        Task {
+        // Handle completion
+        let onComplete: (Bool) -> Void = { isCancelled in
 
-            do {
-                // Do the OAuth work
-                try await self.model.login(viewController: self.getHostingViewController())
+            // Indicate that this view is now topmost
+            self.viewRouter.isTopMost = true
 
-                // Then update the user interface
-                await MainActor.run {
-                    self.viewRouter.isTopMost = true
-                    self.onReloadData(causeError: false)
-                }
+            if isCancelled {
 
-            } catch {
+                // Move to login required if the login was cancelled
+                self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
 
-                await MainActor.run {
+            } else if self.model.error == nil {
 
-                    self.viewRouter.isTopMost = true
-
-                    let uiError = ErrorFactory.fromException(error: error)
-                    if uiError.errorCode == ErrorCodes.redirectCancelled {
-
-                        // Move to login required if the login was cancelled
-                        self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
-
-                    } else {
-
-                        // Report other error conditions
-                        self.eventBus.sendSetErrorEvent(containingViewName: "main", error: uiError)
-                    }
-                }
+                // Handle success
+                self.onReloadData(causeError: false)
             }
         }
+
+        // Trigger the login
+        self.model.login(viewController: self.getHostingViewController(), onComplete: onComplete)
     }
 
     /*
@@ -125,41 +112,14 @@ struct AppView: View {
         // Indicate that the ASWebAuthenticationSession window is now topmost
         self.viewRouter.isTopMost = false
 
-        Task {
-
-            do {
-                // Do the OAuth work
-                try await self.model.logout(viewController: self.getHostingViewController())
-
-                // Move to the logged out state
-                await MainActor.run {
-                    self.postLogout()
-                }
-
-            } catch {
-
-                await MainActor.run {
-
-                    // Report logout errors only to the console, and ignore cancellations
-                    let uiError = ErrorFactory.fromException(error: error)
-                    if uiError.errorCode != ErrorCodes.redirectCancelled {
-                        ErrorConsoleReporter.output(error: uiError)
-                    }
-
-                    // Move to the logged out state
-                    self.postLogout()
-                }
-            }
+        // Handle completion
+        let onComplete: () -> Void = {
+            self.viewRouter.isTopMost = true
+            self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
         }
-    }
 
-    /*
-     * Move to the login required view and update UI state
-     */
-    private func postLogout() {
-
-        self.viewRouter.isTopMost = true
-        self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
+        // Trigger the logout
+        self.model.logout(viewController: self.getHostingViewController(), onComplete: onComplete)
     }
 
     /*

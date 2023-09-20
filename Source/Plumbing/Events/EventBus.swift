@@ -11,7 +11,6 @@ class EventBus: ObservableObject {
     let dataStatusTopic = PassthroughSubject<DataStatusEvent, Never>()
     let reloadMainViewTopic = PassthroughSubject<ReloadMainViewEvent, Never>()
     let reloadUserInfoTopic = PassthroughSubject<ReloadUserInfoEvent, Never>()
-    let setErrorEventTopic = PassthroughSubject<SetErrorEvent, Never>()
 
     /*
      * Publish an event to inform views when the main view has changed
@@ -56,14 +55,5 @@ class EventBus: ObservableObject {
 
         let data = ReloadUserInfoEvent(causeError: causeError)
         reloadUserInfoTopic.send(data)
-    }
-
-    /*
-     * Publish the set error event for the error summary view
-     */
-    func sendSetErrorEvent(containingViewName: String, error: UIError?) {
-
-        let data = SetErrorEvent(containingViewName: containingViewName, error: error)
-        setErrorEventTopic.send(data)
     }
 }

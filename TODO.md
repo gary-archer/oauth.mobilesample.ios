@@ -1,21 +1,10 @@
 TIDY UP
 -------
-1. Store errors in AppViewModel's error object
-   Remove catching from the AppView class
-   Get rid of set error event
+1. Transactions view to handle a change in the company ID
 
-2. Transactions view to handle a change in the company ID
-
-3. View model coordinator interface updates, based on loading and loaded counts
+2. View model coordinator interface updates, based on loading and loaded counts
    Finally keyword missing in Swift so may require some repetition
    Merge code
-
-REFINEMENTS
------------
-1. User info tooltip
-
-2. Swift warning improvements to consider
-   Make sure I am using latest dependency versions, eg of swiftlint
 
 FETCH CACHE
 -----------
@@ -28,6 +17,14 @@ FETCH CACHE
 3. Events renaming and deletion
 
 4. Final AppView and AppViewModel consolidation
+
+
+REFINEMENTS
+-----------
+1. User info tooltip
+
+2. Swift warning improvements to consider
+   Make sure I am using latest dependency versions, eg of swiftlint
 
 OTHER UIs
 ---------
