@@ -1,25 +1,25 @@
+1. UserInfoViewModel to fetch client
+
 FETCH CACHE
 -----------
-1. Concurrent hash map
-   Concurrent array for token refresh promises
-
-2. Fetch client updates
-   View model coordinator updates to read cache results
-
-3. View model coordinator interface updates, based on loading and loaded counts
-   Finally keyword missing in Swift so may require some repetition
-   Merge code
-
-4. Events renaming and deletion
-
-5. Final AppView and AppViewModel consolidation
+1. Create child branch
+   Updates to view models to use viewmodelcoordinator interface and publish results
+   Use publish technique from ApiViewEvents, then delete it and ApiViewLoadState
+   
+2. FetchRequestOptions to complete
+   Fetch client updates to API requests
+   Detailed testing and tracing, then check in and merge to viewmodel branch
 
 REFINEMENTS
 -----------
-1. User info tooltip
+1. Final AppView and AppViewModel consolidation
+   Events renaming and deletion
 
-2. Swift warning improvements to consider
+2. User info tooltip
+
+3. Swift warning improvements
    Make sure I am using latest dependency versions, eg of swiftlint
+   Then merge to master
 
 OTHER UIs
 ---------

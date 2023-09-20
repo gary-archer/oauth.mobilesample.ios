@@ -7,7 +7,7 @@ class UserInfoViewModel: ObservableObject {
 
     // Late initialised properties
     private let authenticator: Authenticator
-    private let apiClient: ApiClient
+    private let fetchClient: FetchClient
     private let apiViewEvents: ApiViewEvents
 
     // Published state
@@ -24,9 +24,9 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(authenticator: Authenticator, apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
+    init(authenticator: Authenticator, fetchClient: FetchClient, apiViewEvents: ApiViewEvents) {
         self.authenticator = authenticator
-        self.apiClient = apiClient
+        self.fetchClient = fetchClient
         self.apiViewEvents = apiViewEvents
     }
 
@@ -35,7 +35,7 @@ class UserInfoViewModel: ObservableObject {
      */
     func callApi(options: ViewLoadOptions? = nil) {
 
-        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
+        let fetchOptions = FetchOptions(causeError: options?.causeError ?? false)
         let forceReload = options?.forceReload ?? false
 
         // Check preconditions
@@ -55,7 +55,7 @@ class UserInfoViewModel: ObservableObject {
                 async let getOAuthUserInfo = try await self.authenticator.getUserInfo()
 
                 // The UI gets domain specific user attributes from its API
-                async let getApiUserInfo = try await self.apiClient.getUserInfo(options: fetchOptions)
+                async let getApiUserInfo = try await self.fetchClient.getUserInfo(options: fetchOptions)
 
                 // Fire both requests in parallel and wait for both to complete
                 let results = try await ApiRequests(getOAuthUserInfo: getOAuthUserInfo, getApiUserInfo: getApiUserInfo)

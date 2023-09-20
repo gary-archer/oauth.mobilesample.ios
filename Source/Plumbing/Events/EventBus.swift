@@ -8,7 +8,7 @@ class EventBus: ObservableObject {
 
     let navigatedTopic = PassthroughSubject<NavigatedEvent, Never>()
     let loginRequiredTopic = PassthroughSubject<LoginRequiredEvent, Never>()
-    let dataStatusTopic = PassthroughSubject<DataStatusEvent, Never>()
+    let viewModelFetchTopic = PassthroughSubject<ViewModelFetchEvent, Never>()
     let reloadMainViewTopic = PassthroughSubject<ReloadMainViewEvent, Never>()
     let reloadUserInfoTopic = PassthroughSubject<ReloadUserInfoEvent, Never>()
 
@@ -31,12 +31,12 @@ class EventBus: ObservableObject {
     }
 
     /*
-     * Publish an event to inform views of the data loading state
+     * Publish an event to inform views of a fetch event
      */
-    func sendDataStatusEvent(loaded: Bool) {
+    func sendViewModelFetchEvent(loaded: Bool) {
 
-        let event = DataStatusEvent(loaded: loaded)
-        dataStatusTopic.send(event)
+        let event = ViewModelFetchEvent(loaded: loaded)
+        viewModelFetchTopic.send(event)
     }
 
     /*

@@ -25,7 +25,7 @@ class ConcurrentActionHandler {
         return try await withCheckedThrowingContinuation { continuation in
 
             // Add the callback to the collection, in a thread safe manner
-            queue.sync {
+            self.queue.sync {
                 self.continuations.append(continuation)
             }
 
@@ -38,7 +38,7 @@ class ConcurrentActionHandler {
                         try await action()
 
                         // Resolve all promises with the same success result
-                        queue.sync {
+                        self.queue.sync {
                             self.continuations.forEach { continuation in
                                 continuation.resume()
                             }
@@ -48,7 +48,7 @@ class ConcurrentActionHandler {
 
                         // Resolve all promises with the same error
                         let uiError = ErrorFactory.fromException(error: error)
-                        queue.sync {
+                        self.queue.sync {
                             self.continuations.forEach { continuation in
                                 continuation.resume(throwing: uiError)
                             }
@@ -56,7 +56,7 @@ class ConcurrentActionHandler {
                     }
 
                     // Reset once complete
-                    queue.sync {
+                    self.queue.sync {
                         self.continuations = []
                     }
                 }

@@ -6,7 +6,7 @@ import Foundation
 class CompaniesViewModel: ObservableObject {
 
     // Late created properties
-    private let apiClient: ApiClient
+    private let fetchClient: FetchClient
     private let apiViewEvents: ApiViewEvents
 
     // Published state
@@ -16,8 +16,8 @@ class CompaniesViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
-        self.apiClient = apiClient
+    init(fetchClient: FetchClient, apiViewEvents: ApiViewEvents) {
+        self.fetchClient = fetchClient
         self.apiViewEvents = apiViewEvents
     }
 
@@ -26,7 +26,7 @@ class CompaniesViewModel: ObservableObject {
      */
     func callApi(options: ViewLoadOptions? = nil) {
 
-        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
+        let fetchOptions = FetchOptions(causeError: options?.causeError ?? false)
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
         self.error = nil
@@ -36,7 +36,7 @@ class CompaniesViewModel: ObservableObject {
             do {
 
                 // Make the API call on a background thread
-                let newCompanies = try await self.apiClient.getCompanies(options: fetchOptions)
+                let newCompanies = try await self.fetchClient.getCompanies(options: fetchOptions)
                 await MainActor.run {
 
                     // Update published properties on the main thread

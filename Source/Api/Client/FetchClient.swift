@@ -3,7 +3,7 @@ import Foundation
 /*
  * Plumbing related to making HTTP calls
  */
-class ApiClient {
+class FetchClient {
 
     private var apiBaseUrl: URL
     private var authenticator: Authenticator
@@ -23,7 +23,7 @@ class ApiClient {
     /*
      * Make an API call to get user info
      */
-    func getUserInfo(options: ApiRequestOptions?) async throws -> ApiUserInfo {
+    func getUserInfo(options: FetchOptions?) async throws -> ApiUserInfo {
 
         // Make the API call
         let data = try await self.callApi(
@@ -39,7 +39,7 @@ class ApiClient {
     /*
      * Make an API call to get companies
      */
-    func getCompanies(options: ApiRequestOptions?) async throws -> [Company] {
+    func getCompanies(options: FetchOptions?) async throws -> [Company] {
 
         // Make the API call
         let data = try await self.callApi(
@@ -57,7 +57,7 @@ class ApiClient {
      */
     func getCompanyTransactions(
         companyId: String,
-        options: ApiRequestOptions?) async throws -> CompanyTransactions {
+        options: FetchOptions?) async throws -> CompanyTransactions {
 
         // Make the API call
         let data = try await self.callApi(
@@ -77,7 +77,7 @@ class ApiClient {
         path: String,
         method: String,
         jsonData: Data?,
-        options: ApiRequestOptions?) async throws -> Data? {
+        options: FetchOptions?) async throws -> Data? {
 
         // Get the full URL
         let requestUrl = apiBaseUrl.appendingPathComponent(path)
@@ -124,7 +124,7 @@ class ApiClient {
         method: String,
         jsonData: Data?,
         accessToken: String,
-        options: ApiRequestOptions?) async throws -> Data? {
+        options: FetchOptions?) async throws -> Data? {
 
         // Create the request object and set parameters
         var request = URLRequest(url: requestUrl, timeoutInterval: 10.0)
@@ -172,7 +172,7 @@ class ApiClient {
     /*
      * Add custom headers to identify the calling UI to the API and enable log lookup
      */
-    private func addCustomHeaders(request: inout URLRequest, options: ApiRequestOptions?) {
+    private func addCustomHeaders(request: inout URLRequest, options: FetchOptions?) {
 
         request.addValue("BasicIosApp", forHTTPHeaderField: "x-mycompany-api-client")
         request.addValue(self.sessionId, forHTTPHeaderField: "x-mycompany-session-id")

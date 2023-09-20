@@ -6,7 +6,7 @@ import Foundation
 class TransactionsViewModel: ObservableObject {
 
     // Late created properties
-    private let apiClient: ApiClient
+    private let fetchClient: FetchClient
     private let apiViewEvents: ApiViewEvents
     private var companyId: String?
 
@@ -17,9 +17,9 @@ class TransactionsViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
+    init(fetchClient: FetchClient, apiViewEvents: ApiViewEvents) {
         self.apiViewEvents = apiViewEvents
-        self.apiClient = apiClient
+        self.fetchClient = fetchClient
         self.companyId = nil
     }
 
@@ -31,7 +31,7 @@ class TransactionsViewModel: ObservableObject {
         options: ViewLoadOptions? = nil,
         onForbidden: @escaping () -> Void) {
 
-        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
+        let fetchOptions = FetchOptions(causeError: options?.causeError ?? false)
 
         self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
         self.companyId = companyId
@@ -42,7 +42,7 @@ class TransactionsViewModel: ObservableObject {
             do {
 
                 // Make the API call on a background thread
-                let newData = try await self.apiClient.getCompanyTransactions(
+                let newData = try await self.fetchClient.getCompanyTransactions(
                     companyId: companyId,
                     options: fetchOptions)
 

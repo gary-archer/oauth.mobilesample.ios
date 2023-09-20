@@ -36,7 +36,7 @@ class ApiViewEvents {
         self.updateLoadState(name: name, loaded: false, failed: false)
 
         if name == ApiViewNames.Main {
-            self.eventBus.sendDataStatusEvent(loaded: false)
+            self.eventBus.sendViewModelFetchEvent(loaded: false)
         }
     }
 
@@ -48,7 +48,7 @@ class ApiViewEvents {
         self.updateLoadState(name: name, loaded: true, failed: false)
 
         if name == ApiViewNames.Main {
-            self.eventBus.sendDataStatusEvent(loaded: true)
+            self.eventBus.sendViewModelFetchEvent(loaded: true)
         }
 
         self.triggerLoginIfRequired()

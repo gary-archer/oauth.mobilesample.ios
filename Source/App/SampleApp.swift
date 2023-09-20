@@ -10,7 +10,7 @@ struct SampleApp: App {
     // Global objects created on startup
     private var configuration: Configuration
     private var authenticator: AuthenticatorImpl
-    private var apiClient: ApiClient
+    private var fetchClient: FetchClient
 
     // The main view model
     private let model: AppViewModel
@@ -34,7 +34,7 @@ struct SampleApp: App {
 
         // Create the API Client from configuration
         // swiftlint:disable:next force_try
-        self.apiClient = try! ApiClient(
+        self.fetchClient = try! FetchClient(
             appConfiguration: self.configuration.app,
             authenticator: self.authenticator)
 
@@ -46,7 +46,7 @@ struct SampleApp: App {
         self.model = AppViewModel(
             configuration: self.configuration,
             authenticator: self.authenticator,
-            apiClient: self.apiClient,
+            fetchClient: self.fetchClient,
             eventBus: self.eventBus)
 
         // Create a router object for managing navigation

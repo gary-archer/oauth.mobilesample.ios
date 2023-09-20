@@ -9,10 +9,12 @@ class AppViewModel: ObservableObject {
     // Global objects supplied during construction
     private let configuration: Configuration
     private let authenticator: Authenticator
-    private let apiClient: ApiClient
+    private let fetchClient: FetchClient
+    private let fetchCache: FetchCache
 
     // Global objects used for view management
     let apiViewEvents: ApiViewEvents
+    let viewModelCoordinator: ViewModelCoordinator
 
     // State used by the app view
     @Published var isDeviceSecured = false
@@ -29,13 +31,17 @@ class AppViewModel: ObservableObject {
     init(
         configuration: Configuration,
         authenticator: Authenticator,
-        apiClient: ApiClient,
+        fetchClient: FetchClient,
         eventBus: EventBus) {
+
+        // Create objects used for coordination
+        self.fetchCache = FetchCache()
+        self.viewModelCoordinator = ViewModelCoordinator(eventBus: eventBus, fetchCache: self.fetchCache)
 
         // Store input
         self.configuration = configuration
         self.authenticator = authenticator
-        self.apiClient = apiClient
+        self.fetchClient = fetchClient
 
         // Create a helper class to notify us about views that make API calls
         // This will enable us to only trigger a login redirect once, after all views have tried to load
@@ -53,7 +59,7 @@ class AppViewModel: ObservableObject {
     func getCompaniesViewModel() -> CompaniesViewModel {
 
         if self.companiesViewModel == nil {
-            self.companiesViewModel = CompaniesViewModel(apiClient: self.apiClient, apiViewEvents: apiViewEvents)
+            self.companiesViewModel = CompaniesViewModel(fetchClient: self.fetchClient, apiViewEvents: apiViewEvents)
         }
 
         return self.companiesViewModel!
@@ -65,7 +71,10 @@ class AppViewModel: ObservableObject {
     func getTransactionsViewModel() -> TransactionsViewModel {
 
         if self.transactionsViewModel == nil {
-            self.transactionsViewModel = TransactionsViewModel(apiClient: self.apiClient, apiViewEvents: apiViewEvents)
+
+            self.transactionsViewModel = TransactionsViewModel(
+                fetchClient: self.fetchClient,
+                apiViewEvents: apiViewEvents)
         }
 
         return self.transactionsViewModel!
@@ -79,7 +88,7 @@ class AppViewModel: ObservableObject {
         if self.userInfoViewModel == nil {
             self.userInfoViewModel = UserInfoViewModel(
                 authenticator: self.authenticator,
-                apiClient: self.apiClient,
+                fetchClient: self.fetchClient,
                 apiViewEvents: apiViewEvents)
         }
 
@@ -90,7 +99,7 @@ class AppViewModel: ObservableObject {
      * Make this value available for the session view
      */
     func getSessionId() -> String {
-        return self.apiClient.sessionId
+        return self.fetchClient.sessionId
     }
 
     /*
