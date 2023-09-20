@@ -1,12 +1,12 @@
-1. UserInfoViewModel to fetch client
-
 FETCH CACHE
 -----------
 1. Create child branch
-   Updates to view models to use viewmodelcoordinator interface and publish results
-   Use publish technique from ApiViewEvents, then delete it and ApiViewLoadState
-   
-2. FetchRequestOptions to complete
+
+2. View models to use viewmodelcoordinator interface
+   Delete ApiViewEvents and ApiViewLoadState
+   Consider where global objects are created and whether this should be in the app view model?
+
+3. FetchRequestOptions to complete
    Fetch client updates to API requests
    Detailed testing and tracing, then check in and merge to viewmodel branch
 
