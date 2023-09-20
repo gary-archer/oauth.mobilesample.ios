@@ -5,35 +5,14 @@ import Foundation
  */
 class FetchClient {
 
-    private var apiBaseUrl: URL
+    private var configuration: Configuration
     private var authenticator: Authenticator
     let sessionId: String
 
-    init(appConfiguration: AppConfiguration, authenticator: Authenticator) throws {
-
-        guard let url = URL(string: appConfiguration.apiBaseUrl) else {
-            throw ErrorFactory.fromMessage(message: "Invalid base URL received in API Client")
-        }
-
-        self.apiBaseUrl = url
+    init(configuration: Configuration, authenticator: Authenticator) throws {
+        self.configuration = configuration
         self.authenticator = authenticator
         self.sessionId = UUID().uuidString
-    }
-
-    /*
-     * Make an API call to get user info
-     */
-    func getUserInfo(options: FetchOptions?) async throws -> ApiUserInfo {
-
-        // Make the API call
-        let data = try await self.callApi(
-            path: "userinfo",
-            method: "GET",
-            jsonData: nil,
-            options: options)
-
-        // Deserialize and return data
-        return try self.deserialize(data: data!)
     }
 
     /*
@@ -41,9 +20,13 @@ class FetchClient {
      */
     func getCompanies(options: FetchOptions?) async throws -> [Company] {
 
+        guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies") else {
+            throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
+        }
+
         // Make the API call
         let data = try await self.callApi(
-            path: "companies",
+            url: url,
             method: "GET",
             jsonData: nil,
             options: options)
@@ -59,9 +42,63 @@ class FetchClient {
         companyId: String,
         options: FetchOptions?) async throws -> CompanyTransactions {
 
+        guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions") else {
+            throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
+        }
+
         // Make the API call
         let data = try await self.callApi(
-            path: "companies/\(companyId)/transactions",
+            url: url,
+            method: "GET",
+            jsonData: nil,
+            options: options)
+
+        // Deserialize and return data
+        return try self.deserialize(data: data!)
+    }
+
+    /*
+     * Download user attributes from the authorization server
+     */
+    func getOAuthUserInfo(options: FetchOptions?) async throws -> OAuthUserInfo {
+
+        guard let url = URL(string: self.configuration.oauth.userInfoEndpoint) else {
+            throw ErrorFactory.fromMessage(message: "Invalid user info endpoint in FetchClient")
+        }
+
+        // Make the API call
+        let data = try await self.callApi(
+            url: url,
+            method: "GET",
+            jsonData: nil,
+            options: options)
+
+        // Return the response data on success
+        var givenName  = ""
+        var familyName = ""
+        if let json = try? JSONSerialization.jsonObject(with: data!, options: []) {
+
+            if let fields = json as? [String: Any] {
+                givenName = fields["given_name"] as? String ?? ""
+                familyName = fields["family_name"] as? String ?? ""
+            }
+        }
+
+        return OAuthUserInfo(givenName: givenName, familyName: familyName)
+    }
+
+    /*
+     * Download user attributes stored in the API's own data
+     */
+    func getApiUserInfo(options: FetchOptions?) async throws -> ApiUserInfo {
+
+        guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/userinfo") else {
+            throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
+        }
+
+        // Make the API call
+        let data = try await self.callApi(
+            url: url,
             method: "GET",
             jsonData: nil,
             options: options)
@@ -74,13 +111,10 @@ class FetchClient {
      * Do the HTTP plumbing to make the remote call
      */
     private func callApi(
-        path: String,
+        url: URL,
         method: String,
         jsonData: Data?,
         options: FetchOptions?) async throws -> Data? {
-
-        // Get the full URL
-        let requestUrl = apiBaseUrl.appendingPathComponent(path)
 
         // Get the current access token
         var accessToken = try await authenticator.getAccessToken()
@@ -88,7 +122,7 @@ class FetchClient {
         do {
             // Call the API with the current token
             return try await self.callApiWithToken(
-                requestUrl: requestUrl,
+                url: url,
                 method: method,
                 jsonData: nil,
                 accessToken: accessToken,
@@ -105,7 +139,7 @@ class FetchClient {
 
                 // Call the API again with the new token
                 return try await self.callApiWithToken(
-                    requestUrl: requestUrl,
+                    url: url,
                     method: method,
                     jsonData: nil,
                     accessToken: accessToken,
@@ -120,14 +154,14 @@ class FetchClient {
      * Make an async request for data
      */
     private func callApiWithToken(
-        requestUrl: URL,
+        url: URL,
         method: String,
         jsonData: Data?,
         accessToken: String,
         options: FetchOptions?) async throws -> Data? {
 
         // Create the request object and set parameters
-        var request = URLRequest(url: requestUrl, timeoutInterval: 10.0)
+        var request = URLRequest(url: url, timeoutInterval: 10.0)
         request.httpMethod = method
 
         // Add the access token to the request and then any custom headers
@@ -157,7 +191,7 @@ class FetchClient {
                 throw ErrorFactory.fromHttpResponseError(
                     response: httpResponse,
                     data: data,
-                    url: requestUrl.absoluteString)
+                    url: url.absoluteString)
             }
 
             // Return the response data on success
@@ -165,7 +199,7 @@ class FetchClient {
 
         } catch {
 
-            throw ErrorFactory.fromApiRequestError(error: error, url: requestUrl.absoluteString)
+            throw ErrorFactory.fromApiRequestError(error: error, url: url.absoluteString)
         }
     }
 

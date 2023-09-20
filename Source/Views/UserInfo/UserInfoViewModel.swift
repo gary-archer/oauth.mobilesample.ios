@@ -6,7 +6,6 @@ import Foundation
 class UserInfoViewModel: ObservableObject {
 
     // Late initialised properties
-    private let authenticator: Authenticator
     private let fetchClient: FetchClient
     private let apiViewEvents: ApiViewEvents
 
@@ -24,8 +23,7 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(authenticator: Authenticator, fetchClient: FetchClient, apiViewEvents: ApiViewEvents) {
-        self.authenticator = authenticator
+    init(fetchClient: FetchClient, apiViewEvents: ApiViewEvents) {
         self.fetchClient = fetchClient
         self.apiViewEvents = apiViewEvents
     }
@@ -52,10 +50,10 @@ class UserInfoViewModel: ObservableObject {
             do {
 
                 // The UI gets OAuth user info from the authorization server
-                async let getOAuthUserInfo = try await self.authenticator.getUserInfo()
+                async let getOAuthUserInfo = try await self.fetchClient.getOAuthUserInfo(options: fetchOptions)
 
                 // The UI gets domain specific user attributes from its API
-                async let getApiUserInfo = try await self.fetchClient.getUserInfo(options: fetchOptions)
+                async let getApiUserInfo = try await self.fetchClient.getApiUserInfo(options: fetchOptions)
 
                 // Fire both requests in parallel and wait for both to complete
                 let results = try await ApiRequests(getOAuthUserInfo: getOAuthUserInfo, getApiUserInfo: getApiUserInfo)

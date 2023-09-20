@@ -34,9 +34,7 @@ struct SampleApp: App {
 
         // Create the API Client from configuration
         // swiftlint:disable:next force_try
-        self.fetchClient = try! FetchClient(
-            appConfiguration: self.configuration.app,
-            authenticator: self.authenticator)
+        self.fetchClient = try! FetchClient(configuration: self.configuration, authenticator: self.authenticator)
 
         // Create environment objects
         self.eventBus = EventBus()

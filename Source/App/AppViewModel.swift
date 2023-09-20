@@ -87,7 +87,6 @@ class AppViewModel: ObservableObject {
 
         if self.userInfoViewModel == nil {
             self.userInfoViewModel = UserInfoViewModel(
-                authenticator: self.authenticator,
                 fetchClient: self.fetchClient,
                 apiViewEvents: apiViewEvents)
         }

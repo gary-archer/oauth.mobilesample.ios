@@ -37,9 +37,6 @@ protocol Authenticator {
     // Resume AppAuth handling when we receive the login or logout response
     func resumeOperation(responseUrl: URL)
 
-    // Get user info from the authorization server
-    func getUserInfo() async throws -> OAuthUserInfo
-
     // For testing, make the access token act expired
     func expireAccessToken()
 

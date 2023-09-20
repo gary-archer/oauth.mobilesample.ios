@@ -321,15 +321,6 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
-     * Call the authorization server's user info endpoint to get the username for display
-     */
-    func getUserInfo() async throws -> OAuthUserInfo {
-
-        let client = UserInfoClient(configuration: self.configuration, authenticator: self)
-        return try await client.getUserInfo()
-    }
-
-    /*
      * A hacky method for testing, to update token storage to make the access token act like it is expired
      */
     func expireAccessToken() {

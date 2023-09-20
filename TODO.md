@@ -13,7 +13,7 @@ FETCH CACHE
 REFINEMENTS
 -----------
 1. Final AppView and AppViewModel consolidation
-   Events renaming and deletion
+   ReloadMain / ReloadUserInfo Events to improve
 
 2. User info tooltip
 
