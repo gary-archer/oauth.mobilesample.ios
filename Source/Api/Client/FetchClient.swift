@@ -1,3 +1,5 @@
+// swiftlint:disable function_body_length
+
 import Foundation
 
 /*
@@ -6,11 +8,17 @@ import Foundation
 class FetchClient {
 
     private var configuration: Configuration
+    private var fetchCache: FetchCache
     private var authenticator: Authenticator
     let sessionId: String
 
-    init(configuration: Configuration, authenticator: Authenticator) throws {
+    init(
+        configuration: Configuration,
+        fetchCache: FetchCache,
+        authenticator: Authenticator) throws {
+
         self.configuration = configuration
+        self.fetchCache = fetchCache
         self.authenticator = authenticator
         self.sessionId = UUID().uuidString
     }
@@ -18,7 +26,7 @@ class FetchClient {
     /*
      * Make an API call to get companies
      */
-    func getCompanies(options: FetchOptions?) async throws -> [Company] {
+    func getCompanies(options: FetchOptions) async throws -> [Company] {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
@@ -40,7 +48,7 @@ class FetchClient {
      */
     func getCompanyTransactions(
         companyId: String,
-        options: FetchOptions?) async throws -> CompanyTransactions {
+        options: FetchOptions) async throws -> CompanyTransactions {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
@@ -60,7 +68,7 @@ class FetchClient {
     /*
      * Download user attributes from the authorization server
      */
-    func getOAuthUserInfo(options: FetchOptions?) async throws -> OAuthUserInfo {
+    func getOAuthUserInfo(options: FetchOptions) async throws -> OAuthUserInfo {
 
         guard let url = URL(string: self.configuration.oauth.userInfoEndpoint) else {
             throw ErrorFactory.fromMessage(message: "Invalid user info endpoint in FetchClient")
@@ -90,7 +98,7 @@ class FetchClient {
     /*
      * Download user attributes stored in the API's own data
      */
-    func getApiUserInfo(options: FetchOptions?) async throws -> ApiUserInfo {
+    func getApiUserInfo(options: FetchOptions) async throws -> ApiUserInfo {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/userinfo") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
@@ -114,39 +122,84 @@ class FetchClient {
         method: String,
         url: URL,
         jsonData: Data?,
-        options: FetchOptions?) async throws -> Data? {
+        options: FetchOptions) async throws -> Data? {
 
-        // Get the current access token
-        var accessToken = try await authenticator.getAccessToken()
+        // Remove the item from the cache when a reload is requested
+        if options.forceReload {
+            self.fetchCache.removeItem(key: options.cacheKey)
+        }
+
+        // Return existing data from the memory cache when available
+        // If a view is created whiles its API requests are in flight, this returns null to the view model
+        var cacheItem = self.fetchCache.getItem(key: options.cacheKey)
+        if cacheItem != nil && cacheItem!.getError() == nil {
+            return cacheItem!.getData()
+        }
+
+        // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
+        cacheItem = self.fetchCache.createItem(key: options.cacheKey)
+
+            // Avoid API requests when there is no access token, and instead trigger a login redirect
+        var accessToken = authenticator.getAccessToken()
+        if accessToken == nil {
+
+            let loginRequiredError = ErrorFactory.fromLoginRequired()
+            cacheItem!.setError(value: loginRequiredError)
+            throw loginRequiredError
+        }
 
         do {
-            // Call the API with the current token
-            return try await self.callApiWithToken(
+            // Call the API and return data on success
+            let data1 = try await self.callApiWithToken(
                 method: method,
                 url: url,
                 jsonData: nil,
-                accessToken: accessToken,
+                accessToken: accessToken!,
                 options: options)
+            cacheItem!.setData(value: data1)
+            return data1
 
         } catch {
 
-            // Handle 401s specially
-            let uiError = ErrorFactory.fromException(error: error)
-            if uiError.statusCode == 401 {
+            let error1 = ErrorFactory.fromException(error: error)
+            if error1.statusCode != 401 {
 
+                // Report errors if this is not a 401
+                cacheItem!.setError(value: error1)
+                throw error1
+            }
+
+            do {
                 // Try to refresh the access token
                 accessToken = try await authenticator.refreshAccessToken()
 
-                // Call the API again with the new token
-                return try await self.callApiWithToken(
+            } catch {
+
+                // Save refresh errors
+                let error2 = ErrorFactory.fromException(error: error)
+                cacheItem!.setError(value: error2)
+                throw error2
+            }
+
+            do {
+
+                // Call the API and return data on success
+                let data3 = try await self.callApiWithToken(
                     method: method,
                     url: url,
                     jsonData: nil,
-                    accessToken: accessToken,
+                    accessToken: accessToken!,
                     options: options)
-            }
+                cacheItem!.setData(value: data3)
+                return data3
 
-            throw error
+            } catch {
+
+                // Save retry errors
+                let error3 = ErrorFactory.fromException(error: error)
+                cacheItem!.setError(value: error3)
+                throw error3
+            }
         }
     }
 
@@ -158,7 +211,7 @@ class FetchClient {
         url: URL,
         jsonData: Data?,
         accessToken: String,
-        options: FetchOptions?) async throws -> Data? {
+        options: FetchOptions) async throws -> Data? {
 
         // Create the request object and set parameters
         var request = URLRequest(url: url, timeoutInterval: 10.0)
@@ -173,7 +226,7 @@ class FetchClient {
         request.addValue(UUID().uuidString, forHTTPHeaderField: "x-mycompany-correlation-id")
 
         // A special header can be sent to thr API to cause a simulated exception
-        if options != nil && options!.causeError {
+        if options.causeError {
             request.addValue("SampleApi", forHTTPHeaderField: "x-mycompany-test-exception")
         }
 

@@ -40,7 +40,10 @@ class AppViewModel: ObservableObject {
 
         // Create the API Client from configuration
         // swiftlint:disable:next force_try
-        self.fetchClient = try! FetchClient(configuration: self.configuration, authenticator: self.authenticator)
+        self.fetchClient = try! FetchClient(
+            configuration: self.configuration,
+            fetchCache: self.fetchCache,
+            authenticator: self.authenticator)
 
         // Update state
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()

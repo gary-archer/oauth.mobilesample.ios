@@ -2,6 +2,7 @@ FETCH CACHE
 -----------
 1. Fetch client updates to API requests
    Return to view models and do optional updates
+   Name the interface method synchronizedRefreshAccessToken
    Trace viewmodel coordinator and check in once working
    Merge to viewmodel branch
 

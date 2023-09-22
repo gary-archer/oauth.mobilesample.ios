@@ -61,20 +61,14 @@ class AuthenticatorImpl: Authenticator {
     /*
      * Try to get an access token, which most commonly involves returning the current one
      */
-    func getAccessToken() async throws -> String {
+    func getAccessToken() -> String? {
 
         let accessToken = self.tokenStorage.loadTokens()?.accessToken
         if accessToken != nil {
-
-            // Use the token from storage if possible
             return accessToken!
-
-        } else {
-
-            // Otherwise try to use the refresh token to get a new access token
-            let refreshedAccessToken = try await self.refreshAccessToken()
-            return refreshedAccessToken
         }
+
+        return nil
     }
 
     /*

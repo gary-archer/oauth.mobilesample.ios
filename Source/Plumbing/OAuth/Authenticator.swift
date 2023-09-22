@@ -11,7 +11,7 @@ protocol Authenticator {
     func getMetadata() async throws
 
     // Return the current access token from secure mobile storage
-    func getAccessToken() async throws -> String
+    func getAccessToken() -> String?
 
     // Refresh the current access token
     func refreshAccessToken() async throws -> String
