@@ -1,8 +1,6 @@
 FETCH CACHE
 -----------
-1. Debug to get back to a basic working state
-
-2. Fetch client updates to API requests
+1. Fetch client updates to API requests
    Detailed testing and tracing, then check in
    Merge to viewmodel branch
 

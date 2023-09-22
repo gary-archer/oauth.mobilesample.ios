@@ -30,7 +30,7 @@ class AppViewModel: ObservableObject {
         // Create objects used for coordination
         self.fetchCache = FetchCache()
         self.viewModelCoordinator = ViewModelCoordinator(eventBus: eventBus, fetchCache: self.fetchCache)
-            
+
         // Load the configuration from the embedded resource
         // swiftlint:disable:next force_try
         self.configuration = try! ConfigurationLoader.load()
@@ -199,7 +199,7 @@ class AppViewModel: ObservableObject {
             self.authenticator.resumeOperation(responseUrl: url)
             return true
         }
-        
+
         return false
     }
 
