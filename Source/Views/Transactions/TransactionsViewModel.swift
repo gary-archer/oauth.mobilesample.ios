@@ -46,14 +46,16 @@ class TransactionsViewModel: ObservableObject {
             do {
 
                 // Make the API call on a background thread
-                let newData = try await self.fetchClient.getCompanyTransactions(
+                let transactions = try await self.fetchClient.getCompanyTransactions(
                     companyId: companyId,
                     options: fetchOptions)
 
                 await MainActor.run {
 
                     // Update state and notify
-                    self.data = newData
+                    if transactions != nil {
+                        self.data = transactions
+                    }
                     self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
                 }
 

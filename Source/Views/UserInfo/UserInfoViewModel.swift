@@ -16,8 +16,8 @@ class UserInfoViewModel: ObservableObject {
 
     // A helper to package concurrent API requests
     struct ApiRequests {
-        var getOAuthUserInfo: OAuthUserInfo
-        var getApiUserInfo: ApiUserInfo
+        var getOAuthUserInfo: OAuthUserInfo?
+        var getApiUserInfo: ApiUserInfo?
     }
 
     /*

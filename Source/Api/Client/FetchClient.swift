@@ -26,7 +26,7 @@ class FetchClient {
     /*
      * Make an API call to get companies
      */
-    func getCompanies(options: FetchOptions) async throws -> [Company] {
+    func getCompanies(options: FetchOptions) async throws -> [Company]? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
@@ -39,6 +39,10 @@ class FetchClient {
             jsonData: nil,
             options: options)
 
+        if data == nil {
+            return nil
+        }
+
         // Deserialize and return data
         return try self.deserialize(data: data!)
     }
@@ -48,7 +52,7 @@ class FetchClient {
      */
     func getCompanyTransactions(
         companyId: String,
-        options: FetchOptions) async throws -> CompanyTransactions {
+        options: FetchOptions) async throws -> CompanyTransactions? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
@@ -61,6 +65,10 @@ class FetchClient {
             jsonData: nil,
             options: options)
 
+        if data == nil {
+            return nil
+        }
+
         // Deserialize and return data
         return try self.deserialize(data: data!)
     }
@@ -68,7 +76,7 @@ class FetchClient {
     /*
      * Download user attributes from the authorization server
      */
-    func getOAuthUserInfo(options: FetchOptions) async throws -> OAuthUserInfo {
+    func getOAuthUserInfo(options: FetchOptions) async throws -> OAuthUserInfo? {
 
         guard let url = URL(string: self.configuration.oauth.userInfoEndpoint) else {
             throw ErrorFactory.fromMessage(message: "Invalid user info endpoint in FetchClient")
@@ -80,6 +88,10 @@ class FetchClient {
             url: url,
             jsonData: nil,
             options: options)
+
+        if data == nil {
+            return nil
+        }
 
         // Return the response data on success
         var givenName  = ""
@@ -98,7 +110,7 @@ class FetchClient {
     /*
      * Download user attributes stored in the API's own data
      */
-    func getApiUserInfo(options: FetchOptions) async throws -> ApiUserInfo {
+    func getApiUserInfo(options: FetchOptions) async throws -> ApiUserInfo? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/userinfo") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
@@ -110,6 +122,10 @@ class FetchClient {
             url: url,
             jsonData: nil,
             options: options)
+
+        if data == nil {
+            return nil
+        }
 
         // Deserialize and return data
         return try self.deserialize(data: data!)
@@ -171,7 +187,7 @@ class FetchClient {
 
             do {
                 // Try to refresh the access token
-                accessToken = try await authenticator.refreshAccessToken()
+                accessToken = try await authenticator.synchronizedRefreshAccessToken()
 
             } catch {
 

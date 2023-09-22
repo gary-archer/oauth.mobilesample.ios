@@ -74,7 +74,7 @@ class AuthenticatorImpl: Authenticator {
     /*
      * Try to refresh an access token
      */
-    func refreshAccessToken() async throws -> String {
+    func synchronizedRefreshAccessToken() async throws -> String {
 
         let refreshToken = self.tokenStorage.loadTokens()?.refreshToken
 

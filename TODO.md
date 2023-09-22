@@ -1,10 +1,7 @@
 FETCH CACHE
 -----------
-1. Fetch client updates to API requests
-   Return to view models and do optional updates
-   Name the interface method synchronizedRefreshAccessToken
-   Trace viewmodel coordinator and check in once working
-   Merge to viewmodel branch
+1. Trace viewmodel coordinator and check in once working
+   Current problems deserializing transactions
 
 FINALIZATION
 ------------
@@ -15,12 +12,12 @@ FINALIZATION
 2. Other final UIs to behave equivalently
    Navigated event needs looking at
    Avoid resetting existing data in view models, except if transaction ID changes or there is an error
-   Use onForbidden consistently perhaps
+   Use onForbidden consistently
    Does React always need to call setState manually - or is there a neater way?
    Inspect use of event bus for responsibilities that should be in the model
    Avoid storing companyID in transactions view when redundant
-   Reload user info on error should be equivalent to others
-   
+   Reload user info on error should be equivalent across apps
+
 REFINEMENTS
 -----------
 1. User info tooltip

@@ -14,7 +14,7 @@ protocol Authenticator {
     func getAccessToken() -> String?
 
     // Refresh the current access token
-    func refreshAccessToken() async throws -> String
+    func synchronizedRefreshAccessToken() async throws -> String
 
     // Start a login redirect on the main thread
     func startLoginRedirect(viewController: UIViewController) throws
