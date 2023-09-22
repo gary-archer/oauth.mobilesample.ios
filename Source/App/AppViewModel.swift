@@ -6,14 +6,11 @@ import SwiftUI
  */
 class AppViewModel: ObservableObject {
 
-    // Global objects supplied during construction
+    // Global objects
     private let configuration: Configuration
     private let authenticator: Authenticator
     private let fetchClient: FetchClient
     private let fetchCache: FetchCache
-
-    // Global objects used for view management
-    let apiViewEvents: ApiViewEvents
     let viewModelCoordinator: ViewModelCoordinator
 
     // State used by the app view
@@ -28,26 +25,25 @@ class AppViewModel: ObservableObject {
     /*
      * Receive globals created by the app class
      */
-    init(
-        configuration: Configuration,
-        authenticator: Authenticator,
-        fetchClient: FetchClient,
-        eventBus: EventBus) {
+    init(eventBus: EventBus) {
 
         // Create objects used for coordination
         self.fetchCache = FetchCache()
         self.viewModelCoordinator = ViewModelCoordinator(eventBus: eventBus, fetchCache: self.fetchCache)
 
-        // Store input
-        self.configuration = configuration
-        self.authenticator = authenticator
-        self.fetchClient = fetchClient
+        // Load the configuration from the embedded resource
+        // swiftlint:disable:next force_try
+        self.configuration = try! ConfigurationLoader.load()
 
-        // Create a helper class to notify us about views that make API calls
-        // This will enable us to only trigger a login redirect once, after all views have tried to load
-        self.apiViewEvents = ApiViewEvents(eventBus: eventBus)
-        self.apiViewEvents.addView(name: ApiViewNames.Main)
-        self.apiViewEvents.addView(name: ApiViewNames.UserInfo)
+        // Create the global authenticator
+        self.authenticator = AuthenticatorImpl(configuration: self.configuration.oauth)
+
+        // Create the API Client from configuration
+        // swiftlint:disable:next force_try
+        self.fetchClient = try! FetchClient(
+            configuration: self.configuration,
+            fetchCache: self.fetchCache,
+            authenticator: self.authenticator)
 
         // Update state
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
@@ -59,7 +55,10 @@ class AppViewModel: ObservableObject {
     func getCompaniesViewModel() -> CompaniesViewModel {
 
         if self.companiesViewModel == nil {
-            self.companiesViewModel = CompaniesViewModel(fetchClient: self.fetchClient, apiViewEvents: apiViewEvents)
+
+            self.companiesViewModel = CompaniesViewModel(
+                fetchClient: self.fetchClient,
+                viewModelCoordinator: self.viewModelCoordinator)
         }
 
         return self.companiesViewModel!
@@ -74,7 +73,7 @@ class AppViewModel: ObservableObject {
 
             self.transactionsViewModel = TransactionsViewModel(
                 fetchClient: self.fetchClient,
-                apiViewEvents: apiViewEvents)
+                viewModelCoordinator: self.viewModelCoordinator)
         }
 
         return self.transactionsViewModel!
@@ -88,7 +87,7 @@ class AppViewModel: ObservableObject {
         if self.userInfoViewModel == nil {
             self.userInfoViewModel = UserInfoViewModel(
                 fetchClient: self.fetchClient,
-                apiViewEvents: apiViewEvents)
+                viewModelCoordinator: self.viewModelCoordinator)
         }
 
         return self.userInfoViewModel!
@@ -197,8 +196,14 @@ class AppViewModel: ObservableObject {
     /*
      * Resume login / logout responses when the app receives a claimed HTTPS scheme notification
      */
-    func resumeOAuthResponse(url: URL) {
-        self.authenticator.resumeOperation(responseUrl: url)
+    func resumeOAuthResponse(url: URL) -> Bool {
+
+        if self.authenticator.isOAuthResponse(responseUrl: url) {
+            self.authenticator.resumeOperation(responseUrl: url)
+            return true
+        }
+
+        return false
     }
 
     /*

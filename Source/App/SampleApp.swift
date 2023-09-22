@@ -7,11 +7,6 @@ import SwiftUI
 @main
 struct SampleApp: App {
 
-    // Global objects created on startup
-    private var configuration: Configuration
-    private var authenticator: AuthenticatorImpl
-    private var fetchClient: FetchClient
-
     // The main view model
     private let model: AppViewModel
 
@@ -25,27 +20,12 @@ struct SampleApp: App {
      */
     init() {
 
-        // Load the configuration from the embedded resource
-        // swiftlint:disable:next force_try
-        self.configuration = try! ConfigurationLoader.load()
-
-        // Create the global authenticator
-        self.authenticator = AuthenticatorImpl(configuration: self.configuration.oauth)
-
-        // Create the API Client from configuration
-        // swiftlint:disable:next force_try
-        self.fetchClient = try! FetchClient(configuration: self.configuration, authenticator: self.authenticator)
-
         // Create environment objects
         self.eventBus = EventBus()
         self.orientationHandler = OrientationHandler()
 
-        // Create global view models
-        self.model = AppViewModel(
-            configuration: self.configuration,
-            authenticator: self.authenticator,
-            fetchClient: self.fetchClient,
-            eventBus: self.eventBus)
+        // Create the main view model
+        self.model = AppViewModel(eventBus: self.eventBus)
 
         // Create a router object for managing navigation
         self.viewRouter = ViewRouter(eventBus: self.eventBus)
@@ -62,13 +42,8 @@ struct SampleApp: App {
                 .environmentObject(self.eventBus)
                 .onOpenURL(perform: { url in
 
-                    // All deep link notifications are received here
-                    if self.authenticator.isOAuthResponse(responseUrl: url) {
-
-                        // Handle claimed HTTPS scheme OAuth responses in the model
-                        self.model.resumeOAuthResponse(url: url)
-
-                    } else {
+                    // All deep link notifications are received here, so handle login responses when required
+                    if !self.model.resumeOAuthResponse(url: url) {
 
                         // Handle other deep links in the view router, including those that start the app
                         self.viewRouter.handleDeepLink(url: url)

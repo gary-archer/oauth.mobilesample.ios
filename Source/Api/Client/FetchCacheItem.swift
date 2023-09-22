@@ -1,10 +1,12 @@
+import Foundation
+
 /*
  * A cache item represents an API response
  */
 class FetchCacheItem {
 
     var isLoading: Bool
-    private var data: Any?
+    private var data: Data?
     private var error: UIError?
 
     init() {
@@ -13,11 +15,11 @@ class FetchCacheItem {
         self.error = nil
     }
 
-    func getData() -> Any? {
+    func getData() -> Data? {
         return self.data
     }
 
-    func setData(value: Any?) {
+    func setData(value: Data?) {
         self.data = value
         self.isLoading = false
     }

@@ -1,23 +1,28 @@
 FETCH CACHE
 -----------
-1. Create child branch
+1. Trace viewmodel coordinator and check in once working
+   Current problems deserializing transactions
 
-2. View models to use viewmodelcoordinator interface
-   Delete ApiViewEvents and ApiViewLoadState
-   Consider where global objects are created and whether this should be in the app view model?
+FINALIZATION
+------------
+1. Final AppView and AppViewModel consolidation
+   ReloadMain / ReloadUserInfo Events to improve
+   Review navigated event
 
-3. FetchRequestOptions to complete
-   Fetch client updates to API requests
-   Detailed testing and tracing, then check in and merge to viewmodel branch
+2. Other final UIs to behave equivalently
+   Navigated event needs looking at
+   Avoid resetting existing data in view models, except if transaction ID changes or there is an error
+   Use onForbidden consistently
+   Does React always need to call setState manually - or is there a neater way?
+   Inspect use of event bus for responsibilities that should be in the model
+   Avoid storing companyID in transactions view when redundant
+   Reload user info on error should be equivalent across apps
 
 REFINEMENTS
 -----------
-1. Final AppView and AppViewModel consolidation
-   ReloadMain / ReloadUserInfo Events to improve
+1. User info tooltip
 
-2. User info tooltip
-
-3. Swift warning improvements
+2. Swift warning improvements
    Make sure I am using latest dependency versions, eg of swiftlint
    Then merge to master
 
