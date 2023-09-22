@@ -26,8 +26,8 @@ class FetchClient {
 
         // Make the API call
         let data = try await self.callApi(
-            url: url,
             method: "GET",
+            url: url,
             jsonData: nil,
             options: options)
 
@@ -48,8 +48,8 @@ class FetchClient {
 
         // Make the API call
         let data = try await self.callApi(
-            url: url,
             method: "GET",
+            url: url,
             jsonData: nil,
             options: options)
 
@@ -68,8 +68,8 @@ class FetchClient {
 
         // Make the API call
         let data = try await self.callApi(
-            url: url,
             method: "GET",
+            url: url,
             jsonData: nil,
             options: options)
 
@@ -98,8 +98,8 @@ class FetchClient {
 
         // Make the API call
         let data = try await self.callApi(
-            url: url,
             method: "GET",
+            url: url,
             jsonData: nil,
             options: options)
 
@@ -111,8 +111,8 @@ class FetchClient {
      * Do the HTTP plumbing to make the remote call
      */
     private func callApi(
-        url: URL,
         method: String,
+        url: URL,
         jsonData: Data?,
         options: FetchOptions?) async throws -> Data? {
 
@@ -122,8 +122,8 @@ class FetchClient {
         do {
             // Call the API with the current token
             return try await self.callApiWithToken(
-                url: url,
                 method: method,
+                url: url,
                 jsonData: nil,
                 accessToken: accessToken,
                 options: options)
@@ -139,8 +139,8 @@ class FetchClient {
 
                 // Call the API again with the new token
                 return try await self.callApiWithToken(
-                    url: url,
                     method: method,
+                    url: url,
                     jsonData: nil,
                     accessToken: accessToken,
                     options: options)
@@ -154,8 +154,8 @@ class FetchClient {
      * Make an async request for data
      */
     private func callApiWithToken(
-        url: URL,
         method: String,
+        url: URL,
         jsonData: Data?,
         accessToken: String,
         options: FetchOptions?) async throws -> Data? {
@@ -166,7 +166,16 @@ class FetchClient {
 
         // Add the access token to the request and then any custom headers
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        self.addCustomHeaders(request: &request, options: options)
+
+        // Add other headers
+        request.addValue("BasicIosApp", forHTTPHeaderField: "x-mycompany-api-client")
+        request.addValue(self.sessionId, forHTTPHeaderField: "x-mycompany-session-id")
+        request.addValue(UUID().uuidString, forHTTPHeaderField: "x-mycompany-correlation-id")
+
+        // A special header can be sent to thr API to cause a simulated exception
+        if options != nil && options!.causeError {
+            request.addValue("SampleApi", forHTTPHeaderField: "x-mycompany-test-exception")
+        }
 
         // Add body data if supplied
         if jsonData != nil {
@@ -199,22 +208,7 @@ class FetchClient {
 
         } catch {
 
-            throw ErrorFactory.fromApiRequestError(error: error, url: url.absoluteString)
-        }
-    }
-
-    /*
-     * Add custom headers to identify the calling UI to the API and enable log lookup
-     */
-    private func addCustomHeaders(request: inout URLRequest, options: FetchOptions?) {
-
-        request.addValue("BasicIosApp", forHTTPHeaderField: "x-mycompany-api-client")
-        request.addValue(self.sessionId, forHTTPHeaderField: "x-mycompany-session-id")
-        request.addValue(UUID().uuidString, forHTTPHeaderField: "x-mycompany-correlation-id")
-
-        // A special header can be sent to thr API to cause a simulated exception
-        if options != nil && options!.causeError {
-            request.addValue("SampleApi", forHTTPHeaderField: "x-mycompany-test-exception")
+            throw ErrorFactory.fromHttpRequestError(error: error, url: url.absoluteString)
         }
     }
 

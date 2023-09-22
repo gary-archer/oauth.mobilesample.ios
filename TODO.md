@@ -1,11 +1,12 @@
 FETCH CACHE
 -----------
 1. Fetch client updates to API requests
-   Detailed testing and tracing, then check in
+   Return to view models and do optional updates
+   Trace viewmodel coordinator and check in once working
    Merge to viewmodel branch
 
 FINALIZATION
------------
+------------
 1. Final AppView and AppViewModel consolidation
    ReloadMain / ReloadUserInfo Events to improve
    Review navigated event
