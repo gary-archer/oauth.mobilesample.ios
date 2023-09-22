@@ -7,7 +7,7 @@ class UserInfoViewModel: ObservableObject {
 
     // Late initialised properties
     private let fetchClient: FetchClient
-    private let apiViewEvents: ApiViewEvents
+    private let viewModelCoordinator: ViewModelCoordinator
 
     // Published state
     @Published var oauthUserInfo: OAuthUserInfo?
@@ -23,9 +23,9 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(fetchClient: FetchClient, apiViewEvents: ApiViewEvents) {
+    init(fetchClient: FetchClient, viewModelCoordinator: ViewModelCoordinator) {
         self.fetchClient = fetchClient
-        self.apiViewEvents = apiViewEvents
+        self.viewModelCoordinator = viewModelCoordinator
     }
 
     /*
@@ -33,16 +33,18 @@ class UserInfoViewModel: ObservableObject {
      */
     func callApi(options: ViewLoadOptions? = nil) {
 
-        let fetchOptions = FetchOptions(causeError: options?.causeError ?? false)
-        let forceReload = options?.forceReload ?? false
+        let oauthFetchOptions = FetchOptions(
+            cacheKey: FetchCacheKeys.OAuthUserInfo,
+            forceReload: options?.forceReload ?? false,
+            causeError: options?.causeError ?? false)
 
-        // Check preconditions
-        if self.isLoaded() && !forceReload {
-            self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
-            return
-        }
+        let apiFetchOptions = FetchOptions(
+            cacheKey: FetchCacheKeys.ApiUserInfo,
+            forceReload: options?.forceReload ?? false,
+            causeError: options?.causeError ?? false)
 
-        self.apiViewEvents.onViewLoading(name: ApiViewNames.UserInfo)
+        // Initialise state
+        self.viewModelCoordinator.onUserInfoViewModelLoading()
         self.error = nil
 
         Task {
@@ -50,31 +52,35 @@ class UserInfoViewModel: ObservableObject {
             do {
 
                 // The UI gets OAuth user info from the authorization server
-                async let getOAuthUserInfo = try await self.fetchClient.getOAuthUserInfo(options: fetchOptions)
+                async let getOAuthUserInfo = try await self.fetchClient.getOAuthUserInfo(options: oauthFetchOptions)
 
                 // The UI gets domain specific user attributes from its API
-                async let getApiUserInfo = try await self.fetchClient.getApiUserInfo(options: fetchOptions)
+                async let getApiUserInfo = try await self.fetchClient.getApiUserInfo(options: apiFetchOptions)
 
                 // Fire both requests in parallel and wait for both to complete
                 let results = try await ApiRequests(getOAuthUserInfo: getOAuthUserInfo, getApiUserInfo: getApiUserInfo)
 
                 await MainActor.run {
 
-                    // Update published properties on the main thread
-                    self.oauthUserInfo = results.getOAuthUserInfo
-                    self.apiUserInfo = results.getApiUserInfo
-                    self.apiViewEvents.onViewLoaded(name: ApiViewNames.UserInfo)
+                    // Update state and notify
+                    if results.getOAuthUserInfo != nil {
+                        self.oauthUserInfo = results.getOAuthUserInfo
+                    }
+                    if results.getApiUserInfo != nil {
+                        self.apiUserInfo = results.getApiUserInfo
+                    }
+                    self.viewModelCoordinator.onUserInfoViewModelLoaded()
                 }
 
             } catch {
 
                 await MainActor.run {
 
-                    // Handle errors
+                    // Update state and notify
                     self.oauthUserInfo = nil
                     self.apiUserInfo = nil
                     self.error = ErrorFactory.fromException(error: error)
-                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.UserInfo, error: self.error!)
+                    self.viewModelCoordinator.onUserInfoViewModelLoaded()
                 }
             }
         }

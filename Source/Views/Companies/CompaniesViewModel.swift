@@ -5,20 +5,18 @@ import Foundation
  */
 class CompaniesViewModel: ObservableObject {
 
-    // Late created properties
     private let fetchClient: FetchClient
-    private let apiViewEvents: ApiViewEvents
+    private let viewModelCoordinator: ViewModelCoordinator
 
-    // Published state
     @Published var companies = [Company]()
     @Published var error: UIError?
 
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(fetchClient: FetchClient, apiViewEvents: ApiViewEvents) {
+    init(fetchClient: FetchClient, viewModelCoordinator: ViewModelCoordinator) {
         self.fetchClient = fetchClient
-        self.apiViewEvents = apiViewEvents
+        self.viewModelCoordinator = viewModelCoordinator
     }
 
     /*
@@ -26,9 +24,13 @@ class CompaniesViewModel: ObservableObject {
      */
     func callApi(options: ViewLoadOptions? = nil) {
 
-        let fetchOptions = FetchOptions(causeError: options?.causeError ?? false)
+        let fetchOptions = FetchOptions(
+            cacheKey: FetchCacheKeys.Companies,
+            forceReload: options?.forceReload ?? false,
+            causeError: options?.causeError ?? false)
 
-        self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
+        // Initialise state
+        self.viewModelCoordinator.onMainViewModelLoading()
         self.error = nil
 
         Task {
@@ -39,19 +41,19 @@ class CompaniesViewModel: ObservableObject {
                 let newCompanies = try await self.fetchClient.getCompanies(options: fetchOptions)
                 await MainActor.run {
 
-                    // Update published properties on the main thread
-                    self.apiViewEvents.onViewLoaded(name: ApiViewNames.Main)
+                    // Update state and notify
                     self.companies = newCompanies
+                    self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
                 }
 
             } catch {
 
                 await MainActor.run {
 
-                    // Update state and report the error
+                    // Update state and notify
                     self.companies = [Company]()
                     self.error = ErrorFactory.fromException(error: error)
-                    self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: self.error!)
+                    self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
                 }
             }
         }

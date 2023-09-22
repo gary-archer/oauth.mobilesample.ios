@@ -145,7 +145,7 @@ struct AppView: View {
         }
 
         // Also reload user info if we are recovering from an error
-        if model.apiViewEvents.hasLoadError() {
+        if model.viewModelCoordinator.hasErrors() {
             self.eventBus.sendReloadUserInfoEvent(causeError: false)
         }
     }
@@ -155,7 +155,7 @@ struct AppView: View {
      */
     private func onReloadData(causeError: Bool) {
 
-        self.model.apiViewEvents.clearState()
+        self.model.viewModelCoordinator.resetState()
         self.eventBus.sendReloadMainViewEvent(causeError: causeError)
         self.eventBus.sendReloadUserInfoEvent(causeError: causeError)
     }
