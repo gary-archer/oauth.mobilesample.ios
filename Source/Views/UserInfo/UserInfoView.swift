@@ -35,8 +35,8 @@ struct UserInfoView: View {
         .onReceive(self.eventBus.navigatedTopic, perform: {data in
             self.handleNavigateEvent(event: data)
         })
-        .onReceive(self.eventBus.reloadUserInfoTopic, perform: { data in
-            self.handleReloadEvent(event: data)
+        .onReceive(self.eventBus.reloadDataTopic, perform: { data in
+            self.handleReloadDataEvent(event: data)
         })
     }
 
@@ -60,7 +60,7 @@ struct UserInfoView: View {
     /*
      * Handle reload events
      */
-    private func handleReloadEvent(event: ReloadUserInfoEvent) {
+    private func handleReloadDataEvent(event: ReloadDataEvent) {
         let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
         self.loadData(options: options)
     }

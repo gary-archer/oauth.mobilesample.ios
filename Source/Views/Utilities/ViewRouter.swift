@@ -45,15 +45,8 @@ class ViewRouter: ObservableObject {
             // https://github.com/onmyway133/blog/issues/468
             let isSameView = oldViewType == self.currentViewType
             if isSameView {
-                self.eventBus.sendReloadMainViewEvent(causeError: false)
+                self.eventBus.sendReloadDataEvent(causeError: false)
             }
         }
-    }
-
-    /*
-     * If in the home view the home button behaves differently
-     */
-    func isInHomeView() -> Bool {
-        return self.currentViewType == CompaniesView.Type.self
     }
 }

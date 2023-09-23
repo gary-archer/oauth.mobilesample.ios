@@ -1,18 +1,19 @@
 iOS
 ---
-1. Home, Reload and Events
-   ReloadMain / ReloadUserInfo Events to remove, along with navigated event
-   Includes reload user info after companies view error
-   Inspect use of event bus for responsibilities that should be in the model
+1. Fix hasLoadErrors
    Test on device
-   Merge once reliable
+   Merge to master
 
-2. Text as resources
+2. Reget code and do text as resources in line with Android
 
 3. User info tooltip
-   
+
+ANDROID
+-------
+1. Use onForbidden
+
 REACT
-------------
+-----
 1. Transaction ID change, and avoid resetting data otherwise
 
 2. Use onForbidden

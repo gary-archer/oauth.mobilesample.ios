@@ -38,8 +38,8 @@ struct SampleApp: App {
 
         WindowGroup {
             AppView(model: self.model, viewRouter: self.viewRouter)
-                .environmentObject(self.orientationHandler)
                 .environmentObject(self.eventBus)
+                .environmentObject(self.orientationHandler)
                 .onOpenURL(perform: { url in
 
                     // All deep link notifications are received here, so handle login responses when required

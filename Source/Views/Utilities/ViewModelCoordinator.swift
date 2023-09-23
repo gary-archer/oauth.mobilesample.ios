@@ -67,7 +67,7 @@ class ViewModelCoordinator {
      * Return true if there were any load errors
      */
     func hasErrors() -> Bool {
-        return false
+        return !self.getLoadErrors().isEmpty
     }
 
     /*

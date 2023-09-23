@@ -11,6 +11,7 @@ class AppViewModel: ObservableObject {
     private let authenticator: Authenticator
     private let fetchClient: FetchClient
     private let fetchCache: FetchCache
+    let eventBus: EventBus
     let viewModelCoordinator: ViewModelCoordinator
 
     // State used by the app view
@@ -29,6 +30,7 @@ class AppViewModel: ObservableObject {
 
         // Create objects used for coordination
         self.fetchCache = FetchCache()
+        self.eventBus = eventBus
         self.viewModelCoordinator = ViewModelCoordinator(eventBus: eventBus, fetchCache: self.fetchCache)
 
         // Load the configuration from the embedded resource
@@ -47,57 +49,6 @@ class AppViewModel: ObservableObject {
 
         // Update state
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-    }
-
-    /*
-     * Create the companies view model on first use
-     */
-    func getCompaniesViewModel() -> CompaniesViewModel {
-
-        if self.companiesViewModel == nil {
-
-            self.companiesViewModel = CompaniesViewModel(
-                fetchClient: self.fetchClient,
-                viewModelCoordinator: self.viewModelCoordinator)
-        }
-
-        return self.companiesViewModel!
-    }
-
-    /*
-     * Create the transactions view model on first use
-     */
-    func getTransactionsViewModel() -> TransactionsViewModel {
-
-        if self.transactionsViewModel == nil {
-
-            self.transactionsViewModel = TransactionsViewModel(
-                fetchClient: self.fetchClient,
-                viewModelCoordinator: self.viewModelCoordinator)
-        }
-
-        return self.transactionsViewModel!
-    }
-
-    /*
-     * Create the user info view model on first use
-     */
-    func getUserInfoViewModel() -> UserInfoViewModel {
-
-        if self.userInfoViewModel == nil {
-            self.userInfoViewModel = UserInfoViewModel(
-                fetchClient: self.fetchClient,
-                viewModelCoordinator: self.viewModelCoordinator)
-        }
-
-        return self.userInfoViewModel!
-    }
-
-    /*
-     * Make this value available for the session view
-     */
-    func getSessionId() -> String {
-        return self.fetchClient.sessionId
     }
 
     /*
@@ -215,6 +166,26 @@ class AppViewModel: ObservableObject {
     }
 
     /*
+     * Publish an event to update all active views
+     */
+    func reloadData(causeError: Bool) {
+
+        self.error = nil
+        self.viewModelCoordinator.resetState()
+        self.eventBus.sendReloadDataEvent(causeError: causeError)
+    }
+
+    /*
+     * If there were load errors, try to reload data when Home is pressed
+     */
+    func reloadDataOnError() {
+
+        if self.error != nil || self.viewModelCoordinator.hasErrors() {
+            self.reloadData(causeError: false)
+        }
+    }
+
+    /*
      * Make the access token act expired
      */
     func onExpireAccessToken() {
@@ -226,5 +197,56 @@ class AppViewModel: ObservableObject {
      */
     func onExpireRefreshToken() {
         self.authenticator.expireRefreshToken()
+    }
+
+    /*
+     * Create the companies view model on first use
+     */
+    func getCompaniesViewModel() -> CompaniesViewModel {
+
+        if self.companiesViewModel == nil {
+
+            self.companiesViewModel = CompaniesViewModel(
+                fetchClient: self.fetchClient,
+                viewModelCoordinator: self.viewModelCoordinator)
+        }
+
+        return self.companiesViewModel!
+    }
+
+    /*
+     * Create the transactions view model on first use
+     */
+    func getTransactionsViewModel() -> TransactionsViewModel {
+
+        if self.transactionsViewModel == nil {
+
+            self.transactionsViewModel = TransactionsViewModel(
+                fetchClient: self.fetchClient,
+                viewModelCoordinator: self.viewModelCoordinator)
+        }
+
+        return self.transactionsViewModel!
+    }
+
+    /*
+     * Create the user info view model on first use
+     */
+    func getUserInfoViewModel() -> UserInfoViewModel {
+
+        if self.userInfoViewModel == nil {
+            self.userInfoViewModel = UserInfoViewModel(
+                fetchClient: self.fetchClient,
+                viewModelCoordinator: self.viewModelCoordinator)
+        }
+
+        return self.userInfoViewModel!
+    }
+
+    /*
+     * Make this value available for the session view
+     */
+    func getSessionId() -> String {
+        return self.fetchClient.sessionId
     }
 }

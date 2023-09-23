@@ -6,7 +6,6 @@ import AppAuth
  */
 struct AppView: View {
 
-    @EnvironmentObject private var eventBus: EventBus
     @EnvironmentObject private var orientationHandler: OrientationHandler
     @ObservedObject private var model: AppViewModel
     private var viewRouter: ViewRouter
@@ -59,7 +58,7 @@ struct AppView: View {
             // Fill up the remainder of the view if needed
             Spacer()
         }
-        .onReceive(self.eventBus.loginRequiredTopic, perform: {_ in
+        .onReceive(self.model.eventBus.loginRequiredTopic, perform: {_ in
             self.onLoginRequired()
         })
     }
@@ -127,26 +126,31 @@ struct AppView: View {
      */
     private func onHome() {
 
+        // Reset the main view's own error if required
+        self.model.error = nil
+
         // If we have prompted the user to open settings and click home, update the model's flag
         if !self.model.isDeviceSecured {
             self.model.isDeviceSecured = DeviceSecurity.isDeviceSecured()
         }
 
-        // Move to the home view
-        if self.viewRouter.isInHomeView() {
+        // Inspect the current view
+        if self.viewRouter.currentViewType == LoginRequiredView.Type.self {
 
-            // Force the main view to reload
-            self.eventBus.sendReloadMainViewEvent(causeError: false)
+            // Start a new login when logged out
+            self.onLoginRequired()
 
         } else {
 
-            // Otherwise move to the home view
-            self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
-        }
+            // Otherwise move to the home view unless already there
+            if self.viewRouter.currentViewType != CompaniesView.Type.self {
+                self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
+            }
 
-        // Also reload user info if we are recovering from an error
-        if model.viewModelCoordinator.hasErrors() {
-            self.eventBus.sendReloadUserInfoEvent(causeError: false)
+            // Also reload user info if we are recovering from an error
+            if model.viewModelCoordinator.hasErrors() {
+                self.model.reloadDataOnError()
+            }
         }
     }
 
@@ -154,10 +158,7 @@ struct AppView: View {
      * Handle reload data button clicks by publishing reload events
      */
     private func onReloadData(causeError: Bool) {
-
-        self.model.viewModelCoordinator.resetState()
-        self.eventBus.sendReloadMainViewEvent(causeError: causeError)
-        self.eventBus.sendReloadUserInfoEvent(causeError: causeError)
+        self.model.reloadData(causeError: causeError)
     }
 
     /*
