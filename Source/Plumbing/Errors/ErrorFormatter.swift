@@ -1,5 +1,3 @@
-// swiftlint:disable function_body_length
-
 import Foundation
 import SwiftUI
 
@@ -11,6 +9,7 @@ struct ErrorFormatter {
     /*
      * Return a collection of error lines from the error object
      */
+    // swiftlint:disable function_body_length
     static func getErrorLines(error: UIError) -> [ErrorLine] {
 
         var result: [ErrorLine] = []
@@ -144,6 +143,7 @@ struct ErrorFormatter {
 
         return result
     }
+    // swiftlint:enable function_body_length
 
     /*
      * Try to get the stack trace into a format for output

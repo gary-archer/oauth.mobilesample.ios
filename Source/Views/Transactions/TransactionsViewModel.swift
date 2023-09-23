@@ -32,7 +32,7 @@ class TransactionsViewModel: ObservableObject {
         onForbidden: @escaping () -> Void) {
 
         let fetchOptions = FetchOptions(
-            cacheKey: FetchCacheKeys.Companies,
+            cacheKey: "\(FetchCacheKeys.Transactions)-\(companyId)",
             forceReload: options?.forceReload ?? false,
             causeError: options?.causeError ?? false)
 

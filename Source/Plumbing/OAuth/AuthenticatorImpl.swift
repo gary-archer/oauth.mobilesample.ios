@@ -1,11 +1,10 @@
 // swiftlint:disable file_length
-// swiftlint:disable type_body_length
-
 import AppAuth
 
 /*
  * The class for handling OAuth operations
  */
+// swiftlint:disable type_body_length
 class AuthenticatorImpl: Authenticator {
 
     private let configuration: OAuthConfiguration
@@ -505,3 +504,4 @@ class AuthenticatorImpl: Authenticator {
         }
     }
 }
+// swiftlint:enable type_body_length

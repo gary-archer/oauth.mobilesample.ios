@@ -1,5 +1,3 @@
-// swiftlint:disable function_body_length
-
 import Foundation
 
 /*
@@ -134,6 +132,7 @@ class FetchClient {
     /*
      * Do the HTTP plumbing to make the remote call
      */
+    // swiftlint:disable function_body_length
     private func callApi(
         method: String,
         url: URL,
@@ -218,6 +217,7 @@ class FetchClient {
             }
         }
     }
+    // swiftlint:enable function_body_length
 
     /*
      * Make an async request for data

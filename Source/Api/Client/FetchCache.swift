@@ -40,7 +40,10 @@ class FetchCache {
      * Get an item if it exists
      */
     func getItem(key: String) -> FetchCacheItem? {
-        return self.cache[key]
+
+        self.queue.sync {
+            return self.cache[key]
+        }
     }
 
     /*
