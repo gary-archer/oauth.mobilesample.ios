@@ -31,7 +31,7 @@ struct AppView: View {
             // Next display the header buttons view
             HeaderButtonsView(
                 onHome: self.onHome,
-                onReloadData: self.onReloadData,
+                onReloadData: self.model.reloadData,
                 onExpireAccessToken: self.model.onExpireAccessToken,
                 onExpireRefreshToken: self.model.onExpireRefreshToken,
                 onLogout: self.onLogout)
@@ -89,8 +89,16 @@ struct AppView: View {
 
             } else if self.model.error == nil {
 
-                // Handle success
-                self.onReloadData(causeError: false)
+                if self.viewRouter.currentViewType == LoginRequiredView.Type.self {
+
+                    // If the user logs in from the login required view, then navigate home
+                    self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
+
+                } else {
+
+                    // Otherwise we are handling expiry so reload data in the current view
+                    self.model.reloadData(causeError: false)
+                }
             }
         }
 
@@ -152,13 +160,6 @@ struct AppView: View {
                 self.model.reloadDataOnError()
             }
         }
-    }
-
-    /*
-     * Handle reload data button clicks by publishing reload events
-     */
-    private func onReloadData(causeError: Bool) {
-        self.model.reloadData(causeError: causeError)
     }
 
     /*
