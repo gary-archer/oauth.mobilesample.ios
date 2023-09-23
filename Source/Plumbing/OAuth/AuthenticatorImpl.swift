@@ -1,11 +1,10 @@
 // swiftlint:disable file_length
-// swiftlint:disable type_body_length
-
 import AppAuth
 
 /*
  * The class for handling OAuth operations
  */
+// swiftlint:disable type_body_length
 class AuthenticatorImpl: Authenticator {
 
     private let configuration: OAuthConfiguration
@@ -61,26 +60,20 @@ class AuthenticatorImpl: Authenticator {
     /*
      * Try to get an access token, which most commonly involves returning the current one
      */
-    func getAccessToken() async throws -> String {
+    func getAccessToken() -> String? {
 
         let accessToken = self.tokenStorage.loadTokens()?.accessToken
         if accessToken != nil {
-
-            // Use the token from storage if possible
             return accessToken!
-
-        } else {
-
-            // Otherwise try to use the refresh token to get a new access token
-            let refreshedAccessToken = try await self.refreshAccessToken()
-            return refreshedAccessToken
         }
+
+        return nil
     }
 
     /*
      * Try to refresh an access token
      */
-    func refreshAccessToken() async throws -> String {
+    func synchronizedRefreshAccessToken() async throws -> String {
 
         let refreshToken = self.tokenStorage.loadTokens()?.refreshToken
 
@@ -321,15 +314,6 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
-     * Call the authorization server's user info endpoint to get the username for display
-     */
-    func getUserInfo() async throws -> OAuthUserInfo {
-
-        let client = UserInfoClient(configuration: self.configuration, authenticator: self)
-        return try await client.getUserInfo()
-    }
-
-    /*
      * A hacky method for testing, to update token storage to make the access token act like it is expired
      */
     func expireAccessToken() {
@@ -520,3 +504,4 @@ class AuthenticatorImpl: Authenticator {
         }
     }
 }
+// swiftlint:enable type_body_length

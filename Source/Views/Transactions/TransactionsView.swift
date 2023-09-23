@@ -51,7 +51,7 @@ struct TransactionsView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.eventBus.reloadMainViewTopic, perform: { data in
+        .onReceive(self.eventBus.reloadDataTopic, perform: { data in
             self.handleReloadEvent(event: data)
         })
     }
@@ -67,7 +67,7 @@ struct TransactionsView: View {
     /*
      * Receive events
      */
-    private func handleReloadEvent(event: ReloadMainViewEvent) {
+    private func handleReloadEvent(event: ReloadDataEvent) {
         let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
         self.loadData(options: options)
     }

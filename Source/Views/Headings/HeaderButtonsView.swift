@@ -81,15 +81,15 @@ struct HeaderButtonsView: View {
                 .buttonStyle(sessionButtonStyle)
                 .disabled(sessionButtonsDisabled)
         }
-        .onReceive(self.eventBus.dataStatusTopic, perform: {data in
-            self.handleDataStatusEvent(event: data)
+        .onReceive(self.eventBus.viewModelFetchTopic, perform: {data in
+            self.handleViewModelFetchEvent(event: data)
         })
     }
 
     /*
      * Update our state when the event is received
      */
-    private func handleDataStatusEvent(event: DataStatusEvent) {
+    private func handleViewModelFetchEvent(event: ViewModelFetchEvent) {
         self.hasData = event.loaded
     }
 

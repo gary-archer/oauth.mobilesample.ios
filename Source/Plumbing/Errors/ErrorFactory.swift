@@ -160,9 +160,9 @@ struct ErrorFactory {
     }
 
     /*
-     * Get details when we cannot connect to the API
+     * Get details when we cannot connect to an HTTP endpoint
      */
-    static func fromApiRequestError(error: Error, url: String) -> UIError {
+    static func fromHttpRequestError(error: Error, url: String) -> UIError {
 
         // Already handled
         var uiError = error as? UIError

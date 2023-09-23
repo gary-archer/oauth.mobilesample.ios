@@ -6,13 +6,13 @@ import SwiftUI
  */
 class AppViewModel: ObservableObject {
 
-    // Global objects supplied during construction
+    // Global objects
     private let configuration: Configuration
     private let authenticator: Authenticator
-    private let apiClient: ApiClient
-
-    // Global objects used for view management
-    let apiViewEvents: ApiViewEvents
+    private let fetchClient: FetchClient
+    private let fetchCache: FetchCache
+    let eventBus: EventBus
+    let viewModelCoordinator: ViewModelCoordinator
 
     // State used by the app view
     @Published var isDeviceSecured = false
@@ -26,71 +26,29 @@ class AppViewModel: ObservableObject {
     /*
      * Receive globals created by the app class
      */
-    init(
-        configuration: Configuration,
-        authenticator: Authenticator,
-        apiClient: ApiClient,
-        eventBus: EventBus) {
+    init(eventBus: EventBus) {
 
-        // Store input
-        self.configuration = configuration
-        self.authenticator = authenticator
-        self.apiClient = apiClient
+        // Create objects used for coordination
+        self.fetchCache = FetchCache()
+        self.eventBus = eventBus
+        self.viewModelCoordinator = ViewModelCoordinator(eventBus: eventBus, fetchCache: self.fetchCache)
 
-        // Create a helper class to notify us about views that make API calls
-        // This will enable us to only trigger a login redirect once, after all views have tried to load
-        self.apiViewEvents = ApiViewEvents(eventBus: eventBus)
-        self.apiViewEvents.addView(name: ApiViewNames.Main)
-        self.apiViewEvents.addView(name: ApiViewNames.UserInfo)
+        // Load the configuration from the embedded resource
+        // swiftlint:disable:next force_try
+        self.configuration = try! ConfigurationLoader.load()
+
+        // Create the global authenticator
+        self.authenticator = AuthenticatorImpl(configuration: self.configuration.oauth)
+
+        // Create the API Client from configuration
+        // swiftlint:disable:next force_try
+        self.fetchClient = try! FetchClient(
+            configuration: self.configuration,
+            fetchCache: self.fetchCache,
+            authenticator: self.authenticator)
 
         // Update state
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
-    }
-
-    /*
-     * Create the companies view model on first use
-     */
-    func getCompaniesViewModel() -> CompaniesViewModel {
-
-        if self.companiesViewModel == nil {
-            self.companiesViewModel = CompaniesViewModel(apiClient: self.apiClient, apiViewEvents: apiViewEvents)
-        }
-
-        return self.companiesViewModel!
-    }
-
-    /*
-     * Create the transactions view model on first use
-     */
-    func getTransactionsViewModel() -> TransactionsViewModel {
-
-        if self.transactionsViewModel == nil {
-            self.transactionsViewModel = TransactionsViewModel(apiClient: self.apiClient, apiViewEvents: apiViewEvents)
-        }
-
-        return self.transactionsViewModel!
-    }
-
-    /*
-     * Create the user info view model on first use
-     */
-    func getUserInfoViewModel() -> UserInfoViewModel {
-
-        if self.userInfoViewModel == nil {
-            self.userInfoViewModel = UserInfoViewModel(
-                authenticator: self.authenticator,
-                apiClient: self.apiClient,
-                apiViewEvents: apiViewEvents)
-        }
-
-        return self.userInfoViewModel!
-    }
-
-    /*
-     * Make this value available for the session view
-     */
-    func getSessionId() -> String {
-        return self.apiClient.sessionId
     }
 
     /*
@@ -101,6 +59,10 @@ class AppViewModel: ObservableObject {
         Task {
 
             do {
+
+                // Clear state
+                self.fetchCache.clearAll()
+                self.viewModelCoordinator.resetState()
 
                 // Make sure metadata is loaded
                 try await self.authenticator.getMetadata()
@@ -152,6 +114,10 @@ class AppViewModel: ObservableObject {
 
             do {
 
+                // Clear state
+                self.fetchCache.clearAll()
+                self.viewModelCoordinator.resetState()
+
                 // Make sure metadata is loaded
                 try await self.authenticator.getMetadata()
 
@@ -189,8 +155,34 @@ class AppViewModel: ObservableObject {
     /*
      * Resume login / logout responses when the app receives a claimed HTTPS scheme notification
      */
-    func resumeOAuthResponse(url: URL) {
-        self.authenticator.resumeOperation(responseUrl: url)
+    func resumeOAuthResponse(url: URL) -> Bool {
+
+        if self.authenticator.isOAuthResponse(responseUrl: url) {
+            self.authenticator.resumeOperation(responseUrl: url)
+            return true
+        }
+
+        return false
+    }
+
+    /*
+     * Publish an event to update all active views
+     */
+    func reloadData(causeError: Bool) {
+
+        self.error = nil
+        self.viewModelCoordinator.resetState()
+        self.eventBus.sendReloadDataEvent(causeError: causeError)
+    }
+
+    /*
+     * If there were load errors, try to reload data when Home is pressed
+     */
+    func reloadDataOnError() {
+
+        if self.error != nil || self.viewModelCoordinator.hasErrors() {
+            self.reloadData(causeError: false)
+        }
     }
 
     /*
@@ -205,5 +197,56 @@ class AppViewModel: ObservableObject {
      */
     func onExpireRefreshToken() {
         self.authenticator.expireRefreshToken()
+    }
+
+    /*
+     * Create the companies view model on first use
+     */
+    func getCompaniesViewModel() -> CompaniesViewModel {
+
+        if self.companiesViewModel == nil {
+
+            self.companiesViewModel = CompaniesViewModel(
+                fetchClient: self.fetchClient,
+                viewModelCoordinator: self.viewModelCoordinator)
+        }
+
+        return self.companiesViewModel!
+    }
+
+    /*
+     * Create the transactions view model on first use
+     */
+    func getTransactionsViewModel() -> TransactionsViewModel {
+
+        if self.transactionsViewModel == nil {
+
+            self.transactionsViewModel = TransactionsViewModel(
+                fetchClient: self.fetchClient,
+                viewModelCoordinator: self.viewModelCoordinator)
+        }
+
+        return self.transactionsViewModel!
+    }
+
+    /*
+     * Create the user info view model on first use
+     */
+    func getUserInfoViewModel() -> UserInfoViewModel {
+
+        if self.userInfoViewModel == nil {
+            self.userInfoViewModel = UserInfoViewModel(
+                fetchClient: self.fetchClient,
+                viewModelCoordinator: self.viewModelCoordinator)
+        }
+
+        return self.userInfoViewModel!
+    }
+
+    /*
+     * Make this value available for the session view
+     */
+    func getSessionId() -> String {
+        return self.fetchClient.sessionId
     }
 }

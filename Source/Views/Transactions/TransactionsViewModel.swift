@@ -6,8 +6,8 @@ import Foundation
 class TransactionsViewModel: ObservableObject {
 
     // Late created properties
-    private let apiClient: ApiClient
-    private let apiViewEvents: ApiViewEvents
+    private let fetchClient: FetchClient
+    private let viewModelCoordinator: ViewModelCoordinator
     private var companyId: String?
 
     // Published state
@@ -17,9 +17,9 @@ class TransactionsViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(apiClient: ApiClient, apiViewEvents: ApiViewEvents) {
-        self.apiViewEvents = apiViewEvents
-        self.apiClient = apiClient
+    init(fetchClient: FetchClient, viewModelCoordinator: ViewModelCoordinator) {
+        self.viewModelCoordinator = viewModelCoordinator
+        self.fetchClient = fetchClient
         self.companyId = nil
     }
 
@@ -31,26 +31,35 @@ class TransactionsViewModel: ObservableObject {
         options: ViewLoadOptions? = nil,
         onForbidden: @escaping () -> Void) {
 
-        let fetchOptions = ApiRequestOptions(causeError: options?.causeError ?? false)
+        let fetchOptions = FetchOptions(
+            cacheKey: "\(FetchCacheKeys.Transactions)-\(companyId)",
+            forceReload: options?.forceReload ?? false,
+            causeError: options?.causeError ?? false)
 
-        self.apiViewEvents.onViewLoading(name: ApiViewNames.Main)
-        self.companyId = companyId
+        // Initialise state
+        self.viewModelCoordinator.onMainViewModelLoading()
         self.error = nil
+        if companyId != self.companyId {
+            self.companyId = companyId
+            self.data = nil
+        }
 
         Task {
 
             do {
 
                 // Make the API call on a background thread
-                let newData = try await self.apiClient.getCompanyTransactions(
+                let transactions = try await self.fetchClient.getCompanyTransactions(
                     companyId: companyId,
                     options: fetchOptions)
 
                 await MainActor.run {
 
-                    // Update published properties on the main thread
-                    self.data = newData
-                    self.apiViewEvents.onViewLoaded(name: ApiViewNames.Main)
+                    // Update state and notify
+                    if transactions != nil {
+                        self.data = transactions
+                    }
+                    self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
                 }
 
             } catch {
@@ -66,9 +75,9 @@ class TransactionsViewModel: ObservableObject {
 
                     } else {
 
-                        // Otherwise update error state
+                        // Otherwise update state and notify
                         self.error = ErrorFactory.fromException(error: error)
-                        self.apiViewEvents.onViewLoadFailed(name: ApiViewNames.Main, error: self.error!)
+                        self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
                     }
                 }
             }

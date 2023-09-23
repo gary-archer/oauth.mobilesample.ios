@@ -48,7 +48,7 @@ struct CompaniesView: View {
             }
         }
         .onAppear(perform: self.initialLoad)
-        .onReceive(self.eventBus.reloadMainViewTopic, perform: {data in
+        .onReceive(self.eventBus.reloadDataTopic, perform: {data in
             self.handleReloadData(event: data)
         })
     }
@@ -56,7 +56,7 @@ struct CompaniesView: View {
     /*
      * Receive events
      */
-    private func handleReloadData(event: ReloadMainViewEvent) {
+    private func handleReloadData(event: ReloadDataEvent) {
         let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
         self.loadData(options: options)
     }
