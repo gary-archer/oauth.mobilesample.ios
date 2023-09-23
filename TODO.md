@@ -1,33 +1,22 @@
-FETCH CACHE
------------
-1. Trace viewmodel coordinator and check in once working
-   Current problems deserializing transactions
-
-FINALIZATION
-------------
-1. Final AppView and AppViewModel consolidation
-   ReloadMain / ReloadUserInfo Events to improve
-   Review navigated event
-
-2. Other final UIs to behave equivalently
-   Navigated event needs looking at
-   Avoid resetting existing data in view models, except if transaction ID changes or there is an error
-   Use onForbidden consistently
-   Does React always need to call setState manually - or is there a neater way?
+iOS
+---
+1. Home, Reload and Events
+   ReloadMain / ReloadUserInfo Events to remove, along with navigated event
+   Includes reload user info after companies view error
    Inspect use of event bus for responsibilities that should be in the model
-   Avoid storing companyID in transactions view when redundant
-   Reload user info on error should be equivalent across apps
+   Test on device
+   Merge once reliable
 
-REFINEMENTS
------------
-1. User info tooltip
+2. Text as resources
 
-2. Swift warning improvements
-   Make sure I am using latest dependency versions, eg of swiftlint
-   Then merge to master
+3. User info tooltip
+   
+REACT
+------------
+1. Transaction ID change, and avoid resetting data otherwise
 
-OTHER UIs
----------
-1. Avoid resetting data on every load
-   Perhaps I get away with this in React due to a lack of immediate publishing
-   Also review usage of companyId in transactions view model, for consistency
+2. Use onForbidden
+
+3. Can I update the UI from the model rather than needing to call setState in the view?
+
+4. Text as resources

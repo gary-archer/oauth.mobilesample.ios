@@ -109,6 +109,10 @@ class AppViewModel: ObservableObject {
 
             do {
 
+                // Clear state
+                self.fetchCache.clearAll()
+                self.viewModelCoordinator.resetState()
+
                 // Make sure metadata is loaded
                 try await self.authenticator.getMetadata()
 
@@ -158,6 +162,10 @@ class AppViewModel: ObservableObject {
         Task {
 
             do {
+
+                // Clear state
+                self.fetchCache.clearAll()
+                self.viewModelCoordinator.resetState()
 
                 // Make sure metadata is loaded
                 try await self.authenticator.getMetadata()

@@ -38,8 +38,11 @@ class TransactionsViewModel: ObservableObject {
 
         // Initialise state
         self.viewModelCoordinator.onMainViewModelLoading()
-        self.companyId = companyId
         self.error = nil
+        if companyId != self.companyId {
+            self.companyId = companyId
+            self.data = nil
+        }
 
         Task {
 

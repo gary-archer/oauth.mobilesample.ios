@@ -74,7 +74,7 @@ struct AppView: View {
             return
         }
 
-        // Clear state and indicate that the ASWebAuthenticationSession window is now topmost
+        // Indicate that the ASWebAuthenticationSession window is now topmost
         self.viewRouter.isTopMost = false
 
         // Handle completion
