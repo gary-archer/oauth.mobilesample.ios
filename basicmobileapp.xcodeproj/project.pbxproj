@@ -94,7 +94,6 @@
 		28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseHandler.swift; sourceTree = "<group>"; };
 		28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResponseHandler.swift; sourceTree = "<group>"; };
 		28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoadOptions.swift; sourceTree = "<group>"; };
-		28E45F062AB8B23900625091 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		28E45F072ABB5E3B00625091 /* ViewModelCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelCoordinator.swift; sourceTree = "<group>"; };
 		28E45F092ABB624800625091 /* FetchCacheItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCacheItem.swift; sourceTree = "<group>"; };
 		28E45F0B2ABB634500625091 /* FetchCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCache.swift; sourceTree = "<group>"; };
@@ -268,7 +267,6 @@
 				4E1888E223DDFEB20014638D /* Assets.xcassets */,
 				4EA2E3932848ED5B0058A0B7 /* deploy.sh */,
 				4EA2E3952848ED650058A0B7 /* export.plist */,
-				28E45F062AB8B23900625091 /* TODO.md */,
 				4E23798D23CE6D910066DE08 /* Products */,
 				4E1888E323DDFEB20014638D /* Preview Content */,
 			);
