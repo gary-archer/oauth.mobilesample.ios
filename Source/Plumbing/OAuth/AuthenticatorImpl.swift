@@ -61,13 +61,7 @@ class AuthenticatorImpl: Authenticator {
      * Try to get an access token, which most commonly involves returning the current one
      */
     func getAccessToken() -> String? {
-
-        let accessToken = self.tokenStorage.loadTokens()?.accessToken
-        if accessToken != nil {
-            return accessToken!
-        }
-
-        return nil
+        return self.tokenStorage.loadTokens()?.accessToken
     }
 
     /*
