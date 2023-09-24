@@ -40,7 +40,7 @@ class ViewModelCoordinator {
 
         // On success, send an event so that a subscriber can show a UI effect such as enabling header buttons
         let found = self.fetchCache.getItem(key: cacheKey)
-        if found?.getError() == nil {
+        if found?.getData() != nil {
             self.eventBus.sendViewModelFetchEvent(loaded: true)
         }
 
