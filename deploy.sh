@@ -19,7 +19,7 @@ fi
 #
 # Do a release build to produce an archive file
 #
-xcodebuild -workspace basicmobileapp.xcworkspace -scheme basicmobileapp -configuration Release archive -archivePath build/basicmobileapp.xcarchive
+xcodebuild -project basicmobileapp.xcodeproj -scheme basicmobileapp -configuration Release archive -archivePath build/basicmobileapp.xcarchive
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the iOS app'
   exit
@@ -35,7 +35,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# The following steps required these tools to be installed as a prerequisite:
+# On macOS, the following steps require these tools to be installed as a prerequisite:
 # brew install libimobiledevice
 # brew install ideviceinstaller
 #
