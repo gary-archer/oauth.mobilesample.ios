@@ -1,5 +1,6 @@
 # iOS OAuth Mobile Sample
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1cb3653653ea4a82925fe44dd0d14f7a)](https://app.codacy.com/gh/gary-archer/oauth.mobilesample.ios?utm_source=github.com&utm_medium=referral&utm_content=gary-archer/oauth.mobilesample.ios&utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f7629f3989ab40a199043f1d84dd8fb5)](https://www.codacy.com/gh/gary-archer/oauth.mobilesample.ios/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/oauth.mobilesample.ios&amp;utm_campaign=Badge_Grade)
 
 ## Overview
