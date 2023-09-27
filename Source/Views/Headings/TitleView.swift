@@ -7,7 +7,6 @@ struct TitleView: View {
 
     @EnvironmentObject private var orientationHandler: OrientationHandler
     @ObservedObject private var userInfoViewModel: UserInfoViewModel
-    private let title = "OAuth Demo App"
 
     /*
      * Construct from the user info view model, which is only created once
@@ -28,7 +27,7 @@ struct TitleView: View {
         return HStack {
 
             // Show the title aligned left
-            Text(self.title)
+            Text("app_name")
                 .fontWeight(.bold)
                 .font(.system(size: 16))
                 .padding(20)

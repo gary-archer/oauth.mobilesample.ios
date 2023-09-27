@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		282342E42A76E8DE00588ED9 /* OAuthUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282342E32A76E8DE00588ED9 /* OAuthUserInfo.swift */; };
+		288F61902AC48BA0009A1229 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 288F61922AC48BA0009A1229 /* Localizable.strings */; };
 		28D73D81293BADF000EFA01B /* LoginResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */; };
 		28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */; };
 		28E45F032AB8B07C00625091 /* ViewLoadOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */; };
@@ -91,6 +92,7 @@
 
 /* Begin PBXFileReference section */
 		282342E32A76E8DE00588ED9 /* OAuthUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthUserInfo.swift; sourceTree = "<group>"; };
+		288F61912AC48BA0009A1229 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseHandler.swift; sourceTree = "<group>"; };
 		28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResponseHandler.swift; sourceTree = "<group>"; };
 		28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoadOptions.swift; sourceTree = "<group>"; };
@@ -473,6 +475,7 @@
 				28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */,
 				28E45F072ABB5E3B00625091 /* ViewModelCoordinator.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
+				288F61922AC48BA0009A1229 /* Localizable.strings */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				4E1888EB23DDFEB20014638D /* Assets.xcassets in Resources */,
 				4EA2E3942848ED5B0058A0B7 /* deploy.sh in Resources */,
 				4EA2E3962848ED650058A0B7 /* export.plist in Resources */,
+				288F61902AC48BA0009A1229 /* Localizable.strings in Resources */,
 				4E05212824531E0700C84A9F /* README.md in Resources */,
 				4EF4FDF223F9E269008C3022 /* mobile_config.json in Resources */,
 				4EE4CAB8245336430033B3C5 /* .swiftlint.yml in Resources */,
@@ -659,6 +663,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		288F61922AC48BA0009A1229 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				288F61912AC48BA0009A1229 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		4E1888E523DDFEB20014638D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

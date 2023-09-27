@@ -1,0 +1,5 @@
+"app_name" = "OAuth Demo App";
+
+"device_not_secured_message" = "Before using this app please configure a device passcode so that your data is secure";
+"open_device_settings" = "Open Settings / Touch ID & Passcode";
+"device_secured_message" = "Once complete, return here and click the HOME button";

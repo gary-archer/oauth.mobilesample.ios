@@ -16,16 +16,16 @@ struct DeviceNotSecuredView: View {
 
         return VStack {
 
-            Text("Before using this app please configure a device passcode so that your data is secure")
+            Text("device_not_secured_message")
                 .valueStyle()
                 .padding()
 
-            Text("Once complete, return here and click the HOME button")
+            Text("device_secured_message")
                 .valueStyle()
                 .padding()
 
             Button(action: self.onOpenSystemSettings) {
-               Text("Open Settings / Touch ID & Passcode")
+               Text("open_device_settings")
                    .padding()
             }
                 .foregroundColor(Color.black)
