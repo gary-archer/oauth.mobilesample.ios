@@ -107,6 +107,36 @@ class UserInfoViewModel: ObservableObject {
     }
 
     /*
+     * Return the user's title for the tooltip
+     */
+    func getUserTitle() -> String {
+
+        if self.apiUserInfo == nil {
+            return ""
+        }
+
+        return self.apiUserInfo?.title ?? ""
+    }
+
+    /*
+     * Return the user's regions for the tooltip
+     */
+    func getUserRegions() -> String {
+
+        if self.apiUserInfo == nil {
+            return ""
+        }
+
+        let regions = self.apiUserInfo?.regions ?? [String]()
+        if regions.count == 0 {
+            return ""
+        }
+
+        let regionsText = regions.joined(separator: ", ")
+        return "[\(regionsText)]"
+    }
+
+    /*
      * Determine whether we need to load data
      */
     private func isLoaded() -> Bool {

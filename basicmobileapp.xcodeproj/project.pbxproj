@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		282342E42A76E8DE00588ED9 /* OAuthUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282342E32A76E8DE00588ED9 /* OAuthUserInfo.swift */; };
+		286C83A52AC5C64E00ED61D1 /* SwiftUITooltip in Frameworks */ = {isa = PBXBuildFile; productRef = 286C83A42AC5C64E00ED61D1 /* SwiftUITooltip */; };
 		288F61902AC48BA0009A1229 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 288F61922AC48BA0009A1229 /* Localizable.strings */; };
 		28D73D81293BADF000EFA01B /* LoginResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */; };
 		28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */; };
@@ -182,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EFE4E8F252FB63A00E18129 /* AppAuth in Frameworks */,
+				286C83A52AC5C64E00ED61D1 /* SwiftUITooltip in Frameworks */,
 				4EFE4E8E252FB63A00E18129 /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -500,6 +502,7 @@
 			packageProductDependencies = (
 				4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */,
 				4EAAF736252FB5990021D430 /* AppAuth */,
+				286C83A42AC5C64E00ED61D1 /* SwiftUITooltip */,
 			);
 			productName = basicmobileapp;
 			productReference = 4E23798C23CE6D910066DE08 /* Demo.app */;
@@ -532,6 +535,7 @@
 			packageReferences = (
 				4EAAF727252FB0470021D430 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 				4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
+				286C83A32AC5C64E00ED61D1 /* XCRemoteSwiftPackageReference "SwiftUI-Tooltip" */,
 			);
 			productRefGroup = 4E23798D23CE6D910066DE08 /* Products */;
 			projectDirPath = "";
@@ -875,6 +879,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		286C83A32AC5C64E00ED61D1 /* XCRemoteSwiftPackageReference "SwiftUI-Tooltip" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/quassum/SwiftUI-Tooltip";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		4EAAF727252FB0470021D430 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/openid/AppAuth-iOS";
@@ -894,6 +906,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		286C83A42AC5C64E00ED61D1 /* SwiftUITooltip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 286C83A32AC5C64E00ED61D1 /* XCRemoteSwiftPackageReference "SwiftUI-Tooltip" */;
+			productName = SwiftUITooltip;
+		};
 		4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;

@@ -22,7 +22,6 @@ struct TitleView: View {
 
         let deviceWidth = UIScreen.main.bounds.size.width
         let titleWidth = deviceWidth * 0.55
-        let userInfoWidth = deviceWidth * 0.45
 
         return HStack {
 
@@ -36,7 +35,8 @@ struct TitleView: View {
             // Show the user name to the right
             UserInfoView(model: self.userInfoViewModel)
                 .padding(20)
-                .frame(width: userInfoWidth, alignment: .trailing)
         }
+        // This shows the user info tooltip above header buttons
+        .zIndex(1)
     }
 }
