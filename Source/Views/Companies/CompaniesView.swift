@@ -24,7 +24,7 @@ struct CompaniesView: View {
         return VStack {
 
             // Show the header
-            Text("Company List")
+            Text("company_list_title")
                 .font(.headline)
                 .frame(width: deviceWidth)
                 .padding()
@@ -34,8 +34,8 @@ struct CompaniesView: View {
             if self.model.error != nil {
                 ErrorSummaryView(
                     error: self.model.error!,
-                    hyperlinkText: "Problem Encountered in Companies View",
-                    dialogTitle: "Companies View Error",
+                    hyperlinkText: "companies_error_hyperlink",
+                    dialogTitle: "companies_error_dialogtitle",
                     padding: EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
             }
 

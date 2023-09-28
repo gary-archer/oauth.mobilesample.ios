@@ -43,7 +43,7 @@ struct ErrorSummaryView: View {
 
             } else {
 
-                Text(self.hyperlinkText)
+                Text(LocalizedStringKey(self.hyperlinkText))
                     .errorStyle()
                     .contentShape(Rectangle())
                     .padding(self.padding)

@@ -12,7 +12,8 @@ struct SessionView: View {
     @State private var isVisible: Bool
 
     init (sessionId: String) {
-        self.text = "API Session Id: \(sessionId)"
+        self.text = String.localizedStringWithFormat(
+            NSLocalizedString("api_session_id", comment: ""), sessionId)
         self.isVisible = false
     }
 

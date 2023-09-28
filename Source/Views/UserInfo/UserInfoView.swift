@@ -65,8 +65,8 @@ struct UserInfoView: View {
             if self.model.error != nil {
                 ErrorSummaryView(
                     error: self.model.error!,
-                    hyperlinkText: "Problem Encountered",
-                    dialogTitle: "User Info Error",
+                    hyperlinkText: "userinfo_error_hyperlink",
+                    dialogTitle: "userinfo_error_dialogtitle",
                     padding: EdgeInsets(top: -10, leading: 0, bottom: 0, trailing: 0))
             }
         }
