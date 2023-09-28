@@ -1,0 +1,47 @@
+"app_name" = "OAuth Demo App";
+
+"device_not_secured_message" = "Before using this app please configure a device passcode so that your data is secure";
+"open_device_settings" = "Open Settings / Touch ID & Passcode";
+"device_secured_message" = "Once complete, return here and click the HOME button";
+
+"home_button" = "Home";
+"reload_button" = "Reload";
+"expire_access_token_button" = "Expire Access Token";
+"expire_refresh_token_button" = "Expire Refresh Token";
+"logout_button" = "Logout";
+
+"target_usd" = "Target USD";
+"investment_usd" = "Investment USD";
+"no_investors" = "# Investors";
+"transaction_id" = "Transaction ID";
+"investor_id" = "Investor ID";
+"amount_usd" = "Amount USD";
+
+"company_list_title" = "Company List";
+"transactions_title" = "Today's Transactions for Company %@";
+"logged_out_message" = "You are logged out - click HOME to sign in ...";
+"error_title" = "";
+"error_dialog_close" = "Close Dialog";
+
+"main_error_hyperlink" = "Application Problem Encountered";
+"main_error_dialogtitle" = "Application Error";
+"companies_error_hyperlink" = "Problem Encountered in Companies View";
+"companies_error_dialogtitle" = "Companies View Error";
+"transactions_error_hyperlink" = "Problem Encountered in Transactions View";
+"transactions_error_dialogtitle" = "Transactions View Error";
+"userinfo_error_hyperlink" = "Problem Encountered";
+"userinfo_error_dialogtitle" = "User Info Error";
+
+"api_session_id" = "API Session Id: %@";
+
+"error_user_action" = "User Action";
+"error_info" = "Info";
+"error_area" = "Area";
+"error_code" = "Error Code";
+"error_appauth_code" = "AppAuth Code";
+"error_utc_time" = "UTC Time";
+"error_status" = "Status Code";
+"error_instance_id" = "Instance Id";
+"error_details" = "Details";
+"error_url" = "URL";
+"error_stack" = "Stack";

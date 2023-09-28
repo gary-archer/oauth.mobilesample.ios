@@ -31,7 +31,7 @@ struct ErrorDetailsView: View {
                 HStack(spacing: 0) {
 
                     // Render the title
-                    Text(self.dialogTitle)
+                    Text(LocalizedStringKey(self.dialogTitle))
                         .font(.headline)
                         .frame(width: geometry.size.width * 0.8)
                         .padding()

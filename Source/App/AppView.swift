@@ -40,8 +40,8 @@ struct AppView: View {
             if self.model.error != nil {
                 ErrorSummaryView(
                     error: self.model.error!,
-                    hyperlinkText: "Application Problem Encountered",
-                    dialogTitle: "Application Error",
+                    hyperlinkText: "main_error_hyperlink",
+                    dialogTitle: "main_error_dialogtitle",
                     padding: EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
             }
 

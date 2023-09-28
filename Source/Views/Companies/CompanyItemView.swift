@@ -38,7 +38,7 @@ struct CompanyItemView: View {
             }.padding()
 
             HStack {
-                Text("Target USD")
+                Text("target_usd")
                     .labelStyle()
                     .frame(width: deviceWidth / 3, alignment: .leading)
                     .padding(.leading, deviceWidth / 12)
@@ -51,7 +51,7 @@ struct CompanyItemView: View {
             }.padding()
 
             HStack {
-                Text("Investment USD")
+                Text("investment_usd")
                     .labelStyle()
                     .frame(width: deviceWidth / 3, alignment: .leading)
                     .padding(.leading, deviceWidth / 12)
@@ -64,7 +64,7 @@ struct CompanyItemView: View {
             }.padding()
 
             HStack {
-                Text("# Investors")
+                Text("no_investors")
                     .labelStyle()
                     .frame(width: deviceWidth / 3, alignment: .leading)
                     .padding(.leading, deviceWidth / 12)

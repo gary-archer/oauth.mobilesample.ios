@@ -46,13 +46,13 @@ struct HeaderButtonsView: View {
 
             // A button to navigate home
             Button(action: self.onHome) {
-               Text("Home")
+               Text("home_button")
             }
                 .buttonStyle(homeButtonStyle)
 
             // The reload button also support a long press event
             Button(action: self.onReloadDefaultAction) {
-                Text("Reload")
+                Text("reload_button")
             }
                 .buttonStyle(sessionButtonStyle)
                 .disabled(sessionButtonsDisabled)
@@ -62,21 +62,21 @@ struct HeaderButtonsView: View {
 
             // A button to make the current access token act expired
             Button(action: self.onExpireAccessToken) {
-                Text("Expire Access Token").multilineTextAlignment(.center)
+                Text("expire_access_token_button").multilineTextAlignment(.center)
             }
                 .buttonStyle(sessionButtonStyle)
                 .disabled(sessionButtonsDisabled)
 
             // A button to make the current refresh token act expired
             Button(action: self.onExpireRefreshToken) {
-                Text("Expire Refresh Token").multilineTextAlignment(.center)
+                Text("expire_refresh_token_button").multilineTextAlignment(.center)
             }
                 .buttonStyle(sessionButtonStyle)
                 .disabled(sessionButtonsDisabled)
 
             // A button to initiate a logout
             Button(action: self.onLogoutPressed) {
-                Text("Logout")
+                Text("logout_button")
             }
                 .buttonStyle(sessionButtonStyle)
                 .disabled(sessionButtonsDisabled)

@@ -13,7 +13,7 @@ struct LoginRequiredView: View {
     var body: some View {
 
         return VStack {
-            Text("You are logged out - click HOME to sign in ...")
+            Text("logged_out_message")
         }.onAppear(perform: self.initialLoad)
     }
 

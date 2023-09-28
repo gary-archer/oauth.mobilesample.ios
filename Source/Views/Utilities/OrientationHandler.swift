@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 /*
  * An object to ensure that the layout is redrawn when there is a change in device orientation
