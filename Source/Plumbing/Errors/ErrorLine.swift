@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 /*
- * A simple name value pair entity for an error field
+ * A simple entity for an error field
  */
 struct ErrorLine {
     let name: String

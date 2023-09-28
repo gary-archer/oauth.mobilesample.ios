@@ -19,7 +19,7 @@ struct ErrorDetailsItemView: View {
     var body: some View {
 
         HStack(alignment: .top) {
-            Text(self.errorLine.name)
+            Text(LocalizedStringKey(self.errorLine.name))
                 .labelStyle()
                 .frame(width: self.dialogWidth / 3, alignment: .leading)
                 .padding(.leading, self.dialogWidth / 12)

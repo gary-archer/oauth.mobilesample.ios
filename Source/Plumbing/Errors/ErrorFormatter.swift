@@ -19,7 +19,7 @@ struct ErrorFormatter {
         // Keep the user informed and suggest an action
         result.append(
             ErrorLine(
-                name: "User Action",
+                name: "error_user_action",
                 value: "Please retry the operation",
                 valueColour: Colors.paleGreen
             )
@@ -29,7 +29,7 @@ struct ErrorFormatter {
         if !error.userMessage.isEmpty {
             result.append(
                 ErrorLine(
-                    name: "Info",
+                    name: "error_info",
                     value: error.userMessage,
                     valueColour: Color.black
                 )
@@ -41,7 +41,7 @@ struct ErrorFormatter {
         // Show the time of the error
         result.append(
             ErrorLine(
-                name: "UTC Time",
+                name: "error_utc_time",
                 value: error.utcTime,
                 valueColour: Color.black
             )
@@ -51,7 +51,7 @@ struct ErrorFormatter {
         if !error.area.isEmpty {
             result.append(
                 ErrorLine(
-                    name: "Area",
+                    name: "error_area",
                     value: error.area,
                     valueColour: Color.black
                 )
@@ -62,7 +62,7 @@ struct ErrorFormatter {
         if !error.errorCode.isEmpty {
             result.append(
                 ErrorLine(
-                    name: "Error Code",
+                    name: "error_code",
                     value: error.errorCode,
                     valueColour: Color.black
                 )
@@ -73,7 +73,7 @@ struct ErrorFormatter {
         if !error.appAuthCode.isEmpty {
             result.append(
                 ErrorLine(
-                    name: "AppAuth Code",
+                    name: "error_appauth_code",
                     value: error.appAuthCode,
                     valueColour: Color.black
                 )
@@ -84,7 +84,7 @@ struct ErrorFormatter {
         if error.instanceId != 0 {
             result.append(
                 ErrorLine(
-                    name: "Instance Id",
+                    name: "error_instance_id",
                     value: String(error.instanceId),
                     valueColour: Color.red
                 )
@@ -95,7 +95,7 @@ struct ErrorFormatter {
         if error.statusCode != 0 {
             result.append(
                 ErrorLine(
-                    name: "Status Code",
+                    name: "error_status",
                     value: String(error.statusCode),
                     valueColour: Color.black
                 )
@@ -108,7 +108,7 @@ struct ErrorFormatter {
         if !error.details.isEmpty {
             result.append(
                 ErrorLine(
-                    name: "Details",
+                    name: "error_details",
                     value: String(error.details),
                     valueColour: Color.black
                 )
@@ -119,7 +119,7 @@ struct ErrorFormatter {
         if !error.url.isEmpty {
             result.append(
                 ErrorLine(
-                    name: "URL",
+                    name: "error_url",
                     value: String(error.url),
                     valueColour: Color.black
                 )
@@ -133,7 +133,7 @@ struct ErrorFormatter {
             let stackTrace = ErrorFormatter.getFormattedStackTrace(stack: error.stack)
             result.append(
                 ErrorLine(
-                    name: "Stack",
+                    name: "error_stack",
                     value: String(stackTrace),
                     valueColour: Color.black
                 )

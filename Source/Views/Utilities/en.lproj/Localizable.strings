@@ -10,6 +10,13 @@
 "expire_refresh_token_button" = "Expire Refresh Token";
 "logout_button" = "Logout";
 
+"target_usd" = "Target USD";
+"investment_usd" = "Investment USD";
+"no_investors" = "# Investors";
+"transaction_id" = "Transaction ID";
+"investor_id" = "Investor ID";
+"amount_usd" = "Amount USD";
+
 "company_list_title" = "Company List";
 "transactions_title" = "Today's Transactions for Company %@";
 "logged_out_message" = "You are logged out - click HOME to sign in ...";
@@ -26,3 +33,15 @@
 "userinfo_error_dialogtitle" = "User Info Error";
 
 "api_session_id" = "API Session Id: %@";
+
+"error_user_action" = "User Action";
+"error_info" = "Info";
+"error_area" = "Area";
+"error_code" = "Error Code";
+"error_appauth_code" = "AppAuth Code";
+"error_utc_time" = "UTC Time";
+"error_status" = "Status Code";
+"error_instance_id" = "Instance Id";
+"error_details" = "Details";
+"error_url" = "URL";
+"error_stack" = "Stack";
