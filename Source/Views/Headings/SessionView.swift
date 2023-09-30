@@ -11,10 +11,10 @@ struct SessionView: View {
     private let text: String
     @State private var isVisible: Bool
 
-    init (sessionId: String) {
+    init (isVisible: Bool, sessionId: String) {
         self.text = String.localizedStringWithFormat(
             NSLocalizedString("api_session_id", comment: ""), sessionId)
-        self.isVisible = false
+        self.isVisible = isVisible
     }
 
     /*

@@ -61,12 +61,26 @@ struct ErrorFactory {
     }
 
     /*
+     * Indicate a metadata lookup failure
+     */
+    static func fromMetadataLookupError(error: Error) -> UIError {
+
+        var uiError = UIError(
+            area: "Login",
+            errorCode: ErrorCodes.metadataLookup,
+            userMessage: "Problem encountered downloading OpenID Connect metadata")
+
+        ErrorFactory.updateFromException(error: error, uiError: uiError)
+        return uiError
+    }
+
+    /*
      * Return an error to indicate that the Safari View Controller window was closed
      */
     static func fromRedirectCancelled() -> UIError {
 
         return UIError(
-            area: "Redirect",
+            area: "Login",
             errorCode: ErrorCodes.redirectCancelled,
             userMessage: "The redirect request was cancelled")
     }

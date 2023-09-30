@@ -46,18 +46,20 @@ struct AppView: View {
             }
 
             // Next display the session view
-            SessionView(sessionId: self.model.getSessionId())
+            SessionView(isVisible: self.model.isLoaded, sessionId: self.model.getSessionId())
 
             // Render the main view based on the user's current location
             MainView(
                 viewRouter: self.viewRouter,
                 companiesViewModel: self.model.getCompaniesViewModel(),
                 transactionsViewModel: self.model.getTransactionsViewModel(),
+                isLoaded: self.model.isLoaded,
                 isDeviceSecured: self.model.isDeviceSecured)
 
             // Fill up the remainder of the view if needed
             Spacer()
         }
+        .onAppear(perform: self.model.initialize)
         .onReceive(self.model.eventBus.loginRequiredTopic, perform: {_ in
             self.onLoginRequired()
         })
@@ -136,6 +138,12 @@ struct AppView: View {
 
         // Reset the main view's own error if required
         self.model.error = nil
+
+        // If there is a startup error then retry initializing
+        if !self.model.isLoaded {
+            self.model.initialize()
+            return
+        }
 
         // If we have prompted the user to open settings and click home, update the model's flag
         if !self.model.isDeviceSecured {

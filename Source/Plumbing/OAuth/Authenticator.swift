@@ -7,8 +7,8 @@ import AppAuth
  */
 protocol Authenticator {
 
-    // Retrieve OpenID connect metadata
-    func getMetadata() async throws
+    // Startup initialization
+    func initialize() async throws
 
     // Return the current access token from secure mobile storage
     func getAccessToken() -> String?

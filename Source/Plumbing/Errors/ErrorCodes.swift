@@ -14,6 +14,9 @@ struct ErrorCodes {
     // Used to indicate that the API cannot be called until the user logs in
     static let loginRequired = "login_required"
 
+    // Used to indicate that metadata lookup failed
+    static let metadataLookup = "metadata_lookup"
+
     // Used to indicaten that the Safari View Controller was cancelled
     static let redirectCancelled = "redirect_cancelled"
 

@@ -8,17 +8,20 @@ struct MainView: View {
     @ObservedObject private var viewRouter: ViewRouter
     @ObservedObject private var companiesViewModel: CompaniesViewModel
     @ObservedObject private var transactionsViewModel: TransactionsViewModel
+    private let isLoaded: Bool
     private let isDeviceSecured: Bool
 
     init (
         viewRouter: ViewRouter,
         companiesViewModel: CompaniesViewModel,
         transactionsViewModel: TransactionsViewModel,
+        isLoaded: Bool,
         isDeviceSecured: Bool) {
 
         self.viewRouter = viewRouter
         self.companiesViewModel = companiesViewModel
         self.transactionsViewModel = transactionsViewModel
+        self.isLoaded = isLoaded
         self.isDeviceSecured = isDeviceSecured
     }
 
@@ -29,7 +32,11 @@ struct MainView: View {
 
         return VStack {
 
-            if !self.isDeviceSecured {
+            if !self.isLoaded {
+                
+                // Render an empty main view if the app is not loaded yet
+            }
+            else if !self.isDeviceSecured {
 
                 // We require a secured device so move here if prerequisites are not met
                 DeviceNotSecuredView()

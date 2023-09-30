@@ -5,7 +5,7 @@ import SwiftUI
  * A primitive view model class to manage global objects and state
  */
 class AppViewModel: ObservableObject {
-
+    
     // Global objects
     private let configuration: Configuration
     private let authenticator: Authenticator
@@ -13,42 +13,69 @@ class AppViewModel: ObservableObject {
     private let fetchCache: FetchCache
     let eventBus: EventBus
     let viewModelCoordinator: ViewModelCoordinator
-
+    
     // State used by the app view
-    @Published var isDeviceSecured = false
+    @Published var isLoaded: Bool
+    @Published var isDeviceSecured: Bool
     @Published var error: UIError?
-
+    
     // Child view models
     private var companiesViewModel: CompaniesViewModel?
     private var transactionsViewModel: TransactionsViewModel?
     private var userInfoViewModel: UserInfoViewModel?
-
+    
     /*
      * Receive globals created by the app class
      */
     init(eventBus: EventBus) {
-
+        
         // Create objects used for coordination
         self.fetchCache = FetchCache()
         self.eventBus = eventBus
         self.viewModelCoordinator = ViewModelCoordinator(eventBus: eventBus, fetchCache: self.fetchCache)
-
+        
         // Load the configuration from the embedded resource
         // swiftlint:disable:next force_try
         self.configuration = try! ConfigurationLoader.load()
-
+        
         // Create the global authenticator
         self.authenticator = AuthenticatorImpl(configuration: self.configuration.oauth)
-
+        
         // Create the API Client from configuration
         // swiftlint:disable:next force_try
         self.fetchClient = try! FetchClient(
             configuration: self.configuration,
             fetchCache: self.fetchCache,
             authenticator: self.authenticator)
-
+        
         // Update state
+        self.isLoaded = false
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
+        self.error = nil
+    }
+
+    /*
+     * Initialization at startup, to load OpenID Connect metadata and any stored tokens
+     */
+    func initialize() {
+
+        Task {
+
+            do {
+
+                try await self.authenticator.initialize()
+                await MainActor.run {
+                    self.isLoaded = true
+                }
+
+            } catch {
+
+                // Handle errors
+                await MainActor.run {
+                    self.error = ErrorFactory.fromException(error: error)
+                }
+            }
+        }
     }
 
     /*
@@ -56,17 +83,13 @@ class AppViewModel: ObservableObject {
      */
     func login(viewController: UIViewController, onComplete: @escaping (Bool) -> Void) {
 
+        // Clear state
+        self.fetchCache.clearAll()
+        self.viewModelCoordinator.resetState()
+
         Task {
 
             do {
-
-                // Clear state
-                self.fetchCache.clearAll()
-                self.viewModelCoordinator.resetState()
-
-                // Make sure metadata is loaded
-                try await self.authenticator.getMetadata()
-
                 // Do the login redirect on the main thread
                 try await MainActor.run {
                     try self.authenticator.startLoginRedirect(viewController: viewController)
@@ -110,17 +133,13 @@ class AppViewModel: ObservableObject {
      */
     func logout(viewController: UIViewController, onComplete: @escaping () -> Void) {
 
+        // Clear state
+        self.fetchCache.clearAll()
+        self.viewModelCoordinator.resetState()
+
         Task {
 
             do {
-
-                // Clear state
-                self.fetchCache.clearAll()
-                self.viewModelCoordinator.resetState()
-
-                // Make sure metadata is loaded
-                try await self.authenticator.getMetadata()
-
                 // Do the logout redirect on the main thread
                 try await MainActor.run {
                     try self.authenticator.startLogoutRedirect(viewController: viewController)

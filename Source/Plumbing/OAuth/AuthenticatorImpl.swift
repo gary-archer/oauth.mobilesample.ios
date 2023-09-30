@@ -27,9 +27,21 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
+     * One time initialization on application startup
+     */
+    func initialize() async throws {
+
+        // Load OpenID Connect metadata
+        try await getMetadata()
+
+        // Load tokens from storage
+        self.tokenStorage.loadTokens()
+    }
+
+    /*
      * Download OpenID Connect metadata and return it to the caller
      */
-    func getMetadata() async throws {
+    private func getMetadata() async throws {
 
         // Do nothing if already loaded
         if self.metadata != nil {
@@ -42,17 +54,22 @@ class AuthenticatorImpl: Authenticator {
             throw ErrorFactory.fromMessage(message: message)
         }
 
+        // Try to download metadata
         return try await withCheckedThrowingContinuation { continuation in
 
-            // Try to download metadata
             OIDAuthorizationService.discoverConfiguration(forIssuer: issuerUrl) { metadata, error in
 
-                self.metadata = metadata
                 if error != nil {
-                    continuation.resume(throwing: error!)
-                }
 
-                continuation.resume()
+                    // Report errors
+                    continuation.resume(throwing: ErrorFactory.fromMetadataLookupError(error: error!))
+
+                } else {
+
+                    // Indicate success
+                    self.metadata = metadata
+                    continuation.resume()
+                }
             }
         }
     }
@@ -61,7 +78,7 @@ class AuthenticatorImpl: Authenticator {
      * Try to get an access token, which most commonly involves returning the current one
      */
     func getAccessToken() -> String? {
-        return self.tokenStorage.loadTokens()?.accessToken
+        return self.tokenStorage.getTokens()?.accessToken
     }
 
     /*
@@ -69,7 +86,7 @@ class AuthenticatorImpl: Authenticator {
      */
     func synchronizedRefreshAccessToken() async throws -> String {
 
-        let refreshToken = self.tokenStorage.loadTokens()?.refreshToken
+        let refreshToken = self.tokenStorage.getTokens()?.refreshToken
 
         // Execute the refresh token grant message and manage concurrency
         if refreshToken != nil {
@@ -77,7 +94,7 @@ class AuthenticatorImpl: Authenticator {
         }
 
         // Reload and see if we now have a new access token
-        let accessToken = self.tokenStorage.loadTokens()?.accessToken
+        let accessToken = self.tokenStorage.getTokens()?.accessToken
         if accessToken != nil {
 
             // Return the new access token if the refresh succeeded
@@ -190,7 +207,7 @@ class AuthenticatorImpl: Authenticator {
     func startLogoutRedirect(viewController: UIViewController) throws {
 
         // Do nothing if already logged out
-        let tokenData = self.tokenStorage.loadTokens()
+        let tokenData = self.tokenStorage.getTokens()
         if tokenData == nil || tokenData!.idToken == nil {
             return
         }
@@ -326,10 +343,7 @@ class AuthenticatorImpl: Authenticator {
      */
     private func performRefreshTokenGrant() async throws {
 
-        let tokenData = self.tokenStorage.loadTokens()
-
-        // First get metadata if required
-        try await self.getMetadata()
+        let tokenData = self.tokenStorage.getTokens()
 
         // Create the refresh token grant request
         let request = OIDTokenRequest(
@@ -401,7 +415,7 @@ class AuthenticatorImpl: Authenticator {
         }
 
         // Handle missing tokens in the token response
-        let oldTokenData = self.tokenStorage.loadTokens()
+        let oldTokenData = self.tokenStorage.getTokens()
         if oldTokenData != nil {
 
             // Maintain the existing refresh token unless we received a new 'rolling' refresh token
