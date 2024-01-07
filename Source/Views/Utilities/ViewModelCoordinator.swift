@@ -97,9 +97,8 @@ class ViewModelCoordinator {
 
             // In normal conditions the following errors are likely to be OAuth configuration errors
             let oauthConfigurationError = errors.first { error in
-                error.errorCode == ErrorCodes.invalidToken ||
-                error.errorCode == ErrorCodes.insufficientScope ||
-                error.errorCode == ErrorCodes.claimsFailure
+                (error.statusCode == 401 && error.errorCode == ErrorCodes.invalidToken) ||
+                (error.statusCode == 403 && error.errorCode == ErrorCodes.insufficientScope)
             }
 
             // The sample's user behavior is to present an error, after which clicking Home runs a new login redirect
