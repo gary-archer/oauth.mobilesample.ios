@@ -37,6 +37,9 @@ protocol Authenticator {
     // Resume AppAuth handling when we receive the login or logout response
     func resumeOperation(responseUrl: URL)
 
+    // Allow the app to clear its login state after certain errors
+    func clearLoginState()
+
     // For testing, make the access token act expired
     func expireAccessToken()
 

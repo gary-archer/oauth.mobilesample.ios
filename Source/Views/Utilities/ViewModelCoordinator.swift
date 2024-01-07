@@ -2,6 +2,7 @@ class ViewModelCoordinator {
 
     private let eventBus: EventBus
     private let fetchCache: FetchCache
+    private let authenticator: Authenticator
     private var mainCacheKey: String
     private var loadingCount: Int
     private var loadedCount: Int
@@ -9,9 +10,10 @@ class ViewModelCoordinator {
     /*
      * Set the initial state
      */
-    init(eventBus: EventBus, fetchCache: FetchCache) {
+    init(eventBus: EventBus, fetchCache: FetchCache, authenticator: Authenticator) {
         self.eventBus = eventBus
         self.fetchCache = fetchCache
+        self.authenticator = authenticator
         self.mainCacheKey = ""
         self.loadingCount = 0
         self.loadedCount = 0
@@ -44,8 +46,8 @@ class ViewModelCoordinator {
             self.eventBus.sendViewModelFetchEvent(loaded: true)
         }
 
-        // If all views have loaded, see if we need to trigger a login redirect
-        self.triggerLoginIfRequired()
+        // Perform error logic after all views have loaded
+        self.handleErrorsAfterLoad()
     }
 
     /*
@@ -60,7 +62,7 @@ class ViewModelCoordinator {
      */
     func onUserInfoViewModelLoaded() {
         self.loadedCount += 1
-        self.triggerLoginIfRequired()
+        self.handleErrorsAfterLoad()
     }
 
     /*
@@ -77,19 +79,33 @@ class ViewModelCoordinator {
     }
 
     /*
-     * If all views are loaded and one or more has reported login required, then trigger a redirect
+     * Handle OAuth related errors
      */
-    private func triggerLoginIfRequired() {
+    private func handleErrorsAfterLoad() {
 
         if self.loadedCount == self.loadingCount {
 
             let errors = self.getLoadErrors()
-            let found = errors.first { error in
+
+            let loginRequired = errors.first { error in
                 error.errorCode == ErrorCodes.loginRequired
             }
-
-            if found != nil {
+            if loginRequired != nil {
                 self.eventBus.sendLoginRequiredEvent()
+                return
+            }
+
+            // In normal conditions the following errors are likely to be OAuth configuration errors
+            let oauthConfigurationError = errors.first { error in
+                error.errorCode == ErrorCodes.invalidToken ||
+                error.errorCode == ErrorCodes.insufficientScope ||
+                error.errorCode == ErrorCodes.claimsFailure
+            }
+
+            // The sample's user behavior is to present an error, after which clicking Home runs a new login redirect
+            // This allows the frontend application to get new tokens, which may fix the problem in some cases
+            if oauthConfigurationError != nil {
+                self.authenticator.clearLoginState()
             }
          }
      }

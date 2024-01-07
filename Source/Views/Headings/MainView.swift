@@ -33,10 +33,10 @@ struct MainView: View {
         return VStack {
 
             if !self.isLoaded {
-                
+
                 // Render an empty main view if the app is not loaded yet
-            }
-            else if !self.isDeviceSecured {
+
+            } else if !self.isDeviceSecured {
 
                 // We require a secured device so move here if prerequisites are not met
                 DeviceNotSecuredView()

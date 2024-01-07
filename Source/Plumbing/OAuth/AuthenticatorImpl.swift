@@ -216,7 +216,7 @@ class AuthenticatorImpl: Authenticator {
 
             // Clear tokens
             let idToken = tokenData!.idToken!
-            self.tokenStorage.removeTokens()
+            self.clearLoginState()
 
             // Get the post logout address as a URL object
             let postLogoutUrl = self.getPostLogoutRedirectUri()
@@ -325,6 +325,13 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
+     * Allow the login state to be cleared when required
+     */
+    func clearLoginState() {
+        self.tokenStorage.removeTokens()
+    }
+
+    /*
      * A hacky method for testing, to update token storage to make the access token act like it is expired
      */
     func expireAccessToken() {
@@ -372,7 +379,7 @@ class AuthenticatorImpl: Authenticator {
 
                         // If we get an invalid_grant error it means the refresh token has expired
                         // In this case clear tokens and return, which will trigger a login redirect
-                        self.tokenStorage.removeTokens()
+                        self.clearLoginState()
                         continuation.resume()
                         return
                     }

@@ -5,49 +5,54 @@ import SwiftUI
  * A primitive view model class to manage global objects and state
  */
 class AppViewModel: ObservableObject {
-    
+
     // Global objects
     private let configuration: Configuration
     private let authenticator: Authenticator
     private let fetchClient: FetchClient
     private let fetchCache: FetchCache
-    let eventBus: EventBus
     let viewModelCoordinator: ViewModelCoordinator
-    
+    let eventBus: EventBus
+
     // State used by the app view
     @Published var isLoaded: Bool
     @Published var isDeviceSecured: Bool
     @Published var error: UIError?
-    
+
     // Child view models
     private var companiesViewModel: CompaniesViewModel?
     private var transactionsViewModel: TransactionsViewModel?
     private var userInfoViewModel: UserInfoViewModel?
-    
+
     /*
      * Receive globals created by the app class
      */
     init(eventBus: EventBus) {
-        
+
         // Create objects used for coordination
         self.fetchCache = FetchCache()
         self.eventBus = eventBus
-        self.viewModelCoordinator = ViewModelCoordinator(eventBus: eventBus, fetchCache: self.fetchCache)
-        
+
         // Load the configuration from the embedded resource
         // swiftlint:disable:next force_try
         self.configuration = try! ConfigurationLoader.load()
-        
+
         // Create the global authenticator
         self.authenticator = AuthenticatorImpl(configuration: self.configuration.oauth)
-        
+
         // Create the API Client from configuration
         // swiftlint:disable:next force_try
         self.fetchClient = try! FetchClient(
             configuration: self.configuration,
             fetchCache: self.fetchCache,
             authenticator: self.authenticator)
-        
+
+        // Create an object that coordinates API requests from multiple views
+        self.viewModelCoordinator = ViewModelCoordinator(
+            eventBus: eventBus,
+            fetchCache: self.fetchCache,
+            authenticator: self.authenticator)
+
         // Update state
         self.isLoaded = false
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()

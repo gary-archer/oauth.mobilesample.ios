@@ -65,7 +65,7 @@ struct ErrorFactory {
      */
     static func fromMetadataLookupError(error: Error) -> UIError {
 
-        var uiError = UIError(
+        let uiError = UIError(
             area: "Login",
             errorCode: ErrorCodes.metadataLookup,
             userMessage: "Problem encountered downloading OpenID Connect metadata")

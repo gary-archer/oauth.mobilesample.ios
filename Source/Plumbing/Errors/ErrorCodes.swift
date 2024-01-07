@@ -35,6 +35,15 @@ struct ErrorCodes {
     // A technical error during a logout redirect
     static let logoutRequestFailed = "logout_request_failed"
 
+    // Returned from APIs when an access token is rejected
+    static let invalidToken = "invalid_token"
+
+    // Returned from APIs when an access token does not have the required scope
+    static let insufficientScope = "insufficient_scope"
+
+    // Returned from APIs when it cannot find the claims it needs in access tokens
+    static let claimsFailure = "claims_failure"
+
     // An error making an API call to get data
     static let apiNetworkError = "api_network_error"
 
