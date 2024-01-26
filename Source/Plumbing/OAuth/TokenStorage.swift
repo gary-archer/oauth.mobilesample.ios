@@ -66,7 +66,7 @@ class TokenStorage {
     func expireRefreshToken() {
 
         if self.tokenData != nil {
-            self.tokenData!.accessToken = nil
+            self.tokenData!.accessToken = "\(self.tokenData!.accessToken!)x"
             self.tokenData!.refreshToken = "\(self.tokenData!.refreshToken!)x"
             self.saveTokenData()
         }
