@@ -47,7 +47,7 @@ After login you can test all lifecycle operations, including token refresh, expi
 ## Infrastructure
 
 * [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) is used to implement Authorization Code Flow (PKCE) with a Claimed HTTPS Scheme
-* AWS API Gateway is used to host the back end OAuth Secured Web API
+* [AWS Serverless](https://github.com/gary-archer/oauth.apisample.serverless) or Kubernetes is used to host remote API endpoints used by the app
 * AWS Cognito is used as the default Authorization Server for the Mobile App and API
 * The iOS Keychain is used to store encrypted tokens on the device after login
 * AWS S3 and Cloudfront are used to serve mobile deep linking asset files and interstitial web pages
