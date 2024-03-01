@@ -31,12 +31,7 @@ class FetchClient {
         }
 
         // Make the API call
-        let data = try await self.callApi(
-            method: "GET",
-            url: url,
-            jsonData: nil,
-            options: options)
-
+        let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
         }
@@ -57,12 +52,7 @@ class FetchClient {
         }
 
         // Make the API call
-        let data = try await self.callApi(
-            method: "GET",
-            url: url,
-            jsonData: nil,
-            options: options)
-
+        let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
         }
@@ -81,12 +71,7 @@ class FetchClient {
         }
 
         // Make the API call
-        let data = try await self.callApi(
-            method: "GET",
-            url: url,
-            jsonData: nil,
-            options: options)
-
+        let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
         }
@@ -115,12 +100,7 @@ class FetchClient {
         }
 
         // Make the API call
-        let data = try await self.callApi(
-            method: "GET",
-            url: url,
-            jsonData: nil,
-            options: options)
-
+        let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
         }
@@ -130,14 +110,10 @@ class FetchClient {
     }
 
     /*
-     * Do the HTTP plumbing to make the remote call
+     * Make a GET request and deal with caching
      */
     // swiftlint:disable function_body_length
-    private func callApi(
-        method: String,
-        url: URL,
-        jsonData: Data?,
-        options: FetchOptions) async throws -> Data? {
+    private func getDataFromApi(url: URL, options: FetchOptions) async throws -> Data? {
 
         // Remove the item from the cache when a reload is requested
         if options.forceReload {
@@ -166,7 +142,7 @@ class FetchClient {
         do {
             // Call the API and return data on success
             let data1 = try await self.callApiWithToken(
-                method: method,
+                method: "GET",
                 url: url,
                 jsonData: nil,
                 accessToken: accessToken!,
@@ -200,7 +176,7 @@ class FetchClient {
 
                 // Call the API and return data on success
                 let data3 = try await self.callApiWithToken(
-                    method: method,
+                    method: "GET",
                     url: url,
                     jsonData: nil,
                     accessToken: accessToken!,

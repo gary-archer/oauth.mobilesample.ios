@@ -10,7 +10,7 @@ class TokenStorage {
     private let storageKey = "com.authsamples.basicmobileapp.tokendata"
 
     /*
-     * Load token data from storage on application startup
+     * Try to load token data from storage on application startup
      */
     func loadTokens() {
 
