@@ -7,6 +7,9 @@ import SwiftUI
 @main
 struct SampleApp: App {
 
+    // The app delegate is used to create a scene delegate so that we can get the deep link startup URL
+    @UIApplicationDelegateAdaptor(SampleAppDelegate.self) var appDelegate
+
     // The main view model
     private let model: AppViewModel
 
