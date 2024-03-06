@@ -1,5 +1,6 @@
 import SwiftUI
 import AppAuth
+import OSLog
 
 /*
  * The main application view composes other views
@@ -53,16 +54,37 @@ struct AppView: View {
                 viewRouter: self.viewRouter,
                 companiesViewModel: self.model.getCompaniesViewModel(),
                 transactionsViewModel: self.model.getTransactionsViewModel(),
-                isLoaded: self.model.isLoaded,
                 isDeviceSecured: self.model.isDeviceSecured)
 
             // Fill up the remainder of the view if needed
             Spacer()
         }
-        .onAppear(perform: self.model.initialize)
+        .onAppear(perform: self.onInitialize)
         .onReceive(self.model.eventBus.loginRequiredTopic, perform: {_ in
             self.onLoginRequired()
         })
+    }
+
+    /*
+     * Initialize the model
+     */
+    private func onInitialize() {
+        self.model.initialize(onComplete: self.onInitializeComplete)
+    }
+
+    /*
+     * If there is a startup deep link then we wait for onOpenURL to process it
+     * Otherwise, when the app starts normally, change to the default view here
+     */
+    private func onInitializeComplete() {
+
+        if SampleSceneDelegate.startupDeepLinkUrl == nil {
+
+            self.viewRouter.changeMainView(
+                newViewType: CompaniesView.Type.self,
+                newViewParams: []
+            )
+        }
     }
 
     /*
@@ -141,7 +163,7 @@ struct AppView: View {
 
         // If there is a startup error then retry initializing
         if !self.model.isLoaded {
-            self.model.initialize()
+            self.onInitialize()
             return
         }
 

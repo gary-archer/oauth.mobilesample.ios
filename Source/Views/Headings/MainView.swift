@@ -8,20 +8,17 @@ struct MainView: View {
     @ObservedObject private var viewRouter: ViewRouter
     @ObservedObject private var companiesViewModel: CompaniesViewModel
     @ObservedObject private var transactionsViewModel: TransactionsViewModel
-    private let isLoaded: Bool
     private let isDeviceSecured: Bool
 
     init (
         viewRouter: ViewRouter,
         companiesViewModel: CompaniesViewModel,
         transactionsViewModel: TransactionsViewModel,
-        isLoaded: Bool,
         isDeviceSecured: Bool) {
 
         self.viewRouter = viewRouter
         self.companiesViewModel = companiesViewModel
         self.transactionsViewModel = transactionsViewModel
-        self.isLoaded = isLoaded
         self.isDeviceSecured = isDeviceSecured
     }
 
@@ -32,9 +29,10 @@ struct MainView: View {
 
         return VStack {
 
-            if !self.isLoaded {
+            if self.viewRouter.currentViewType == BlankView.Type.self {
 
                 // Render an empty main view if the app is not loaded yet
+                BlankView()
 
             } else if !self.isDeviceSecured {
 

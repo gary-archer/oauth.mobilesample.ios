@@ -1,6 +1,5 @@
 import Foundation
 import SwiftUI
-import OSLog
 
 /*
  * A primitive view model class to manage global objects and state
@@ -63,21 +62,17 @@ class AppViewModel: ObservableObject {
     /*
      * Initialization at startup, to load OpenID Connect metadata and any stored tokens
      */
-    func initialize() {
-
-        if SampleSceneDelegate.startupDeepLinkUrl != nil {
-            Logger.trace.info("Got deep link startup URL: \(SampleSceneDelegate.startupDeepLinkUrl!)")
-        } else {
-            Logger.trace.info("Started normally")
-        }
+    func initialize(onComplete: @escaping () -> Void) {
 
         Task {
 
             do {
 
+                // Try to do initial OAuth work
                 try await self.authenticator.initialize()
                 await MainActor.run {
                     self.isLoaded = true
+                    onComplete()
                 }
 
             } catch {

@@ -1,4 +1,5 @@
 import SwiftUI
+import OSLog
 
 /*
  * The home view to show a list of companies
@@ -13,6 +14,7 @@ struct CompaniesView: View {
     init (model: CompaniesViewModel, viewRouter: ViewRouter) {
         self.model = model
         self.viewRouter = viewRouter
+        Logger.trace.info("*** Construct company view")
     }
 
     /*

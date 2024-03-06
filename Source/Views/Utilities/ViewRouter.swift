@@ -7,15 +7,20 @@ import SwiftUI
 class ViewRouter: ObservableObject {
 
     // The current view and its navigation parameters
-    @Published var currentViewType: Any.Type = CompaniesView.Type.self
+    @Published var currentViewType: Any.Type = BlankView.Type.self
     @Published var params: [Any] = [Any]()
 
+    private var isStartupDeepLink = false
     private let eventBus: EventBus
     var isTopMost: Bool
 
     init(eventBus: EventBus) {
         self.eventBus = eventBus
         self.isTopMost = true
+    }
+
+    func setStartupDeepLink() {
+        isStartupDeepLink = true
     }
 
     /*

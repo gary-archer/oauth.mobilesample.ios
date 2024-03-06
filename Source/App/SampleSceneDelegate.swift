@@ -16,8 +16,6 @@ class SampleSceneDelegate: NSObject, UIWindowSceneDelegate {
         if let url = connectionOptions.userActivities.first?.webpageURL {
             SampleSceneDelegate.startupDeepLinkUrl = url.absoluteString
         }
-
-        guard let _ = (scene as? UIWindowScene) else { return }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
