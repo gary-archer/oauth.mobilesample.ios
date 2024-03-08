@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		28051E372B965729009ADAB9 /* LoggerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28051E362B965729009ADAB9 /* LoggerExtensions.swift */; };
-		28051E392B965AAE009ADAB9 /* SampleAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28051E382B965AAE009ADAB9 /* SampleAppDelegate.swift */; };
-		28051E3B2B965BF8009ADAB9 /* SampleSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28051E3A2B965BF8009ADAB9 /* SampleSceneDelegate.swift */; };
 		282342E42A76E8DE00588ED9 /* OAuthUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282342E32A76E8DE00588ED9 /* OAuthUserInfo.swift */; };
 		286C83A52AC5C64E00ED61D1 /* SwiftUITooltip in Frameworks */ = {isa = PBXBuildFile; productRef = 286C83A42AC5C64E00ED61D1 /* SwiftUITooltip */; };
 		288F61902AC48BA0009A1229 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 288F61922AC48BA0009A1229 /* Localizable.strings */; };
@@ -97,8 +95,6 @@
 
 /* Begin PBXFileReference section */
 		28051E362B965729009ADAB9 /* LoggerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerExtensions.swift; sourceTree = "<group>"; };
-		28051E382B965AAE009ADAB9 /* SampleAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAppDelegate.swift; sourceTree = "<group>"; };
-		28051E3A2B965BF8009ADAB9 /* SampleSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleSceneDelegate.swift; sourceTree = "<group>"; };
 		282342E32A76E8DE00588ED9 /* OAuthUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthUserInfo.swift; sourceTree = "<group>"; };
 		288F61912AC48BA0009A1229 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		28AAE8232B98F12500B865F9 /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
@@ -388,8 +384,6 @@
 				4ECD97612452E01D00D7E271 /* AppView.swift */,
 				4E3F8D422455E9C400EC7EB0 /* AppViewModel.swift */,
 				4EC0615825755BA3009050F3 /* SampleApp.swift */,
-				28051E382B965AAE009ADAB9 /* SampleAppDelegate.swift */,
-				28051E3A2B965BF8009ADAB9 /* SampleSceneDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -617,10 +611,8 @@
 				4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */,
 				4EE6B1DE24649DB700B43FF3 /* LongPressModifier.swift in Sources */,
 				28E45F0C2ABB634500625091 /* FetchCache.swift in Sources */,
-				28051E3B2B965BF8009ADAB9 /* SampleSceneDelegate.swift in Sources */,
 				28E45F082ABB5E3B00625091 /* ViewModelCoordinator.swift in Sources */,
 				4E1888F923DE01CC0014638D /* ErrorSummaryView.swift in Sources */,
-				28051E392B965AAE009ADAB9 /* SampleAppDelegate.swift in Sources */,
 				4EFEFC2C2451D2860057C78D /* ErrorCodes.swift in Sources */,
 				4ECD97662452F25E00D7E271 /* MainView.swift in Sources */,
 				4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */,
