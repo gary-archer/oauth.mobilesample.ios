@@ -42,11 +42,19 @@ struct SampleApp: App {
                 .environmentObject(self.orientationHandler)
                 .onOpenURL(perform: { url in
 
-                    // All deep link notifications are received here, so handle login responses when required
-                    if !self.model.resumeOAuthResponse(url: url) {
+                    if !self.model.isLoaded {
 
-                        // Handle other deep links in the view router, including those that start the app
-                        self.viewRouter.handleDeepLink(url: url)
+                        // If we receive a deep link before the app is loaded it is a deep link startup URL
+                        self.model.deepLinkStartupUrl = url
+
+                    } else {
+
+                        // Handle login responses when required
+                        if !self.model.resumeOAuthResponse(url: url) {
+
+                            // Handle other deep links in the view router
+                            self.viewRouter.handleDeepLink(url: url)
+                        }
                     }
                 })
                 .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in

@@ -13,6 +13,7 @@ class AppViewModel: ObservableObject {
     private let fetchCache: FetchCache
     let viewModelCoordinator: ViewModelCoordinator
     let eventBus: EventBus
+    var deepLinkStartupUrl: URL?
 
     // State used by the app view
     @Published var isLoaded: Bool
@@ -62,15 +63,17 @@ class AppViewModel: ObservableObject {
     /*
      * Initialization at startup, to load OpenID Connect metadata and any stored tokens
      */
-    func initialize() {
+    func initialize(onComplete: @escaping () -> Void) {
 
         Task {
 
             do {
 
+                // Try to do initial OAuth work
                 try await self.authenticator.initialize()
                 await MainActor.run {
                     self.isLoaded = true
+                    onComplete()
                 }
 
             } catch {
@@ -95,6 +98,7 @@ class AppViewModel: ObservableObject {
         Task {
 
             do {
+
                 // Do the login redirect on the main thread
                 try await MainActor.run {
                     try self.authenticator.startLoginRedirect(viewController: viewController)

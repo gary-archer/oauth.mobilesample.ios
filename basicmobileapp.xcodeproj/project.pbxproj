@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28051E372B965729009ADAB9 /* LoggerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28051E362B965729009ADAB9 /* LoggerExtensions.swift */; };
 		282342E42A76E8DE00588ED9 /* OAuthUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282342E32A76E8DE00588ED9 /* OAuthUserInfo.swift */; };
 		286C83A52AC5C64E00ED61D1 /* SwiftUITooltip in Frameworks */ = {isa = PBXBuildFile; productRef = 286C83A42AC5C64E00ED61D1 /* SwiftUITooltip */; };
 		288F61902AC48BA0009A1229 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 288F61922AC48BA0009A1229 /* Localizable.strings */; };
+		28AAE8242B98F12500B865F9 /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAE8232B98F12500B865F9 /* BlankView.swift */; };
 		28D73D81293BADF000EFA01B /* LoginResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */; };
 		28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */; };
 		28E45F032AB8B07C00625091 /* ViewLoadOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */; };
@@ -92,8 +94,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28051E362B965729009ADAB9 /* LoggerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerExtensions.swift; sourceTree = "<group>"; };
 		282342E32A76E8DE00588ED9 /* OAuthUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthUserInfo.swift; sourceTree = "<group>"; };
 		288F61912AC48BA0009A1229 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		28AAE8232B98F12500B865F9 /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
 		28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseHandler.swift; sourceTree = "<group>"; };
 		28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResponseHandler.swift; sourceTree = "<group>"; };
 		28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoadOptions.swift; sourceTree = "<group>"; };
@@ -397,6 +401,7 @@
 		4EEF02F3247195F20022E063 /* Headings */ = {
 			isa = PBXGroup;
 			children = (
+				28AAE8232B98F12500B865F9 /* BlankView.swift */,
 				4E1888F623DE01130014638D /* HeaderButtonsView.swift */,
 				4ECD97652452F25E00D7E271 /* MainView.swift */,
 				4E1888FA23DE01D80014638D /* SessionView.swift */,
@@ -478,6 +483,7 @@
 				28E45F072ABB5E3B00625091 /* ViewModelCoordinator.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
 				288F61922AC48BA0009A1229 /* Localizable.strings */,
+				28051E362B965729009ADAB9 /* LoggerExtensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -610,6 +616,7 @@
 				4EFEFC2C2451D2860057C78D /* ErrorCodes.swift in Sources */,
 				4ECD97662452F25E00D7E271 /* MainView.swift in Sources */,
 				4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */,
+				28051E372B965729009ADAB9 /* LoggerExtensions.swift in Sources */,
 				4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */,
 				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,
 				4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */,
@@ -633,6 +640,7 @@
 				4ECD97642452E57800D7E271 /* EventBus.swift in Sources */,
 				4EE54243259E437800573D22 /* ReloadDataEvent.swift in Sources */,
 				4EFCE68524632F2600BD1443 /* FetchOptions.swift in Sources */,
+				28AAE8242B98F12500B865F9 /* BlankView.swift in Sources */,
 				4EFEFC352451EE4F0057C78D /* ViewRouter.swift in Sources */,
 				4E1888F523DDFFDC0014638D /* TitleView.swift in Sources */,
 				4EB386EC244C4D1A00FC2B17 /* ErrorFactory.swift in Sources */,

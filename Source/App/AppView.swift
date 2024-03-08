@@ -53,16 +53,42 @@ struct AppView: View {
                 viewRouter: self.viewRouter,
                 companiesViewModel: self.model.getCompaniesViewModel(),
                 transactionsViewModel: self.model.getTransactionsViewModel(),
-                isLoaded: self.model.isLoaded,
                 isDeviceSecured: self.model.isDeviceSecured)
 
             // Fill up the remainder of the view if needed
             Spacer()
         }
-        .onAppear(perform: self.model.initialize)
+        .onAppear(perform: self.onInitialize)
         .onReceive(self.model.eventBus.loginRequiredTopic, perform: {_ in
             self.onLoginRequired()
         })
+    }
+
+    /*
+     * Initialize the model
+     */
+    private func onInitialize() {
+        self.model.initialize(onComplete: self.onInitializeComplete)
+    }
+
+    /*
+     * Move to the initial main view once the view model is initialized
+     */
+    private func onInitializeComplete() {
+
+        if self.model.deepLinkStartupUrl != nil {
+
+            // Apply the deep link startup URL if supplied
+            self.viewRouter.handleDeepLink(url: self.model.deepLinkStartupUrl!)
+
+        } else {
+
+            // Otherwise change to the default view
+            self.viewRouter.changeMainView(
+                newViewType: CompaniesView.Type.self,
+                newViewParams: []
+            )
+        }
     }
 
     /*
@@ -141,7 +167,7 @@ struct AppView: View {
 
         // If there is a startup error then retry initializing
         if !self.model.isLoaded {
-            self.model.initialize()
+            self.onInitialize()
             return
         }
 
