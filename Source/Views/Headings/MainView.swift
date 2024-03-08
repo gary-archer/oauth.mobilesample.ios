@@ -31,7 +31,7 @@ struct MainView: View {
 
             if self.viewRouter.currentViewType == BlankView.Type.self {
 
-                // Render an empty main view if the app is not loaded yet
+                // Render an empty main view initially, which is updated after load
                 BlankView()
 
             } else if !self.isDeviceSecured {

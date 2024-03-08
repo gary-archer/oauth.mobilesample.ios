@@ -13,6 +13,7 @@ class AppViewModel: ObservableObject {
     private let fetchCache: FetchCache
     let viewModelCoordinator: ViewModelCoordinator
     let eventBus: EventBus
+    var deepLinkStartupUrl: URL?
 
     // State used by the app view
     @Published var isLoaded: Bool
@@ -97,6 +98,7 @@ class AppViewModel: ObservableObject {
         Task {
 
             do {
+
                 // Do the login redirect on the main thread
                 try await MainActor.run {
                     try self.authenticator.startLoginRedirect(viewController: viewController)

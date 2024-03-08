@@ -1,5 +1,4 @@
 import SwiftUI
-import OSLog
 
 /*
  * The transactions view for a particular company
@@ -29,8 +28,6 @@ struct TransactionsView: View {
 
         self.title = String.localizedStringWithFormat(
             NSLocalizedString("transactions_title", comment: ""), self.companyId)
-
-        Logger.trace.info("*** Construct transactions view")
     }
 
     /*

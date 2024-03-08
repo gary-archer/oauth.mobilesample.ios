@@ -4,7 +4,7 @@ import OSLog
  * Used when I want to use the console to capture logs on a device or simulator
  * https://www.avanderlee.com/debugging/oslog-unified-logging/
  *
- * Use like this:
+ * Import and use with code like this:
  * - import OSLog
  * - Logger.trace.info("my trace output")
  *
@@ -13,7 +13,7 @@ import OSLog
  * - Select the connected simulator or device
  * - Filter on com.authsamples.basicmobileapp and select the subsystem option
  * - Ensure that Action / Include Info Messages is selected in the menu of the console app
- * - Select the Start option
+ * - Select the Start option to capture messages
  */
 extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier!

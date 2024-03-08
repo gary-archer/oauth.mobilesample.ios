@@ -1,6 +1,5 @@
 import Foundation
 import SwiftUI
-import OSLog
 
 /*
  * The Swift UI application entry point
@@ -46,13 +45,19 @@ struct SampleApp: App {
                 .environmentObject(self.orientationHandler)
                 .onOpenURL(perform: { url in
 
-                    Logger.trace.info("*** Got deep link URL: \(url)")
+                    if !self.model.isLoaded {
 
-                    // All deep link notifications are received here, so handle login responses when required
-                    if !self.model.resumeOAuthResponse(url: url) {
+                        // If we receive a deep link before the app is loaded it is a deep link startup URL
+                        self.model.deepLinkStartupUrl = url
 
-                        // Handle other deep links in the view router
-                        self.viewRouter.handleDeepLink(url: url)
+                    } else {
+
+                        // Handle login responses when required
+                        if !self.model.resumeOAuthResponse(url: url) {
+
+                            // Handle other deep links in the view router
+                            self.viewRouter.handleDeepLink(url: url)
+                        }
                     }
                 })
                 .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in

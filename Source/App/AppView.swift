@@ -1,6 +1,5 @@
 import SwiftUI
 import AppAuth
-import OSLog
 
 /*
  * The main application view composes other views
@@ -73,13 +72,18 @@ struct AppView: View {
     }
 
     /*
-     * If there is a startup deep link then we wait for onOpenURL to process it
-     * Otherwise, when the app starts normally, change to the default view here
+     * Move to the initial main view once the view model is initialized
      */
     private func onInitializeComplete() {
 
-        if SampleSceneDelegate.startupDeepLinkUrl == nil {
+        if self.model.deepLinkStartupUrl != nil {
 
+            // Apply the deep link startup URL if supplied
+            self.viewRouter.handleDeepLink(url: self.model.deepLinkStartupUrl!)
+
+        } else {
+
+            // Otherwise change to the default view
             self.viewRouter.changeMainView(
                 newViewType: CompaniesView.Type.self,
                 newViewParams: []
