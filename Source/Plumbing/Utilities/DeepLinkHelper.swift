@@ -6,19 +6,22 @@ import Foundation
 class DeepLinkHelper {
 
     /*
-     * Calculate and return the new view
+     * Navigate to a deep linking URL such as 'https://mobile.authsamples.com/basicmobileapp/deeplink/company/2'
+     * Our example is simplistic since we only have a couple of screens
      */
     static func handleDeepLink(url: URL) -> (target: Any.Type, params: [Any]) {
 
         var newView: Any.Type = CompaniesView.Type.self
         var newViewParams = [Any]()
 
-        // Check for a hash fragment
-        let hash = url.fragment
-        if hash != nil {
+        // Get the relative path
+        let deepLinkBasePath = "/basicmobileapp/deeplink/"
+        let lowerCasePath = url.path.lowercased()
+        if lowerCasePath.starts(with: deepLinkBasePath) {
 
             // If we have a company id then move to the transactions view
-            let companyId = self.getDeepLinkedCompanyId(hashFragment: hash!)
+            let relativePath = lowerCasePath.replacingOccurrences(of: deepLinkBasePath, with: "")
+            let companyId = self.getDeepLinkedCompanyId(path: relativePath)
             if companyId != nil {
                 newView = TransactionsView.Type.self
                 newViewParams = [companyId!]
@@ -29,20 +32,19 @@ class DeepLinkHelper {
     }
 
     /*
-     * See if the hash fragment is of the form '#company=2' and if so return the id
+     * See if the hash fragment is of the form 'company/2' and if so return the id
      */
-    static private func getDeepLinkedCompanyId(hashFragment: String) -> String? {
+    static private func getDeepLinkedCompanyId(path: String) -> String? {
 
-        let range = NSRange(location: 0, length: hashFragment.utf16.count)
-        let regex = try? NSRegularExpression(pattern: "^company=(.+)")
+        let range = NSRange(location: 0, length: path.utf16.count)
+        let regex = try? NSRegularExpression(pattern: "^company/(.+)")
 
         // See if we can match the first group
-        if let match = regex?.firstMatch(in: hashFragment, options: [], range: range) {
-            if let foundRange = Range(match.range(at: 1), in: hashFragment) {
+        if let match = regex?.firstMatch(in: path, options: [], range: range) {
+            if let foundRange = Range(match.range(at: 1), in: path) {
 
                 // If so return the first group which contains the company id
-                let companyId = String(hashFragment[foundRange])
-                return companyId
+                return String(path[foundRange])
             }
         }
 
