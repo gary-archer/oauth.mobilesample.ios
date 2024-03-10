@@ -2,6 +2,7 @@
 
 ################################################################################################
 # A script to build and deploy the release build of the IPA file to the connected iPhone or iPad
+# See also the prerequisite instructions in the export.plist file
 ################################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -57,4 +58,3 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered deploying the iOS app'
   exit
 fi
-

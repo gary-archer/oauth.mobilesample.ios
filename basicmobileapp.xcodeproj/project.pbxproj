@@ -105,6 +105,7 @@
 		28E45F092ABB624800625091 /* FetchCacheItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCacheItem.swift; sourceTree = "<group>"; };
 		28E45F0B2ABB634500625091 /* FetchCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCache.swift; sourceTree = "<group>"; };
 		28E45F0D2ABB6ABF00625091 /* FetchCacheKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCacheKeys.swift; sourceTree = "<group>"; };
+		28E5EE1E2B9DCCF000D57F0B /* BasicMobileAppAdHocProfile.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = BasicMobileAppAdHocProfile.mobileprovision; sourceTree = "<group>"; };
 		4E05212724531E0700C84A9F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4E05212B24531E4F00C84A9F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		4E07E3772497DF1B006B1A5A /* ConcurrentActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentActionHandler.swift; sourceTree = "<group>"; };
@@ -266,6 +267,7 @@
 				4ED03262246FE76B00441C53 /* Web */,
 				4E1888E923DDFEB20014638D /* Info.plist */,
 				4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */,
+				28E5EE1E2B9DCCF000D57F0B /* BasicMobileAppAdHocProfile.mobileprovision */,
 				4EF4FDF023F9E268008C3022 /* mobile_config.json */,
 				4E712AA9245C5D1600022757 /* launch.png */,
 				4E1888E523DDFEB20014638D /* LaunchScreen.storyboard */,
@@ -843,10 +845,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = basicmobileapp.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = U3VTCHYEM7;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -858,6 +862,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.authsamples.basicmobileapp;
 				PRODUCT_NAME = Demo;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = BasicMobileAppAdHocProfile;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
