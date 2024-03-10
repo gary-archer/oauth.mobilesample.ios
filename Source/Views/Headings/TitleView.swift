@@ -21,7 +21,7 @@ struct TitleView: View {
     var body: some View {
 
         let deviceWidth = UIScreen.main.bounds.size.width
-        let titleWidth = deviceWidth * 0.55
+        let titleWidth = deviceWidth * 0.5
 
         return HStack {
 
