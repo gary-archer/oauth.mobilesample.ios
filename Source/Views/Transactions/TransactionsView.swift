@@ -10,7 +10,6 @@ struct TransactionsView: View {
     @ObservedObject private var model: TransactionsViewModel
     @ObservedObject private var viewRouter: ViewRouter
 
-    private let companyId: String
     private let title: String
 
     init (model: TransactionsViewModel, viewRouter: ViewRouter) {
@@ -24,10 +23,11 @@ struct TransactionsView: View {
                 companyId = id
             }
         }
-        self.companyId = companyId
 
         self.title = String.localizedStringWithFormat(
-            NSLocalizedString("transactions_title", comment: ""), self.companyId)
+            NSLocalizedString("transactions_title", comment: ""), companyId)
+
+        self.model.setCompanyId(companyId: companyId)
     }
 
     /*
@@ -82,6 +82,13 @@ struct TransactionsView: View {
      * Receive events
      */
     private func handleReloadEvent(event: ReloadDataEvent) {
+
+        if !viewRouter.params.isEmpty {
+            if let id = viewRouter.params[0] as? String {
+                self.model.setCompanyId(companyId: id)
+            }
+        }
+
         let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
         self.loadData(options: options)
     }
@@ -101,6 +108,6 @@ struct TransactionsView: View {
         }
 
         // Ask the model to call the API and update its state, which is then published to update the view
-        self.model.callApi(companyId: self.companyId, options: options, onForbidden: onForbidden)
+        self.model.callApi(options: options, onForbidden: onForbidden)
     }
 }
