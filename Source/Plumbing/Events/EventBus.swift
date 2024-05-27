@@ -14,9 +14,9 @@ class EventBus: ObservableObject {
     /*
      * Publish an event to inform views when the main view has changed
      */
-    func sendNavigatedEvent(isMainView: Bool) {
+    func sendNavigatedEvent(isAuthenticatedView: Bool) {
 
-        let event = NavigatedEvent(isMainView: isMainView)
+        let event = NavigatedEvent(isAuthenticatedView: isAuthenticatedView)
         self.navigatedTopic.send(event)
     }
 

@@ -53,6 +53,6 @@ struct DeviceNotSecuredView: View {
      * Handler the initial load
      */
     private func initialLoad() {
-        self.eventBus.sendNavigatedEvent(isMainView: false)
+        self.eventBus.sendNavigatedEvent(isAuthenticatedView: false)
     }
 }

@@ -65,7 +65,7 @@ struct CompaniesView: View {
      * Do the initial load
      */
     private func initialLoad() {
-        self.eventBus.sendNavigatedEvent(isMainView: true)
+        self.eventBus.sendNavigatedEvent(isAuthenticatedView: true)
         self.loadData()
     }
 

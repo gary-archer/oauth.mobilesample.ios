@@ -51,6 +51,6 @@ struct SessionView: View {
      * Receive events
      */
     private func handleNavigateEvent(event: NavigatedEvent) {
-        self.isVisible = event.isMainView
+        self.isVisible = event.isAuthenticatedView
     }
 }

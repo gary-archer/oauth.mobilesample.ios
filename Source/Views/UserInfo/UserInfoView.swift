@@ -83,7 +83,7 @@ struct UserInfoView: View {
      */
     private func handleNavigateEvent(event: NavigatedEvent) {
 
-        if event.isMainView {
+        if event.isAuthenticatedView {
 
             // Load user data the first time
             self.loadData()
