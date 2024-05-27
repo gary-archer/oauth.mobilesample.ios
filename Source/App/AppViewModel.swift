@@ -92,7 +92,6 @@ class AppViewModel: ObservableObject {
     func login(viewController: UIViewController, onComplete: @escaping (Bool) -> Void) {
 
         // Clear state
-        self.fetchCache.clearAll()
         self.viewModelCoordinator.resetState()
 
         Task {
@@ -143,7 +142,6 @@ class AppViewModel: ObservableObject {
     func logout(viewController: UIViewController, onComplete: @escaping () -> Void) {
 
         // Clear state
-        self.fetchCache.clearAll()
         self.viewModelCoordinator.resetState()
 
         Task {

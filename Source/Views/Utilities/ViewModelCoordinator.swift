@@ -76,6 +76,10 @@ class ViewModelCoordinator {
      * Reset state when the Reload Data button is clicked
      */
     func resetState() {
+        self.loadingCount = 0
+        self.loadedCount = 0
+        self.mainCacheKey = ""
+        self.fetchCache.clearAll()
     }
 
     /*
@@ -91,6 +95,7 @@ class ViewModelCoordinator {
                 error.errorCode == ErrorCodes.loginRequired
             }
             if loginRequired != nil {
+                self.resetState()
                 self.eventBus.sendLoginRequiredEvent()
                 return
             }
