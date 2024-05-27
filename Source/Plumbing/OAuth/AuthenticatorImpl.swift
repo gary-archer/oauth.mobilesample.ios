@@ -108,6 +108,13 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
+     * Return the logged in status
+     */
+    func isLoggedIn() -> Bool {
+        return self.tokenStorage.getTokens() != nil
+    }
+
+    /*
      * The OAuth entry point for login processing runs on the UI thread
      */
     func startLoginRedirect(viewController: UIViewController) throws {

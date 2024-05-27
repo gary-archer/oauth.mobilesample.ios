@@ -87,6 +87,13 @@ class AppViewModel: ObservableObject {
     }
 
     /*
+     * Indicate to the view whether logged in
+     */
+    func isLoggedIn() -> Bool {
+        self.authenticator.isLoggedIn()
+    }
+
+    /*
      * Do the login redirect
      */
     func login(viewController: UIViewController, onComplete: @escaping (Bool) -> Void) {

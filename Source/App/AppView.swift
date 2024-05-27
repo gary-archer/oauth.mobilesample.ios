@@ -92,9 +92,16 @@ struct AppView: View {
     }
 
     /*
-     * Start a login redirect when the view manager informs us that a permanent 401 has occurred
+     * Navigate to the login required view when the view model coordinator raises the event
      */
     private func onLoginRequired() {
+        self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
+    }
+
+    /*
+     * Start the work of the login redirect
+     */
+    private func onStartLogin() {
 
         // Prevent re-entrancy
         if !self.viewRouter.isTopMost {
@@ -158,7 +165,7 @@ struct AppView: View {
     }
 
     /*
-     * Handle home button clicks
+     * The home button either initiates a login or navigates home
      */
     private func onHome() {
 
@@ -177,10 +184,10 @@ struct AppView: View {
         }
 
         // Inspect the current view
-        if self.viewRouter.currentViewType == LoginRequiredView.Type.self {
+        if !self.model.isLoggedIn() {
 
-            // Start a new login when logged out
-            self.onLoginRequired()
+            // Start a new login if we are not authenticated
+            self.onStartLogin()
 
         } else {
 

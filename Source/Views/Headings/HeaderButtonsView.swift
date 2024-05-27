@@ -7,6 +7,7 @@ struct HeaderButtonsView: View {
 
     @EnvironmentObject private var eventBus: EventBus
     @State private var hasData = false
+    @State private var homeTitle = NSLocalizedString("home_button", comment: "")
     @GestureState private var reloadTapped = false
 
     private let onHome: () -> Void
@@ -46,7 +47,7 @@ struct HeaderButtonsView: View {
 
             // A button to navigate home
             Button(action: self.onHome) {
-               Text("home_button")
+                Text(homeTitle)
             }
                 .buttonStyle(homeButtonStyle)
 
@@ -81,6 +82,9 @@ struct HeaderButtonsView: View {
                 .buttonStyle(sessionButtonStyle)
                 .disabled(sessionButtonsDisabled)
         }
+        .onReceive(self.eventBus.navigatedTopic, perform: {data in
+            self.handleNavigateEvent(event: data)
+        })
         .onReceive(self.eventBus.viewModelFetchTopic, perform: {data in
             self.handleViewModelFetchEvent(event: data)
         })
@@ -91,6 +95,18 @@ struct HeaderButtonsView: View {
      */
     private func handleViewModelFetchEvent(event: ViewModelFetchEvent) {
         self.hasData = event.loaded
+    }
+
+    /*
+     * Update our state when the main view changes
+     */
+    private func handleNavigateEvent(event: NavigatedEvent) {
+
+        if event.isAuthenticatedView {
+            self.homeTitle = NSLocalizedString("home_button", comment: "")
+        } else {
+            self.homeTitle = NSLocalizedString("login_button", comment: "")
+        }
     }
 
     /*

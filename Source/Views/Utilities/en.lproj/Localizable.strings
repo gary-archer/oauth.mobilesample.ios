@@ -5,10 +5,11 @@
 "device_secured_message" = "Once complete, return here and click the HOME button";
 
 "home_button" = "Home";
+"login_button" = "Sign In";
 "reload_button" = "Reload";
 "expire_access_token_button" = "Expire Access Token";
 "expire_refresh_token_button" = "Expire Refresh Token";
-"logout_button" = "Logout";
+"logout_button" = "Sign Out";
 
 "target_usd" = "Target USD";
 "investment_usd" = "Investment USD";
@@ -19,7 +20,7 @@
 
 "company_list_title" = "Company List";
 "transactions_title" = "Today's Transactions for Company %@";
-"logged_out_message" = "You are logged out - click HOME to sign in ...";
+"logged_out_message" = "You are signed out - sign in to access the app ...";
 "error_title" = "";
 "error_dialog_close" = "Close Dialog";
 
