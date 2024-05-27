@@ -1,5 +1,5 @@
 {
-  "originHash" : "55450efef7f2260df182ce5e9a819f8c2f73ac89723aa99d1273e62dcb135972",
+  "originHash" : "4f7f6efa23292059315fbad3e2908332ea74f316d8f16c3e3cd4889dceefe502",
   "pins" : [
     {
       "identity" : "appauth-ios",
@@ -11,12 +11,12 @@
       }
     },
     {
-      "identity" : "swiftkeychainwrapper",
+      "identity" : "keychain-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jrendel/SwiftKeychainWrapper",
+      "location" : "https://github.com/evgenyneu/keychain-swift",
       "state" : {
-        "revision" : "185a3165346a03767101c4f62e9a545a0fe0530f",
-        "version" : "4.0.1"
+        "revision" : "5e1b02b6a9dac2a759a1d5dbc175c86bd192a608",
+        "version" : "24.0.0"
       }
     },
     {

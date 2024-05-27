@@ -19,6 +19,7 @@
 		28E45F0A2ABB624800625091 /* FetchCacheItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F092ABB624800625091 /* FetchCacheItem.swift */; };
 		28E45F0C2ABB634500625091 /* FetchCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F0B2ABB634500625091 /* FetchCache.swift */; };
 		28E45F0E2ABB6ABF00625091 /* FetchCacheKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F0D2ABB6ABF00625091 /* FetchCacheKeys.swift */; };
+		28EBFD042C049A200015539D /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 28EBFD032C049A200015539D /* KeychainSwift */; };
 		4E05212824531E0700C84A9F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4E05212724531E0700C84A9F /* README.md */; };
 		4E05212C24531E4F00C84A9F /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4E05212B24531E4F00C84A9F /* .gitignore */; };
 		4E07E3782497DF1B006B1A5A /* ConcurrentActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E3772497DF1B006B1A5A /* ConcurrentActionHandler.swift */; };
@@ -81,7 +82,6 @@
 		4EFCE6822463273200BD1443 /* ErrorConsoleReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */; };
 		4EFCE6832463273200BD1443 /* ErrorFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE6812463273200BD1443 /* ErrorFormatter.swift */; };
 		4EFCE68524632F2600BD1443 /* FetchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE68424632F2600BD1443 /* FetchOptions.swift */; };
-		4EFE4E8E252FB63A00E18129 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */; };
 		4EFE4E8F252FB63A00E18129 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4EAAF736252FB5990021D430 /* AppAuth */; };
 		4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC252451D13D0057C78D /* AppConfiguration.swift */; };
 		4EFEFC292451D13D0057C78D /* OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC262451D13D0057C78D /* OAuthConfiguration.swift */; };
@@ -187,9 +187,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28EBFD042C049A200015539D /* KeychainSwift in Frameworks */,
 				4EFE4E8F252FB63A00E18129 /* AppAuth in Frameworks */,
 				286C83A52AC5C64E00ED61D1 /* SwiftUITooltip in Frameworks */,
-				4EFE4E8E252FB63A00E18129 /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,9 +508,9 @@
 			);
 			name = basicmobileapp;
 			packageProductDependencies = (
-				4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */,
 				4EAAF736252FB5990021D430 /* AppAuth */,
 				286C83A42AC5C64E00ED61D1 /* SwiftUITooltip */,
+				28EBFD032C049A200015539D /* KeychainSwift */,
 			);
 			productName = basicmobileapp;
 			productReference = 4E23798C23CE6D910066DE08 /* Demo.app */;
@@ -543,8 +543,8 @@
 			mainGroup = 4E23798323CE6D900066DE08;
 			packageReferences = (
 				4EAAF727252FB0470021D430 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
-				4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 				286C83A32AC5C64E00ED61D1 /* XCRemoteSwiftPackageReference "SwiftUI-Tooltip" */,
+				28EBFD022C049A200015539D /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = 4E23798D23CE6D910066DE08 /* Products */;
 			projectDirPath = "";
@@ -900,7 +900,15 @@
 			repositoryURL = "https://github.com/quassum/SwiftUI-Tooltip";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.4.0;
+			};
+		};
+		28EBFD022C049A200015539D /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
 			};
 		};
 		4EAAF727252FB0470021D430 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
@@ -911,14 +919,6 @@
 				minimumVersion = 1.7.5;
 			};
 		};
-		4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -927,10 +927,10 @@
 			package = 286C83A32AC5C64E00ED61D1 /* XCRemoteSwiftPackageReference "SwiftUI-Tooltip" */;
 			productName = SwiftUITooltip;
 		};
-		4EAAF72E252FB07D0021D430 /* SwiftKeychainWrapper */ = {
+		28EBFD032C049A200015539D /* KeychainSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4EAAF72D252FB07D0021D430 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
-			productName = SwiftKeychainWrapper;
+			package = 28EBFD022C049A200015539D /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 		4EAAF736252FB5990021D430 /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,5 +1,5 @@
 import Foundation
-import SwiftKeychainWrapper
+import KeychainSwift
 
 /*
  * A helper class to deal with token storage and the keychain
@@ -8,6 +8,7 @@ class TokenStorage {
 
     private var tokenData: TokenData?
     private let storageKey = "com.authsamples.basicmobileapp.tokendata"
+    private let keychain = KeychainSwift()
 
     /*
      * Try to load token data from storage on application startup
@@ -15,7 +16,7 @@ class TokenStorage {
     func loadTokens() {
 
         // Try the load
-        let jsonText = KeychainWrapper.standard.string(forKey: self.storageKey)
+        let jsonText = keychain.get(self.storageKey)
         if jsonText == nil {
             return
         }
@@ -24,6 +25,7 @@ class TokenStorage {
         let data = jsonText!.data(using: .utf8)
         let decoder = JSONDecoder()
         self.tokenData = try? decoder.decode(TokenData.self, from: data!)
+        return
     }
 
     /*
@@ -46,7 +48,7 @@ class TokenStorage {
      */
     func removeTokens() {
         self.tokenData = nil
-        KeychainWrapper.standard.removeObject(forKey: self.storageKey)
+        keychain.delete(self.storageKey)
     }
 
     /*
@@ -80,7 +82,7 @@ class TokenStorage {
         let encoder = JSONEncoder()
         let jsonText = try? encoder.encode(self.tokenData)
         if jsonText != nil {
-            KeychainWrapper.standard.set(jsonText!, forKey: self.storageKey)
+            keychain.set(jsonText!, forKey: self.storageKey)
         }
     }
 }
