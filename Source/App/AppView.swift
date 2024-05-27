@@ -84,7 +84,7 @@ struct AppView: View {
         } else {
 
             // Otherwise change to the default view
-            self.viewRouter.changeMainView(
+            self.viewRouter.navigateToPath(
                 newViewType: CompaniesView.Type.self,
                 newViewParams: []
             )
@@ -95,7 +95,7 @@ struct AppView: View {
      * Navigate to the login required view when the view model coordinator raises the event
      */
     private func onLoginRequired() {
-        self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
+        self.viewRouter.navigateToLoginRequired()
     }
 
     /*
@@ -120,20 +120,12 @@ struct AppView: View {
             if isCancelled {
 
                 // Move to login required if the login was cancelled
-                self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
+                self.viewRouter.navigateToLoginRequired()
 
             } else if self.model.error == nil {
 
-                if self.viewRouter.currentViewType == LoginRequiredView.Type.self {
-
-                    // If the user logs in from the login required view, then navigate home
-                    self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
-
-                } else {
-
-                    // Otherwise we are handling expiry so reload data in the current view
-                    self.model.reloadData(causeError: false)
-                }
+                // Then move to the post login location
+                self.viewRouter.navigateAfterLogin()
             }
         }
 
@@ -157,7 +149,7 @@ struct AppView: View {
         // Handle completion
         let onComplete: () -> Void = {
             self.viewRouter.isTopMost = true
-            self.viewRouter.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
+            self.viewRouter.navigateToLoggedOut()
         }
 
         // Trigger the logout
@@ -192,8 +184,8 @@ struct AppView: View {
         } else {
 
             // Otherwise move to the home view unless already there
-            if self.viewRouter.currentViewType != CompaniesView.Type.self {
-                self.viewRouter.changeMainView(newViewType: CompaniesView.Type.self, newViewParams: [])
+            if self.viewRouter.activeViewType != CompaniesView.Type.self {
+                self.viewRouter.navigateToPath(newViewType: CompaniesView.Type.self, newViewParams: [])
             }
 
             // Also reload user info if we are recovering from an error

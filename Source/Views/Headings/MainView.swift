@@ -29,7 +29,7 @@ struct MainView: View {
 
         return VStack {
 
-            if self.viewRouter.currentViewType == BlankView.Type.self {
+            if self.viewRouter.activeViewType == BlankView.Type.self {
 
                 // Render an empty main view initially, which is updated after load
                 BlankView()
@@ -39,12 +39,12 @@ struct MainView: View {
                 // We require a secured device so move here if prerequisites are not met
                 DeviceNotSecuredView()
 
-            } else if self.viewRouter.currentViewType == TransactionsView.Type.self {
+            } else if self.viewRouter.activeViewType == TransactionsView.Type.self {
 
                 // Render the transactions view
                 TransactionsView(model: self.transactionsViewModel, viewRouter: self.viewRouter)
 
-            } else if self.viewRouter.currentViewType == LoginRequiredView.Type.self {
+            } else if self.viewRouter.activeViewType == LoginRequiredView.Type.self {
 
                 // Render the login required view
                 LoginRequiredView()

@@ -18,8 +18,8 @@ struct TransactionsView: View {
         self.viewRouter = viewRouter
 
         var companyId = ""
-        if !viewRouter.params.isEmpty {
-            if let id = viewRouter.params[0] as? String {
+        if !viewRouter.activeViewParams.isEmpty {
+            if let id = viewRouter.activeViewParams[0] as? String {
                 companyId = id
             }
         }
@@ -83,8 +83,8 @@ struct TransactionsView: View {
      */
     private func handleReloadEvent(event: ReloadDataEvent) {
 
-        if !viewRouter.params.isEmpty {
-            if let id = viewRouter.params[0] as? String {
+        if !viewRouter.activeViewParams.isEmpty {
+            if let id = viewRouter.activeViewParams[0] as? String {
                 self.model.setCompanyId(companyId: id)
             }
         }
@@ -101,7 +101,7 @@ struct TransactionsView: View {
         // For forbidden errors we navigate back to the home view
         let onForbidden: () -> Void = {
 
-            self.viewRouter.changeMainView(
+            self.viewRouter.navigateToPath(
                 newViewType: CompaniesView.Type.self,
                 newViewParams: []
             )

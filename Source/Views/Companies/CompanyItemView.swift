@@ -94,7 +94,7 @@ struct CompanyItemView: View {
      */
     private func moveToTransactions(id: Int) {
 
-        self.viewRouter.changeMainView(
+        self.viewRouter.navigateToPath(
             newViewType: TransactionsView.Type.self,
             newViewParams: [String(id)])
     }

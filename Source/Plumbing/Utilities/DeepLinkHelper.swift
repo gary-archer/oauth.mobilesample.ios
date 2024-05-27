@@ -15,12 +15,12 @@ class DeepLinkHelper {
         var newViewParams = [Any]()
 
         // Get the relative path
-        let deepLinkBasePath = "/basicmobileapp/deeplink/"
+        let deepLinkBasePath = "/basicmobileapp/deeplink"
         let lowerCasePath = url.path.lowercased()
         if lowerCasePath.starts(with: deepLinkBasePath) {
 
             // If we have a company id then move to the transactions view
-            let relativePath = lowerCasePath.replacingOccurrences(of: deepLinkBasePath, with: "")
+            let relativePath = lowerCasePath.replacingOccurrences(of: deepLinkBasePath + "/", with: "")
             let companyId = self.getDeepLinkedCompanyId(path: relativePath)
             if companyId != nil {
                 newView = TransactionsView.Type.self
