@@ -34,8 +34,11 @@ class ViewRouter: ObservableObject {
      */
     func navigateToLoginRequired() {
 
-        self.lastViewType = self.activeViewType
-        self.lastViewParams = self.activeViewParams
+        if self.activeViewType != LoginRequiredView.Type.self {
+            self.lastViewType = self.activeViewType
+            self.lastViewParams = self.activeViewParams
+        }
+
         self.changeMainView(newViewType: LoginRequiredView.Type.self, newViewParams: [])
     }
 
