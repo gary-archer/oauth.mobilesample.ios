@@ -1,0 +1,18 @@
+{
+  "app": {
+    "apiBaseUrl":             "https://api.authsamples-k8s.com/investments"
+  },
+  "oauth": {
+    "authority":              "https://login.authsamples-k8s.com/oauth/v2/oauth-anonymous",
+    "userInfoEndpoint":       "https://login.authsamples-k8s.com/oauth/v2/oauth-userinfo",
+    "clientId":               "mobile_client",
+    "webBaseUrl":             "https://authsamples-k8s.com",
+    "loginRedirectPath":      "/apps/basicmobileapp/postlogin.html",
+    "postLogoutRedirectPath": "/apps/basicmobileapp/postlogout.html",
+    "deepLinkBaseUrl":        "https://mobile.authsamples.com",
+    "loginActivatePath":      "/basicmobileapp/oauth/callback",
+    "postLogoutActivatePath": "/basicmobileapp/oauth/logoutcallback",
+    "scope":                  "openid profile investments",
+    "customLogoutEndpoint":   ""
+  }
+}
