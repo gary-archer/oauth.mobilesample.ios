@@ -6,7 +6,7 @@
     "authority":              "https://login.authsamples-k8s.com/oauth/v2/oauth-anonymous",
     "userInfoEndpoint":       "https://login.authsamples-k8s.com/oauth/v2/oauth-userinfo",
     "clientId":               "mobile_client",
-    "webBaseUrl":             "https://authsamples-k8s.com",
+    "webBaseUrl":             "https://authsamples.com",
     "loginRedirectPath":      "/apps/basicmobileapp/postlogin.html",
     "postLogoutRedirectPath": "/apps/basicmobileapp/postlogout.html",
     "deepLinkBaseUrl":        "https://mobile.authsamples.com",
