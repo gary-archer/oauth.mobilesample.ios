@@ -213,13 +213,13 @@ class FetchClient {
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
         // Add other headers
-        request.addValue("BasicIosApp", forHTTPHeaderField: "x-mycompany-api-client")
-        request.addValue(self.sessionId, forHTTPHeaderField: "x-mycompany-session-id")
-        request.addValue(UUID().uuidString, forHTTPHeaderField: "x-mycompany-correlation-id")
+        request.addValue("BasicIosApp", forHTTPHeaderField: "x-authsamples-api-client")
+        request.addValue(self.sessionId, forHTTPHeaderField: "x-authsamples-session-id")
+        request.addValue(UUID().uuidString, forHTTPHeaderField: "x-authsamples-correlation-id")
 
         // A special header can be sent to thr API to cause a simulated exception
         if options.causeError {
-            request.addValue("SampleApi", forHTTPHeaderField: "x-mycompany-test-exception")
+            request.addValue("SampleApi", forHTTPHeaderField: "x-authsamples-test-exception")
         }
 
         // Add body data if supplied
