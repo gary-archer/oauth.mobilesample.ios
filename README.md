@@ -40,7 +40,7 @@ After login you can test all lifecycle operations, including token refresh, expi
 
 Some developers have reported problems where they receive the following error when a login completes.\
 This occurs if associated domains registration fails, which may need the code signing key for my Apple account.\
-When activating the app with an OAuth response at `https://mobile.authsamples.com`, the URL instead runs in the browser:
+When a deep link starting with `https://mobile.authsamples.com` is invoked, it incorrectly runs in the browser:
 
 ![post login error](doc/post-login-error.png)
 
