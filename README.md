@@ -39,7 +39,7 @@ After login you can test all lifecycle operations, including token refresh, expi
 ## Deep Linking Registration Failures
 
 Some developers have reported problems where they receive the following error when a login completes.\
-This is due to associated domains registration failing:
+This occurs when associated domains registration fails, due to not having access to the code signing key for my Apple account.
 
 ![post login error](doc/post-login-error.png)
 
