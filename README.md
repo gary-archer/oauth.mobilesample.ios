@@ -35,6 +35,38 @@ A deep linking assets file is registered at https://mobile.authsamples.com/.well
 Interstitial web pages ensure a user gesture after login and logout, so that return to the app is reliable.\
 After login you can test all lifecycle operations, including token refresh, expiry events and logout.
 
+
+## Deep Linking Registration Failures
+
+Some developers have reported problems where they receive the following error when a login completes.\
+This is due to associated domains registration failing:
+
+![post login error](doc/post-login-error.png)
+
+To work around this problem and get a working app you can switch to a private URI scheme redirect URI.\
+To do so, update the `mobile_config.json` file with the following content:
+
+```json
+{
+  "app": {
+    "apiBaseUrl":             "https://api.authsamples.com/investments"
+  },
+  "oauth": {
+    "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
+    "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
+    "clientId":               "2vshs4gidsbpnjmsprhh607ege",
+    "webBaseUrl":             "com.authsamples.basicmobileapp",
+    "loginRedirectPath":      ":/callback",
+    "postLogoutRedirectPath": ":/logoutcallback",
+    "deepLinkBaseUrl":        "com.authsamples.basicmobileapp",
+    "loginActivatePath":      "/basicmobileapp/oauth/callback",
+    "postLogoutActivatePath": "/basicmobileapp/oauth/logoutcallback",
+    "scope":                  "openid profile https://api.authsamples.com/investments",
+    "customLogoutEndpoint":   "https://login.authsamples.com/logout"
+  }
+}
+```
+
 ## Further Information
 
 * See the [API Journey - Client Side](https://apisandclients.com/posts/api-journey-client-side) for further information on the app's behaviour
