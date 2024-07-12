@@ -16,7 +16,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 # You must update this to your own Apple Team ID that uses your own certificates
 #
-export APPLE_TEAM_ID='U3VTCHYEM7'
 if [ "$APPLE_TEAM_ID" == '' ]; then
   echo 'No APPLE_TEAM_ID was supplied to the deploy.sh script'
   exit 1

@@ -1,9 +1,10 @@
 #!/bin/bash
 
-################################################################################################
-# A script to build and deploy the release build of the IPA file to the connected iPhone or iPad
+#########################################################################################################
+# I use this script to run the app on my iOS or iPad device, which is registered against my Apple account
+# It enables me to build and deploy the release build of the IPA file to the connected iPhone or iPad
 # See also the prerequisite instructions in the export.plist file
-################################################################################################
+##########################################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 APP_ID='com.authsamples.basicmobileapp'
