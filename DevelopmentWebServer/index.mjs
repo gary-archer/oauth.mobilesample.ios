@@ -9,12 +9,6 @@ const staticOptions = {
 };
 
 const expressApp = express();
-
-expressApp.use((request, response, next) => {
-    console.log('CALLED')
-    next();
-});
-
 expressApp.use('/.well-known', express.static('./.well-known', staticOptions));
 
 const pfxFile = fs.readFileSync('./certs/mobile.authsamples.ssl.p12');
