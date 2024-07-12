@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:mobile.authsamples.com</string>
+		<string>applinks:mobile.authsamples.com?mode=developer</string>
 	</array>
 </dict>
 </plist>
