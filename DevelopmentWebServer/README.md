@@ -29,6 +29,9 @@ To do so, update the `mobile_config.json` file with the following content:
 }
 ```
 
+Yet the usability and use of interstitial pages to enable password autofill then works differently.\
+Apple have different rules about invoking the app using private URI schemes, due to impersonation risks.
+
 ## Difficult Fix
 
 The difficult fix enables you to run the app in my intended manner, using claimed HTTPS scheme redirect URIs on a simulator.\
