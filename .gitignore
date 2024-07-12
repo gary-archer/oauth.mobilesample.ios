@@ -5,4 +5,6 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 build/
+node_modules
 DevelopmentWebServer/.well-known/apple-app-site-association
+DevelopmentWebServer/certs/mobile.authsamples.*
