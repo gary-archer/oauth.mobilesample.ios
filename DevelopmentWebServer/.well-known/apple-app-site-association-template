@@ -1,0 +1,12 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "$APPLE_TEAM_ID.com.authsamples.basicmobileapp",
+                "paths": [ "/basicmobileapp/*" ]
+            }
+        ]
+    }
+}
+

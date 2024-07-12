@@ -1,5 +1,6 @@
 <!--
-Used to create an ad-hoc IPA file from a provisioning profile
+I use this to create an ad-hoc IPA file from a provisioning profile, but it only works for me as the account owner:
+
 - Create a certificate for iOS distribution in the Apple website, and a certificate signing request from Keychain Access
 - Upload the CSR file then download the .CER file and double click to install the public + private keys in Keychain Access
 - Create an Ad Hoc distribution provisioning profile called BasicMobileAppAdHocProfile inked to the certificate
