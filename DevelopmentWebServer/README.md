@@ -35,7 +35,7 @@ Apple have different rules about invoking the app using private URI schemes, due
 ## Difficult Fix
 
 The difficult fix enables you to run the app in my intended manner, using claimed HTTPS scheme redirect URIs on a simulator.\
-This can enable a deeper understanding of infrastructure, development setups and deployment requirements.\
+Using this approach can enable a deeper understanding of how the infrastructure works.\
 Start by adding this entry to the hosts file on your MacBook:
 
 ```text
