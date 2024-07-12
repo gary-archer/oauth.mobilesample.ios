@@ -35,7 +35,7 @@ Apple have different rules about invoking the app using private URI schemes, due
 ## Difficult Fix
 
 The difficult fix enables you to run the app in my intended manner, using claimed HTTPS scheme redirect URIs on a simulator.\
-This can enable a deeper understanding of the underlying infrastructure and better control over development setups.\
+This can enable a deeper understanding of infrastructure, development setups and deployment requirements.\
 Start by adding this entry to the hosts file on your MacBook:
 
 ```text
@@ -96,4 +96,4 @@ AASA-DAC8FEFE-7863-4D2A-93BD-8282A546DC41 { domain: mobile.authsamples.com?mode=
 ## Results
 
 The code sample should then work in the correct way, but only on simulators.\
-A better solution would be to provide your own infrastructure to also enable you to test on devices.
+A better solution would be to adapt the app to point to your own infrastructure and APIs.
