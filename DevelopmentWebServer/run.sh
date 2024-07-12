@@ -2,8 +2,7 @@
 
 #############################################################################################################
 # Some users may get problems running the code sample, due to deep linking failures after login
-# This leads to a mobile deep link being followed as a web URL and an Access Denied message: 
-# https://github.com/gary-archer/oauth.mobilesample.ios?tab=readme-ov-file#deep-linking-registration-failures
+# This leads to a mobile deep link being followed as a web URL and an access denied message
 #
 # First, ensure that you have the following tools installed:
 # - OpenSSL
