@@ -43,7 +43,7 @@ Start by adding this entry to the hosts file on your MacBook:
 ```
 
 Then run a local web server that hosts the deep linking assets file over HTTPS by running this script on your MacBook.\
-You must have Node.js 20+ and OpenSSL 3 installed, and supply your Apple Team ID to the script:
+You must have `Node.js 20+`, `OpenSSL 3` and `envsubst` installed, and supply your Apple Team ID to the script:
 
 ```bash
 export APPLE_TEAM_ID='U3VTCHYEM7'
