@@ -35,14 +35,13 @@ A deep linking assets file is registered at https://mobile.authsamples.com/.well
 Interstitial web pages ensure a user gesture after login and logout, so that return to the app is reliable.\
 After login you can test all lifecycle operations, including token refresh, expiry events and logout.
 
-## Resolving Deep Linking Registration Failures
+## Deep Linking Registration Failures
 
-You may therefore run into the following error after login, where the deep link fails to invoke the mobile app.\
-Instead, the URL invoked by [this JavaScript](Web/postlogin.html) runs in the browser, resulting in a `Not Found` error.
+Some developers may run into the following error after login, where the deep link fails to invoke the mobile app.\
+Instead, the URL invoked by [this JavaScript](Web/postlogin.html) runs in the browser, resulting in a `Not Found` error.\
+To resolve the problem, see the [resolution options](DevelopmentWebServer/README.md).
 
 ![post login error](doc/post-login-error.png)
-
-To resolve the problem, see the [workaround options](DevelopmentWebServer/README.md).
 
 ## Further Information
 

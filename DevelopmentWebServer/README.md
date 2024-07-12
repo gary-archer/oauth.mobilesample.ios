@@ -1,6 +1,6 @@
 # Resolving Deep Linking Registration Failures
 
-Unfortunately, it can be difficult for developers to share working code samples that use deep linking.\
+Unfortunately, it can be difficult for developers to share working code samples that use entitlements.\
 This can prevent my app from running, and there are two resolutions.
 
 ## Easy Fix
@@ -55,7 +55,7 @@ curl -i -k https://mobile.authsamples.com/.well-known/apple-app-site-association
 
 Sign into Xcode with your own Apple account and select the `Automatically manage signing` option.\
 Run the simulator and then the MacBook `Finder / Applications / Utilities / Console` app.\
-Select the simulator in the left hand panel then run the mobile code sample.\
+Select the simulator in the left hand panel of the console app and then run the mobile code sample.\
 Filter the console tool's output on `mobile.authsamples.com`, to see `swcd` output like this:
 
 ```text
