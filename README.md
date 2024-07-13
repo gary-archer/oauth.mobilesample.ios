@@ -12,7 +12,7 @@
 The app is a simple UI with some basic navigation between views, to render fictional resources.\
 The data is returned from an API that authorizes access to resources using claims from multiple sources.
 
-<img src="./doc/views.png" width="50%" alt="App Views">
+![App Views](doc/views.png)
 
 ## Local Development Quick Start
 
@@ -20,7 +20,7 @@ Open the app in Xcode, then run the app on a simulator, to trigger an OpenID Con
 The AppAuth pattern is used, where logins use an `AsWebAuthenticationSession` system browser.\
 This ensures that the app cannot access the user's credentials:
 
-<img src="./doc/login.png" width="50%" alt="App Login">
+![App Login](doc/login.png)
 
 You can login to the app using my AWS Cognito test account:
 
