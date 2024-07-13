@@ -38,10 +38,11 @@ After login you can test all lifecycle operations, including token refresh, expi
 ## Deep Linking Registration Failures
 
 Some developers may run into the following error after login, where the deep link fails to invoke the mobile app.\
-Instead, the URL invoked by [this JavaScript](Web/postlogin.html) runs in the browser, resulting in a `Not Found` error.\
-To enable a development setup, see the [resolution options](DevelopmentWebServer/README.md).
+Instead, the URL invoked by [this JavaScript](Web/postlogin.html) runs in the browser, resulting in a `Not Found` error:
 
 ![post login error](doc/post-login-error.png)
+
+If you run into this type of problem, the [iOS Code Sample – Infrastructure](https://apisandclients.com/posts/ios-code-sample-infrastructure) blog post explains a couple of ways to resolve the problem.
 
 ## Further Information
 

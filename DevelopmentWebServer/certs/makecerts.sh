@@ -111,6 +111,5 @@ fi
 #
 # Delete files no longer needed
 #
-rm "$ENTITY.ca.srl"
 rm "$ENTITY.ssl.csr"
 echo 'All certificates created successfully'
