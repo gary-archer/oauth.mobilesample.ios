@@ -65,6 +65,9 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# Finally, add an entry like this to your /etc/hosts file on the MacBook:
+# - 127.0.0.1 mobile.authsamples.com
+#
 # On the simulator you should now be able to browse to this URL in Safari without SSL trust errors
 # You can then run the app with 'Automatically Manage Signing' and Claimed HTTPS Scheme logins should work
 # - https://mobile.authsamples.com/.well-known/apple-app-site-association
