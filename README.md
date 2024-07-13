@@ -42,7 +42,8 @@ Instead, the URL invoked by [this JavaScript](Web/postlogin.html) runs in the br
 
 ![post login error](doc/post-login-error.png)
 
-If you run into this type of problem, the [iOS Code Sample – Infrastructure](https://apisandclients.com/posts/ios-code-sample-infrastructure) blog post explains a couple of ways to resolve the problem.
+If you run into this type of problem, the [iOS Code Sample – Infrastructure](https://apisandclients.com/posts/ios-code-sample-infrastructure) blog post.\
+That article explains a couple of ways you can resolve the problem on your computer.
 
 ## Further Information
 

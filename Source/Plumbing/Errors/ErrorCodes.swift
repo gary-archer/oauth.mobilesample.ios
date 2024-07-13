@@ -8,9 +8,6 @@ struct ErrorCodes {
     // A general exception in the UI
     static let generalUIError = "ui_error"
 
-    // A problem loading configuration
-    static let configurationError = "configuration_error"
-
     // Used to indicate that the API cannot be called until the user logs in
     static let loginRequired = "login_required"
 
