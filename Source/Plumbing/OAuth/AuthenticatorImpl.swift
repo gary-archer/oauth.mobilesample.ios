@@ -122,9 +122,8 @@ class AuthenticatorImpl: Authenticator {
         do {
 
             // Get the redirect address into a URL object
-            let redirectUri = self.getLoginRedirectUri()
-            guard let loginRedirectUri = URL(string: redirectUri) else {
-                let message = "Error creating URL for : \(redirectUri)"
+            guard let loginRedirectUri = URL(string: self.configuration.redirectUri) else {
+                let message = "Error creating URL for : \(self.configuration.redirectUri)"
                 throw ErrorFactory.fromMessage(message: message)
             }
 
@@ -226,9 +225,8 @@ class AuthenticatorImpl: Authenticator {
             self.clearLoginState()
 
             // Get the post logout address as a URL object
-            let postLogoutUrl = self.getPostLogoutRedirectUri()
-            guard let postLogoutRedirectUri = URL(string: postLogoutUrl) else {
-                let message = "Error creating URL for : \(postLogoutUrl)"
+            guard let postLogoutRedirectUri = URL(string: self.configuration.postLogoutRedirectUri) else {
+                let message = "Error creating URL for : \(self.configuration.postLogoutRedirectUri)"
                 throw ErrorFactory.fromMessage(message: message)
             }
 
@@ -298,9 +296,10 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
-     * Resume a login or logout operation
-     * We need to work around this AppAuth iOS issue: https://github.com/openid/AppAuth-iOS/issues/356
-     * To do so we must resume on the original redirect URI so some string replacement is needed
+     * We need to work around this AppAuth iOS bug: https://github.com/openid/AppAuth-iOS/issues/356
+     * The request used a redirect URI beginning with https://authsamples.com
+     * The response URL begins with https://mobile.authsamples.com and the library does not accept it
+     * To resolvet this we must do some string replacement to update the response URL
      */
     func resumeOperation(responseUrl: URL) {
 
@@ -311,22 +310,21 @@ class AuthenticatorImpl: Authenticator {
 
             // If we are invoked on the login activation URL then resume on the login redirect URI
             let loginActivationUri = self.getLoginReactivateUri().lowercased()
-            let loginRedirectUri = self.getLoginRedirectUri().lowercased()
             if responseUrl.absoluteString.lowercased().starts(with: loginActivationUri) {
-                resumeUrl = "\(loginRedirectUri)?\(queryString)"
+                resumeUrl = "\(self.configuration.redirectUri)?\(queryString)"
             }
 
             // If we are invoked on the logout activation URL then resume on the logout redirect URI
             let logoutActivationUri = self.getPostLogoutReactivateUri().lowercased()
-            let logoutRedirectUri = self.getPostLogoutRedirectUri().lowercased()
             if responseUrl.absoluteString.lowercased().starts(with: logoutActivationUri) {
-                resumeUrl = "\(logoutRedirectUri)?\(queryString)"
+                resumeUrl = "\(self.configuration.postLogoutRedirectUri)?\(queryString)"
             }
 
             // Resume OAuth processing with the URL
             if resumeUrl != nil {
-                self.currentOAuthSession!.resumeExternalUserAgentFlow(
-                    with: URL(string: resumeUrl!)!)
+                self.currentOAuthSession!.resumeExternalUserAgentFlow(with: URL(string: resumeUrl!)!)
+            } else {
+                self.currentOAuthSession!.resumeExternalUserAgentFlow(with: responseUrl)
             }
         }
     }
@@ -483,35 +481,17 @@ class AuthenticatorImpl: Authenticator {
     }
 
     /*
-     * Return the URL to the interstitial page used for login redirects
-     * https://authsamples.com/apps/basicmobileapp/postlogin.html
-     */
-    private func getLoginRedirectUri() -> String {
-        return "\(self.configuration.webBaseUrl)\(self.configuration.loginRedirectPath)"
-    }
-
-    /*
-     * Return the URL to the interstitial page used for logout redirects
-     * https://authsamples.com/apps/basicmobileapp/postlogout.html
-     */
-    private func getPostLogoutRedirectUri() -> String {
-        return "\(self.configuration.webBaseUrl)\(self.configuration.postLogoutRedirectPath)"
-    }
-
-    /*
      * Return the deep linking app location that the interstitial page invokes after login
-     * https://mobile.authsamples.com/basicmobileapp/oauth/callback
      */
     private func getLoginReactivateUri() -> String {
-        return "\(self.configuration.deepLinkBaseUrl)\(self.configuration.loginActivatePath)"
+        return "\(self.configuration.deepLinkBaseUrl)/basicmobileapp/oauth/callback"
     }
 
     /*
      * Return the deep linking app location that the interstitial page invokes after logout
-     * https://mobile.authsamples.com/basicmobileapp/oauth/logoutcallback
      */
     private func getPostLogoutReactivateUri() -> String {
-        return "\(self.configuration.deepLinkBaseUrl)\(self.configuration.postLogoutActivatePath)"
+        return "\(self.configuration.deepLinkBaseUrl)/basicmobileapp/oauth/logoutcallback"
     }
 
     /*
