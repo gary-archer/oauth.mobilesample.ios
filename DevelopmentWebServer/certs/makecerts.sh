@@ -1,8 +1,8 @@
 #!/bin/bash
 
-##################################################################################################
-# Creates a development root CA, then issues wildcard certificates for a domain and its subdomains
-##################################################################################################
+###################################################################################
+# Creates a development SSL certificate to host the deep linking mobile assets file
+###################################################################################
 
 #
 # Ensure that we are in the folder containing this script
