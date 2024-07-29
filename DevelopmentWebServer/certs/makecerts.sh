@@ -47,7 +47,7 @@ DOMAIN='mobile.authsamples'
 #
 # Create the root private key
 #
-openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:prime256v1 -out $DOMAIN.ca.key
+openssl ecparam -name prime256v1 -genkey -noout -out $DOMAIN.ca.key
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the Root CA key'
   exit 1
@@ -72,7 +72,7 @@ fi
 #
 # Create the SSL key
 #
-openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:prime256v1 -out $DOMAIN.ssl.key
+openssl ecparam -name prime256v1 -genkey -noout -out $DOMAIN.ssl.key
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the SSL key'
   exit 1
