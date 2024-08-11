@@ -484,14 +484,14 @@ class AuthenticatorImpl: Authenticator {
      * Return the deep linking app location that the interstitial page invokes after login
      */
     private func getLoginReactivateUri() -> String {
-        return "\(self.configuration.deepLinkBaseUrl)/basicmobileapp/oauth/callback"
+        return "\(self.configuration.deepLinkBaseUrl)/finalmobileapp/oauth/callback"
     }
 
     /*
      * Return the deep linking app location that the interstitial page invokes after logout
      */
     private func getPostLogoutReactivateUri() -> String {
-        return "\(self.configuration.deepLinkBaseUrl)/basicmobileapp/oauth/logoutcallback"
+        return "\(self.configuration.deepLinkBaseUrl)/finalmobileapp/oauth/logoutcallback"
     }
 
     /*

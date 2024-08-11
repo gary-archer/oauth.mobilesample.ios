@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.authsamples.basicmobileapp</string>
+				<string>com.authsamples.finalmobileapp</string>
 			</array>
 		</dict>
 	</array>

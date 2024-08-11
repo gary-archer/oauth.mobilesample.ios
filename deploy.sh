@@ -7,7 +7,7 @@
 ##########################################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-APP_ID='com.authsamples.basicmobileapp'
+APP_ID='com.authsamples.finalmobileapp'
 
 #
 # Do a clean
@@ -21,7 +21,7 @@ fi
 #
 # Do a release build to produce an archive file
 #
-xcodebuild -project basicmobileapp.xcodeproj -scheme basicmobileapp -configuration Release archive -archivePath build/basicmobileapp.xcarchive
+xcodebuild -project finalmobileapp.xcodeproj -scheme finalmobileapp -configuration Release archive -archivePath build/finalmobileapp.xcarchive
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the iOS app'
   exit
@@ -30,7 +30,7 @@ fi
 #
 # Export the archive to an IPA file, which works according to the instructions in the export.plist file
 #
-xcodebuild -exportArchive -archivePath build/basicmobileapp.xcarchive -exportPath build -exportOptionsPlist export.plist
+xcodebuild -exportArchive -archivePath build/finalmobileapp.xcarchive -exportPath build -exportOptionsPlist export.plist
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the iOS app to an archive file'
   exit

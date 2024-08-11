@@ -138,7 +138,7 @@
 		4E712AA9245C5D1600022757 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch.png; sourceTree = "<group>"; };
 		4E79B09B241428310054C382 /* UIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIError.swift; sourceTree = "<group>"; };
 		4E85F2CB2414039300E0ACA8 /* FetchClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchClient.swift; sourceTree = "<group>"; };
-		4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = basicmobileapp.entitlements; sourceTree = "<group>"; };
+		4E87A3A224588C9400E522BF /* finalmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = finalmobileapp.entitlements; sourceTree = "<group>"; };
 		4EA2E3952848ED650058A0B7 /* export.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = export.plist; sourceTree = "<group>"; };
 		4EB180DB24508FC600A2C045 /* ErrorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLine.swift; sourceTree = "<group>"; };
 		4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
@@ -262,7 +262,7 @@
 				4E1888E123DDFEB20014638D /* Source */,
 				4EBCC9552458809900D5A2A9 /* Security */,
 				4ED03262246FE76B00441C53 /* Web */,
-				4E87A3A224588C9400E522BF /* basicmobileapp.entitlements */,
+				4E87A3A224588C9400E522BF /* finalmobileapp.entitlements */,
 				4E1888E923DDFEB20014638D /* Info.plist */,
 				4E712AA9245C5D1600022757 /* launch.png */,
 				4E1888E523DDFEB20014638D /* LaunchScreen.storyboard */,
@@ -488,9 +488,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4E23798B23CE6D910066DE08 /* basicmobileapp */ = {
+		4E23798B23CE6D910066DE08 /* finalmobileapp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4E2379A023CE6D920066DE08 /* Build configuration list for PBXNativeTarget "basicmobileapp" */;
+			buildConfigurationList = 4E2379A023CE6D920066DE08 /* Build configuration list for PBXNativeTarget "finalmobileapp" */;
 			buildPhases = (
 				4E23798823CE6D910066DE08 /* Sources */,
 				4E23798A23CE6D910066DE08 /* Resources */,
@@ -501,13 +501,13 @@
 			);
 			dependencies = (
 			);
-			name = basicmobileapp;
+			name = finalmobileapp;
 			packageProductDependencies = (
 				4EAAF736252FB5990021D430 /* AppAuth */,
 				286C83A42AC5C64E00ED61D1 /* SwiftUITooltip */,
 				28EBFD032C049A200015539D /* KeychainSwift */,
 			);
-			productName = basicmobileapp;
+			productName = finalmobileapp;
 			productReference = 4E23798C23CE6D910066DE08 /* Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -527,7 +527,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4E23798723CE6D900066DE08 /* Build configuration list for PBXProject "basicmobileapp" */;
+			buildConfigurationList = 4E23798723CE6D900066DE08 /* Build configuration list for PBXProject "finalmobileapp" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -545,7 +545,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4E23798B23CE6D910066DE08 /* basicmobileapp */,
+				4E23798B23CE6D910066DE08 /* finalmobileapp */,
 			);
 		};
 /* End PBXProject section */
@@ -815,7 +815,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = basicmobileapp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = finalmobileapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
@@ -829,7 +829,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.authsamples.basicmobileapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.authsamples.finalmobileapp;
 				PRODUCT_NAME = Demo;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -841,7 +841,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = basicmobileapp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = finalmobileapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
@@ -854,7 +854,7 @@
 					"@executable_path/Frameworks",
 				);
 				"OTHER_SWIFT_FLAGS[arch=*]" = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.authsamples.basicmobileapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.authsamples.finalmobileapp;
 				PRODUCT_NAME = Demo;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -865,7 +865,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4E23798723CE6D900066DE08 /* Build configuration list for PBXProject "basicmobileapp" */ = {
+		4E23798723CE6D900066DE08 /* Build configuration list for PBXProject "finalmobileapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4E23799E23CE6D920066DE08 /* Debug */,
@@ -874,7 +874,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4E2379A023CE6D920066DE08 /* Build configuration list for PBXNativeTarget "basicmobileapp" */ = {
+		4E2379A023CE6D920066DE08 /* Build configuration list for PBXNativeTarget "finalmobileapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4E2379A123CE6D920066DE08 /* Debug */,

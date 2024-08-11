@@ -12,7 +12,7 @@ struct ErrorConsoleReporter {
 
         let lines = ErrorFormatter.getErrorLines(error: error)
         lines.forEach { line in
-            NSLog("BasicMobileApp Error: \(line.name) = \(line.value)")
+            NSLog("finalmobileapp Error: \(line.name) = \(line.value)")
         }
     }
 }

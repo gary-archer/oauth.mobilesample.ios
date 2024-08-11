@@ -3,8 +3,8 @@
         "apps": [],
         "details": [
             {
-                "appID": "$APPLE_TEAM_ID.com.authsamples.basicmobileapp",
-                "paths": [ "/basicmobileapp/*" ]
+                "appID": "$APPLE_TEAM_ID.com.authsamples.finalmobileapp",
+                "paths": [ "/finalmobileapp/*" ]
             }
         ]
     }

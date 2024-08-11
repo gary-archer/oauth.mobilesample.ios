@@ -8,5 +8,5 @@ exclude_paths: [
     'Assets.xcassets/*',
     'Base.lproj/*',
     'Preview Content/*',
-    'basicmobileapp.xcodeproj/*'
+    'finalmobileapp.xcodeproj/*'
 ]

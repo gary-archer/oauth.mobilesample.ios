@@ -7,7 +7,7 @@ import KeychainSwift
 class TokenStorage {
 
     private var tokenData: TokenData?
-    private let storageKey = "com.authsamples.basicmobileapp.tokendata"
+    private let storageKey = "com.authsamples.finalmobileapp.tokendata"
     private let keychain = KeychainSwift()
 
     /*

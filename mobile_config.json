@@ -5,8 +5,8 @@
   "oauth": {
     "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
     "clientId":               "2vshs4gidsbpnjmsprhh607ege",
-    "redirectUri":            "https://authsamples.com/apps/basicmobileapp/postlogin.html",
-    "postLogoutRedirectUri":  "https://authsamples.com/apps/basicmobileapp/postlogout.html",
+    "redirectUri":            "https://authsamples.com/apps/finalmobileapp/postlogin.html",
+    "postLogoutRedirectUri":  "https://authsamples.com/apps/finalmobileapp/postlogout.html",
     "scope":                  "openid profile https://api.authsamples.com/investments",
     "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
     "customLogoutEndpoint":   "https://login.authsamples.com/logout",

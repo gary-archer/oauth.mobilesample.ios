@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4E23798B23CE6D910066DE08"
                BuildableName = "Demo.app"
-               BlueprintName = "basicmobileapp"
-               ReferencedContainer = "container:basicmobileapp.xcodeproj">
+               BlueprintName = "finalmobileapp"
+               ReferencedContainer = "container:finalmobileapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,8 +46,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4E23798B23CE6D910066DE08"
             BuildableName = "Demo.app"
-            BlueprintName = "basicmobileapp"
-            ReferencedContainer = "container:basicmobileapp.xcodeproj">
+            BlueprintName = "finalmobileapp"
+            ReferencedContainer = "container:finalmobileapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -63,8 +63,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4E23798B23CE6D910066DE08"
             BuildableName = "Demo.app"
-            BlueprintName = "basicmobileapp"
-            ReferencedContainer = "container:basicmobileapp.xcodeproj">
+            BlueprintName = "finalmobileapp"
+            ReferencedContainer = "container:finalmobileapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

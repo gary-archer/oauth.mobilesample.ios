@@ -6,7 +6,7 @@ import Foundation
 class DeepLinkHelper {
 
     /*
-     * Navigate to a deep linking URL such as 'https://mobile.authsamples.com/basicmobileapp/deeplink/companies/2'
+     * Navigate to a deep linking URL such as 'https://mobile.authsamples.com/finalmobileapp/deeplink/companies/2'
      * Our example is simplistic since we only have a couple of screens
      */
     static func handleDeepLink(url: URL) -> (target: Any.Type, params: [Any]) {
@@ -15,7 +15,7 @@ class DeepLinkHelper {
         var newViewParams = [Any]()
 
         // Get the relative path
-        let deepLinkBasePath = "/basicmobileapp/deeplink"
+        let deepLinkBasePath = "/finalmobileapp/deeplink"
         let lowerCasePath = url.path.lowercased()
         if lowerCasePath.starts(with: deepLinkBasePath) {
 

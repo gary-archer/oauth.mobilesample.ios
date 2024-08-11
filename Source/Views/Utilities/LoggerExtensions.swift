@@ -11,7 +11,7 @@ import OSLog
  * Then perform these actions:
  * - Run the macOS console app
  * - Select the connected simulator or device
- * - Filter on com.authsamples.basicmobileapp and select the subsystem option
+ * - Filter on com.authsamples.finalmobileapp and select the subsystem option
  * - Ensure that Action / Include Info Messages is selected in the menu of the console app
  * - Select the Start option to capture messages
  */
