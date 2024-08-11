@@ -297,7 +297,7 @@ class AuthenticatorImpl: Authenticator {
 
     /*
      * We need to work around this AppAuth iOS bug: https://github.com/openid/AppAuth-iOS/issues/356
-     * The request used a redirect URI beginning with https://authsamples.com
+     * The request used a redirect URI beginning with https://www.authsamples.com
      * The response URL begins with https://mobile.authsamples.com and the library does not accept it
      * To resolvet this we must do some string replacement to update the response URL
      */
