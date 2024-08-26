@@ -1,0 +1,12 @@
+---
+exclude_paths: [
+    '*',
+    'doc/*',
+    'Web/*',
+    'Security/*',
+    'DevelopmentWebServer/*',
+    'Assets.xcassets/*',
+    'Base.lproj/*',
+    'Preview Content/*',
+    'finalmobileapp.xcodeproj/*'
+]

@@ -1,0 +1,10 @@
+##
+## Control swiftlint behaviour
+##
+
+included:
+  - Source
+
+identifier_name:
+  excluded:
+    - id
