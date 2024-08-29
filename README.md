@@ -18,7 +18,7 @@ The app uses user attributes from both the OpenID Connect userinfo endpoint and 
 
 Open the app in Xcode and run the app on a simulator, to trigger an OpenID Connect login flow.\
 This triggers an OpenID Connect code flow to authenticate the user with the AppAuth pattern.\
-The login runs in the system browser using a `AsWebAuthenticationSession` and the app cannot access the user's credentials:
+Logins run in the system browser using a `AsWebAuthenticationSession` and the app cannot access the user's credentials:
 
 ![App Login](doc/login.png)
 
