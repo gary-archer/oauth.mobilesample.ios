@@ -55,7 +55,7 @@ If you run into this type of problem, see the [iOS Code Sample – Infrastructur
 ## Infrastructure
 
 * [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) implements the code flow with PKCE.
-* [AWS Serverless](https://github.com/gary-archer/oauth.apisample.serverless) or Kubernetes is used to host remote API endpoints the the app calls.
+* [AWS Serverless](https://github.com/gary-archer/oauth.apisample.serverless) or Kubernetes is used to host remote API endpoints that the app calls.
 * AWS Cognito is the default authorization server for the app and API.
 * The iOS Keychain stores tokens on the device and isolates this data from other apps.
 * AWS S3 and Cloudfront serve mobile deep linking asset files and interstitial web pages.
