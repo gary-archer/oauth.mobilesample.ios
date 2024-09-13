@@ -219,7 +219,7 @@ class FetchClient {
 
         // A special header can be sent to thr API to cause a simulated exception
         if options.causeError {
-            request.addValue("SampleApi", forHTTPHeaderField: "x-authsamples-test-exception")
+            request.addValue("FinalApi", forHTTPHeaderField: "x-authsamples-test-exception")
         }
 
         // Add body data if supplied
