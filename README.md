@@ -41,12 +41,12 @@ Instead, the URL invoked by [this JavaScript](Web/postlogin.html) runs in the br
 
 ![post login error](doc/post-login-error.png)
 
-If you run into this type of problem, see the [iOS Code Sample – Infrastructure](https://apisandclients.com/posts/ios-code-sample-infrastructure) blog post on ways to resolve it.
+If you run into this type of problem, see the [iOS Code Sample – Infrastructure](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/ios-code-sample-infrastructure) blog post on ways to resolve it.
 
 ## Further Information
 
-* See the [API Journey - Client Side](https://apisandclients.com/posts/api-journey-client-side) for further information on the app's behaviour.
-* See blog posts for further details specific to the iOS app, starting in the [Code Sample Overview](https://apisandclients.com/posts/ios-code-sample-overview).
+* See the [API Journey - Client Side](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/api-journey-client-side.mdx) for further information on the app's behaviour.
+* See blog posts for further details specific to the iOS app, starting in the [Code Sample Overview](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/ios-code-sample-overview).
 
 ## Programming Languages
 
