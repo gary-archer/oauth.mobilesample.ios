@@ -12,10 +12,14 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# You must update this to your own Apple Team ID that uses your own certificates
+# You must run the script with you own Apple details
 #
 if [ "$APPLE_TEAM_ID" == '' ]; then
   echo 'No APPLE_TEAM_ID was supplied to the deploy.sh script'
+  exit 1
+fi
+if [ "$BUNDLE_ID" == '' ]; then
+  echo 'No BUNDLE_ID was supplied to the deploy.sh script'
   exit 1
 fi
 
@@ -37,7 +41,7 @@ fi
 #
 xcrun simctl keychain booted add-root-cert ./certs/mobile.authsamples.ca.pem
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered creating local SSL certificates'
+  echo 'Problem encountered deploying SSL certificates to the simulator'
   exit 1
 fi
 

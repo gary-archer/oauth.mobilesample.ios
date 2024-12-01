@@ -3,7 +3,7 @@
         "apps": [],
         "details": [
             {
-                "appID": "$APPLE_TEAM_ID.com.authsamples.finalmobileapp",
+                "appID": "$APPLE_TEAM_ID.$BUNDLE_ID",
                 "paths": [ "/finalmobileapp/*" ]
             }
         ]
