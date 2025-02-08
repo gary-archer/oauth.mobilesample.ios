@@ -82,17 +82,24 @@ fi
 # Create the SSL certificate, which must have a limited lifetime
 #
 openssl req \
-    -x509 \
     -new \
-    -CA $DOMAIN.ca.crt \
-    -CAkey $DOMAIN.ca.key \
     -key $DOMAIN.ssl.key \
-    -out $DOMAIN.ssl.crt \
-    -subj "/CN=$DOMAIN.com" \
+    -out $DOMAIN.ssl.csr \
+    -subj "/CN=$DOMAIN.com"
+if [ $? -ne 0 ]; then
+  echo '*** Problem encountered creating the certificate signing request'
+  exit 1
+fi
+
+openssl x509 -req \
+    -in "$DOMAIN.ssl.csr" \
+    -CA "$DOMAIN.ca.crt" \
+    -CAkey "$DOMAIN.ca.key" \
+    -out "$DOMAIN.ssl.crt" \
+    -sha256 \
     -days 365 \
-    -addext 'basicConstraints=critical,CA:FALSE' \
-    -addext 'extendedKeyUsage=serverAuth' \
-    -addext "subjectAltName=DNS:mobile.authsamples.com"
+    -extfile extensions.cnf \
+    -extensions server_ext
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the SSL certificate'
   exit 1
@@ -116,4 +123,5 @@ fi
 #
 # Indicate success
 #
+rm ./*.csr
 echo 'All certificates created successfully'
