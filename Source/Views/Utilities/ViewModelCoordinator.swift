@@ -2,7 +2,7 @@ class ViewModelCoordinator {
 
     private let eventBus: EventBus
     private let fetchCache: FetchCache
-    private let authenticator: Authenticator
+    private let oauthClient: OAuthClient
     private var mainCacheKey: String
     private var loadingCount: Int
     private var loadedCount: Int
@@ -10,10 +10,10 @@ class ViewModelCoordinator {
     /*
      * Set the initial state
      */
-    init(eventBus: EventBus, fetchCache: FetchCache, authenticator: Authenticator) {
+    init(eventBus: EventBus, fetchCache: FetchCache, oauthClient: OAuthClient) {
         self.eventBus = eventBus
         self.fetchCache = fetchCache
-        self.authenticator = authenticator
+        self.oauthClient = oauthClient
         self.mainCacheKey = ""
         self.loadingCount = 0
         self.loadedCount = 0
@@ -109,7 +109,7 @@ class ViewModelCoordinator {
             // The sample's user behavior is to present an error, after which clicking Home runs a new login redirect
             // This allows the frontend application to get new tokens, which may fix the problem in some cases
             if oauthConfigurationError != nil {
-                self.authenticator.clearLoginState()
+                self.oauthClient.clearLoginState()
             }
          }
      }

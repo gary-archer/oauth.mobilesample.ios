@@ -8,7 +8,7 @@ class AppViewModel: ObservableObject {
 
     // Global objects
     private let configuration: Configuration
-    private let authenticator: Authenticator
+    private let oauthClient: OAuthClient
     private let fetchClient: FetchClient
     private let fetchCache: FetchCache
     let viewModelCoordinator: ViewModelCoordinator
@@ -38,21 +38,21 @@ class AppViewModel: ObservableObject {
         // swiftlint:disable:next force_try
         self.configuration = try! ConfigurationLoader.load()
 
-        // Create the global authenticator
-        self.authenticator = AuthenticatorImpl(configuration: self.configuration.oauth)
+        // Create the global OAuth client
+        self.oauthClient = OAuthClientImpl(configuration: self.configuration.oauth)
 
         // Create the API Client from configuration
         // swiftlint:disable:next force_try
         self.fetchClient = try! FetchClient(
             configuration: self.configuration,
             fetchCache: self.fetchCache,
-            authenticator: self.authenticator)
+            oauthClient: self.oauthClient)
 
         // Create an object that coordinates API requests from multiple views
         self.viewModelCoordinator = ViewModelCoordinator(
             eventBus: eventBus,
             fetchCache: self.fetchCache,
-            authenticator: self.authenticator)
+            oauthClient: self.oauthClient)
 
         // Update state
         self.isLoaded = false
@@ -70,7 +70,7 @@ class AppViewModel: ObservableObject {
             do {
 
                 // Try to do initial OAuth work
-                try await self.authenticator.initialize()
+                try await self.oauthClient.initialize()
                 await MainActor.run {
                     self.isLoaded = true
                     onComplete()
@@ -90,7 +90,7 @@ class AppViewModel: ObservableObject {
      * Indicate to the view whether logged in
      */
     func isLoggedIn() -> Bool {
-        self.authenticator.isLoggedIn()
+        self.oauthClient.isLoggedIn()
     }
 
     /*
@@ -107,14 +107,14 @@ class AppViewModel: ObservableObject {
 
                 // Do the login redirect on the main thread
                 try await MainActor.run {
-                    try self.authenticator.startLoginRedirect(viewController: viewController)
+                    try self.oauthClient.startLoginRedirect(viewController: viewController)
                 }
 
                 // Handle the login response on a background thread
-                let response = try await self.authenticator.handleLoginResponse()
+                let response = try await self.oauthClient.handleLoginResponse()
 
                 // Swap the code for tokens on a background thread
-                try await self.authenticator.finishLogin(authResponse: response)
+                try await self.oauthClient.finishLogin(authResponse: response)
 
                 // Indicate success
                 await MainActor.run {
@@ -156,11 +156,11 @@ class AppViewModel: ObservableObject {
             do {
                 // Do the logout redirect on the main thread
                 try await MainActor.run {
-                    try self.authenticator.startLogoutRedirect(viewController: viewController)
+                    try self.oauthClient.startLogoutRedirect(viewController: viewController)
                 }
 
                 // Handle the logout response on a background thread
-                _ = try await self.authenticator.handleLogoutResponse()
+                _ = try await self.oauthClient.handleLogoutResponse()
 
                 // Indicate success
                 await MainActor.run {
@@ -190,8 +190,8 @@ class AppViewModel: ObservableObject {
      */
     func resumeOAuthResponse(url: URL) -> Bool {
 
-        if self.authenticator.isOAuthResponse(responseUrl: url) {
-            self.authenticator.resumeOperation(responseUrl: url)
+        if self.oauthClient.isOAuthResponse(responseUrl: url) {
+            self.oauthClient.resumeOperation(responseUrl: url)
             return true
         }
 
@@ -222,14 +222,14 @@ class AppViewModel: ObservableObject {
      * Make the access token act expired
      */
     func onExpireAccessToken() {
-        self.authenticator.expireAccessToken()
+        self.oauthClient.expireAccessToken()
     }
 
     /*
      * Make the refresh token act expired
      */
     func onExpireRefreshToken() {
-        self.authenticator.expireRefreshToken()
+        self.oauthClient.expireRefreshToken()
     }
 
     /*

@@ -7,17 +7,17 @@ class FetchClient {
 
     private var configuration: Configuration
     private var fetchCache: FetchCache
-    private var authenticator: Authenticator
+    private var oauthClient: OAuthClient
     let sessionId: String
 
     init(
         configuration: Configuration,
         fetchCache: FetchCache,
-        authenticator: Authenticator) throws {
+        oauthClient: OAuthClient) throws {
 
         self.configuration = configuration
         self.fetchCache = fetchCache
-        self.authenticator = authenticator
+        self.oauthClient = oauthClient
         self.sessionId = UUID().uuidString
     }
 
@@ -131,7 +131,7 @@ class FetchClient {
         cacheItem = self.fetchCache.createItem(key: options.cacheKey)
 
             // Avoid API requests when there is no access token, and instead trigger a login redirect
-        var accessToken = authenticator.getAccessToken()
+        var accessToken = oauthClient.getAccessToken()
         if accessToken == nil {
 
             let loginRequiredError = ErrorFactory.fromLoginRequired()
@@ -162,7 +162,7 @@ class FetchClient {
 
             do {
                 // Try to refresh the access token
-                accessToken = try await authenticator.synchronizedRefreshAccessToken()
+                accessToken = try await oauthClient.synchronizedRefreshAccessToken()
 
             } catch {
 

@@ -3,9 +3,9 @@ import UIKit
 import AppAuth
 
 /*
- * An abstraction to represent authentication related operations
+ * An abstraction to represent OAuth related operations
  */
-protocol Authenticator {
+protocol OAuthClient {
 
     // Startup initialization
     func initialize() async throws

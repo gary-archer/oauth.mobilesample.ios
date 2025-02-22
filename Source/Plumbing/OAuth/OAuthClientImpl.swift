@@ -5,7 +5,7 @@ import AppAuth
  * The class for handling OAuth operations
  */
 // swiftlint:disable type_body_length
-class AuthenticatorImpl: Authenticator {
+class OAuthClientImpl: OAuthClient {
 
     private let configuration: OAuthConfiguration
     private var metadata: OIDServiceConfiguration?
