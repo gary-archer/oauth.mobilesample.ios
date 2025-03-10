@@ -47,7 +47,7 @@ class ViewModelCoordinator {
         }
 
         // Perform error logic after all views have loaded
-        self.handleErrorsAfterLoad()
+        self.handleAllViewsLoaded()
     }
 
     /*
@@ -62,7 +62,7 @@ class ViewModelCoordinator {
      */
     func onUserInfoViewModelLoaded() {
         self.loadedCount += 1
-        self.handleErrorsAfterLoad()
+        self.handleAllViewsLoaded()
     }
 
     /*
@@ -83,14 +83,19 @@ class ViewModelCoordinator {
     }
 
     /*
-     * Handle OAuth related errors
+     * Handle OAuth related errors once all views finish loading
      */
-    private func handleErrorsAfterLoad() {
+    private func handleAllViewsLoaded() {
 
         if self.loadedCount == self.loadingCount {
 
-            let errors = self.getLoadErrors()
+            // Reset counts
+            self.loadingCount = 0
+            self.loadedCount = 0
 
+            // Login required errors occur when there are no tokens yet or when token refresh fails
+            // The sample's user behavior is to automatically redirect the user to login
+            let errors = self.getLoadErrors()
             let loginRequired = errors.first { error in
                 error.errorCode == ErrorCodes.loginRequired
             }
