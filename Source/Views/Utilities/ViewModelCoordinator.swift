@@ -2,7 +2,6 @@ class ViewModelCoordinator {
 
     private let eventBus: EventBus
     private let fetchCache: FetchCache
-    private let oauthClient: OAuthClient
     private var mainCacheKey: String
     private var loadingCount: Int
     private var loadedCount: Int
@@ -10,10 +9,9 @@ class ViewModelCoordinator {
     /*
      * Set the initial state
      */
-    init(eventBus: EventBus, fetchCache: FetchCache, oauthClient: OAuthClient) {
+    init(eventBus: EventBus, fetchCache: FetchCache) {
         self.eventBus = eventBus
         self.fetchCache = fetchCache
-        self.oauthClient = oauthClient
         self.mainCacheKey = ""
         self.loadingCount = 0
         self.loadedCount = 0
@@ -103,18 +101,6 @@ class ViewModelCoordinator {
                 self.resetState()
                 self.eventBus.sendLoginRequiredEvent()
                 return
-            }
-
-            // In normal conditions the following errors are likely to be OAuth configuration errors
-            let oauthConfigurationError = errors.first { error in
-                (error.statusCode == 401 && error.errorCode == ErrorCodes.invalidToken) ||
-                (error.statusCode == 403 && error.errorCode == ErrorCodes.insufficientScope)
-            }
-
-            // The sample's user behavior is to present an error, after which clicking Home runs a new login redirect
-            // This allows the frontend application to get new tokens, which may fix the problem in some cases
-            if oauthConfigurationError != nil {
-                self.oauthClient.clearLoginState()
             }
          }
      }

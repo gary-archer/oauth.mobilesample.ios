@@ -51,8 +51,7 @@ class AppViewModel: ObservableObject {
         // Create an object that coordinates API requests from multiple views
         self.viewModelCoordinator = ViewModelCoordinator(
             eventBus: eventBus,
-            fetchCache: self.fetchCache,
-            oauthClient: self.oauthClient)
+            fetchCache: self.fetchCache)
 
         // Update state
         self.isLoaded = false
