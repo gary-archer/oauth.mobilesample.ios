@@ -1,0 +1,28 @@
+<!--
+I use this to create an ad-hoc IPA file from a provisioning profile, but it only works for me as the account owner:
+https://support.magplus.com/hc/en-us/articles/203808748-iOS-Creating-a-Distribution-Certificate-and-p12-File
+
+- If required, request a certificate using Keychain Access
+- Create a certificate for iOS distribution in the Apple website
+- Create an Ad Hoc distribution provisioning profile called FinalMobileAppAdHocProfile linked to the certificate
+- Upload the CSR file then download the .CER file and double click to install the public + private keys in Keychain Access
+- Download the provisioning profile and save it to the root folder at FinalMobileAppAdHocProfile.mobileprovision
+- In Xcode / Signing & Capabilities, import the provisioning profile file, to save it at ~/Library/MobileDevice/Provisioning Profiles
+- Open the binary FinalMobileAppAdHocProfile.mobileprovision file in a text editor to get the UUID
+- Get the SHA1 hash of the certificate from Keychain Access / Login / Apple certificate properties / Fingerprints
+-->
+
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">  
+<plist version="1.0">  
+<dict>  
+  <key>method</key>  
+  <string>ad-hoc</string>
+  <key>provisioningProfiles</key>
+  <dict>
+      <key>com.authsamples.finalmobileapp</key>
+      <string>fd81273c-edd6-43e1-99c7-7426c757f492</string>
+  </dict>
+  <key>signingCertificate</key>
+  <string>F59CEDE469F567DDEEC0AB13103D99450C391561</string>  
+</dict>  
+</plist>

@@ -1,0 +1,16 @@
+{
+    "name": "mobile-assets",
+    "version": "1.0.0",
+    "description": "A development HTTPS host for the mobile deep linking assets file",
+    "author": "Gary Archer",
+    "type": "module",
+    "engines": {
+        "node": ">=20"
+    },
+    "scripts": {
+        "start": "node index.mjs"
+    },
+    "dependencies": {
+        "express": "^5.0.1"
+    }
+}

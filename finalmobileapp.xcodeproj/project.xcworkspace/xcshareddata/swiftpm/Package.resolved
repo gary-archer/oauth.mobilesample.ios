@@ -1,0 +1,33 @@
+{
+  "originHash" : "87d1440bc97ea6158a6ceab39c26da0477255be51607f8d4129ff0c46332584b",
+  "pins" : [
+    {
+      "identity" : "appauth-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openid/AppAuth-iOS",
+      "state" : {
+        "revision" : "2781038865a80e2c425a1da12cc1327bcd56501f",
+        "version" : "1.7.6"
+      }
+    },
+    {
+      "identity" : "keychain-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/keychain-swift",
+      "state" : {
+        "revision" : "5e1b02b6a9dac2a759a1d5dbc175c86bd192a608",
+        "version" : "24.0.0"
+      }
+    },
+    {
+      "identity" : "swiftui-tooltip",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/quassum/SwiftUI-Tooltip",
+      "state" : {
+        "revision" : "3bef9a21e2bcf1d0f078ddf6731c3c8996f32c3e",
+        "version" : "1.4.0"
+      }
+    }
+  ],
+  "version" : 3
+}
