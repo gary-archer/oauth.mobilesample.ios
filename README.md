@@ -22,7 +22,7 @@ Logins run in the system browser using a `AsWebAuthenticationSession` and the ap
 
 ![App Login](doc/login.png)
 
-You can login to the app using my AWS Cognito test account:
+You can sign in to the app using my AWS Cognito test account:
 
 ```text
 - User: guestuser@example.com
@@ -31,7 +31,7 @@ You can login to the app using my AWS Cognito test account:
 
 The app receives the login response using a claimed HTTPS scheme redirect URI, in the most secure way.\
 iOS Universal Links enables the claimed HTTPS scheme redirect URI and requires a cloud hosted deep linking assets file.\
-Interstitial web pages ensure a user gesture after login and logout, so that responses return to the app reliably.\
+External web pages ensure a user gesture after login and logout, so that responses return to the app reliably.\
 After login you can test all lifecycle operations, including token refresh, expiry events and logout.
 
 ## Further Information
