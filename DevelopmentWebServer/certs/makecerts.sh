@@ -10,28 +10,6 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Point to the OpenSSL configuration file for the platform
-#
-case "$(uname -s)" in
-
-  # Mac OS
-  Darwin)
-    export OPENSSL_CONF='/System/Library/OpenSSL/openssl.cnf'
- 	;;
-
-  # Windows with Git Bash
-  MINGW64*)
-    export OPENSSL_CONF='C:/Program Files/Git/usr/ssl/openssl.cnf';
-    export MSYS_NO_PATHCONV=1;
-	;;
-
-  # Linux
-  Linux*)
-    export OPENSSL_CONF='/usr/lib/ssl/openssl.cnf';
-	;;
-esac
-
-#
 # Require OpenSSL 3 so that up to date syntax can be used
 #
 OPENSSL_VERSION_3=$(openssl version | grep 'OpenSSL 3')
@@ -49,7 +27,7 @@ DOMAIN='mobile.authsamples'
 #
 openssl ecparam -name prime256v1 -genkey -noout -out $DOMAIN.ca.key
 if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the Root CA key'
+  echo 'Problem encountered creating the Root CA key'
   exit 1
 fi
 
@@ -65,7 +43,7 @@ openssl req \
     -addext 'basicConstraints=critical,CA:TRUE' \
     -days 3650
 if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the Root CA'
+  echo 'Problem encountered creating the Root CA'
   exit 1
 fi
 
@@ -74,7 +52,7 @@ fi
 #
 openssl ecparam -name prime256v1 -genkey -noout -out $DOMAIN.ssl.key
 if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the SSL key'
+  echo 'Problem encountered creating the SSL key'
   exit 1
 fi
 
@@ -87,7 +65,7 @@ openssl req \
     -out $DOMAIN.ssl.csr \
     -subj "/CN=$DOMAIN.com"
 if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the certificate signing request'
+  echo 'Problem encountered creating the certificate signing request'
   exit 1
 fi
 
@@ -101,7 +79,7 @@ openssl x509 -req \
     -extfile extensions.cnf \
     -extensions server_ext
 if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the SSL certificate'
+  echo 'Problem encountered creating the SSL certificate'
   exit 1
 fi
 
@@ -116,7 +94,7 @@ openssl pkcs12 \
     -out $DOMAIN.ssl.p12 \
     -passout pass:Password1
 if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the PKCS#12 file'
+  echo 'Problem encountered creating the PKCS#12 file'
   exit 1
 fi
 
