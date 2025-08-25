@@ -519,7 +519,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1630;
 				ORGANIZATIONNAME = "My Company";
 				TargetAttributes = {
 					4E23798B23CE6D910066DE08 = {
@@ -907,7 +907,7 @@
 			repositoryURL = "https://github.com/openid/AppAuth-iOS";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.7.6;
+				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
