@@ -139,9 +139,9 @@ class FetchClient {
         } catch {
 
             // Save retry errors
-            let e = ErrorFactory.fromException(error: error)
-            cacheItem!.setError(value: e)
-            throw e
+            let errorData = ErrorFactory.fromException(error: error)
+            cacheItem!.setError(value: errorData)
+            throw errorData
         }
     }
 
