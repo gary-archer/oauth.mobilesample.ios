@@ -112,7 +112,6 @@ class FetchClient {
     /*
      * Make a GET request and deal with caching
      */
-    // swiftlint:disable function_body_length
     private func getDataFromApi(url: URL, options: FetchOptions) async throws -> Data? {
 
         // Remove the item from the cache when a reload is requested
@@ -130,66 +129,76 @@ class FetchClient {
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
         cacheItem = self.fetchCache.createItem(key: options.cacheKey)
 
-            // Avoid API requests when there is no access token, and instead trigger a login redirect
-        var accessToken = oauthClient.getAccessToken()
-        if accessToken == nil {
+        do {
 
-            let loginRequiredError = ErrorFactory.fromLoginRequired()
-            cacheItem!.setError(value: loginRequiredError)
-            throw loginRequiredError
+            // Call the API and return data on success
+            let data = try await self.getDataFromApiWithTokenRefresh(url: url, options: options)
+            cacheItem!.setData(value: data)
+            return data
+
+        } catch {
+
+            // Save retry errors
+            let e = ErrorFactory.fromException(error: error)
+            cacheItem!.setError(value: e)
+            throw e
+        }
+    }
+
+    /*
+     * Make a GET request and deal with caching
+     */
+    // swiftlint:disable function_body_length
+    private func getDataFromApiWithTokenRefresh(url: URL, options: FetchOptions) async throws -> Data? {
+
+        // Avoid API requests when there is no access token, and instead trigger a login
+        var accessToken = self.oauthClient.getAccessToken()
+        if accessToken == nil {
+            throw ErrorFactory.fromLoginRequired()
         }
 
         do {
             // Call the API and return data on success
-            let data1 = try await self.callApiWithToken(
+            return try await self.callApiWithToken(
                 method: "GET",
                 url: url,
                 jsonData: nil,
                 accessToken: accessToken!,
                 options: options)
-            cacheItem!.setData(value: data1)
-            return data1
 
         } catch {
 
+            // Report errors if this is not a 401
             let error1 = ErrorFactory.fromException(error: error)
             if error1.statusCode != 401 {
-
-                // Report errors if this is not a 401
-                cacheItem!.setError(value: error1)
                 throw error1
             }
 
-            do {
-                // Try to refresh the access token
-                accessToken = try await oauthClient.synchronizedRefreshAccessToken()
-
-            } catch {
-
-                // Save refresh errors
-                let error2 = ErrorFactory.fromException(error: error)
-                cacheItem!.setError(value: error2)
-                throw error2
-            }
+            // Try to refresh the access token
+            accessToken = try await self.oauthClient.synchronizedRefreshAccessToken()
 
             do {
 
                 // Call the API and return data on success
-                let data3 = try await self.callApiWithToken(
+                return try await self.callApiWithToken(
                     method: "GET",
                     url: url,
                     jsonData: nil,
                     accessToken: accessToken!,
                     options: options)
-                cacheItem!.setData(value: data3)
-                return data3
 
             } catch {
 
                 // Save retry errors
-                let error3 = ErrorFactory.fromException(error: error)
-                cacheItem!.setError(value: error3)
-                throw error3
+                let error2 = ErrorFactory.fromException(error: error)
+                if error2.statusCode != 401 {
+                    throw error2
+                }
+
+                // A permanent API 401 error triggers a new login.
+                // This could be caused by an invalid API configuration.
+                try await self.oauthClient.clearLoginState()
+                throw ErrorFactory.fromLoginRequired()
             }
         }
     }

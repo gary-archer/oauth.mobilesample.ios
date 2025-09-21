@@ -20,8 +20,9 @@ class FetchCacheItem {
     }
 
     func setData(value: Data?) {
-        self.data = value
         self.isLoading = false
+        self.data = value
+        self.error = nil
     }
 
     func getError() -> UIError? {
@@ -29,7 +30,8 @@ class FetchCacheItem {
     }
 
     func setError(value: UIError?) {
-        self.error = value
         self.isLoading = false
+        self.error = value
+        self.data = nil
     }
 }
