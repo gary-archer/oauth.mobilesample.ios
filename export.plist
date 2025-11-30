@@ -15,7 +15,7 @@ I use this to create an ad-hoc IPA file from a provisioning profile, but it only
 <plist version="1.0">  
 <dict>  
   <key>method</key>  
-  <string>ad-hoc</string>
+  <string>release-testing</string>
   <key>provisioningProfiles</key>
   <dict>
       <key>com.authsamples.finalmobileapp</key>
