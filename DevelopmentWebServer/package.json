@@ -5,12 +5,12 @@
     "author": "Gary Archer",
     "type": "module",
     "engines": {
-        "node": ">=20"
+        "node": ">=24"
     },
     "scripts": {
         "start": "node index.mjs"
     },
     "dependencies": {
-        "express": "^5.1.0"
+        "express": "^5.2.1"
     }
 }
