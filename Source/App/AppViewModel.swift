@@ -19,6 +19,7 @@ class AppViewModel: ObservableObject {
     @Published var isLoaded: Bool
     @Published var isDeviceSecured: Bool
     @Published var error: UIError?
+    @Published var sessionId: String
 
     // Child view models
     private var companiesViewModel: CompaniesViewModel?
@@ -57,6 +58,7 @@ class AppViewModel: ObservableObject {
         self.isLoaded = false
         self.isDeviceSecured = DeviceSecurity.isDeviceSecured()
         self.error = nil
+        self.sessionId = ""
     }
 
     /*
@@ -68,10 +70,11 @@ class AppViewModel: ObservableObject {
 
             do {
 
-                // Try to do initial OAuth work
-                try await self.oauthClient.initialize()
+                // Initialize and load the existing session from tokens if possible
+                try await self.oauthClient.getSession()
                 await MainActor.run {
                     self.isLoaded = true
+                    self.sessionId = self.oauthClient.getDelegationId()
                     onComplete()
                 }
 
@@ -117,6 +120,7 @@ class AppViewModel: ObservableObject {
 
                 // Indicate success
                 await MainActor.run {
+                    self.sessionId = self.oauthClient.getDelegationId()
                     onComplete(false)
                 }
 
@@ -163,6 +167,7 @@ class AppViewModel: ObservableObject {
 
                 // Indicate success
                 await MainActor.run {
+                    self.sessionId = self.oauthClient.getDelegationId()
                     onComplete()
                 }
 
@@ -279,6 +284,6 @@ class AppViewModel: ObservableObject {
      * Make this value available for the session view
      */
     func getSessionId() -> String {
-        return self.fetchClient.sessionId
+        return self.sessionId
     }
 }

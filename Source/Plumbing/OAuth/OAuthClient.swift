@@ -7,8 +7,8 @@ import AppAuth
  */
 protocol OAuthClient {
 
-    // Startup initialization
-    func initialize() async throws
+    // Initialize and load tokens if they exist
+    func getSession() async throws
 
     // Return the current access token from secure mobile storage
     func getAccessToken() -> String?
@@ -24,6 +24,9 @@ protocol OAuthClient {
 
     // Process a login response on a background thread
     func handleLoginResponse() async throws -> OIDAuthorizationResponse
+
+    // Get the delegation ID claim
+    func getDelegationId() -> String
 
     // Complete a login to get tokens
     func finishLogin(authResponse: OIDAuthorizationResponse) async throws

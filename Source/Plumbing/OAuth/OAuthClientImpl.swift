@@ -27,12 +27,12 @@ class OAuthClientImpl: OAuthClient {
     }
 
     /*
-     * One time initialization on application startup
+     * Initialize and load tokens if they exist
      */
-    func initialize() async throws {
+    func getSession() async throws {
 
         // Load OpenID Connect metadata
-        try await getMetadata()
+        self.metadata = try await getMetadata()
 
         // Load tokens from storage
         self.tokenStorage.loadTokens()
@@ -41,11 +41,11 @@ class OAuthClientImpl: OAuthClient {
     /*
      * Download OpenID Connect metadata and return it to the caller
      */
-    private func getMetadata() async throws {
+    private func getMetadata() async throws -> OIDServiceConfiguration {
 
         // Do nothing if already loaded
         if self.metadata != nil {
-            return
+            return self.metadata!
         }
 
         // Get the metadata endpoint as a URL object
@@ -67,8 +67,7 @@ class OAuthClientImpl: OAuthClient {
                 } else {
 
                     // Indicate success
-                    self.metadata = metadata
-                    continuation.resume()
+                    continuation.resume(returning: metadata!)
                 }
             }
         }
@@ -174,6 +173,29 @@ class OAuthClientImpl: OAuthClient {
 
             throw ErrorFactory.fromLoginResponseError(error: error)
         }
+    }
+
+    /*
+     * Get the delegation ID claim from the ID token
+     */
+    func getDelegationId() -> String {
+
+        let idToken = self.tokenStorage.getTokens()?.idToken
+        if idToken != nil {
+            let parts = idToken!.split(separator: ".")
+            if parts.count == 3 {
+                let data = Base64Url.decode(input: String(parts[1]))
+                if data != nil {
+                    if let json = try? JSONSerialization.jsonObject(with: data!, options: []) {
+                        if let fields = json as? [String: Any] {
+                            return fields[self.configuration.delegationIdClaimName] as? String ?? ""
+                        }
+                    }
+                }
+            }
+        }
+
+        return ""
     }
 
     /*

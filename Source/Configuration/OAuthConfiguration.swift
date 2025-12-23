@@ -26,4 +26,7 @@ struct OAuthConfiguration: Decodable {
 
     // The deep linking base URL is configured to workaround an AppAuth library bug
     let deepLinkBaseUrl: String
+
+    // The name of the ID token claim for the delegation ID
+    let delegationIdClaimName: String
 }

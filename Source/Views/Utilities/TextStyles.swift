@@ -31,7 +31,7 @@ extension Text {
     func errorStyle() -> Text {
 
         return foregroundColor(Color.red)
-                 .font(.system(size: 14))
+                 .font(.system(size: 12))
                  .fontWeight(.semibold)
     }
 }

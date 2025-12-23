@@ -74,6 +74,7 @@
 		4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */; };
 		4EEF02F2247193330022E063 /* CompanyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEF02F1247193330022E063 /* CompanyItemView.swift */; };
 		4EEF02F9247196B80022E063 /* TransactionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEF02F8247196B80022E063 /* TransactionItemView.swift */; };
+		4EF0FEF32EFAA363002DCBEA /* Base64Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF0FEF22EFAA357002DCBEA /* Base64Url.swift */; };
 		4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */; };
 		4EFCE67B24631D5D00BD1443 /* LogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67A24631D5D00BD1443 /* LogoutManager.swift */; };
 		4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67C24631E8F00BD1443 /* CognitoLogoutManager.swift */; };
@@ -161,6 +162,7 @@
 		4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		4EEF02F1247193330022E063 /* CompanyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyItemView.swift; sourceTree = "<group>"; };
 		4EEF02F8247196B80022E063 /* TransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionItemView.swift; sourceTree = "<group>"; };
+		4EF0FEF22EFAA357002DCBEA /* Base64Url.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64Url.swift; sourceTree = "<group>"; };
 		4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetailsView.swift; sourceTree = "<group>"; };
 		4EFB253127B050D7008E747C /* .well-known */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ".well-known"; sourceTree = "<group>"; };
 		4EFCE67A24631D5D00BD1443 /* LogoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutManager.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 		4EFEFC2D2451EE4F0057C78D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				4EF0FEF22EFAA357002DCBEA /* Base64Url.swift */,
 				4EFEFC302451EE4F0057C78D /* Colors.swift */,
 				4EE6B1D9246479A700B43FF3 /* DeviceSecurity.swift */,
 				4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */,
@@ -589,7 +592,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swiftlint\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nswiftlint\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -605,6 +608,7 @@
 				4EFEFC342451EE4F0057C78D /* Colors.swift in Sources */,
 				4E79B09C241428310054C382 /* UIError.swift in Sources */,
 				4EFEFC2A2451D13D0057C78D /* Configuration.swift in Sources */,
+				4EF0FEF32EFAA363002DCBEA /* Base64Url.swift in Sources */,
 				4EFEFC282451D13D0057C78D /* AppConfiguration.swift in Sources */,
 				4EE6B1DE24649DB700B43FF3 /* LongPressModifier.swift in Sources */,
 				28E45F0C2ABB634500625091 /* FetchCache.swift in Sources */,

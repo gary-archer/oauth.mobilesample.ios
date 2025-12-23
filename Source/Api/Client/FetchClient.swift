@@ -8,7 +8,6 @@ class FetchClient {
     private var configuration: Configuration
     private var fetchCache: FetchCache
     private var oauthClient: OAuthClient
-    let sessionId: String
 
     init(
         configuration: Configuration,
@@ -18,7 +17,6 @@ class FetchClient {
         self.configuration = configuration
         self.fetchCache = fetchCache
         self.oauthClient = oauthClient
-        self.sessionId = UUID().uuidString
     }
 
     /*
@@ -148,7 +146,6 @@ class FetchClient {
     /*
      * Make a GET request and deal with caching
      */
-    // swiftlint:disable function_body_length
     private func getDataFromApiWithTokenRefresh(url: URL, options: FetchOptions) async throws -> Data? {
 
         // Avoid API requests when there is no access token, and instead trigger a login
@@ -197,12 +194,11 @@ class FetchClient {
 
                 // A permanent API 401 error triggers a new login.
                 // This could be caused by an invalid API configuration.
-                try await self.oauthClient.clearLoginState()
+                self.oauthClient.clearLoginState()
                 throw ErrorFactory.fromLoginRequired()
             }
         }
     }
-    // swiftlint:enable function_body_length
 
     /*
      * Make an async request for data
@@ -222,13 +218,11 @@ class FetchClient {
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
         // Add other headers
-        request.addValue("BasicIosApp", forHTTPHeaderField: "authsamples-api-client")
-        request.addValue(self.sessionId, forHTTPHeaderField: "authsamples-session-id")
-        request.addValue(UUID().uuidString, forHTTPHeaderField: "authsamples-correlation-id")
+        request.addValue(UUID().uuidString, forHTTPHeaderField: "correlation-id")
 
-        // A special header can be sent to thr API to cause a simulated exception
+        // If required, add a header to request that an API simulates a 500 exception
         if options.causeError {
-            request.addValue("FinalApi", forHTTPHeaderField: "authsamples-test-exception")
+            request.addValue("FinalApi", forHTTPHeaderField: "api-exception-simulation")
         }
 
         // Add body data if supplied
