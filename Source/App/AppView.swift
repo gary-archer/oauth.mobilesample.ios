@@ -31,9 +31,9 @@ struct AppView: View {
             // Next display the header buttons view
             HeaderButtonsView(
                 onHome: self.onHome,
-                onReloadData: self.model.reloadData,
-                onExpireAccessToken: self.model.onExpireAccessToken,
-                onExpireRefreshToken: self.model.onExpireRefreshToken,
+                onReloadData: self.model.triggerDataReload,
+                onExpireAccessToken: self.model.expireAccessToken,
+                onExpireRefreshToken: self.model.expireRefreshToken,
                 onLogout: self.onLogout)
 
             // Display application level errors when applicable
@@ -183,14 +183,14 @@ struct AppView: View {
 
         } else {
 
-            // Otherwise move to the home view unless already there
+            // Navigate home unless we are already there
             if self.viewRouter.activeViewType != CompaniesView.Type.self {
                 self.viewRouter.navigateToPath(newViewType: CompaniesView.Type.self, newViewParams: [])
             }
 
-            // Also reload user info if we are recovering from an error
-            if model.viewModelCoordinator.hasErrors() {
-                self.model.reloadDataOnError()
+            // Force a data reload if recovering from errors
+            if model.viewModelCoordinator.hasApiError() {
+                self.model.triggerDataReload(false)
             }
         }
     }

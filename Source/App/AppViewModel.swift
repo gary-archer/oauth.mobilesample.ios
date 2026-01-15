@@ -205,7 +205,7 @@ class AppViewModel: ObservableObject {
     /*
      * Publish an event to update all active views
      */
-    func reloadData(causeError: Bool) {
+    func triggerDataReload(causeError: Bool) {
 
         self.error = nil
         self.viewModelCoordinator.resetState()
@@ -215,25 +215,38 @@ class AppViewModel: ObservableObject {
     /*
      * If there were load errors, try to reload data when Home is pressed
      */
-    func reloadDataOnError() {
-
-        if self.error != nil || self.viewModelCoordinator.hasErrors() {
-            self.reloadData(causeError: false)
-        }
+    func hasApiError() -> Bool {
+        return self.error != nil || self.viewModelCoordinator.hasErrors()
     }
 
     /*
      * Make the access token act expired
      */
-    func onExpireAccessToken() {
-        self.oauthClient.expireAccessToken()
+    func expireAccessToken() {
+
+        do {
+            self.oauthClient.expireAccessToken()
+
+        } catch {
+
+            let uiError = ErrorFactory.fromException(error: error)
+            self.error = uiError
+        }
     }
 
     /*
      * Make the refresh token act expired
      */
-    func onExpireRefreshToken() {
-        self.oauthClient.expireRefreshToken()
+    func expireRefreshToken() {
+        
+        do {
+            self.oauthClient.expireRefreshToken()
+
+        } catch {
+
+            let uiError = ErrorFactory.fromException(error: error)
+            self.error = uiError
+        }
     }
 
     /*
