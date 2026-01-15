@@ -223,30 +223,14 @@ class AppViewModel: ObservableObject {
      * Make the access token act expired
      */
     func expireAccessToken() {
-
-        do {
-            self.oauthClient.expireAccessToken()
-
-        } catch {
-
-            let uiError = ErrorFactory.fromException(error: error)
-            self.error = uiError
-        }
+        self.oauthClient.expireAccessToken()
     }
 
     /*
      * Make the refresh token act expired
      */
     func expireRefreshToken() {
-        
-        do {
-            self.oauthClient.expireRefreshToken()
-
-        } catch {
-
-            let uiError = ErrorFactory.fromException(error: error)
-            self.error = uiError
-        }
+        self.oauthClient.expireRefreshToken()
     }
 
     /*
