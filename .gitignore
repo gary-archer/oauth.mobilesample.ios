@@ -8,3 +8,5 @@ build/
 node_modules
 DevelopmentWebServer/.well-known/apple-app-site-association
 DevelopmentWebServer/certs/mobile.authsamples.*
+Preview Content
+Base.lproj
