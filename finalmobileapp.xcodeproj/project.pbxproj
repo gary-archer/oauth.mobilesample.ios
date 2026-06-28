@@ -51,7 +51,7 @@
 		4E79B09C241428310054C382 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79B09B241428310054C382 /* UIError.swift */; };
 		4E85F2CC2414039300E0ACA8 /* FetchClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85F2CB2414039300E0ACA8 /* FetchClient.swift */; };
 		4EA2E3962848ED650058A0B7 /* export.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4EA2E3952848ED650058A0B7 /* export.plist */; };
-		4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB180DB24508FC600A2C045 /* ErrorLine.swift */; };
+		4EB180DC24508FC600A2C045 /* ErrorField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB180DB24508FC600A2C045 /* ErrorField.swift */; };
 		4EB386EC244C4D1A00FC2B17 /* ErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */; };
 		4EB386F5244C68F600FC2B17 /* OAuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386F4244C68F600FC2B17 /* OAuthClient.swift */; };
 		4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB6DAA723F967A70007A311 /* CompaniesView.swift */; };
@@ -137,7 +137,7 @@
 		4E85F2CB2414039300E0ACA8 /* FetchClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchClient.swift; sourceTree = "<group>"; };
 		4E87A3A224588C9400E522BF /* finalmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = finalmobileapp.entitlements; sourceTree = "<group>"; };
 		4EA2E3952848ED650058A0B7 /* export.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = export.plist; sourceTree = "<group>"; };
-		4EB180DB24508FC600A2C045 /* ErrorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLine.swift; sourceTree = "<group>"; };
+		4EB180DB24508FC600A2C045 /* ErrorField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorField.swift; sourceTree = "<group>"; };
 		4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
 		4EB386F4244C68F600FC2B17 /* OAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthClient.swift; sourceTree = "<group>"; };
 		4EB6DAA723F967A70007A311 /* CompaniesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesView.swift; sourceTree = "<group>"; };
@@ -303,7 +303,7 @@
 				4EFCE6802463273200BD1443 /* ErrorConsoleReporter.swift */,
 				4EFCE6812463273200BD1443 /* ErrorFormatter.swift */,
 				4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */,
-				4EB180DB24508FC600A2C045 /* ErrorLine.swift */,
+				4EB180DB24508FC600A2C045 /* ErrorField.swift */,
 				4E79B09B241428310054C382 /* UIError.swift */,
 			);
 			path = Errors;
@@ -602,7 +602,7 @@
 				4ECD97662452F25E00D7E271 /* MainView.swift in Sources */,
 				4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */,
 				28051E372B965729009ADAB9 /* LoggerExtensions.swift in Sources */,
-				4EB180DC24508FC600A2C045 /* ErrorLine.swift in Sources */,
+				4EB180DC24508FC600A2C045 /* ErrorField.swift in Sources */,
 				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,
 				4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */,
 				4E679949246D9723002B7E5F /* DeepLinkHelper.swift in Sources */,

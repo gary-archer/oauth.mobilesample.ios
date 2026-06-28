@@ -8,7 +8,7 @@ struct ErrorDetailsView: View {
     @Environment(\.presentationMode) private var presentationMode
     private let error: UIError
     private let dialogTitle: String
-    private let errorLines: [ErrorLine]
+    private let errorFields: [ErrorField]
 
     /*
      * Initialise data
@@ -16,7 +16,7 @@ struct ErrorDetailsView: View {
     init (dialogTitle: String, error: UIError) {
         self.error = error
         self.dialogTitle = dialogTitle
-        self.errorLines = ErrorFormatter.getErrorLines(error: self.error)
+        self.errorFields = ErrorFormatter.getErrorFields(error: self.error)
     }
 
     /*
@@ -48,8 +48,8 @@ struct ErrorDetailsView: View {
                 }
 
                 // Show each error field on a row as a label / value pair
-                List(self.errorLines, id: \.name) { item in
-                    ErrorDetailsItemView(errorLine: item, dialogWidth: geometry.size.width)
+                List(self.errorFields, id: \.name) { item in
+                    ErrorDetailsItemView(errorField: item, dialogWidth: geometry.size.width)
                 }
                 .listStyle(.plain)
 

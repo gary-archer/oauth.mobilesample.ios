@@ -5,11 +5,11 @@ import SwiftUI
  */
 struct ErrorDetailsItemView: View {
 
-    private let errorLine: ErrorLine
+    private let errorField: ErrorField
     private let dialogWidth: CGFloat
 
-    init(errorLine: ErrorLine, dialogWidth: CGFloat) {
-        self.errorLine = errorLine
+    init(errorField: ErrorField, dialogWidth: CGFloat) {
+        self.errorField = errorField
         self.dialogWidth = dialogWidth
     }
 
@@ -19,13 +19,13 @@ struct ErrorDetailsItemView: View {
     var body: some View {
 
         HStack(alignment: .top) {
-            Text(LocalizedStringKey(self.errorLine.name))
+            Text(LocalizedStringKey(self.errorField.name))
                 .labelStyle()
                 .frame(width: self.dialogWidth / 3, alignment: .leading)
                 .padding(.leading, self.dialogWidth / 12)
 
-            Text(self.errorLine.value)
-                .valueStyle(textColor: self.errorLine.valueColour)
+            Text(self.errorField.value)
+                .valueStyle(textColor: self.errorField.valueColour)
                 .frame(width: self.dialogWidth / 3, alignment: .leading)
                 .padding(.leading, self.dialogWidth / 12)
 
