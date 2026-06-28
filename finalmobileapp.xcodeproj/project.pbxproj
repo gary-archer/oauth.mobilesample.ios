@@ -27,8 +27,6 @@
 		4E126DBB2454854D0065863E /* OAuthClientImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E126DBA2454854D0065863E /* OAuthClientImpl.swift */; };
 		4E126DBD2454A8F00065863E /* TokenData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E126DBC2454A8F00065863E /* TokenData.swift */; };
 		4E1888EB23DDFEB20014638D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E1888E223DDFEB20014638D /* Assets.xcassets */; };
-		4E1888EC23DDFEB20014638D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E1888E423DDFEB20014638D /* Preview Assets.xcassets */; };
-		4E1888ED23DDFEB20014638D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E1888E523DDFEB20014638D /* LaunchScreen.storyboard */; };
 		4E1888F523DDFFDC0014638D /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1888F423DDFFDB0014638D /* TitleView.swift */; };
 		4E1888F723DE01130014638D /* HeaderButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1888F623DE01130014638D /* HeaderButtonsView.swift */; };
 		4E1888F923DE01CC0014638D /* ErrorSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1888F823DE01CC0014638D /* ErrorSummaryView.swift */; };
@@ -112,8 +110,6 @@
 		4E126DBA2454854D0065863E /* OAuthClientImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthClientImpl.swift; sourceTree = "<group>"; };
 		4E126DBC2454A8F00065863E /* TokenData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenData.swift; sourceTree = "<group>"; };
 		4E1888E223DDFEB20014638D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4E1888E423DDFEB20014638D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		4E1888E623DDFEB20014638D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4E1888E923DDFEB20014638D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E1888F423DDFFDB0014638D /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		4E1888F623DE01130014638D /* HeaderButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonsView.swift; sourceTree = "<group>"; };
@@ -204,7 +200,7 @@
 			path = Handlers;
 			sourceTree = "<group>";
 		};
-		4E1888E123DDFEB20014638D /* Source */ = {
+		4E1888E123DDFEB20014638D /* src */ = {
 			isa = PBXGroup;
 			children = (
 				4E1888FC23DE02B40014638D /* Api */,
@@ -213,15 +209,7 @@
 				4E79B099241428200054C382 /* Plumbing */,
 				4E1888F223DDFF480014638D /* Views */,
 			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		4E1888E323DDFEB20014638D /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				4E1888E423DDFEB20014638D /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
+			path = src;
 			sourceTree = "<group>";
 		};
 		4E1888F223DDFF480014638D /* Views */ = {
@@ -255,19 +243,18 @@
 				4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */,
 			);
 			name = Utilities;
-			path = Source/Plumbing/Utilities;
+			path = src/Plumbing/Utilities;
 			sourceTree = SOURCE_ROOT;
 		};
 		4E23798323CE6D900066DE08 = {
 			isa = PBXGroup;
 			children = (
-				4E1888E123DDFEB20014638D /* Source */,
-				4EBCC9552458809900D5A2A9 /* Security */,
-				4ED03262246FE76B00441C53 /* Web */,
+				4E1888E123DDFEB20014638D /* src */,
+				4EBCC9552458809900D5A2A9 /* security */,
+				4ED03262246FE76B00441C53 /* web */,
 				4E87A3A224588C9400E522BF /* finalmobileapp.entitlements */,
 				4E1888E923DDFEB20014638D /* Info.plist */,
 				4E712AA9245C5D1600022757 /* launch.png */,
-				4E1888E523DDFEB20014638D /* LaunchScreen.storyboard */,
 				4EE4CAB7245336430033B3C5 /* .swiftlint.yml */,
 				4E05212B24531E4F00C84A9F /* .gitignore */,
 				288229CA2C41B2D3004E51FD /* mobile_config.json */,
@@ -275,7 +262,6 @@
 				4E1888E223DDFEB20014638D /* Assets.xcassets */,
 				4EA2E3952848ED650058A0B7 /* export.plist */,
 				4E23798D23CE6D910066DE08 /* Products */,
-				4E1888E323DDFEB20014638D /* Preview Content */,
 			);
 			sourceTree = "<group>";
 		};
@@ -360,21 +346,21 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		4EBCC9552458809900D5A2A9 /* Security */ = {
+		4EBCC9552458809900D5A2A9 /* security */ = {
 			isa = PBXGroup;
 			children = (
 				4EFB253127B050D7008E747C /* .well-known */,
 			);
-			path = Security;
+			path = security;
 			sourceTree = "<group>";
 		};
-		4ED03262246FE76B00441C53 /* Web */ = {
+		4ED03262246FE76B00441C53 /* web */ = {
 			isa = PBXGroup;
 			children = (
 				4ED03264246FE81E00441C53 /* postlogin.html */,
 				4ED03263246FE81D00441C53 /* postlogout.html */,
 			);
-			path = Web;
+			path = web;
 			sourceTree = "<group>";
 		};
 		4EE4CABB245364910033B3C5 /* App */ = {
@@ -466,7 +452,7 @@
 				4E2C3349246889850095ACEC /* ConfigurationLoader.swift */,
 			);
 			name = Configuration;
-			path = Source/Configuration;
+			path = src/Configuration;
 			sourceTree = SOURCE_ROOT;
 		};
 		4EFEFC2D2451EE4F0057C78D /* Utilities */ = {
@@ -522,7 +508,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 2660;
 				ORGANIZATIONNAME = "My Company";
 				TargetAttributes = {
 					4E23798B23CE6D910066DE08 = {
@@ -561,10 +547,8 @@
 				4ED03265246FE81E00441C53 /* postlogout.html in Resources */,
 				4E05212C24531E4F00C84A9F /* .gitignore in Resources */,
 				4E712AAA245C5D1700022757 /* launch.png in Resources */,
-				4E1888EC23DDFEB20014638D /* Preview Assets.xcassets in Resources */,
 				4ED03266246FE81E00441C53 /* postlogin.html in Resources */,
 				288229CB2C41B2D3004E51FD /* mobile_config.json in Resources */,
-				4E1888ED23DDFEB20014638D /* LaunchScreen.storyboard in Resources */,
 				4E1888EB23DDFEB20014638D /* Assets.xcassets in Resources */,
 				4EA2E3962848ED650058A0B7 /* export.plist in Resources */,
 				288F61902AC48BA0009A1229 /* Localizable.strings in Resources */,
@@ -684,14 +668,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		4E1888E523DDFEB20014638D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4E1888E623DDFEB20014638D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -752,6 +728,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -808,6 +785,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -822,7 +800,7 @@
 				CODE_SIGN_ENTITLEMENTS = finalmobileapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Info.plist;
@@ -848,7 +826,7 @@
 				CODE_SIGN_ENTITLEMENTS = finalmobileapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Info.plist;
@@ -911,7 +889,7 @@
 			repositoryURL = "https://github.com/openid/AppAuth-iOS";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 2.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
