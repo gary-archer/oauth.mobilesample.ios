@@ -1,3 +1,7 @@
+/*
+ * Coordinates API requests from multiple views, and notifies once all API calls are complete
+ * This ensures that login redirects are only triggered once
+ */
 class ViewModelCoordinator {
 
     private let eventBus: EventBus
