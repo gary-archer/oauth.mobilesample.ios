@@ -61,7 +61,7 @@ cd ..
 # Run the mobile host on port 443, which requires administrator rights
 #
 echo 'Running the mobile HTTPS host to serve the deep linking asset file ...'
-npm install
+npm ci
 npm start
 if [ $? -ne 0 ]; then
   echo 'Problem encountered running the mobile host'
