@@ -83,16 +83,12 @@ class TransactionsViewModel: ObservableObject {
                     // Handle the error
                     self.data = nil
                     let uiError = ErrorFactory.fromException(error: error)
+                    self.error = uiError
+                    self.apiRequestCoordinator.onApiRequestEnd()
+
+                    // Inform the view to take an action on the main thread when access is forbidden
                     if self.isForbiddenError(uiError: uiError) {
-
-                        // Inform the view to take an action when access is forbidden
                         onForbidden()
-
-                    } else {
-
-                        // Otherwise update state and notify
-                        self.error = uiError
-                        self.apiRequestCoordinator.onApiRequestEnd()
                     }
                 }
             }
