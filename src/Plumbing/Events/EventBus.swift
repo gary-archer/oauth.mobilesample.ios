@@ -8,7 +8,7 @@ class EventBus: ObservableObject {
 
     let navigatedTopic = PassthroughSubject<NavigatedEvent, Never>()
     let loginRequiredTopic = PassthroughSubject<LoginRequiredEvent, Never>()
-    let viewModelFetchTopic = PassthroughSubject<ViewModelFetchEvent, Never>()
+    let apiRequestTopic = PassthroughSubject<ApiRequestEvent, Never>()
     let reloadDataTopic = PassthroughSubject<ReloadDataEvent, Never>()
 
     /*
@@ -30,12 +30,12 @@ class EventBus: ObservableObject {
     }
 
     /*
-     * Publish an event to inform views of a fetch event
+     * Publish an event when the first API request fires and when all API requests complete
      */
-    func sendViewModelFetchEvent(loaded: Bool) {
+    func sendApiRequestEvent(loaded: Bool) {
 
-        let event = ViewModelFetchEvent(loaded: loaded)
-        self.viewModelFetchTopic.send(event)
+        let event = ApiRequestEvent(loaded: loaded)
+        self.apiRequestTopic.send(event)
     }
 
     /*

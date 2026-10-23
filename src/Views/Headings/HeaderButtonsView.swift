@@ -85,15 +85,15 @@ struct HeaderButtonsView: View {
         .onReceive(self.eventBus.navigatedTopic, perform: {data in
             self.handleNavigateEvent(event: data)
         })
-        .onReceive(self.eventBus.viewModelFetchTopic, perform: {data in
-            self.handleViewModelFetchEvent(event: data)
+        .onReceive(self.eventBus.apiRequestTopic, perform: {data in
+            self.handleApiRequestEvent(event: data)
         })
     }
 
     /*
      * Update our state when the event is received
      */
-    private func handleViewModelFetchEvent(event: ViewModelFetchEvent) {
+    private func handleApiRequestEvent(event: ApiRequestEvent) {
         self.hasData = event.loaded
     }
 

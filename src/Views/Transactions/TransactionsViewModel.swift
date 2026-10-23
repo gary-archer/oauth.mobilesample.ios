@@ -7,7 +7,7 @@ class TransactionsViewModel: ObservableObject {
 
     // Late created properties
     private let fetchClient: FetchClient
-    private let viewModelCoordinator: ViewModelCoordinator
+    private let apiRequestCoordinator: ApiRequestCoordinator
     var companyId: String?
     private var companyWasChanged: Bool
 
@@ -18,9 +18,9 @@ class TransactionsViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(fetchClient: FetchClient, viewModelCoordinator: ViewModelCoordinator) {
+    init(fetchClient: FetchClient, apiRequestCoordinator: ApiRequestCoordinator) {
 
-        self.viewModelCoordinator = viewModelCoordinator
+        self.apiRequestCoordinator = apiRequestCoordinator
         self.fetchClient = fetchClient
         self.companyId = nil
         self.companyWasChanged = false
@@ -49,7 +49,7 @@ class TransactionsViewModel: ObservableObject {
             causeError: options?.causeError ?? false)
 
         // Initialise state
-        self.viewModelCoordinator.onMainViewModelLoading()
+        self.apiRequestCoordinator.onApiRequestStart(cacheKeys: fetchOptions.cacheKey)
         self.error = nil
 
         // Handle deep link updates to the company ID
@@ -73,7 +73,7 @@ class TransactionsViewModel: ObservableObject {
                     if transactions != nil {
                         self.data = transactions
                     }
-                    self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
+                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
 
             } catch {
@@ -92,7 +92,7 @@ class TransactionsViewModel: ObservableObject {
 
                         // Otherwise update state and notify
                         self.error = uiError
-                        self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
+                        self.apiRequestCoordinator.onApiRequestEnd()
                     }
                 }
             }

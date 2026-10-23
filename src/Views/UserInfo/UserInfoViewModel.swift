@@ -7,7 +7,7 @@ class UserInfoViewModel: ObservableObject {
 
     // Late initialised properties
     private let fetchClient: FetchClient
-    private let viewModelCoordinator: ViewModelCoordinator
+    private let apiRequestCoordinator: ApiRequestCoordinator
 
     // Published state
     @Published var oauthUserInfo: OAuthUserInfo?
@@ -23,9 +23,9 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(fetchClient: FetchClient, viewModelCoordinator: ViewModelCoordinator) {
+    init(fetchClient: FetchClient, apiRequestCoordinator: ApiRequestCoordinator) {
         self.fetchClient = fetchClient
-        self.viewModelCoordinator = viewModelCoordinator
+        self.apiRequestCoordinator = apiRequestCoordinator
     }
 
     /*
@@ -44,7 +44,7 @@ class UserInfoViewModel: ObservableObject {
             causeError: options?.causeError ?? false)
 
         // Initialise state
-        self.viewModelCoordinator.onUserInfoViewModelLoading()
+        self.apiRequestCoordinator.onApiRequestStart(cacheKeys: FetchCacheKeys.OAuthUserInfo, FetchCacheKeys.ApiUserInfo)
         self.error = nil
 
         Task {
@@ -69,7 +69,7 @@ class UserInfoViewModel: ObservableObject {
                     if results.getApiUserInfo != nil {
                         self.apiUserInfo = results.getApiUserInfo
                     }
-                    self.viewModelCoordinator.onUserInfoViewModelLoaded()
+                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
 
             } catch {
@@ -80,7 +80,7 @@ class UserInfoViewModel: ObservableObject {
                     self.oauthUserInfo = nil
                     self.apiUserInfo = nil
                     self.error = ErrorFactory.fromException(error: error)
-                    self.viewModelCoordinator.onUserInfoViewModelLoaded()
+                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
             }
         }

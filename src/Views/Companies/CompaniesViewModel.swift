@@ -6,7 +6,7 @@ import Foundation
 class CompaniesViewModel: ObservableObject {
 
     private let fetchClient: FetchClient
-    private let viewModelCoordinator: ViewModelCoordinator
+    private let apiRequestCoordinator: ApiRequestCoordinator
 
     @Published var companies = [Company]()
     @Published var error: UIError?
@@ -14,9 +14,9 @@ class CompaniesViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(fetchClient: FetchClient, viewModelCoordinator: ViewModelCoordinator) {
+    init(fetchClient: FetchClient, apiRequestCoordinator: ApiRequestCoordinator) {
         self.fetchClient = fetchClient
-        self.viewModelCoordinator = viewModelCoordinator
+        self.apiRequestCoordinator = apiRequestCoordinator
     }
 
     /*
@@ -30,7 +30,7 @@ class CompaniesViewModel: ObservableObject {
             causeError: options?.causeError ?? false)
 
         // Initialise state
-        self.viewModelCoordinator.onMainViewModelLoading()
+        self.apiRequestCoordinator.onApiRequestStart(cacheKeys: fetchOptions.cacheKey)
         self.error = nil
 
         Task {
@@ -45,7 +45,7 @@ class CompaniesViewModel: ObservableObject {
                     if companies != nil {
                         self.companies = companies!
                     }
-                    self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
+                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
 
             } catch {
@@ -55,7 +55,7 @@ class CompaniesViewModel: ObservableObject {
                     // Update state and notify
                     self.companies = [Company]()
                     self.error = ErrorFactory.fromException(error: error)
-                    self.viewModelCoordinator.onMainViewModelLoaded(cacheKey: fetchOptions.cacheKey)
+                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
             }
         }

@@ -11,7 +11,7 @@ class AppViewModel: ObservableObject {
     private let oauthClient: OAuthClient
     private let fetchClient: FetchClient
     private let fetchCache: FetchCache
-    let viewModelCoordinator: ViewModelCoordinator
+    let apiRequestCoordinator: ApiRequestCoordinator
     let eventBus: EventBus
     var deepLinkStartupUrl: URL?
 
@@ -50,7 +50,7 @@ class AppViewModel: ObservableObject {
             oauthClient: self.oauthClient)
 
         // Create an object that coordinates API requests from multiple views
-        self.viewModelCoordinator = ViewModelCoordinator(
+        self.apiRequestCoordinator = ApiRequestCoordinator(
             eventBus: eventBus,
             fetchCache: self.fetchCache)
 
@@ -101,7 +101,7 @@ class AppViewModel: ObservableObject {
     func login(viewController: UIViewController, onComplete: @escaping (Bool) -> Void) {
 
         // Clear state
-        self.viewModelCoordinator.resetState()
+        self.apiRequestCoordinator.resetState()
 
         Task {
 
@@ -152,7 +152,7 @@ class AppViewModel: ObservableObject {
     func logout(viewController: UIViewController, onComplete: @escaping () -> Void) {
 
         // Clear state
-        self.viewModelCoordinator.resetState()
+        self.apiRequestCoordinator.resetState()
 
         Task {
 
@@ -208,7 +208,7 @@ class AppViewModel: ObservableObject {
     func triggerDataReload(causeError: Bool) {
 
         self.error = nil
-        self.viewModelCoordinator.resetState()
+        self.apiRequestCoordinator.resetState()
         self.eventBus.sendReloadDataEvent(causeError: causeError)
     }
 
@@ -216,7 +216,7 @@ class AppViewModel: ObservableObject {
      * If there were load errors, try to reload data when Home is pressed
      */
     func hasApiError() -> Bool {
-        return self.error != nil || self.viewModelCoordinator.hasErrors()
+        return self.error != nil || self.apiRequestCoordinator.hasErrors()
     }
 
     /*
@@ -242,7 +242,7 @@ class AppViewModel: ObservableObject {
 
             self.companiesViewModel = CompaniesViewModel(
                 fetchClient: self.fetchClient,
-                viewModelCoordinator: self.viewModelCoordinator)
+                apiRequestCoordinator: self.apiRequestCoordinator)
         }
 
         return self.companiesViewModel!
@@ -257,7 +257,7 @@ class AppViewModel: ObservableObject {
 
             self.transactionsViewModel = TransactionsViewModel(
                 fetchClient: self.fetchClient,
-                viewModelCoordinator: self.viewModelCoordinator)
+                apiRequestCoordinator: self.apiRequestCoordinator)
         }
 
         return self.transactionsViewModel!
@@ -271,7 +271,7 @@ class AppViewModel: ObservableObject {
         if self.userInfoViewModel == nil {
             self.userInfoViewModel = UserInfoViewModel(
                 fetchClient: self.fetchClient,
-                viewModelCoordinator: self.viewModelCoordinator)
+                apiRequestCoordinator: self.apiRequestCoordinator)
         }
 
         return self.userInfoViewModel!
