@@ -16,7 +16,6 @@
 		28D73D81293BADF000EFA01B /* LoginResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */; };
 		28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */; };
 		28E45F032AB8B07C00625091 /* ViewLoadOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */; };
-		AABBCC022ABB5E3B00625091 /* ApiRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */; };
 		28E45F0A2ABB624800625091 /* FetchCacheItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F092ABB624800625091 /* FetchCacheItem.swift */; };
 		28E45F0C2ABB634500625091 /* FetchCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F0B2ABB634500625091 /* FetchCache.swift */; };
 		28E45F0E2ABB6ABF00625091 /* FetchCacheKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F0D2ABB6ABF00625091 /* FetchCacheKeys.swift */; };
@@ -74,6 +73,7 @@
 		4EEF02F9247196B80022E063 /* TransactionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEF02F8247196B80022E063 /* TransactionItemView.swift */; };
 		4EF0FEF32EFAA363002DCBEA /* Base64Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF0FEF22EFAA357002DCBEA /* Base64Url.swift */; };
 		4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */; };
+		4EFA05E2308E23C60032530C /* ViewModelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFA05E1308E23C40032530C /* ViewModelStore.swift */; };
 		4EFCE67B24631D5D00BD1443 /* LogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67A24631D5D00BD1443 /* LogoutManager.swift */; };
 		4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67C24631E8F00BD1443 /* CognitoLogoutManager.swift */; };
 		4EFCE67F24631E9400BD1443 /* StandardLogoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFCE67E24631E9400BD1443 /* StandardLogoutManager.swift */; };
@@ -89,6 +89,7 @@
 		4EFEFC332451EE4F0057C78D /* HeaderButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */; };
 		4EFEFC342451EE4F0057C78D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC302451EE4F0057C78D /* Colors.swift */; };
 		4EFEFC352451EE4F0057C78D /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFEFC312451EE4F0057C78D /* ViewRouter.swift */; };
+		AABBCC022ABB5E3B00625091 /* ApiRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,7 +101,6 @@
 		28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseHandler.swift; sourceTree = "<group>"; };
 		28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResponseHandler.swift; sourceTree = "<group>"; };
 		28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoadOptions.swift; sourceTree = "<group>"; };
-		AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestCoordinator.swift; sourceTree = "<group>"; };
 		28E45F092ABB624800625091 /* FetchCacheItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCacheItem.swift; sourceTree = "<group>"; };
 		28E45F0B2ABB634500625091 /* FetchCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCache.swift; sourceTree = "<group>"; };
 		28E45F0D2ABB6ABF00625091 /* FetchCacheKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCacheKeys.swift; sourceTree = "<group>"; };
@@ -160,6 +160,7 @@
 		4EEF02F8247196B80022E063 /* TransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionItemView.swift; sourceTree = "<group>"; };
 		4EF0FEF22EFAA357002DCBEA /* Base64Url.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64Url.swift; sourceTree = "<group>"; };
 		4EF8C8CC2450605000E646B8 /* ErrorDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetailsView.swift; sourceTree = "<group>"; };
+		4EFA05E1308E23C40032530C /* ViewModelStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelStore.swift; sourceTree = "<group>"; };
 		4EFB253127B050D7008E747C /* .well-known */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ".well-known"; sourceTree = "<group>"; };
 		4EFCE67A24631D5D00BD1443 /* LogoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutManager.swift; sourceTree = "<group>"; };
 		4EFCE67C24631E8F00BD1443 /* CognitoLogoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CognitoLogoutManager.swift; sourceTree = "<group>"; };
@@ -175,6 +176,7 @@
 		4EFEFC2F2451EE4F0057C78D /* HeaderButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderButtonStyle.swift; sourceTree = "<group>"; };
 		4EFEFC302451EE4F0057C78D /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		4EFEFC312451EE4F0057C78D /* ViewRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
+		AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,15 +337,6 @@
 			path = OAuth;
 			sourceTree = "<group>";
 		};
-		AABBCC032ABB5E3B00625091 /* Coordination */ = {
-			isa = PBXGroup;
-			children = (
-				AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */,
-			);
-			path = Coordination;
-			sourceTree = "<group>";
-		};
-
 		4EB6DAAE23F970D60007A311 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,6 +369,7 @@
 		4EE4CABB245364910033B3C5 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				4EFA05E1308E23C40032530C /* ViewModelStore.swift */,
 				4ECD97612452E01D00D7E271 /* AppView.swift */,
 				4E3F8D422455E9C400EC7EB0 /* AppViewModel.swift */,
 				4EC0615825755BA3009050F3 /* SampleApp.swift */,
@@ -476,11 +470,19 @@
 				4E29A1A62461DBE100095F11 /* OrientationHandler.swift */,
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				28E45F022AB8B07C00625091 /* ViewLoadOptions.swift */,
-					4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
+				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
 				288F61922AC48BA0009A1229 /* Localizable.strings */,
 				28051E362B965729009ADAB9 /* LoggerExtensions.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		AABBCC032ABB5E3B00625091 /* Coordination */ = {
+			isa = PBXGroup;
+			children = (
+				AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */,
+			);
+			path = Coordination;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -610,6 +612,7 @@
 				4EFEFC2C2451D2860057C78D /* ErrorCodes.swift in Sources */,
 				4ECD97662452F25E00D7E271 /* MainView.swift in Sources */,
 				4EB6DAAA23F967D30007A311 /* TransactionsView.swift in Sources */,
+				4EFA05E2308E23C60032530C /* ViewModelStore.swift in Sources */,
 				28051E372B965729009ADAB9 /* LoggerExtensions.swift in Sources */,
 				4EB180DC24508FC600A2C045 /* ErrorField.swift in Sources */,
 				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,

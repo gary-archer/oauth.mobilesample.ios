@@ -101,6 +101,7 @@ struct TransactionsView: View {
         // For forbidden errors we navigate back to the home view
         let onForbidden: () -> Void = {
 
+            self.eventBus.sendApiRequestEvent(loaded: true)
             self.viewRouter.navigateToPath(
                 newViewType: CompaniesView.Type.self,
                 newViewParams: []

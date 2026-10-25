@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 /*
- * A primitive view model class to manage global objects and state
+ * A view model class to manage global objects and state
  */
 class AppViewModel: ObservableObject {
 
@@ -13,6 +13,7 @@ class AppViewModel: ObservableObject {
     private let fetchCache: FetchCache
     let apiRequestCoordinator: ApiRequestCoordinator
     let eventBus: EventBus
+    let viewModelStore: ViewModelStore
     var deepLinkStartupUrl: URL?
 
     // State used by the app view
@@ -53,6 +54,12 @@ class AppViewModel: ObservableObject {
         self.apiRequestCoordinator = ApiRequestCoordinator(
             eventBus: eventBus,
             fetchCache: self.fetchCache)
+        
+        // Create an object to store view models
+        self.viewModelStore = ViewModelStore(
+            fetchClient: self.fetchClient,
+            apiRequestCoordinator: self.apiRequestCoordinator,
+            eventBus: self.eventBus)
 
         // Update state
         self.isLoaded = false
@@ -231,50 +238,6 @@ class AppViewModel: ObservableObject {
      */
     func expireRefreshToken() {
         self.oauthClient.expireRefreshToken()
-    }
-
-    /*
-     * Create the companies view model on first use
-     */
-    func getCompaniesViewModel() -> CompaniesViewModel {
-
-        if self.companiesViewModel == nil {
-
-            self.companiesViewModel = CompaniesViewModel(
-                fetchClient: self.fetchClient,
-                apiRequestCoordinator: self.apiRequestCoordinator)
-        }
-
-        return self.companiesViewModel!
-    }
-
-    /*
-     * Create the transactions view model on first use
-     */
-    func getTransactionsViewModel() -> TransactionsViewModel {
-
-        if self.transactionsViewModel == nil {
-
-            self.transactionsViewModel = TransactionsViewModel(
-                fetchClient: self.fetchClient,
-                apiRequestCoordinator: self.apiRequestCoordinator)
-        }
-
-        return self.transactionsViewModel!
-    }
-
-    /*
-     * Create the user info view model on first use
-     */
-    func getUserInfoViewModel() -> UserInfoViewModel {
-
-        if self.userInfoViewModel == nil {
-            self.userInfoViewModel = UserInfoViewModel(
-                fetchClient: self.fetchClient,
-                apiRequestCoordinator: self.apiRequestCoordinator)
-        }
-
-        return self.userInfoViewModel!
     }
 
     /*

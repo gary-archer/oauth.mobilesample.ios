@@ -26,7 +26,7 @@ struct AppView: View {
         return VStack {
 
             // Display the title row including user info
-            TitleView(userInfoViewModel: self.model.getUserInfoViewModel())
+            TitleView(userInfoViewModel: self.model.viewModelStore.getUserInfoViewModel())
 
             // Next display the header buttons view
             HeaderButtonsView(
@@ -51,8 +51,8 @@ struct AppView: View {
             // Render the main view based on the user's current location
             MainView(
                 viewRouter: self.viewRouter,
-                companiesViewModel: self.model.getCompaniesViewModel(),
-                transactionsViewModel: self.model.getTransactionsViewModel(),
+                companiesViewModel: self.model.viewModelStore.getCompaniesViewModel(),
+                transactionsViewModel: self.model.viewModelStore.getTransactionsViewModel(),
                 isDeviceSecured: self.model.isDeviceSecured)
 
             // Fill up the remainder of the view if needed

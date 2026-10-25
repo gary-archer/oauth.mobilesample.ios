@@ -80,15 +80,14 @@ class TransactionsViewModel: ObservableObject {
 
                 await MainActor.run {
 
-                    // Handle the error
+                    // Handle errors and treat edits to unauthorized browser locations as expected
                     self.data = nil
                     let uiError = ErrorFactory.fromException(error: error)
-                    self.error = uiError
-                    self.apiRequestCoordinator.onApiRequestEnd()
-
-                    // Inform the view to take an action on the main thread when access is forbidden
                     if self.isForbiddenError(uiError: uiError) {
+                        self.error = nil
                         onForbidden()
+                    } else {
+                        self.error = uiError
                     }
                 }
             }
