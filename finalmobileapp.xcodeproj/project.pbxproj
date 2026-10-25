@@ -48,7 +48,7 @@
 		4E679949246D9723002B7E5F /* DeepLinkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E679948246D9723002B7E5F /* DeepLinkHelper.swift */; };
 		4E712AAA245C5D1700022757 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E712AA9245C5D1600022757 /* launch.png */; };
 		4E79B09C241428310054C382 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79B09B241428310054C382 /* UIError.swift */; };
-		4E85F2CC2414039300E0ACA8 /* FetchClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85F2CB2414039300E0ACA8 /* FetchClient.swift */; };
+		4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85F2CB2414039300E0ACA8 /* ApiClient.swift */; };
 		4EA2E3962848ED650058A0B7 /* export.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4EA2E3952848ED650058A0B7 /* export.plist */; };
 		4EB180DC24508FC600A2C045 /* ErrorField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB180DB24508FC600A2C045 /* ErrorField.swift */; };
 		4EB386EC244C4D1A00FC2B17 /* ErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB386EB244C4D1A00FC2B17 /* ErrorFactory.swift */; };
@@ -134,7 +134,7 @@
 		4E679948246D9723002B7E5F /* DeepLinkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHelper.swift; sourceTree = "<group>"; };
 		4E712AA9245C5D1600022757 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch.png; sourceTree = "<group>"; };
 		4E79B09B241428310054C382 /* UIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIError.swift; sourceTree = "<group>"; };
-		4E85F2CB2414039300E0ACA8 /* FetchClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchClient.swift; sourceTree = "<group>"; };
+		4E85F2CB2414039300E0ACA8 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		4E87A3A224588C9400E522BF /* finalmobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = finalmobileapp.entitlements; sourceTree = "<group>"; };
 		4EA2E3952848ED650058A0B7 /* export.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = export.plist; sourceTree = "<group>"; };
 		4EB180DB24508FC600A2C045 /* ErrorField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorField.swift; sourceTree = "<group>"; };
@@ -231,9 +231,9 @@
 		4E1888FC23DE02B40014638D /* Api */ = {
 			isa = PBXGroup;
 			children = (
-				4E85F2CA2414034E00E0ACA8 /* Client */,
-				AABBCC032ABB5E3B00625091 /* Coordination */,
+				4EEE0FDE308E8279007A0D64 /* Client */,
 				4EB6DAAE23F970D60007A311 /* Entities */,
+				4E85F2CA2414034E00E0ACA8 /* Cache */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -312,16 +312,15 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
-		4E85F2CA2414034E00E0ACA8 /* Client */ = {
+		4E85F2CA2414034E00E0ACA8 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				28E45F092ABB624800625091 /* FetchCacheItem.swift */,
 				28E45F0B2ABB634500625091 /* FetchCache.swift */,
+				28E45F092ABB624800625091 /* FetchCacheItem.swift */,
 				28E45F0D2ABB6ABF00625091 /* FetchCacheKeys.swift */,
-				4E85F2CB2414039300E0ACA8 /* FetchClient.swift */,
 				4EFCE68424632F2600BD1443 /* FetchOptions.swift */,
 			);
-			path = Client;
+			path = Cache;
 			sourceTree = "<group>";
 		};
 		4EB386F3244C68CD00FC2B17 /* OAuth */ = {
@@ -375,6 +374,15 @@
 				4EC0615825755BA3009050F3 /* SampleApp.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		4EEE0FDE308E8279007A0D64 /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				4E85F2CB2414039300E0ACA8 /* ApiClient.swift */,
+				AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */,
+			);
+			path = Client;
 			sourceTree = "<group>";
 		};
 		4EEF02F0247192EF0022E063 /* Companies */ = {
@@ -475,14 +483,6 @@
 				28051E362B965729009ADAB9 /* LoggerExtensions.swift */,
 			);
 			path = Utilities;
-			sourceTree = "<group>";
-		};
-		AABBCC032ABB5E3B00625091 /* Coordination */ = {
-			isa = PBXGroup;
-			children = (
-				AABBCC012ABB5E3B00625091 /* ApiRequestCoordinator.swift */,
-			);
-			path = Coordination;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -618,7 +618,7 @@
 				4EFCE67D24631E8F00BD1443 /* CognitoLogoutManager.swift in Sources */,
 				4EE6B1E02464B2FD00B43FF3 /* DateUtils.swift in Sources */,
 				4E679949246D9723002B7E5F /* DeepLinkHelper.swift in Sources */,
-				4E85F2CC2414039300E0ACA8 /* FetchClient.swift in Sources */,
+				4E85F2CC2414039300E0ACA8 /* ApiClient.swift in Sources */,
 				28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */,
 				4EEF02F9247196B80022E063 /* TransactionItemView.swift in Sources */,
 				4EB6DAA823F967A70007A311 /* CompaniesView.swift in Sources */,

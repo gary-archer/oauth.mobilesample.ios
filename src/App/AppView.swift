@@ -189,7 +189,7 @@ struct AppView: View {
             }
 
             // Force a data reload if recovering from errors
-            if model.apiRequestCoordinator.hasErrors() {
+            if model.hasErrors() {
                 self.model.triggerDataReload(causeError: false)
             }
         }

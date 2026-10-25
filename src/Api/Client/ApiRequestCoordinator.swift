@@ -3,44 +3,43 @@
  */
 class ApiRequestCoordinator {
 
-    private let eventBus: EventBus
     private let fetchCache: FetchCache
+    private let eventBus: EventBus
     private var cacheKeys: [String]
     private var loadingCount: Int
     private var loadedCount: Int
+    private var errors: [UIError]
 
     /*
      * Set the initial state
      */
-    init(eventBus: EventBus, fetchCache: FetchCache) {
-        self.eventBus = eventBus
+    init(fetchCache: FetchCache, eventBus: EventBus) {
+
         self.fetchCache = fetchCache
+        self.eventBus = eventBus
         self.cacheKeys = []
         self.loadingCount = 0
         self.loadedCount = 0
+        self.errors = []
     }
 
     /*
-     * Called by a view model when it starts an API request
-     * Accepts one or more cache keys to support view models that make concurrent requests
+     * Called when an API request starts
      * Fires ApiRequestEvent(false) on the first request of a batch to signal loading has begun
      */
-    func onApiRequestStart(cacheKeys: String...) {
+    func onApiRequestStart(cacheKey: String) {
 
         if self.loadingCount == 0 {
             self.cacheKeys = []
-        }
-
-        self.cacheKeys.append(contentsOf: cacheKeys)
-        self.loadingCount += 1
-
-        if self.loadingCount == 1 {
             self.eventBus.sendApiRequestEvent(loaded: false)
         }
+
+        self.cacheKeys.append(cacheKey)
+        self.loadingCount += 1
     }
 
     /*
-     * Called by a view model when its API request completes
+     * Called when an API request ends
      * Fires ApiRequestEvent(true) once all pending requests in the batch have finished
      */
     func onApiRequestEnd() {
@@ -50,20 +49,21 @@ class ApiRequestCoordinator {
     }
 
     /*
-     * Return true if there were any load errors
+     * Return true if there were any errors on the last batch of API requests
      */
     func hasErrors() -> Bool {
-        return !self.getLoadErrors().isEmpty
+        return !self.errors.isEmpty
     }
 
     /*
-     * Reset state when the Reload Data button is clicked or on logout
-     */
+         * Reset all state when the user logs out
+         */
     func resetState() {
+
+        self.errors = []
         self.cacheKeys = []
         self.loadingCount = 0
         self.loadedCount = 0
-        self.fetchCache.clearAll()
     }
 
     /*
@@ -77,28 +77,29 @@ class ApiRequestCoordinator {
             self.loadingCount = 0
             self.loadedCount = 0
 
+            // Get error details stored in the fetch cache
+            self.errors = self.getAllErrors()
+
             // Notify subscribers when all API requests have completed successfully
-            let errors = self.getLoadErrors()
-            if errors.isEmpty {
+            if self.errors.isEmpty {
                 self.eventBus.sendApiRequestEvent(loaded: true)
             }
 
             // Login required errors occur when there are no tokens yet or when token refresh fails
             // Raise a single event so that navigation to login required is triggered only once
-            let loginRequired = errors.first { error in
+            let loginRequired = self.errors.first { error in
                 error.errorCode == ErrorCodes.loginRequired
             }
             if loginRequired != nil {
-                self.resetState()
                 self.eventBus.sendLoginRequiredEvent()
             }
         }
     }
 
     /*
-     * Collect errors from all cache keys registered in the current batch
+     * Collect errors for the current batch of requests
      */
-    private func getLoadErrors() -> [UIError] {
+    private func getAllErrors() -> [UIError] {
 
         var errors = [UIError]()
 

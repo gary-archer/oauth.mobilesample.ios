@@ -6,8 +6,7 @@ import Foundation
 class TransactionsViewModel: ObservableObject {
 
     // Late created properties
-    private let fetchClient: FetchClient
-    private let apiRequestCoordinator: ApiRequestCoordinator
+    private let apiClient: ApiClient
     var companyId: String?
     private var companyWasChanged: Bool
 
@@ -18,10 +17,9 @@ class TransactionsViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(fetchClient: FetchClient, apiRequestCoordinator: ApiRequestCoordinator) {
+    init(apiClient: ApiClient) {
 
-        self.apiRequestCoordinator = apiRequestCoordinator
-        self.fetchClient = fetchClient
+        self.apiClient = apiClient
         self.companyId = nil
         self.companyWasChanged = false
     }
@@ -49,7 +47,6 @@ class TransactionsViewModel: ObservableObject {
             causeError: options?.causeError ?? false)
 
         // Initialise state
-        self.apiRequestCoordinator.onApiRequestStart(cacheKeys: fetchOptions.cacheKey)
         self.error = nil
 
         // Handle deep link updates to the company ID
@@ -63,7 +60,7 @@ class TransactionsViewModel: ObservableObject {
             do {
 
                 // Make the API call on a background thread
-                let transactions = try await self.fetchClient.getCompanyTransactions(
+                let transactions = try await self.apiClient.getCompanyTransactions(
                     companyId: self.companyId!,
                     options: fetchOptions)
 
@@ -73,7 +70,6 @@ class TransactionsViewModel: ObservableObject {
                     if transactions != nil {
                         self.data = transactions
                     }
-                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
 
             } catch {

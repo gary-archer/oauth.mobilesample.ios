@@ -6,8 +6,7 @@ import Foundation
 class UserInfoViewModel: ObservableObject {
 
     // Late initialised properties
-    private let fetchClient: FetchClient
-    private let apiRequestCoordinator: ApiRequestCoordinator
+    private let apiClient: ApiClient
 
     // Published state
     @Published var oauthUserInfo: OAuthUserInfo?
@@ -23,9 +22,8 @@ class UserInfoViewModel: ObservableObject {
     /*
      * Receive global objects whenever the view is recreated
      */
-    init(fetchClient: FetchClient, apiRequestCoordinator: ApiRequestCoordinator) {
-        self.fetchClient = fetchClient
-        self.apiRequestCoordinator = apiRequestCoordinator
+    init(apiClient: ApiClient) {
+        self.apiClient = apiClient
     }
 
     /*
@@ -44,7 +42,6 @@ class UserInfoViewModel: ObservableObject {
             causeError: options?.causeError ?? false)
 
         // Initialise state
-        self.apiRequestCoordinator.onApiRequestStart(cacheKeys: FetchCacheKeys.OAuthUserInfo, FetchCacheKeys.ApiUserInfo)
         self.error = nil
 
         Task {
@@ -52,10 +49,10 @@ class UserInfoViewModel: ObservableObject {
             do {
 
                 // The UI gets OAuth user info from the authorization server
-                async let getOAuthUserInfo = try await self.fetchClient.getOAuthUserInfo(options: oauthFetchOptions)
+                async let getOAuthUserInfo = try await self.apiClient.getOAuthUserInfo(options: oauthFetchOptions)
 
                 // The UI gets domain specific user attributes from its API
-                async let getApiUserInfo = try await self.fetchClient.getApiUserInfo(options: apiFetchOptions)
+                async let getApiUserInfo = try await self.apiClient.getApiUserInfo(options: apiFetchOptions)
 
                 // Fire both requests in parallel and wait for both to complete
                 let results = try await ApiRequests(getOAuthUserInfo: getOAuthUserInfo, getApiUserInfo: getApiUserInfo)
@@ -69,7 +66,6 @@ class UserInfoViewModel: ObservableObject {
                     if results.getApiUserInfo != nil {
                         self.apiUserInfo = results.getApiUserInfo
                     }
-                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
 
             } catch {
@@ -80,7 +76,6 @@ class UserInfoViewModel: ObservableObject {
                     self.oauthUserInfo = nil
                     self.apiUserInfo = nil
                     self.error = ErrorFactory.fromException(error: error)
-                    self.apiRequestCoordinator.onApiRequestEnd()
                 }
             }
         }

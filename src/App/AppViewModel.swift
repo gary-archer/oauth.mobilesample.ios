@@ -9,9 +9,7 @@ class AppViewModel: ObservableObject {
     // Global objects
     private let configuration: Configuration
     private let oauthClient: OAuthClient
-    private let fetchClient: FetchClient
-    private let fetchCache: FetchCache
-    let apiRequestCoordinator: ApiRequestCoordinator
+    private let apiClient: ApiClient
     let eventBus: EventBus
     let viewModelStore: ViewModelStore
     var deepLinkStartupUrl: URL?
@@ -33,7 +31,6 @@ class AppViewModel: ObservableObject {
     init(eventBus: EventBus) {
 
         // Create objects used for coordination
-        self.fetchCache = FetchCache()
         self.eventBus = eventBus
 
         // Load the configuration from the embedded resource
@@ -45,21 +42,13 @@ class AppViewModel: ObservableObject {
 
         // Create the API Client from configuration
         // swiftlint:disable:next force_try
-        self.fetchClient = try! FetchClient(
+        self.apiClient = try! ApiClient(
             configuration: self.configuration,
-            fetchCache: self.fetchCache,
-            oauthClient: self.oauthClient)
-
-        // Create an object that coordinates API requests from multiple views
-        self.apiRequestCoordinator = ApiRequestCoordinator(
-            eventBus: eventBus,
-            fetchCache: self.fetchCache)
-        
-        // Create an object to store view models
-        self.viewModelStore = ViewModelStore(
-            fetchClient: self.fetchClient,
-            apiRequestCoordinator: self.apiRequestCoordinator,
+            oauthClient: self.oauthClient,
             eventBus: self.eventBus)
+
+        // Create an object to store view models
+        self.viewModelStore = ViewModelStore(apiClient: self.apiClient, eventBus: self.eventBus)
 
         // Update state
         self.isLoaded = false
@@ -107,8 +96,7 @@ class AppViewModel: ObservableObject {
      */
     func login(viewController: UIViewController, onComplete: @escaping (Bool) -> Void) {
 
-        // Clear state
-        self.apiRequestCoordinator.resetState()
+        self.apiClient.clearLoginState()
 
         Task {
 
@@ -158,8 +146,7 @@ class AppViewModel: ObservableObject {
      */
     func logout(viewController: UIViewController, onComplete: @escaping () -> Void) {
 
-        // Clear state
-        self.apiRequestCoordinator.resetState()
+        self.apiClient.clearLoginState()
 
         Task {
 
@@ -215,15 +202,14 @@ class AppViewModel: ObservableObject {
     func triggerDataReload(causeError: Bool) {
 
         self.error = nil
-        self.apiRequestCoordinator.resetState()
         self.eventBus.sendReloadDataEvent(causeError: causeError)
     }
 
     /*
-     * If there were load errors, try to reload data when Home is pressed
+     * See if the last batch of API requests resulted in errors
      */
-    func hasApiError() -> Bool {
-        return self.error != nil || self.apiRequestCoordinator.hasErrors()
+    func hasErrors() -> Bool {
+        return self.error != nil || self.apiClient.hasErrors()
     }
 
     /*

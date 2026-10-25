@@ -1,22 +1,24 @@
 import Foundation
 
 /*
- * Plumbing related to making HTTP calls
+ * An example API client that implements infrastructure to fetch  and cache sensitive data
  */
-class FetchClient {
+class ApiClient {
 
     private var configuration: Configuration
     private var fetchCache: FetchCache
     private var oauthClient: OAuthClient
+    private var requestCoordinator: ApiRequestCoordinator
 
     init(
         configuration: Configuration,
-        fetchCache: FetchCache,
-        oauthClient: OAuthClient) throws {
+        oauthClient: OAuthClient,
+        eventBus: EventBus) throws {
 
         self.configuration = configuration
-        self.fetchCache = fetchCache
+        self.fetchCache = FetchCache()
         self.oauthClient = oauthClient
+        self.requestCoordinator = ApiRequestCoordinator(fetchCache: self.fetchCache, eventBus: eventBus)
     }
 
     /*
@@ -25,7 +27,7 @@ class FetchClient {
     func getCompanies(options: FetchOptions) async throws -> [Company]? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies") else {
-            throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
+            throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
         }
 
         // Make the API call
@@ -46,7 +48,7 @@ class FetchClient {
         options: FetchOptions) async throws -> CompanyTransactions? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions") else {
-            throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
+            throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
         }
 
         // Make the API call
@@ -65,7 +67,7 @@ class FetchClient {
     func getOAuthUserInfo(options: FetchOptions) async throws -> OAuthUserInfo? {
 
         guard let url = URL(string: self.configuration.oauth.userInfoEndpoint) else {
-            throw ErrorFactory.fromMessage(message: "Invalid user info endpoint in FetchClient")
+            throw ErrorFactory.fromMessage(message: "Invalid user info endpoint in ApiClient")
         }
 
         // Make the API call
@@ -94,7 +96,7 @@ class FetchClient {
     func getApiUserInfo(options: FetchOptions) async throws -> ApiUserInfo? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/userinfo") else {
-            throw ErrorFactory.fromMessage(message: "Invalid API URL in FetchClient")
+            throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
         }
 
         // Make the API call
@@ -105,6 +107,21 @@ class FetchClient {
 
         // Deserialize and return data
         return try self.deserialize(data: data!)
+    }
+
+    /*
+     * Return the overall status after a batch of concurrent API requests complete
+     */
+    func hasErrors() -> Bool {
+        return self.requestCoordinator.hasErrors()
+    }
+
+    /*
+     * Clear any API state when the user logs out
+     */
+    func clearLoginState() {
+        self.fetchCache.clearAll()
+        self.requestCoordinator.resetState()
     }
 
     /*
@@ -127,11 +144,22 @@ class FetchClient {
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
         cacheItem = self.fetchCache.createItem(key: options.cacheKey)
 
+        // Notify the request coordinator on the main thread that we are sending an API request
+        await MainActor.run {
+            self.requestCoordinator.onApiRequestStart(cacheKey: options.cacheKey)
+        }
+
         do {
 
             // Call the API and return data on success
             let data = try await self.getDataFromApiWithTokenRefresh(url: url, options: options)
             cacheItem!.setData(value: data)
+
+            // Notify the request coordinator on the main thread that we sent an API request
+            await MainActor.run {
+                self.requestCoordinator.onApiRequestEnd()
+            }
+
             return data
 
         } catch {
@@ -139,6 +167,12 @@ class FetchClient {
             // Save retry errors
             let errorData = ErrorFactory.fromException(error: error)
             cacheItem!.setError(value: errorData)
+
+            // Notify the request coordinator on the main thread that we sent an API request
+            await MainActor.run {
+                self.requestCoordinator.onApiRequestEnd()
+            }
+
             throw errorData
         }
     }

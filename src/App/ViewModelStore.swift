@@ -3,21 +3,16 @@
  */
 class ViewModelStore {
 
-    private let fetchClient: FetchClient
-    private let apiRequestCoordinator: ApiRequestCoordinator
+    private let apiClient: ApiClient
     private let eventBus: EventBus
 
     private var companiesViewModel: CompaniesViewModel?
     private var transactionsViewModel: TransactionsViewModel?
     private var userInfoViewModel: UserInfoViewModel?
 
-    init(
-        fetchClient: FetchClient,
-        apiRequestCoordinator: ApiRequestCoordinator,
-        eventBus: EventBus) {
+    init(apiClient: ApiClient, eventBus: EventBus) {
 
-        self.fetchClient = fetchClient
-        self.apiRequestCoordinator = apiRequestCoordinator
+        self.apiClient = apiClient
         self.eventBus = eventBus
     }
 
@@ -27,10 +22,7 @@ class ViewModelStore {
     func getCompaniesViewModel() -> CompaniesViewModel {
 
         if self.companiesViewModel == nil {
-
-            self.companiesViewModel = CompaniesViewModel(
-                fetchClient: self.fetchClient,
-                apiRequestCoordinator: self.apiRequestCoordinator)
+            self.companiesViewModel = CompaniesViewModel(apiClient: self.apiClient)
         }
 
         return self.companiesViewModel!
@@ -43,9 +35,7 @@ class ViewModelStore {
 
         if self.transactionsViewModel == nil {
 
-            self.transactionsViewModel = TransactionsViewModel(
-                fetchClient: self.fetchClient,
-                apiRequestCoordinator: self.apiRequestCoordinator)
+            self.transactionsViewModel = TransactionsViewModel(apiClient: self.apiClient)
         }
 
         return self.transactionsViewModel!
@@ -57,9 +47,7 @@ class ViewModelStore {
     func getUserInfoViewModel() -> UserInfoViewModel {
 
         if self.userInfoViewModel == nil {
-            self.userInfoViewModel = UserInfoViewModel(
-                fetchClient: self.fetchClient,
-                apiRequestCoordinator: self.apiRequestCoordinator)
+            self.userInfoViewModel = UserInfoViewModel(apiClient: self.apiClient)
         }
 
         return self.userInfoViewModel!
