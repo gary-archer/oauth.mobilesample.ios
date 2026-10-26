@@ -140,7 +140,7 @@ class ApiClient {
             return cacheItem!.getData()
         }
 
-        // Create the cache item with a null value
+        // Create the cache item with a null value, so that any additional view requests return null
         cacheItem = self.fetchCache.createItem(key: options.cacheKey)
 
         // Notify the request coordinator on the main thread that we are sending an API request
@@ -162,15 +162,15 @@ class ApiClient {
             return data
 
         } catch {
+            
+            // Make sure we clear the item from the cache
+            self.fetchCache.removeItem(key: options.cacheKey);
 
-            // Save retry errors
+            // Handle the error and notify the request coordinator that the API request failed
             let uiError = ErrorFactory.fromException(error: error)
-
-            // Notify the request coordinator on the main thread that we sent an API request
             await MainActor.run {
                 self.requestCoordinator.onApiRequestEnd(error: uiError)
             }
-
             throw uiError
         }
     }
