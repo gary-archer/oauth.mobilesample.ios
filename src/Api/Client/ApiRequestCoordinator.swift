@@ -21,13 +21,13 @@ class ApiRequestCoordinator {
 
     /*
      * Called when an API request starts
-     * Fires ApiRequestEvent(false) on the first request of a batch to signal loading has begun
+     * Fires ApiRequestsEvent(false) on the first request of a batch to signal loading has begun
      */
     func onApiRequestStart() {
 
         if self.loadingCount == 0 {
             self.errors = []
-            self.eventBus.sendApiRequestEvent(loaded: false)
+            self.eventBus.sendApiRequestsEvent(completed: false)
         }
 
         self.loadingCount += 1
@@ -35,7 +35,7 @@ class ApiRequestCoordinator {
 
     /*
      * Called when an API request ends
-     * Fires ApiRequestEvent(true) to signal that all requests in the batch have finished successfully
+     * Fires ApiRequestsEvent(true) to signal that all requests in the batch have finished successfully
      */
     func onApiRequestEnd(error: UIError? = nil) {
 
@@ -76,7 +76,7 @@ class ApiRequestCoordinator {
 
             // Notify subscribers when all API requests have completed successfully
             if self.errors.isEmpty {
-                self.eventBus.sendApiRequestEvent(loaded: true)
+                self.eventBus.sendApiRequestsEvent(completed: true)
             }
 
             // Login required errors occur when there are no tokens yet or when token refresh fails

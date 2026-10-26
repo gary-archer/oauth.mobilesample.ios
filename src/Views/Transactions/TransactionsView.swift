@@ -98,10 +98,13 @@ struct TransactionsView: View {
      */
     private func loadData(options: ViewLoadOptions? = nil) {
 
-        // For forbidden errors we navigate back to the home view
+        // The code sample treats forbidden due to unauthorized deep links as a normal, non-error event
         let onForbidden: () -> Void = {
 
-            self.eventBus.sendApiRequestEvent(loaded: true)
+            // Indicate successful completion of the batch of API requests
+            self.eventBus.sendApiRequestsEvent(completed: true)
+            
+            // Navigate back to the home view
             self.viewRouter.navigateToPath(
                 newViewType: CompaniesView.Type.self,
                 newViewParams: []

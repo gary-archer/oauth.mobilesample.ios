@@ -8,7 +8,7 @@ class EventBus: ObservableObject {
 
     let navigatedTopic = PassthroughSubject<NavigatedEvent, Never>()
     let loginRequiredTopic = PassthroughSubject<LoginRequiredEvent, Never>()
-    let apiRequestTopic = PassthroughSubject<ApiRequestEvent, Never>()
+    let apiRequestsTopic = PassthroughSubject<ApiRequestsEvent, Never>()
     let reloadDataTopic = PassthroughSubject<ReloadDataEvent, Never>()
 
     /*
@@ -30,12 +30,12 @@ class EventBus: ObservableObject {
     }
 
     /*
-     * Publish an event when the first API request fires and when all API requests complete
+     * Publish an event when a batch of API requests starts or ends
      */
-    func sendApiRequestEvent(loaded: Bool) {
+    func sendApiRequestsEvent(completed: Bool) {
 
-        let event = ApiRequestEvent(loaded: loaded)
-        self.apiRequestTopic.send(event)
+        let event = ApiRequestsEvent(completed: completed)
+        self.apiRequestsTopic.send(event)
     }
 
     /*
