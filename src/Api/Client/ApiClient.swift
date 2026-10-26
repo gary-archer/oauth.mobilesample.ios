@@ -182,7 +182,7 @@ class ApiClient {
         method: String,
         url: URL,
         dataToSend: Data?,
-        causeError: Bool = false) async throws -> Data? {
+        causeError: Bool) async throws -> Data? {
 
         // Avoid API requests when there is no access token, and instead trigger a login
         var accessToken = self.oauthClient.getAccessToken()
