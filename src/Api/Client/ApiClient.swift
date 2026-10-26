@@ -18,7 +18,7 @@ class ApiClient {
         self.configuration = configuration
         self.fetchCache = FetchCache()
         self.oauthClient = oauthClient
-        self.requestCoordinator = ApiRequestCoordinator(fetchCache: self.fetchCache, eventBus: eventBus)
+        self.requestCoordinator = ApiRequestCoordinator(eventBus: eventBus)
     }
 
     /*
@@ -135,13 +135,12 @@ class ApiClient {
         }
 
         // Return existing data from the memory cache when available
-        // If a view is created whiles its API requests are in flight, this returns null to the view model
         var cacheItem = self.fetchCache.getItem(key: options.cacheKey)
-        if cacheItem != nil && cacheItem!.getError() == nil {
+        if cacheItem != nil {
             return cacheItem!.getData()
         }
 
-        // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
+        // Create the cache item with a null value
         cacheItem = self.fetchCache.createItem(key: options.cacheKey)
 
         // Notify the request coordinator on the main thread that we are sending an API request
@@ -165,15 +164,14 @@ class ApiClient {
         } catch {
 
             // Save retry errors
-            let errorData = ErrorFactory.fromException(error: error)
-            cacheItem!.setError(value: errorData)
+            let uiError = ErrorFactory.fromException(error: error)
 
             // Notify the request coordinator on the main thread that we sent an API request
             await MainActor.run {
-                self.requestCoordinator.onApiRequestEnd()
+                self.requestCoordinator.onApiRequestEnd(error: uiError)
             }
 
-            throw errorData
+            throw uiError
         }
     }
 

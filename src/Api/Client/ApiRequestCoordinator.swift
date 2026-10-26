@@ -3,7 +3,6 @@
  */
 class ApiRequestCoordinator {
 
-    private let fetchCache: FetchCache
     private let eventBus: EventBus
     private var cacheKeys: [String]
     private var loadingCount: Int
@@ -13,9 +12,8 @@ class ApiRequestCoordinator {
     /*
      * Set the initial state
      */
-    init(fetchCache: FetchCache, eventBus: EventBus) {
+    init(eventBus: EventBus) {
 
-        self.fetchCache = fetchCache
         self.eventBus = eventBus
         self.cacheKeys = []
         self.loadingCount = 0
@@ -31,6 +29,7 @@ class ApiRequestCoordinator {
 
         if self.loadingCount == 0 {
             self.cacheKeys = []
+            self.errors = []
             self.eventBus.sendApiRequestEvent(loaded: false)
         }
 
@@ -42,9 +41,12 @@ class ApiRequestCoordinator {
      * Called when an API request ends
      * Fires ApiRequestEvent(true) once all pending requests in the batch have finished
      */
-    func onApiRequestEnd() {
+    func onApiRequestEnd(error: UIError? = nil) {
 
         self.loadedCount += 1
+        if error != nil {
+            self.errors.append(error!)
+        }
         self.handleAllRequestsComplete()
     }
 
@@ -77,9 +79,6 @@ class ApiRequestCoordinator {
             self.loadingCount = 0
             self.loadedCount = 0
 
-            // Get error details stored in the fetch cache
-            self.errors = self.getAllErrors()
-
             // Notify subscribers when all API requests have completed successfully
             if self.errors.isEmpty {
                 self.eventBus.sendApiRequestEvent(loaded: true)
@@ -94,24 +93,5 @@ class ApiRequestCoordinator {
                 self.eventBus.sendLoginRequiredEvent()
             }
         }
-    }
-
-    /*
-     * Collect errors for the current batch of requests
-     */
-    private func getAllErrors() -> [UIError] {
-
-        var errors = [UIError]()
-
-        self.cacheKeys.forEach { key in
-
-            let found = self.fetchCache.getItem(key: key)
-            let error = found?.getError()
-            if error != nil {
-                errors.append(error!)
-            }
-        }
-
-        return errors
     }
 }
