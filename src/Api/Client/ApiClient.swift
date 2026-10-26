@@ -151,7 +151,7 @@ class ApiClient {
         do {
 
             // Call the API and return data on success
-            let data = try await self.callApiWithTokenRefresh(url: url, jsonData: nil, causeError: options.causeError)
+            let data = try await self.callApiWithTokenRefresh(method: "GET", url: url, dataToSend: nil, causeError: options.causeError)
             cacheItem!.setData(value: data)
 
             // Notify the request coordinator on the main thread that we sent an API request
@@ -162,9 +162,9 @@ class ApiClient {
             return data
 
         } catch {
-            
+
             // Make sure we clear the item from the cache
-            self.fetchCache.removeItem(key: options.cacheKey);
+            self.fetchCache.removeItem(key: options.cacheKey)
 
             // Handle the error and notify the request coordinator that the API request failed
             let uiError = ErrorFactory.fromException(error: error)
@@ -179,8 +179,9 @@ class ApiClient {
      * Make a GET request and deal with caching
      */
     private func callApiWithTokenRefresh(
+        method: String,
         url: URL,
-        jsonData: Data?,
+        dataToSend: Data?,
         causeError: Bool = false) async throws -> Data? {
 
         // Avoid API requests when there is no access token, and instead trigger a login
@@ -192,9 +193,9 @@ class ApiClient {
         do {
             // Call the API and return data on success
             return try await self.callApiWithToken(
-                method: "GET",
+                method: method,
                 url: url,
-                jsonData: nil,
+                dataToSend: dataToSend,
                 accessToken: accessToken!,
                 causeError: causeError)
 
@@ -213,9 +214,9 @@ class ApiClient {
 
                 // Call the API and return data on success
                 return try await self.callApiWithToken(
-                    method: "GET",
+                    method: method,
                     url: url,
-                    jsonData: nil,
+                    dataToSend: dataToSend,
                     accessToken: accessToken!,
                     causeError: causeError)
 
@@ -241,7 +242,7 @@ class ApiClient {
     private func callApiWithToken(
         method: String,
         url: URL,
-        jsonData: Data?,
+        dataToSend: Data?,
         accessToken: String,
         causeError: Bool) async throws -> Data? {
 
@@ -261,8 +262,8 @@ class ApiClient {
         }
 
         // Add body data if supplied
-        if jsonData != nil {
-            request.httpBody = jsonData
+        if dataToSend != nil {
+            request.httpBody = dataToSend
         }
 
         // Send the request and get the response
