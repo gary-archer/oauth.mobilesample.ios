@@ -1,9 +1,9 @@
 import SwiftUI
 
 /*
- * Input when making a cacheable fetch request
+ * Input when making a cacheable GET request
  */
-struct FetchOptions {
+struct GetOptions {
     var cacheKey: String
     var forceReload: Bool
     var causeError: Bool

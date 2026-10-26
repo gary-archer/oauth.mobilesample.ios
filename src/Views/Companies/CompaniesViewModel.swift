@@ -22,7 +22,7 @@ class CompaniesViewModel: ObservableObject {
      */
     func callApi(options: ViewLoadOptions? = nil) {
 
-        let fetchOptions = FetchOptions(
+        let getOptions = GetOptions(
             cacheKey: FetchCacheKeys.Companies,
             forceReload: options?.forceReload ?? false,
             causeError: options?.causeError ?? false)
@@ -35,7 +35,7 @@ class CompaniesViewModel: ObservableObject {
             do {
 
                 // Make the API call on a background thread
-                let companies = try await self.apiClient.getCompanies(options: fetchOptions)
+                let companies = try await self.apiClient.getCompanies(options: getOptions)
                 await MainActor.run {
 
                     // Update state and notify

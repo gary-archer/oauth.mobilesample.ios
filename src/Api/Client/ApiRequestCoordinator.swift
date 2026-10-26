@@ -4,7 +4,6 @@
 class ApiRequestCoordinator {
 
     private let eventBus: EventBus
-    private var cacheKeys: [String]
     private var loadingCount: Int
     private var loadedCount: Int
     private var errors: [UIError]
@@ -15,7 +14,6 @@ class ApiRequestCoordinator {
     init(eventBus: EventBus) {
 
         self.eventBus = eventBus
-        self.cacheKeys = []
         self.loadingCount = 0
         self.loadedCount = 0
         self.errors = []
@@ -25,21 +23,19 @@ class ApiRequestCoordinator {
      * Called when an API request starts
      * Fires ApiRequestEvent(false) on the first request of a batch to signal loading has begun
      */
-    func onApiRequestStart(cacheKey: String) {
+    func onApiRequestStart() {
 
         if self.loadingCount == 0 {
-            self.cacheKeys = []
             self.errors = []
             self.eventBus.sendApiRequestEvent(loaded: false)
         }
 
-        self.cacheKeys.append(cacheKey)
         self.loadingCount += 1
     }
 
     /*
      * Called when an API request ends
-     * Fires ApiRequestEvent(true) once all pending requests in the batch have finished
+     * Fires ApiRequestEvent(true) to signal that all requests in the batch have finished successfully
      */
     func onApiRequestEnd(error: UIError? = nil) {
 
@@ -58,12 +54,11 @@ class ApiRequestCoordinator {
     }
 
     /*
-         * Reset all state when the user logs out
-         */
+     * Reset all state when the user logs out
+     */
     func resetState() {
 
         self.errors = []
-        self.cacheKeys = []
         self.loadingCount = 0
         self.loadedCount = 0
     }

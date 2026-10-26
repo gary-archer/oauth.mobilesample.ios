@@ -24,7 +24,7 @@ class ApiClient {
     /*
      * Make an API call to get companies
      */
-    func getCompanies(options: FetchOptions) async throws -> [Company]? {
+    func getCompanies(options: GetOptions) async throws -> [Company]? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
@@ -45,7 +45,7 @@ class ApiClient {
      */
     func getCompanyTransactions(
         companyId: String,
-        options: FetchOptions) async throws -> CompanyTransactions? {
+        options: GetOptions) async throws -> CompanyTransactions? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
@@ -64,7 +64,7 @@ class ApiClient {
     /*
      * Download user attributes from the authorization server
      */
-    func getOAuthUserInfo(options: FetchOptions) async throws -> OAuthUserInfo? {
+    func getOAuthUserInfo(options: GetOptions) async throws -> OAuthUserInfo? {
 
         guard let url = URL(string: self.configuration.oauth.userInfoEndpoint) else {
             throw ErrorFactory.fromMessage(message: "Invalid user info endpoint in ApiClient")
@@ -93,7 +93,7 @@ class ApiClient {
     /*
      * Download user attributes stored in the API's own data
      */
-    func getApiUserInfo(options: FetchOptions) async throws -> ApiUserInfo? {
+    func getApiUserInfo(options: GetOptions) async throws -> ApiUserInfo? {
 
         guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/userinfo") else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
@@ -127,7 +127,7 @@ class ApiClient {
     /*
      * Make a GET request and deal with caching
      */
-    private func getDataFromApi(url: URL, options: FetchOptions) async throws -> Data? {
+    private func getDataFromApi(url: URL, options: GetOptions) async throws -> Data? {
 
         // Remove the item from the cache when a reload is requested
         if options.forceReload {
@@ -145,13 +145,13 @@ class ApiClient {
 
         // Notify the request coordinator on the main thread that we are sending an API request
         await MainActor.run {
-            self.requestCoordinator.onApiRequestStart(cacheKey: options.cacheKey)
+            self.requestCoordinator.onApiRequestStart()
         }
 
         do {
 
             // Call the API and return data on success
-            let data = try await self.getDataFromApiWithTokenRefresh(url: url, options: options)
+            let data = try await self.callApiWithTokenRefresh(url: url, jsonData: nil, causeError: options.causeError)
             cacheItem!.setData(value: data)
 
             // Notify the request coordinator on the main thread that we sent an API request
@@ -178,7 +178,10 @@ class ApiClient {
     /*
      * Make a GET request and deal with caching
      */
-    private func getDataFromApiWithTokenRefresh(url: URL, options: FetchOptions) async throws -> Data? {
+    private func callApiWithTokenRefresh(
+        url: URL,
+        jsonData: Data?,
+        causeError: Bool = false) async throws -> Data? {
 
         // Avoid API requests when there is no access token, and instead trigger a login
         var accessToken = self.oauthClient.getAccessToken()
@@ -193,7 +196,7 @@ class ApiClient {
                 url: url,
                 jsonData: nil,
                 accessToken: accessToken!,
-                options: options)
+                causeError: causeError)
 
         } catch {
 
@@ -214,7 +217,7 @@ class ApiClient {
                     url: url,
                     jsonData: nil,
                     accessToken: accessToken!,
-                    options: options)
+                    causeError: causeError)
 
             } catch {
 
@@ -240,7 +243,7 @@ class ApiClient {
         url: URL,
         jsonData: Data?,
         accessToken: String,
-        options: FetchOptions) async throws -> Data? {
+        causeError: Bool) async throws -> Data? {
 
         // Create the request object and set parameters
         var request = URLRequest(url: url, timeoutInterval: 10.0)
@@ -253,7 +256,7 @@ class ApiClient {
         request.addValue(UUID().uuidString, forHTTPHeaderField: "correlation-id")
 
         // If required, add a header to request that an API simulates a 500 exception
-        if options.causeError {
+        if causeError {
             request.addValue("FinalApi", forHTTPHeaderField: "api-exception-simulation")
         }
 
