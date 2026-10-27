@@ -47,15 +47,10 @@ class UserInfoViewModel: ObservableObject {
                 // Fire both requests in parallel and wait for both to complete
                 let results = try await ApiRequests(getOAuthUserInfo: getOAuthUserInfo, getApiUserInfo: getApiUserInfo)
 
+                // Update data
                 await MainActor.run {
-
-                    // Update state and notify
-                    if results.getOAuthUserInfo != nil {
-                        self.oauthUserInfo = results.getOAuthUserInfo
-                    }
-                    if results.getApiUserInfo != nil {
-                        self.apiUserInfo = results.getApiUserInfo
-                    }
+                    self.oauthUserInfo = results.getOAuthUserInfo
+                    self.apiUserInfo = results.getApiUserInfo
                 }
 
             } catch {

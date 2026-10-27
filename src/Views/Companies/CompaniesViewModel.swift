@@ -31,12 +31,10 @@ class CompaniesViewModel: ObservableObject {
 
                 // Make the API call on a background thread
                 let companies = try await self.apiClient.getCompanies(options: options)
+                
+                // Update data
                 await MainActor.run {
-
-                    // Update state and notify
-                    if companies != nil {
-                        self.companies = companies!
-                    }
+                    self.companies = companies
                 }
 
             } catch {

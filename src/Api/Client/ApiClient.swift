@@ -24,17 +24,14 @@ class ApiClient {
     /*
      * Make an API call to get companies
      */
-    func getCompanies(options: GetOptions) async throws -> [Company]? {
+    func getCompanies(options: GetOptions) async throws -> [Company] {
 
         // Make the API call
         let url = "\(self.configuration.app.apiBaseUrl)/companies"
         let data = try await self.getDataFromApi(url: url, options: options)
-        if data == nil {
-            return nil
-        }
 
         // Deserialize and return data
-        return try self.deserialize(data: data!)
+        return try self.deserialize(data: data)
     }
 
     /*
@@ -42,35 +39,29 @@ class ApiClient {
      */
     func getCompanyTransactions(
         companyId: String,
-        options: GetOptions) async throws -> CompanyTransactions? {
+        options: GetOptions) async throws -> CompanyTransactions {
 
         // Make the API call
         let url = "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions"
         let data = try await self.getDataFromApi(url: url, options: options)
-        if data == nil {
-            return nil
-        }
 
         // Deserialize and return data
-        return try self.deserialize(data: data!)
+        return try self.deserialize(data: data)
     }
 
     /*
      * Download user attributes from the authorization server
      */
-    func getOAuthUserInfo(options: GetOptions) async throws -> OAuthUserInfo? {
+    func getOAuthUserInfo(options: GetOptions) async throws -> OAuthUserInfo {
 
         // Make the API call
         let url = self.configuration.oauth.userInfoEndpoint
         let data = try await self.getDataFromApi(url: url, options: options)
-        if data == nil {
-            return nil
-        }
 
         // Return the response data on success
         var givenName  = ""
         var familyName = ""
-        if let json = try? JSONSerialization.jsonObject(with: data!, options: []) {
+        if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
 
             if let fields = json as? [String: Any] {
                 givenName = fields["given_name"] as? String ?? ""
@@ -89,12 +80,9 @@ class ApiClient {
         // Make the API call
         let url = "\(self.configuration.app.apiBaseUrl)/userinfo"
         let data = try await self.getDataFromApi(url: url, options: options)
-        if data == nil {
-            return nil
-        }
 
         // Deserialize and return data
-        return try self.deserialize(data: data!)
+        return try self.deserialize(data: data)
     }
 
     /*
@@ -115,8 +103,8 @@ class ApiClient {
     /*
      * Make a GET request and deal with caching
      */
-    private func getDataFromApi(url: String, options: GetOptions) async throws -> Data? {
-        
+    private func getDataFromApi(url: String, options: GetOptions) async throws -> Data {
+
         guard let urlValue = URL(string: url) else {
             throw ErrorFactory.fromMessage(message: "Invalid API URL: \(url)")
         }
@@ -127,9 +115,9 @@ class ApiClient {
         }
 
         // Return existing data from the memory cache when available
-        var cachedData = self.fetchCache.getItem(key: url)
+        let cachedData = self.fetchCache.getItem(key: url)
         if cachedData != nil {
-            return cachedData
+            return cachedData!
         }
 
         // Notify the request coordinator on the main thread that we are sending an API request

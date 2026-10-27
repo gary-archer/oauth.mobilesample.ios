@@ -59,12 +59,9 @@ class TransactionsViewModel: ObservableObject {
                     companyId: self.companyId!,
                     options: options)
 
+                // Update data
                 await MainActor.run {
-
-                    // Update state and notify
-                    if transactions != nil {
-                        self.data = transactions
-                    }
+                    self.data = transactions
                 }
 
             } catch {
