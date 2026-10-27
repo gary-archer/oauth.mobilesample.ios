@@ -57,7 +57,8 @@ struct CompaniesView: View {
      * Receive events
      */
     private func handleReloadData(event: ReloadDataEvent) {
-        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+
+        let options = GetOptions(forceReload: true, causeError: event.causeError)
         self.loadData(options: options)
     }
 
@@ -65,14 +66,16 @@ struct CompaniesView: View {
      * Do the initial load
      */
     private func initialLoad() {
+
         self.eventBus.sendNavigatedEvent(isAuthenticatedView: true)
-        self.loadData()
+        let options = GetOptions(forceReload: false, causeError: false)
+        self.loadData(options: options)
     }
 
     /*
      * Ask the model to call the API to get data
      */
-    private func loadData(options: ViewLoadOptions? = nil) {
+    private func loadData(options: GetOptions) {
         self.model.callApi(options: options)
     }
 }

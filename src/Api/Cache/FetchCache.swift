@@ -7,7 +7,7 @@ import Foundation
  */
 class FetchCache {
 
-    // A map of cache keys to API responses
+    // A map of cache keys (URLs) to API responses
     private let queue: DispatchQueue
     private var cache: [String: FetchCacheItem]
 

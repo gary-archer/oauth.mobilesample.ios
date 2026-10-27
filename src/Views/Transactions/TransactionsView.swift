@@ -74,8 +74,10 @@ struct TransactionsView: View {
      * Do the initial load
      */
     private func initialLoad() {
+
         self.eventBus.sendNavigatedEvent(isAuthenticatedView: true)
-        self.loadData()
+        let options = GetOptions(forceReload: false, causeError: false)
+        self.loadData(options:  options)
     }
 
     /*
@@ -89,14 +91,14 @@ struct TransactionsView: View {
             }
         }
 
-        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+        let options = GetOptions(forceReload: true, causeError: event.causeError)
         self.loadData(options: options)
     }
 
     /*
      * Load our data
      */
-    private func loadData(options: ViewLoadOptions? = nil) {
+    private func loadData(options: GetOptions) {
 
         // The code sample treats forbidden due to unauthorized deep links as a normal, non-error event
         let onForbidden: () -> Void = {

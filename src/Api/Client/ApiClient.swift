@@ -26,11 +26,8 @@ class ApiClient {
      */
     func getCompanies(options: GetOptions) async throws -> [Company]? {
 
-        guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies") else {
-            throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
-        }
-
         // Make the API call
+        let url = "\(self.configuration.app.apiBaseUrl)/companies"
         let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
@@ -47,11 +44,8 @@ class ApiClient {
         companyId: String,
         options: GetOptions) async throws -> CompanyTransactions? {
 
-        guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions") else {
-            throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
-        }
-
         // Make the API call
+        let url = "\(self.configuration.app.apiBaseUrl)/companies/\(companyId)/transactions"
         let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
@@ -66,11 +60,8 @@ class ApiClient {
      */
     func getOAuthUserInfo(options: GetOptions) async throws -> OAuthUserInfo? {
 
-        guard let url = URL(string: self.configuration.oauth.userInfoEndpoint) else {
-            throw ErrorFactory.fromMessage(message: "Invalid user info endpoint in ApiClient")
-        }
-
         // Make the API call
+        let url = self.configuration.oauth.userInfoEndpoint
         let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
@@ -95,11 +86,8 @@ class ApiClient {
      */
     func getApiUserInfo(options: GetOptions) async throws -> ApiUserInfo? {
 
-        guard let url = URL(string: "\(self.configuration.app.apiBaseUrl)/userinfo") else {
-            throw ErrorFactory.fromMessage(message: "Invalid API URL in ApiClient")
-        }
-
         // Make the API call
+        let url = "\(self.configuration.app.apiBaseUrl)/userinfo"
         let data = try await self.getDataFromApi(url: url, options: options)
         if data == nil {
             return nil
@@ -127,21 +115,25 @@ class ApiClient {
     /*
      * Make a GET request and deal with caching
      */
-    private func getDataFromApi(url: URL, options: GetOptions) async throws -> Data? {
+    private func getDataFromApi(url: String, options: GetOptions) async throws -> Data? {
+        
+        guard let urlValue = URL(string: url) else {
+            throw ErrorFactory.fromMessage(message: "Invalid API URL: \(url)")
+        }
 
         // Remove the item from the cache when a reload is requested
         if options.forceReload {
-            self.fetchCache.removeItem(key: options.cacheKey)
+            self.fetchCache.removeItem(key: url)
         }
 
         // Return existing data from the memory cache when available
-        var cacheItem = self.fetchCache.getItem(key: options.cacheKey)
+        var cacheItem = self.fetchCache.getItem(key: url)
         if cacheItem != nil {
             return cacheItem!.getData()
         }
 
         // Create the cache item with a null value, so that any additional view requests return null
-        cacheItem = self.fetchCache.createItem(key: options.cacheKey)
+        cacheItem = self.fetchCache.createItem(key: url)
 
         // Notify the request coordinator on the main thread that we are sending an API request
         await MainActor.run {
@@ -151,7 +143,7 @@ class ApiClient {
         do {
 
             // Call the API and return data on success
-            let data = try await self.callApiWithTokenRefresh(method: "GET", url: url, dataToSend: nil, causeError: options.causeError)
+            let data = try await self.callApiWithTokenRefresh(method: "GET", url: urlValue, dataToSend: nil, causeError: options.causeError)
             cacheItem!.setData(value: data)
 
             // Notify the request coordinator on the main thread that we sent an API request
@@ -164,7 +156,7 @@ class ApiClient {
         } catch {
 
             // Make sure we clear the item from the cache
-            self.fetchCache.removeItem(key: options.cacheKey)
+            self.fetchCache.removeItem(key: url)
 
             // Handle the error and notify the request coordinator that the API request failed
             let uiError = ErrorFactory.fromException(error: error)

@@ -39,12 +39,7 @@ class TransactionsViewModel: ObservableObject {
     /*
      * Do the work of calling the API
      */
-    func callApi(options: ViewLoadOptions? = nil, onForbidden: @escaping () -> Void) {
-
-        let getOptions = GetOptions(
-            cacheKey: "\(FetchCacheKeys.Transactions)-\(self.companyId!)",
-            forceReload: options?.forceReload ?? false,
-            causeError: options?.causeError ?? false)
+    func callApi(options: GetOptions, onForbidden: @escaping () -> Void) {
 
         // Initialise state
         self.error = nil
@@ -62,7 +57,7 @@ class TransactionsViewModel: ObservableObject {
                 // Make the API call on a background thread
                 let transactions = try await self.apiClient.getCompanyTransactions(
                     companyId: self.companyId!,
-                    options: getOptions)
+                    options: options)
 
                 await MainActor.run {
 

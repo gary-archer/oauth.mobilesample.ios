@@ -86,7 +86,8 @@ struct UserInfoView: View {
         if event.isAuthenticatedView {
 
             // Load user data the first time
-            self.loadData()
+            let options = GetOptions(forceReload: false, causeError: false)
+            self.loadData(options: options)
 
         } else {
 
@@ -99,14 +100,14 @@ struct UserInfoView: View {
      * Handle reload events
      */
     private func handleReloadDataEvent(event: ReloadDataEvent) {
-        let options = ViewLoadOptions(forceReload: true, causeError: event.causeError)
+        let options = GetOptions(forceReload: true, causeError: event.causeError)
         self.loadData(options: options)
     }
 
     /*
      * Ask the model to call the API to get data
      */
-    private func loadData(options: ViewLoadOptions? = nil) {
+    private func loadData(options: GetOptions) {
         self.model.callApi(options: options)
     }
 }

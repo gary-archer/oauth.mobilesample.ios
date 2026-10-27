@@ -1,10 +1,9 @@
 import SwiftUI
 
 /*
- * Input when making a cacheable GET request
+ * Input from views to influence core API GET behaviors, including an option for error rehearsal
  */
 struct GetOptions {
-    var cacheKey: String
     var forceReload: Bool
     var causeError: Bool
 }
