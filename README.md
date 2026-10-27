@@ -39,15 +39,6 @@ After login you can test all lifecycle operations, including token refresh, expi
 * See the [API Journey - Client Side](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/api-journey-client-side.mdx) for further information on the app's behaviour.
 * See blog posts for further details specific to the iOS app, starting in the [Code Sample Overview](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/ios-code-sample-overview.mdx).
 
-## Deep Linking Registration Failures
-
-Some developers may run into the following error after login, where the deep link fails to invoke the mobile app.\
-Instead, the URL invoked by [this JavaScript](Web/postlogin.html) runs in the browser, resulting in a `Not Found` error:
-
-![post login error](doc/post-login-error.png)
-
-If you run into this type of problem, see the [iOS Code Sample – Infrastructure](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/ios-code-sample-infrastructure.mdx) blog post on ways to resolve it.
-
 ## Programming Languages
 
 * The app's code uses Swift and its views use SwiftUI.
