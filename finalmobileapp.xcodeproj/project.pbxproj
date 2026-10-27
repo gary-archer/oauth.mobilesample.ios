@@ -15,7 +15,6 @@
 		28AAE8242B98F12500B865F9 /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAE8232B98F12500B865F9 /* BlankView.swift */; };
 		28D73D81293BADF000EFA01B /* LoginResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */; };
 		28D73D83293BAE4200EFA01B /* LogoutResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */; };
-		28E45F0A2ABB624800625091 /* FetchCacheItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F092ABB624800625091 /* FetchCacheItem.swift */; };
 		28E45F0C2ABB634500625091 /* FetchCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E45F0B2ABB634500625091 /* FetchCache.swift */; };
 		28EBFD042C049A200015539D /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 28EBFD032C049A200015539D /* KeychainSwift */; };
 		4E05212824531E0700C84A9F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4E05212724531E0700C84A9F /* README.md */; };
@@ -98,7 +97,6 @@
 		28AAE8232B98F12500B865F9 /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
 		28D73D80293BADF000EFA01B /* LoginResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseHandler.swift; sourceTree = "<group>"; };
 		28D73D82293BAE4200EFA01B /* LogoutResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutResponseHandler.swift; sourceTree = "<group>"; };
-		28E45F092ABB624800625091 /* FetchCacheItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCacheItem.swift; sourceTree = "<group>"; };
 		28E45F0B2ABB634500625091 /* FetchCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCache.swift; sourceTree = "<group>"; };
 		4E05212724531E0700C84A9F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4E05212B24531E4F00C84A9F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -312,7 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				28E45F0B2ABB634500625091 /* FetchCache.swift */,
-				28E45F092ABB624800625091 /* FetchCacheItem.swift */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -649,7 +646,6 @@
 				4EFEFC322451EE4F0057C78D /* TextStyles.swift in Sources */,
 				4EFCE6822463273200BD1443 /* ErrorConsoleReporter.swift in Sources */,
 				4E29A1A72461DBE100095F11 /* OrientationHandler.swift in Sources */,
-				28E45F0A2ABB624800625091 /* FetchCacheItem.swift in Sources */,
 				4E43251C244EFD6500A1582E /* Transaction.swift in Sources */,
 				4EE6B1DA246479A700B43FF3 /* DeviceSecurity.swift in Sources */,
 				4EF8C8CD2450605000E646B8 /* ErrorDetailsView.swift in Sources */,

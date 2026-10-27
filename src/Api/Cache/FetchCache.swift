@@ -9,37 +9,27 @@ class FetchCache {
 
     // A map of cache keys (URLs) to API responses
     private let queue: DispatchQueue
-    private var cache: [String: FetchCacheItem]
+    private var cache: [String: Data]
 
     /*
      * Initialise data
      */
     init() {
         self.queue = DispatchQueue(label: "ConcurrentDictionary")
-        self.cache = [String: FetchCacheItem]()
+        self.cache = [String: Data]()
     }
 
     /*
-     * Create an item with no data when an API request is triggered
+     * Set an item with data
      */
-    func createItem(key: String) -> FetchCacheItem {
-
-        var item = self.getItem(key: key)
-        if item == nil {
-
-            item = FetchCacheItem()
-            self.queue.sync {
-                self.cache[key] = item
-            }
-        }
-
-        return item!
+    func setItem(key: String, data: Data) {
+        self.cache[key] = data
     }
 
     /*
      * Get an item if it exists
      */
-    func getItem(key: String) -> FetchCacheItem? {
+    func getItem(key: String) -> Data? {
 
         self.queue.sync {
             return self.cache[key]
@@ -62,7 +52,7 @@ class FetchCache {
     func clearAll() {
 
         self.queue.sync {
-            self.cache = [String: FetchCacheItem]()
+            self.cache = [String: Data]()
         }
     }
 }

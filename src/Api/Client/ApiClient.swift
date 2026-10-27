@@ -127,13 +127,10 @@ class ApiClient {
         }
 
         // Return existing data from the memory cache when available
-        var cacheItem = self.fetchCache.getItem(key: url)
-        if cacheItem != nil {
-            return cacheItem!.getData()
+        var cachedData = self.fetchCache.getItem(key: url)
+        if cachedData != nil {
+            return cachedData
         }
-
-        // Create the cache item with a null value, so that any additional view requests return null
-        cacheItem = self.fetchCache.createItem(key: url)
 
         // Notify the request coordinator on the main thread that we are sending an API request
         await MainActor.run {
@@ -142,11 +139,11 @@ class ApiClient {
 
         do {
 
-            // Call the API and return data on success
+            // Get the data and update the cache item for this request
             let data = try await self.callApiWithTokenRefresh(method: "GET", url: urlValue, dataToSend: nil, causeError: options.causeError)
-            cacheItem!.setData(value: data)
+            fetchCache.setItem(key: url, data: data)
 
-            // Notify the request coordinator on the main thread that we sent an API request
+            // Indicate success and return the data
             await MainActor.run {
                 self.requestCoordinator.onApiRequestEnd()
             }
@@ -154,9 +151,6 @@ class ApiClient {
             return data
 
         } catch {
-
-            // Make sure we clear the item from the cache
-            self.fetchCache.removeItem(key: url)
 
             // Handle the error and notify the request coordinator that the API request failed
             let uiError = ErrorFactory.fromException(error: error)
@@ -174,7 +168,7 @@ class ApiClient {
         method: String,
         url: URL,
         dataToSend: Data?,
-        causeError: Bool) async throws -> Data? {
+        causeError: Bool) async throws -> Data {
 
         // Avoid API requests when there is no access token, and instead trigger a login
         var accessToken = self.oauthClient.getAccessToken()
@@ -236,7 +230,7 @@ class ApiClient {
         url: URL,
         dataToSend: Data?,
         accessToken: String,
-        causeError: Bool) async throws -> Data? {
+        causeError: Bool) async throws -> Data {
 
         // Create the request object and set parameters
         var request = URLRequest(url: url, timeoutInterval: 10.0)
