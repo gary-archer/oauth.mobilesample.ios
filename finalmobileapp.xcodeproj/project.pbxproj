@@ -202,7 +202,10 @@
 				4E1888FC23DE02B40014638D /* Api */,
 				4EE4CABB245364910033B3C5 /* App */,
 				4EFEFC242451D13D0057C78D /* Configuration */,
-				4E79B099241428200054C382 /* Plumbing */,
+				4E79B09A241428250054C382 /* Errors */,
+				4E670F812722A41C0064EC73 /* Events */,
+				4EB386F3244C68CD00FC2B17 /* OAuth */,
+				4E1D6149245B346900F41850 /* Utilities */,
 				4E1888F223DDFF480014638D /* Views */,
 			);
 			path = src;
@@ -238,9 +241,10 @@
 				4E07E3772497DF1B006B1A5A /* ConcurrentActionHandler.swift */,
 				4E679948246D9723002B7E5F /* DeepLinkHelper.swift */,
 				4EE6B1DF2464B2FD00B43FF3 /* DateUtils.swift */,
+				28051E362B965729009ADAB9 /* LoggerExtensions.swift */,
 			);
 			name = Utilities;
-			path = src/Plumbing/Utilities;
+			path = src/Utilities;
 			sourceTree = SOURCE_ROOT;
 		};
 		4E23798323CE6D900066DE08 = {
@@ -280,17 +284,6 @@
 				4E670F842722A8D70064EC73 /* ApiRequestsEvent.swift */,
 			);
 			path = Events;
-			sourceTree = "<group>";
-		};
-		4E79B099241428200054C382 /* Plumbing */ = {
-			isa = PBXGroup;
-			children = (
-				4E670F812722A41C0064EC73 /* Events */,
-				4E79B09A241428250054C382 /* Errors */,
-				4EB386F3244C68CD00FC2B17 /* OAuth */,
-				4E1D6149245B346900F41850 /* Utilities */,
-			);
-			path = Plumbing;
 			sourceTree = "<group>";
 		};
 		4E79B09A241428250054C382 /* Errors */ = {
@@ -471,7 +464,6 @@
 				4EFEFC2E2451EE4F0057C78D /* TextStyles.swift */,
 				4EFEFC312451EE4F0057C78D /* ViewRouter.swift */,
 				288F61922AC48BA0009A1229 /* Localizable.strings */,
-				28051E362B965729009ADAB9 /* LoggerExtensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
